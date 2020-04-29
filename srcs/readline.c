@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vct_readline.c                                  :+:      :+:    :+:   */
+/*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:44:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 		{
 			if (ft_strcheck(buf, ft_isprint) || buf[0] == '\n')
-			{   
+			{
                 if (putchar_in_vct(env, rest, buf, (size_t)ret) == FAILURE)
                     return (FAILURE);
             }
@@ -117,7 +117,6 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
                 handle_actionkey(env, buf, rest);
 
 			ft_bzero(buf, BUFF_SIZE);
-			
 			if (vct_chr(rest, '\n') != FAILURE)
 				break ;
 		}

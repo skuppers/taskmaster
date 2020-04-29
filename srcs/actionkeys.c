@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:19:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 19:25:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)c;
 	char	*cmd;
 
+    (void)c;
 	cmd = history(vct, PREV);
 	if (cmd != NULL)
 	{
@@ -25,6 +26,7 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	}
 	while (env->cursoridx-- > 0)
 		ft_putstr("\33[D");
+	ft_putstr("\33[K");
 	vct_print(vct);
 	env->cursoridx = vct_len(vct);
 	return (0);
@@ -35,6 +37,7 @@ int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)c;
 	char	*cmd;
 
+    (void)c;
 	cmd = history(vct, NEXT);
 	if (cmd != NULL)
 	{
@@ -43,6 +46,7 @@ int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	}
 	 while (env->cursoridx-- > 0)
 		ft_putstr("\33[D");
+	ft_putstr("\33[K");
 	vct_print(vct);
 	env->cursoridx = vct_len(vct);
 	return (0);

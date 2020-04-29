@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:16:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static void read_cmd(t_env *env)
 	{
 		if (vct_apply(line, IS_SPACE) == FALSE)
 		{
-			history(line, ADD);
+			history(line, ADD | RESET);
 			parser(line);
 			ft_putchar('\n'); // DEBUG
 		}
