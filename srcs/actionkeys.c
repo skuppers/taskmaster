@@ -159,10 +159,21 @@ int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE])
     }
     return (0);
 }
+
 int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-    (void)env;(void)vct;(void)c;
-    
+    (void)c;
+    uint32_t     tmpidx;
+
+    ft_putstr("\33[2J");
+    ft_putstr("\33[0;0f");
+    ft_putstr("taskmaster> ");
+    vct_print(vct);
+    tmpidx = vct_len(vct);
+    while (tmpidx-- > 0)
+		ft_putstr("\33[D");
+    while (tmpidx++ != env->cursoridx - 1)
+            ft_putstr("\33[C");
     return (0);
 }
 int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE])
