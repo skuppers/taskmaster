@@ -11,3 +11,8 @@
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+int8_t		connect_to_daemon(char *socketname)
+{
+
+}

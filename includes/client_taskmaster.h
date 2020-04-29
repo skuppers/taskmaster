@@ -19,6 +19,9 @@
 # include "stdint.h"
 
 
+# define DFLT_SOCKET	"/tmp/taskmstsock"
+
+
 /*****************	Readline **************/
 
 # define AK_AMOUNT					14
@@ -113,7 +116,7 @@ typedef struct		s_env
 	uint64_t		ak_masks[AK_AMOUNT];
 	int8_t			(*actionkeys[AK_AMOUNT])(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
 	uint32_t		cursoridx;
-	uint32_t		padding;
+	uint32_t		struct_padding;
 
 }					t_env;
 
@@ -129,6 +132,8 @@ uint64_t			assign_keycodes(t_env *env);
 uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
 void				exit_routine(void);
+
+int8_t				connect_to_daemon(char *socketname);
 
 
 /*********************** ACTION KEYS ********************/

@@ -58,6 +58,8 @@ int		main(void)
 		return (EXIT_FAILURE);
 	}
 
+	connect_to_daemon(DFLT_SOCKET);
+
 	g_env = &environment;
 	ft_memset(&environment, 0, sizeof(environment));
 	init_readline(&environment);
