@@ -40,6 +40,14 @@ static void read_cmd(t_env *env)
 	//if (ret == FAILURE) read_error
 }
 
+static void	init_readline(t_env	*environment)
+{
+	create_termmode(environment);
+	set_termmode(environment);
+	assign_keycodes(environment);
+	link_keys_functions(environment->actionkeys);
+}
+
 int		main(void)
 {
 	t_env	environment;
@@ -49,13 +57,11 @@ int		main(void)
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");
 		return (EXIT_FAILURE);
 	}
-	
-	ft_memset(&environment, 0, sizeof(environment));
+
 	g_env = &environment;
-	create_termmode(&environment);
-	set_termmode(&environment);
-	assign_keycodes(&environment);
-	link_keys_functions(environment.actionkeys);
+	ft_memset(&environment, 0, sizeof(environment));
+	init_readline(&environment);
+	
 
 	read_cmd(&environment);
 
