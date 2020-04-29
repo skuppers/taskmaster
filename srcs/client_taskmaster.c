@@ -6,15 +6,15 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 12:25:42 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 13:27:23 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static char *get_keyword(uint8_t i)
+static const char *get_keyword(const uint8_t i)
 {
-	static char		*grammar[] = {"add", "avail", "clear", "exit", "fg",
+	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
 								"maintail", "open", "pid", "quit", "reload",
 								"remove", "reread", "restart", "shutdown",
 								"signal", "start", "status", "stop", "tail",
@@ -34,59 +34,35 @@ static enum e_cmd_type	get_cmd(t_vector *word)
 			return ((enum e_cmd_type)i);
 		i++;
 	}
-	ft_dprintf(STDERR_FILENO, "*** Unknow syntax: %s", vct_getstr(word)); // print usage
+	ft_dprintf(STDERR_FILENO, "*** Unknow syntax: %s\n", vct_getstr(word));
 	return (BAD_CMD);
 }
 
-static void	debug_cmd(t_cmd *cmd)
+static t_vector	*clean_line(t_vector *line)
 {
-	t_list	*lst;
-	int		i;
-	char	*arg;
-
-	ft_printf("cmd->type = %d (%s)%s",
-			(int)cmd->type, get_keyword((uint8_t)cmd->type),
-				cmd->ac == 1 ? "\n" : " || "); // DEBUG
-	lst = cmd->arg;
-	i = 1;
-	while (lst != NULL)
-	{
-		arg = (char *)lst->content;
-		ft_printf("arg[%d] = %s%s", i, arg, i == cmd->ac ? "\n" : " | "); // DEBUG
-		lst = lst->next;
-		i++;
-	}
+	vct_replacechar(line, '\n', ' ');
+	vct_replacechar(line, '\t', ' ');
+	vct_trimfront(line, " ");
+	return (line);
 }
 
 static int	parser(t_vector *line)
 {
-	t_vector	*split;
-	t_list		*node;
-	t_cmd		cmd;
-	size_t		i;
+	t_vector			*cmd_string;
+	enum e_cmd_type		cmd_type;
+	static	t_builtin	builtin[] = {blt_add, blt_avail, blt_clear, blt_exit,
+									blt_fg, blt_maintail, blt_open, blt_pid,
+									blt_quit, blt_reload, blt_remove,
+									blt_reread, blt_restart, blt_shutdown,
+									blt_signal, blt_start, blt_status, blt_stop,
+									blt_tail, blt_update, blt_version};
 
-	i = 0;
-	vct_split(NULL, NULL, INIT);
-	ft_bzero(&cmd, sizeof(t_cmd));
-	while ((split = vct_split(line, " \t", NO_SEP)) != NULL)
-	{
-		if (i == 0)
-		{
-			if ((cmd.type = get_cmd(split)) == BAD_CMD)
-				return (FAILURE);
-		}
-		else
-		{
-			node = ft_lstnew(vct_getstr(split), vct_len(split) + 1); // split error
-			ft_lstadd_back(&cmd.arg, node);
-			// envoyer a chaque builtin
-			
-		}
-		i++;
-		vct_del(&split);
-	}
-	cmd.ac = i;
-	debug_cmd(&cmd);
+	cmd_string = vct_splitchr(clean_line(line), ' ', DEL_CHAR);
+	cmd_type = get_cmd(cmd_string);
+	if (cmd_type == BAD_CMD)
+		return (FAILURE);
+	vct_trimfront(line, " ");
+	builtin[cmd_type](line);
 	return (SUCCESS);
 }
 

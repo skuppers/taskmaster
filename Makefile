@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/29 12:05:54 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/29 13:21:40 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -128,6 +128,7 @@ SRCS += termmode.c
 SRCS += readline.c
 SRCS += keycodes.c
 SRCS += actionkeys.c
+SRCS += blt.c
 
 ################# ATTRIBUTION
 
