@@ -123,6 +123,7 @@ PATH_SRCS += srcs/
 #################################               ################################
 ################################################################################
 
+### CLIENT
 SRCS += client_taskmaster.c
 SRCS += history.c
 SRCS += termmode.c
@@ -130,6 +131,9 @@ SRCS += readline.c
 SRCS += keycodes.c
 SRCS += actionkeys.c
 SRCS += blt.c
+SRCS += parser.c
+SRCS += exit_routine.c
+SRCS += client_connect.c
 
 ################# ATTRIBUTION
 

@@ -12,53 +12,10 @@
 
 #include "client_taskmaster.h"
 
-t_env		*g_env;
-
-static int	print_prompt(void)
+void	exit_routine(void)
 {
-	return (ft_dprintf(STDERR_FILENO, PROMPT));
-}
-
-static void read_cmd(t_env *env)
-{
-	t_vector	*line;
-	int			ret;
-
-	line = vct_new(DFL_VCT_SIZE);
-	print_prompt();
-	while ((ret = tsk_readline(line, STDIN_FILENO, env)) > 0)
-	{
-		if (vct_apply(line, IS_SPACE) == FALSE)
-		{
-			history(line, ADD | RESET);
-			parser(line);
-			ft_putchar('\n'); // DEBUG
-		}
-		print_prompt();
-	}
-	vct_del(&line);
-	//if (ret == FAILURE) read_error
-}
-
-int		main(void)
-{
-	t_env	environment;
-
-	if (isatty(STDIN_FILENO) == FALSE)
-	{
-		ft_dprintf(STDERR_FILENO, "Not a tty\n");
-		return (EXIT_FAILURE);
-	}
-	
-	ft_memset(&environment, 0, sizeof(environment));
-	g_env = &environment;
-	create_termmode(&environment);
-	set_termmode(&environment);
-	assign_keycodes(&environment);
-	link_keys_functions(environment.actionkeys);
-
-	read_cmd(&environment);
-
-	release_termmode(&environment);
-	return (EXIT_SUCCESS);
+	release_termmode(g_env);
+	free(g_env->orig);
+	free(g_env->taskmst);
+	exit(42);
 }

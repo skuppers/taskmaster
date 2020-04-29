@@ -71,9 +71,6 @@ enum	e_action_keys
 
 # define ERR_BAD_CMD	"Bad Cmd"
 
-
-
-
 enum	e_cmd_type
 {
 	ADD,
@@ -140,12 +137,10 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_arrow_left(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_arrow_right(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-
 int8_t		ak_home(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_end(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-
 int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
@@ -153,6 +148,10 @@ int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 typedef	t_vector	*(*t_builtin)(t_cmd *);
 
+
+/************************ Parser *****************/
+
+int			parser(t_vector *line);
 
 /*
 **** History
