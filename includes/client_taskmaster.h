@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 17:15:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 17:55:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ t_vector	*blt_avail(t_cmd *cmd);
 t_vector	*blt_clear(t_cmd *cmd);
 t_vector	*blt_exit(t_cmd *cmd);
 t_vector	*blt_fg(t_cmd *cmd);
+t_vector	*blt_help(t_cmd *cmd);
 t_vector	*blt_maintail(t_cmd *cmd);
 t_vector	*blt_open(t_cmd *cmd);
 t_vector	*blt_pid(t_cmd *cmd);

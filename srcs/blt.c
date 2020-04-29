@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 17:22:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 17:55:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,23 +77,40 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 
 t_vector	*blt_add(t_cmd *cmd)
 {
-	return (generate_bytecode(cmd, NO_OCP));
+	if (cmd->ac != 0)
+		return (generate_bytecode(cmd, NO_OCP));
+	return (NULL);
 }
 
 t_vector	*blt_avail(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	return (generate_bytecode(cmd, NO_OCP));
 }
 
 t_vector	*blt_clear(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	if (cmd->ac == 0)
+	{
+		ft_dprintf(STDERR_FILENO, "Error: clear requires a process name\n");
+		// call "help clear"
+		return (NULL);
+	}
+	else if (ft_strequ(cmd->av[0], "all") == TRUE)
+	{
+		cmd->ac = 1;
+		return (generate_bytecode(cmd, 0x01));
+	}
+	return (generate_bytecode(cmd, 0x02));
+/*
+** ocp 0x01 : clear all
+** ocp 0x02 : clear <name> <...>
+*/
 }
 
 t_vector	*blt_exit(t_cmd *cmd)
 {
+	/// call exit routine
+	exit(0);
 	(void)cmd;
 	return (NULL);
 }
@@ -122,10 +139,16 @@ t_vector	*blt_pid(t_cmd *cmd)
 	return (NULL);
 }
 
-t_vector	*blt_quit(t_cmd *cmd)
+t_vector	*blt_help(t_cmd *cmd)
 {
+	
 	(void)cmd;
 	return (NULL);
+}
+
+t_vector	*blt_quit(t_cmd *cmd)
+{
+	return (blt_exit(cmd));
 }
 
 t_vector	*blt_reload(t_cmd *cmd)
