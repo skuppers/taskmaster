@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 21:21:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 21:23:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	completion(t_vector *vct)
 	}
 	else
 	{
-		ft_putendl_fd("\n", STDERR_FILENO);
+		ft_putchar_fd('\n', STDERR_FILENO);
 		print_completion(possible_cmd);
 	}
 	ft_strdel(&last_word);
