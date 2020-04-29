@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vct_readline.c                                  :+:      :+:    :+:   */
+/*   actionkeys.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/22 17:22:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:19:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,28 @@
 
 int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-    (void)env;(void)vct;(void)c;
+	char	*cmd;
+
+	cmd = history(vct, PREV);
+	if (cmd != NULL)
+	{
+		vct_clear(vct);
+		vct_addstr(vct, cmd);
+	}
+    (void)env;(void)c;
     return (0);
 }
 
 int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
+	char	*cmd;
+
+	cmd = history(vct, NEXT);
+	if (cmd != NULL)
+	{
+		vct_clear(vct);
+		vct_addstr(vct, cmd);
+	}
     (void)env;(void)vct;(void)c;
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 17:55:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:20:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,24 @@ int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 typedef	t_vector	*(*t_builtin)(t_cmd *);
+
+
+/*
+**** History
+*/
+
+# define ADD	0x01
+# define NEXT	0x02
+# define PREV	0x04
+# define FLUSH	0x08
+
+typedef	struct	s_hist
+{
+	t_list		*prev;
+	char		*cmd;
+}				t_hist;
+
+char	*history(t_vector *line, uint8_t flag);
 
 /*
 **** BUILT_IN
