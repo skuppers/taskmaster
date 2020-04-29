@@ -66,7 +66,30 @@ int8_t		ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 int8_t		ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-    (void)env;(void)vct;(void)c;
+    (void)c;
+    int     tmpidx;
+
+    if (env->cursoridx == vct_len(vct) && env->cursoridx > 0)
+    {
+        vct_cut(vct);
+        ft_putstr("\33[D");
+        ft_putstr("\33[K");
+        env->cursoridx--;
+    }
+    else if (env->cursoridx == 1)
+    {
+       
+        vct_pop(vct);
+        ft_putstr("\33[D");
+        ft_putstr("\33[K");
+        vct_print(vct);
+        tmpidx = vct_len(vct);
+        while (tmpidx-- > 0)
+             ft_putstr("\33[D");
+        env->cursoridx = 0;
+    }
+    
+    
     return (0);
 }
 
