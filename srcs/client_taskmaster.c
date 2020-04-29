@@ -95,14 +95,14 @@ static int	print_prompt(void)
 	return (ft_dprintf(STDERR_FILENO, PROMPT));
 }
 
-static void read_cmd(void)
+static void read_cmd(t_env *env)
 {
 	t_vector	*line;
 	int			ret;
 
 	line = vct_new(DFL_VCT_SIZE);
 	print_prompt();
-	while ((ret = vct_readline(line, STDIN_FILENO)) > 0)
+	while ((ret = tsk_readline(line, STDIN_FILENO, env)) > 0)
 	{
 		if (vct_apply(line, IS_SPACE) == FALSE)
 		{
@@ -117,11 +117,20 @@ static void read_cmd(void)
 
 int		main(void)
 {
+	t_env	environment;
+
 	if (isatty(STDIN_FILENO) == FALSE)
 	{
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");
 		return (EXIT_FAILURE);
 	}
-	read_cmd();
+
+	create_termmode(&environment);
+	set_termmode(&environment);
+	assign_keycodes(&environment);
+
+	read_cmd(&environment);
+
+	release_termmode(&environment);
 	return (EXIT_SUCCESS);
 }
