@@ -1,0 +1,8 @@
+# Swap file
+.*.sw*
+
+# Obj
+*.o
+
+#exec
+taskmasterctl
