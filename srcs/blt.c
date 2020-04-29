@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 16:19:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 16:23:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,12 @@ t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 	cmd.type = type;
 	if (flag[type] == ONE_ARG)
 	{
-		cmd.av = ft_memalloc(sizeof(char **) * 2);
-		cmd.av[0] = vct_dupstr(arg);
-		cmd.ac = 1;
+		if (vct_apply(arg, IS_SPACE) == FALSE && vct_len(arg) != 0)
+		{
+			cmd.av = ft_memalloc(sizeof(char **) * 2);
+			cmd.av[0] = vct_dupstr(arg);
+			cmd.ac = 1;
+		}
 	}
 	else if (flag[type] == TAB_ARG)
 	{
