@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 13:18:34 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 16:19:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,21 @@
 # include "libft.h"
 # include "stdint.h"
 
-# define NB_CMD			21
+# define NB_CMD			22
 
 # define PROMPT			"taskmaster> "
+
+# define NO_ARG			0
+# define ONE_ARG		1
+# define TAB_ARG		2
 
 /*
 ********* ERROR MANAGEMENT
 */
 
 # define ERR_BAD_CMD	"Bad Cmd"
+
+
 
 
 enum	e_cmd_type
@@ -34,6 +40,7 @@ enum	e_cmd_type
 	CLEAR,
 	EXIT,
 	FG,
+	HELP,
 	MAINTAIL,
 	OPEN,
 	PID,
@@ -55,7 +62,7 @@ enum	e_cmd_type
 
 typedef struct		s_cmd
 {
-	t_list			*arg;
+	char			**av;
 	enum e_cmd_type	type;
 	int				ac;
 }					t_cmd;
@@ -65,6 +72,8 @@ typedef	t_cmd	*(*t_builtin)(t_vector *);
 /*
 **** BUILT_IN
 */
+
+t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
 
 t_cmd	*blt_add(t_vector *arg);
 t_cmd	*blt_avail(t_vector *arg);
