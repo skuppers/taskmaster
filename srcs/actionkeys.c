@@ -14,6 +14,7 @@
 
 int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
+    (void)c;
 	char	*cmd;
 
 	cmd = history(vct, PREV);
@@ -22,12 +23,16 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 		vct_clear(vct);
 		vct_addstr(vct, cmd);
 	}
-    (void)env;(void)c;
+    while (env->cursoridx-- > 0)
+        ft_putstr("\33[D");
+    vct_print(vct);
+    env->cursoridx = vct_len(vct);
     return (0);
 }
 
 int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
+    (void)c;
 	char	*cmd;
 
 	cmd = history(vct, NEXT);
@@ -36,7 +41,11 @@ int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 		vct_clear(vct);
 		vct_addstr(vct, cmd);
 	}
-    (void)env;(void)vct;(void)c;
+     while (env->cursoridx-- > 0)
+        ft_putstr("\33[D");
+    vct_print(vct);
+    env->cursoridx = vct_len(vct);
+    
     return (0);
 }
 
@@ -95,7 +104,6 @@ int8_t		ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE])
         tmpidx = vct_len(vct);
         while (tmpidx-- > 0)
 			ft_putstr("\33[D");
-
         while (tmpidx++ != env->cursoridx - 1)
             ft_putstr("\33[C");
     }
