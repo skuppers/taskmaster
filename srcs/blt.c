@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 16:23:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 17:22:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,129 +53,150 @@ t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 	return (&cmd);
 }
 
-t_cmd	*blt_add(t_vector *arg)
+
+t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 {
-	(void)arg;
+	t_vector	*vct;
+	int			i;
+
+	vct = vct_new(DFL_VCT_SIZE);
+	vct_add(vct, cmd->type);
+	if (ocp != NO_OCP)
+		vct_add(vct, ocp);
+	i = 0;
+	while (i < cmd->ac)
+	{
+		if (i != 0)
+			vct_add(vct, ':');
+		vct_addstr(vct, cmd->av[i]);
+		i++;
+	}
+	vct_add(vct, (char)0xff);
+	return (vct);
+}
+
+t_vector	*blt_add(t_cmd *cmd)
+{
+	return (generate_bytecode(cmd, NO_OCP));
+}
+
+t_vector	*blt_avail(t_cmd *cmd)
+{
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_avail(t_vector *arg)
+t_vector	*blt_clear(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_clear(t_vector *arg)
+t_vector	*blt_exit(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_exit(t_vector *arg)
+t_vector	*blt_fg(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_fg(t_vector *arg)
+t_vector	*blt_maintail(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_maintail(t_vector *arg)
+t_vector	*blt_open(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_open(t_vector *arg)
+t_vector	*blt_pid(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_pid(t_vector *arg)
+t_vector	*blt_quit(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_quit(t_vector *arg)
+t_vector	*blt_reload(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_reload(t_vector *arg)
+t_vector	*blt_remove(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_remove(t_vector *arg)
+t_vector	*blt_reread(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_reread(t_vector *arg)
+t_vector	*blt_restart(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_restart(t_vector *arg)
+t_vector	*blt_shutdown(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_shutdown(t_vector *arg)
+t_vector	*blt_signal(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_signal(t_vector *arg)
+t_vector	*blt_start(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_start(t_vector *arg)
+t_vector	*blt_status(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_status(t_vector *arg)
+t_vector	*blt_stop(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_stop(t_vector *arg)
+t_vector	*blt_tail(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_tail(t_vector *arg)
+t_vector	*blt_update(t_cmd *cmd)
 {
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 
-t_cmd	*blt_update(t_vector *arg)
+t_vector	*blt_version(t_cmd *cmd)
 {
-	(void)arg;
-	return (NULL);
-}
-
-t_cmd	*blt_version(t_vector *arg)
-{
-	(void)arg;
+	(void)cmd;
 	return (NULL);
 }
 

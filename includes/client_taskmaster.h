@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 16:20:43 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 17:15:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ enum	e_action_keys
 };
 
 # define NB_CMD			22
+# define NO_OCP			-1
 
 # define PROMPT			"taskmaster> "
 
@@ -146,35 +147,34 @@ int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
-
-typedef	t_cmd	*(*t_builtin)(t_vector *);
+typedef	t_vector	*(*t_builtin)(t_cmd *);
 
 /*
 **** BUILT_IN
 */
 
-t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
+t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
 
-t_cmd	*blt_add(t_vector *arg);
-t_cmd	*blt_avail(t_vector *arg);
-t_cmd	*blt_clear(t_vector *arg);
-t_cmd	*blt_exit(t_vector *arg);
-t_cmd	*blt_fg(t_vector *arg);
-t_cmd	*blt_maintail(t_vector *arg);
-t_cmd	*blt_open(t_vector *arg);
-t_cmd	*blt_pid(t_vector *arg);
-t_cmd	*blt_quit(t_vector *arg);
-t_cmd	*blt_reload(t_vector *arg);
-t_cmd	*blt_remove(t_vector *arg);
-t_cmd	*blt_reread(t_vector *arg);
-t_cmd	*blt_restart(t_vector *arg);
-t_cmd	*blt_shutdown(t_vector *arg);
-t_cmd	*blt_signal(t_vector *arg);
-t_cmd	*blt_start(t_vector *arg);
-t_cmd	*blt_status(t_vector *arg);
-t_cmd	*blt_stop(t_vector *arg);
-t_cmd	*blt_tail(t_vector *arg);
-t_cmd	*blt_update(t_vector *arg);
-t_cmd	*blt_version(t_vector *arg);
+t_vector	*blt_add(t_cmd *cmd);
+t_vector	*blt_avail(t_cmd *cmd);
+t_vector	*blt_clear(t_cmd *cmd);
+t_vector	*blt_exit(t_cmd *cmd);
+t_vector	*blt_fg(t_cmd *cmd);
+t_vector	*blt_maintail(t_cmd *cmd);
+t_vector	*blt_open(t_cmd *cmd);
+t_vector	*blt_pid(t_cmd *cmd);
+t_vector	*blt_quit(t_cmd *cmd);
+t_vector	*blt_reload(t_cmd *cmd);
+t_vector	*blt_remove(t_cmd *cmd);
+t_vector	*blt_reread(t_cmd *cmd);
+t_vector	*blt_restart(t_cmd *cmd);
+t_vector	*blt_shutdown(t_cmd *cmd);
+t_vector	*blt_signal(t_cmd *cmd);
+t_vector	*blt_start(t_cmd *cmd);
+t_vector	*blt_status(t_cmd *cmd);
+t_vector	*blt_stop(t_cmd *cmd);
+t_vector	*blt_tail(t_cmd *cmd);
+t_vector	*blt_update(t_cmd *cmd);
+t_vector	*blt_version(t_cmd *cmd);
 
-#endif
+# endif

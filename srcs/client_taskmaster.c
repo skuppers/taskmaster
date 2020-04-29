@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 16:21:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 17:25:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,30 @@ static void	debug_cmd(t_cmd *cmd)
 		ft_printf("ARG[%d] = `%s'\n", i, cmd->av[i]);
 }
 
+
+static void	debug_print_bytecode(t_vector *bytecode)
+{
+	size_t	i;
+	char	c;
+
+	i = 0;
+	ft_printf("\033[31mBytecode: \033[32m");
+	while (i < vct_len(bytecode))
+	{
+		c = vct_getcharat(bytecode, i);
+		if (ft_isprint(c) == TRUE)
+			ft_putchar(c);
+		else
+			ft_printf("\033[34m0x%.2hhx\033[32m", c);
+		i++;
+	}
+	ft_printf("\033[0m");
+}
+
 static int	parser(t_vector *line)
 {
 	t_vector			*cmd_string;
+	t_vector			*bytecode;
 	t_cmd				*cmd;
 	enum e_cmd_type		cmd_type;
 	static	t_builtin	builtin[] = {blt_add, blt_avail, blt_clear, blt_exit,
@@ -74,10 +95,12 @@ static int	parser(t_vector *line)
 	}
 	vct_trimfront(line, " ");
 	cmd = get_cmd_struct(cmd_type, line);
-	builtin[cmd_type](line);
 	debug_cmd(cmd);
+	bytecode = builtin[cmd_type](cmd);
+	debug_print_bytecode(bytecode);	
 		///////////////// LAUNCH CMD
 	ft_free_tab_str(cmd->av);
+	vct_del(&bytecode);
 	return (SUCCESS);
 }
 
