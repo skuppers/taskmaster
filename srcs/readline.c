@@ -47,41 +47,75 @@ static void			handle_actionkey(t_env *env, char c[BUFF_SIZE], t_vector *vct)
 	}
 }
 
-static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
-{
-	if (env->cursoridx == 0)
-	{
-		vct_pushstr(dest, src);
-	}
-	else if (env->cursoridx == vct_len(dest))
-	{
-		if (vct_addnstr(dest, src, size) == FAILURE)
-			return (FAILURE);
-	}
-	else
-	{
-		vct_addstrat(dest, src, env->cursoridx);
-	}
-	return (0);
-}
+
 #include <stdio.h>
 void	redraw(t_env *env, t_vector *str)
 {
 	uint32_t	tmpidx;
 
 	tmpidx = env->cursoridx;
+
 	while (env->cursoridx > 0)
 	{
 		ft_putstr("\33[D");
 		env->cursoridx--;
 	}
+
 	vct_print(str);
 	env->cursoridx += vct_len(str);
+
 //	while (env->cursoridx != tmpidx)
 //	{
 //		ft_putstr("\33[D");
 //		env->cursoridx--;
 //	}
+}
+
+static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
+{
+	uint32_t	tmpidx;
+
+	if (ft_strequ(src, "\n") == 1)
+	{
+		ft_putchar('\n');
+		if (vct_addnstr(dest, src, size) == FAILURE)
+			return (FAILURE);
+		return (0);
+	}
+
+	if (env->cursoridx == vct_len(dest))
+	{
+		if (vct_addnstr(dest, src, size) == FAILURE)
+			return (FAILURE);
+		ft_putstr(src);
+		env->cursoridx += ft_strlen(src);
+	}
+	else if (env->cursoridx == 0)
+	{
+		vct_pushstr(dest, src);
+		tmpidx = vct_len(dest);
+		vct_print(dest);
+		while (tmpidx-- > 1)
+			ft_putstr("\33[D");
+		env->cursoridx = 1;
+	}
+	else
+	{
+		vct_addcharat(dest, src[0], env->cursoridx);
+		tmpidx = env->cursoridx;
+		while (env->cursoridx-- > 0)
+		{
+			ft_putstr("\33[D");
+		}
+		vct_print(dest);
+		env->cursoridx = vct_len(dest);	
+		while (env->cursoridx != tmpidx + 1)
+		{
+			ft_putstr("\33[D");
+			env->cursoridx--;
+		}
+	}
+	return (0);
 }
 
 static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
@@ -94,6 +128,7 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 	env->cursoridx = 0;
 	if (vct_chr(rest, '\n') == FAILURE)
 	{
+		
 		ft_bzero(buf, BUFF_SIZE);
 		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 		{
@@ -101,7 +136,6 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 			{   
                 if (putchar_in_vct(env, rest, buf, (size_t)ret) == FAILURE)
                     return (FAILURE);
-				redraw(env, rest);
             }
 			else
                 handle_actionkey(env, buf, rest);
