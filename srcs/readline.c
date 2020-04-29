@@ -42,9 +42,46 @@ static void			handle_actionkey(t_env *env, char c[BUFF_SIZE], t_vector *vct)
 	while (index < AK_AMOUNT)
 	{
 		if (value == env->ak_masks[index])
-            env->actionkeys[index](env, vct);
+            env->actionkeys[index](env, vct, c);
 		++index;
 	}
+}
+
+static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
+{
+	if (env->cursoridx == 0)
+	{
+		vct_pushstr(dest, src);
+	}
+	else if (env->cursoridx == vct_len(dest))
+	{
+		if (vct_addnstr(dest, src, size) == FAILURE)
+			return (FAILURE);
+	}
+	else
+	{
+		vct_addstrat(dest, src, env->cursoridx);
+	}
+	return (0);
+}
+#include <stdio.h>
+void	redraw(t_env *env, t_vector *str)
+{
+	uint32_t	tmpidx;
+
+	tmpidx = env->cursoridx;
+	while (env->cursoridx > 0)
+	{
+		ft_putstr("\33[D");
+		env->cursoridx--;
+	}
+	vct_print(str);
+	env->cursoridx += vct_len(str);
+//	while (env->cursoridx != tmpidx)
+//	{
+//		ft_putstr("\33[D");
+//		env->cursoridx--;
+//	}
 }
 
 static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
@@ -54,19 +91,20 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 	ssize_t		ret;
 
 	ret = LINE_OK;
+	env->cursoridx = 0;
 	if (vct_chr(rest, '\n') == FAILURE)
 	{
 		ft_bzero(buf, BUFF_SIZE);
 		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 		{
 			if (ft_strcheck(buf, ft_isprint) || buf[0] == '\n')
-			{
-                ft_putstr(buf);
-                if (vct_addnstr(rest, buf, (size_t)ret) == FAILURE)
-				    return (FAILURE);
+			{   
+                if (putchar_in_vct(env, rest, buf, (size_t)ret) == FAILURE)
+                    return (FAILURE);
+				redraw(env, rest);
             }
 			else
-                handle_actionkey(env, buf, vct);
+                handle_actionkey(env, buf, rest);
 
 			ft_bzero(buf, BUFF_SIZE);
 			

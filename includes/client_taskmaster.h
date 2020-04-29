@@ -45,10 +45,10 @@ enum	e_action_keys
 	AK_ARROW_LEFT,
 	AK_HOME,
 	AK_END,
-	AK_CTRL_A,
-	AK_CTRL_E,
 	AK_BACKSPACE,
 	AK_DELETE,
+	AK_CTRL_A,
+	AK_CTRL_E,
 	AK_CTRL_D,
 	AK_CTRL_L,
 	AK_CTRL_R,
@@ -107,11 +107,13 @@ typedef struct		s_env
 	struct termios	*orig;
 	struct termios	*taskmst;
 	uint64_t		ak_masks[AK_AMOUNT];
-	int8_t			(*actionkeys[AK_AMOUNT])(struct s_env *env, t_vector *vct);
+	int8_t			(*actionkeys[AK_AMOUNT])(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
+	uint32_t		cursoridx;
+	uint32_t		padding;
 
 }					t_env;
 
-typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct);
+typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 void				create_termmode(t_env *environment);
 uint8_t    			set_termmode(t_env *environment);
@@ -123,24 +125,21 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
 /*********************** ACTION KEYS ********************/
 
-int8_t		ak_arrow_up(t_env *env, t_vector *vct);
-int8_t		ak_arrow_down(t_env *env, t_vector *vct);
-int8_t		ak_arrow_left(t_env *env, t_vector *vct);
-int8_t		ak_arrow_right(t_env *env, t_vector *vct);
+int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_arrow_left(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_arrow_right(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
-int8_t		ak_home(t_env *env, t_vector *vct);
-int8_t		ak_end(t_env *env, t_vector *vct);
-int8_t		ak_delete(t_env *env, t_vector *vct);
-int8_t		ak_backspace(t_env *env, t_vector *vct);
-/*
-int8_t		ak_ctrl_d(t_registry *shell, t_sle *sle);
-int8_t		ak_ctrl_l(t_registry *shell, t_sle *sle);
+int8_t		ak_home(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_end(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
-int8_t		ak_ctrl_r(t_registry *shell, t_sle *sle);
+int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
-int8_t		ak_hightab(t_registry *shell, t_sle *sle);
-int8_t		ak_ctrl_t(t_registry *shell, t_sle *sle);
-*/
 
 typedef	t_cmd	*(*t_builtin)(t_vector *);
 

@@ -100,10 +100,12 @@ int		main(void)
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");
 		return (EXIT_FAILURE);
 	}
-
+	
+	ft_memset(&environment, 0, sizeof(environment));
 	create_termmode(&environment);
 	set_termmode(&environment);
 	assign_keycodes(&environment);
+	link_keys_functions(environment.actionkeys);
 
 	read_cmd(&environment);
 

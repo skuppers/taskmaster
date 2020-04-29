@@ -22,7 +22,6 @@ uint64_t	assign_keycodes(t_env *env)
 	env->ak_masks[AK_END] = AK_END_MASK;
 	env->ak_masks[AK_BACKSPACE] = AK_BACKSPACE_MASK;
 	env->ak_masks[AK_DELETE] = AK_DELETE_MASK;
-
 	env->ak_masks[AK_CTRL_A] = AK_CTRL_A_MASK;
 	env->ak_masks[AK_CTRL_E] = AK_CTRL_E_MASK;
 	env->ak_masks[AK_CTRL_D] = AK_CTRL_D_MASK;
@@ -42,13 +41,11 @@ uint64_t	link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT])
 	actionkeys[AK_END] = &ak_end;
 	actionkeys[AK_BACKSPACE] = &ak_backspace;
 	actionkeys[AK_DELETE] = &ak_delete;
-
-/*	actionkeys[AK_CTRL_A] = &ak_home;
+	actionkeys[AK_CTRL_A] = &ak_home;
 	actionkeys[AK_CTRL_E] = &ak_end;
 	actionkeys[AK_CTRL_D] = &ak_ctrl_d;
 	actionkeys[AK_CTRL_L] = &ak_ctrl_l;
 	actionkeys[AK_CTRL_R] = &ak_ctrl_r;
 	actionkeys[AK_TABULATION] = &ak_hightab;
-    */
 	return (SUCCESS);
 }
