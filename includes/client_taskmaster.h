@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:16:09 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 20:22:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,6 +152,7 @@ typedef	t_vector	*(*t_builtin)(t_cmd *);
 /************************ Parser *****************/
 
 int			parser(t_vector *line);
+const char *get_keyword(const uint8_t i);
 
 /*
 **** History
@@ -171,6 +172,12 @@ typedef	struct	s_hist
 }				t_hist;
 
 char	*history(t_vector *line, uint8_t flag);
+
+/*
+**** COMPLETION
+*/
+
+void	completion(t_vector *vct);
 
 /*
 **** BUILT_IN

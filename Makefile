@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/29 18:21:36 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/29 20:31:24 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,6 +126,7 @@ PATH_SRCS += srcs/
 ### CLIENT
 SRCS += client_taskmaster.c
 SRCS += history.c
+SRCS += completion.c
 SRCS += termmode.c
 SRCS += readline.c
 SRCS += keycodes.c

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_taskmaster.c                                :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 20:22:11 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void	debug_print_bytecode(t_vector *bytecode)
 	ft_printf("\033[0m");
 }
 
-static const char *get_keyword(const uint8_t i)
+const char *get_keyword(const uint8_t i)
 {
 	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
 								"help", "maintail", "open", "pid", "quit",
