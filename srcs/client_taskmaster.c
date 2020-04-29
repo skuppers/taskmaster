@@ -60,9 +60,11 @@ int		main(void)
 
 	g_env = &environment;
 	ft_memset(&environment, 0, sizeof(environment));
-	init_readline(&environment);
-	
 
+	connect_to_daemon(&environment, DFLT_SOCKET);
+	
+	init_readline(&environment);
+	signal(SIGINT, &sigint_handle);
 	read_cmd(&environment);
 
 	release_termmode(&environment);
