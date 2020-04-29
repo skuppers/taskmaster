@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:26:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:41:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*history(t_vector *line, uint8_t flag)
 	else if (flag == PREV)
 	{
 		if (cur_hist != NULL && ((t_hist *)(cur_hist->content))->prev != NULL)
-		cur_hist = ((t_hist *)(cur_hist->content))->prev;
+			cur_hist = ((t_hist *)(cur_hist->content))->prev;
 		if (cur_hist != NULL)
 			return (((t_hist *)(cur_hist->content))->cmd);
 		return (NULL);
