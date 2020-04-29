@@ -134,6 +134,7 @@ SRCS += blt.c
 SRCS += parser.c
 SRCS += exit_routine.c
 SRCS += client_connect.c
+SRCS += signal.c
 
 ################# ATTRIBUTION
 

@@ -15,9 +15,13 @@
 
 # include <termios.h>
 # include <unistd.h>
+# include <sys/socket.h>
+# include <sys/un.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <signal.h>
 # include "libft.h"
 # include "stdint.h"
-
 
 # define DFLT_SOCKET	"/tmp/taskmstsock"
 
@@ -115,8 +119,10 @@ typedef struct		s_env
 	struct termios	*taskmst;
 	uint64_t		ak_masks[AK_AMOUNT];
 	int8_t			(*actionkeys[AK_AMOUNT])(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
-	uint32_t		cursoridx;
-	uint32_t		struct_padding;
+	uint32_t				cursoridx;
+	volatile sig_atomic_t	sigint;
+	int32_t					socket_fd;
+	int32_t			struct_padding;
 
 }					t_env;
 
@@ -133,7 +139,9 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
 void				exit_routine(void);
 
-int8_t				connect_to_daemon(char *socketname);
+int8_t				connect_to_daemon(t_env *env, char *socketname);
+
+void				sigint_handle(int signo);
 
 
 /*********************** ACTION KEYS ********************/

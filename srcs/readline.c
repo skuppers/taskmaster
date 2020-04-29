@@ -104,7 +104,7 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 	env->cursoridx = 0;
 	if (vct_chr(rest, '\n') == FAILURE)
 	{
-		
+		env->cursoridx = 0;
 		ft_bzero(buf, BUFF_SIZE);
 		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 		{
