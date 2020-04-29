@@ -47,30 +47,6 @@ static void			handle_actionkey(t_env *env, char c[BUFF_SIZE], t_vector *vct)
 	}
 }
 
-
-#include <stdio.h>
-void	redraw(t_env *env, t_vector *str)
-{
-	uint32_t	tmpidx;
-
-	tmpidx = env->cursoridx;
-
-	while (env->cursoridx > 0)
-	{
-		ft_putstr("\33[D");
-		env->cursoridx--;
-	}
-
-	vct_print(str);
-	env->cursoridx += vct_len(str);
-
-//	while (env->cursoridx != tmpidx)
-//	{
-//		ft_putstr("\33[D");
-//		env->cursoridx--;
-//	}
-}
-
 static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
 {
 	uint32_t	tmpidx;
