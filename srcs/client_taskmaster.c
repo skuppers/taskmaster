@@ -12,6 +12,8 @@
 
 #include "client_taskmaster.h"
 
+t_env		*g_env;
+
 static const char *get_keyword(const uint8_t i)
 {
 	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
@@ -132,6 +134,14 @@ static void read_cmd(t_env *env)
 	//if (ret == FAILURE) read_error
 }
 
+void	exit_routine(void)
+{
+	release_termmode(g_env);
+	free(g_env->orig);
+	free(g_env->taskmst);
+	exit(42);
+}
+
 int		main(void)
 {
 	t_env	environment;
@@ -143,6 +153,7 @@ int		main(void)
 	}
 	
 	ft_memset(&environment, 0, sizeof(environment));
+	g_env = &environment;
 	create_termmode(&environment);
 	set_termmode(&environment);
 	assign_keycodes(&environment);

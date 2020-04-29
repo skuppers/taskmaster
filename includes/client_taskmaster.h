@@ -120,6 +120,8 @@ typedef struct		s_env
 
 }					t_env;
 
+extern t_env		*g_env;
+
 typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 void				create_termmode(t_env *environment);
@@ -128,6 +130,8 @@ void    			release_termmode(t_env *environment);
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 uint64_t			assign_keycodes(t_env *env);
 uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+
+void				exit_routine(void);
 
 
 /*********************** ACTION KEYS ********************/
