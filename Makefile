@@ -124,6 +124,10 @@ PATH_SRCS += srcs/
 ################################################################################
 
 SRCS += client_taskmaster.c
+SRCS += termmode.c
+SRCS += readline.c
+SRCS += keycodes.c
+SRCS += actionkeys.c
 SRCS += blt.c
 
 ################# ATTRIBUTION

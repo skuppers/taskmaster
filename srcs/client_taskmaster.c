@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 16:19:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 16:21:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 static const char *get_keyword(const uint8_t i)
 {
 	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
-								"maintail", "open", "pid", "quit", "reload",
-								"remove", "reread", "restart", "shutdown",
-								"signal", "start", "status", "stop", "tail",
-								"update", "version"};
+								"help", "maintail", "open", "pid", "quit",
+								"reload", "remove", "reread", "restart",
+								"shutdown", "signal", "start", "status", "stop",
+								"tail", "update", "version"};
 
 	return (grammar[i]);
 }
@@ -86,14 +86,14 @@ static int	print_prompt(void)
 	return (ft_dprintf(STDERR_FILENO, PROMPT));
 }
 
-static void read_cmd(void)
+static void read_cmd(t_env *env)
 {
 	t_vector	*line;
 	int			ret;
 
 	line = vct_new(DFL_VCT_SIZE);
 	print_prompt();
-	while ((ret = vct_readline(line, STDIN_FILENO)) > 0)
+	while ((ret = tsk_readline(line, STDIN_FILENO, env)) > 0)
 	{
 		if (vct_apply(line, IS_SPACE) == FALSE)
 		{
@@ -108,11 +108,22 @@ static void read_cmd(void)
 
 int		main(void)
 {
+	t_env	environment;
+
 	if (isatty(STDIN_FILENO) == FALSE)
 	{
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");
 		return (EXIT_FAILURE);
 	}
-	read_cmd();
+	
+	ft_memset(&environment, 0, sizeof(environment));
+	create_termmode(&environment);
+	set_termmode(&environment);
+	assign_keycodes(&environment);
+	link_keys_functions(environment.actionkeys);
+
+	read_cmd(&environment);
+
+	release_termmode(&environment);
 	return (EXIT_SUCCESS);
 }
