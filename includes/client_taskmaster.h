@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:41:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 19:16:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,12 @@ typedef	t_vector	*(*t_builtin)(t_cmd *);
 **** History
 */
 
+# define NOFLAG 0x00
 # define ADD	0x01
 # define NEXT	0x02
 # define PREV	0x04
 # define FLUSH	0x08
+# define RESET	0x10
 
 typedef	struct	s_hist
 {

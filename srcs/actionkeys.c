@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:41:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 19:25:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-    (void)c;
 	char	*cmd;
 
+    (void)c;
 	cmd = history(vct, PREV);
 	if (cmd != NULL)
 	{
@@ -32,9 +32,9 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-    (void)c;
 	char	*cmd;
 
+    (void)c;
 	cmd = history(vct, NEXT);
 	if (cmd != NULL)
 	{

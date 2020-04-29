@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:42:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/29 18:44:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 		{
 			if (ft_strcheck(buf, ft_isprint) || buf[0] == '\n')
 			{
-			//	history(rest, ADD);
                 if (putchar_in_vct(env, rest, buf, (size_t)ret) == FAILURE)
                     return (FAILURE);
             }
@@ -118,7 +117,6 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
                 handle_actionkey(env, buf, rest);
 
 			ft_bzero(buf, BUFF_SIZE);
-			//history(rest, DEL_LAST);
 			if (vct_chr(rest, '\n') != FAILURE)
 				break ;
 		}
