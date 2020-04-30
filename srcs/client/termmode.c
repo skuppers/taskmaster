@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 12:25:42 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 14:07:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void        create_termmode(t_env *environment)
 	term.c_cc[VMIN] = 1;
 	term.c_cc[VTIME] = 0;
 
-    if ((environment->taskmst = malloc(sizeof(struct termios))) == NULL)
-        return ;
-	ft_memcpy(environment->taskmst, &term, sizeof(struct termios));
+    environment->taskmst = malloc(sizeof(struct termios));
+    if (environment->taskmst != NULL)
+		ft_memcpy(environment->taskmst, &term, sizeof(struct termios));
 }
 
 uint8_t    set_termmode(t_env *environment)
