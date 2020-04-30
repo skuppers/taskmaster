@@ -117,6 +117,9 @@ int	parser(t_vector *line)
 	{
 		debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
+		send_bytecode(bytecode, vct_len(bytecode));
+		
+		
 	}
 	ft_free_tab_str(g_env->cmd->av);
 	g_env->cmd->av = NULL;

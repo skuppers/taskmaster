@@ -47,19 +47,25 @@ static void			handle_actionkey(t_env *env, char c[BUFF_SIZE], t_vector *vct)
 	}
 }
 
-static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
+int8_t				put_newline(t_vector *dest, char *src, size_t size)
 {
-	uint32_t	tmpidx;
-
 	if (ft_strequ(src, "\n") == 1)
 	{
 		ft_putchar('\n');
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
-		return (0);
 	}
+	return (0);
+}
 
-	if (env->cursoridx == vct_len(dest))
+static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
+{
+	uint32_t	tmpidx;
+
+	if (put_newline(dest, src, size) != 0)
+		return (-1);
+
+	if (env->cursoridx == vct_len(dest)) // are we at the end ? matches very first character too
 	{
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
@@ -94,6 +100,45 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 	return (0);
 }
 
+int8_t		signal_catched(t_env *env)
+{
+	if (env->sigint == 1)
+	{
+		return (1);
+	}
+	else if (env->sigwinch == 1)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+void		handle_resize(t_env *env)
+{
+	struct winsize w;
+
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    env->winhei = w.ws_row;
+    env->winwid = w.ws_col;
+	// TODO: handle resize
+//	write(1, "\33[6n", 4);
+}
+
+int8_t		handle_signal(t_env *env)
+{
+	if (env->sigint == 1)
+	{
+		env->sigint = 0;
+		ft_dprintf(STDERR_FILENO, "\n");
+	}
+	else if (env->sigwinch == 1)
+	{
+		env->sigwinch = 0;
+		handle_resize(env);
+	}
+	return (0);
+}
+
 static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 {
 	char		buf[BUFF_SIZE];
@@ -120,6 +165,10 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 			if (vct_chr(rest, '\n') != FAILURE)
 				break ;
 		}
+
+		if (signal_catched(env))
+			return (handle_signal(env));
+
 		if (ret == FAILURE)
 			return (FAILURE);
 	}

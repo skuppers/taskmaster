@@ -26,7 +26,7 @@ static void read_cmd(t_env *env)
 
 	line = vct_new(DFL_VCT_SIZE);
 	print_prompt();
-	while ((ret = tsk_readline(line, STDIN_FILENO, env)) > 0)
+	while ((ret = tsk_readline(line, STDIN_FILENO, env)) >= 0)
 	{
 		if (vct_apply(line, IS_SPACE) == FALSE)
 		{
@@ -63,9 +63,11 @@ int		main(void)
 	connect_to_daemon(&environment, DFLT_SOCKET);
 	
 	init_readline(&environment);
-	signal(SIGINT, &sigint_handle);
+
+	init_signals();
+
 	read_cmd(&environment);
 
-	release_termmode(&environment);
+	exit_routine();
 	return (EXIT_SUCCESS);
 }

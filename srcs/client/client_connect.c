@@ -25,10 +25,9 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 	memset(&addr, 0, sizeof(addr));
 	addr.sun_family = AF_UNIX;
 	strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
-	
 	if (connect(env->socket_fd, (struct sockaddr*)&addr, sizeof(addr)) == -1)
 	{
-   		printf("Error: Can't connect to taskmaster deamon.\n\n");
+   		printf("Error: Can't connect to unix://%s\n\n", DFLT_SOCKET);
     	return (-1);
   	}
 	return (0);

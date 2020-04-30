@@ -20,17 +20,24 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <sys/ioctl.h>
 # include "libft.h"
 # include "stdint.h"
 
-# define DFLT_SOCKET	"/tmp/taskmstr"
-# define SEND_RETRYS			3
-# define SEND_PARTIAL_RETRYS	5
+/****************   General   ****************/
+
+# define PROMPT			"taskmaster> "
+
+/**************** Networking *****************/
+
+# define DFLT_SOCKET				"/var/run/taskmaster.sock"
+# define SEND_RETRYS				3
+# define SEND_PARTIAL_RETRYS		5
+
 
 /*****************	Readline **************/
 
 # define AK_AMOUNT					14
-
 # define AK_ARROW_UP_MASK			0x1b5b410000000000
 # define AK_ARROW_DOWN_MASK 		0x1b5b420000000000
 # define AK_ARROW_RIGHT_MASK		0x1b5b430000000000
@@ -67,8 +74,6 @@ enum	e_action_keys
 
 # define NB_CMD			22
 # define NO_OCP			-1
-
-# define PROMPT			"taskmaster> "
 
 # define NO_ARG			0
 # define ONE_ARG		1
@@ -117,15 +122,27 @@ typedef struct		s_cmd
 
 typedef struct		s_env
 {
-	struct termios	*orig;
-	struct termios	*taskmst;
-	uint64_t		ak_masks[AK_AMOUNT];
-	int8_t			(*actionkeys[AK_AMOUNT])(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
+	struct termios			*orig;
+	struct termios			*taskmst;
+
+	uint64_t				ak_masks[AK_AMOUNT];
+	int8_t					(*actionkeys[AK_AMOUNT])
+						(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
+
 	uint32_t				cursoridx;
+	uint16_t				cursorx;
+	uint16_t				cursory;
+	uint16_t				winwid;
+	uint16_t				winhei;
+
 	volatile sig_atomic_t	sigint;
+	volatile sig_atomic_t	sigwinch;
+
 	int32_t					socket_fd;
-	int32_t			struct_padding;
-	t_cmd			*cmd;
+	
+	t_cmd					*cmd;
+
+	int32_t					struct_padding;
 
 }					t_env;
 
@@ -144,8 +161,9 @@ void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
 
-void				sigint_handle(int signo);
+void				init_signals(void);
 
+int8_t      		send_bytecode(t_vector *code, uint16_t len);
 
 /*********************** ACTION KEYS ********************/
 
