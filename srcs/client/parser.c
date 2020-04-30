@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 17:13:34 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 19:31:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,28 @@ static void	debug_print_bytecode(t_vector *bytecode)
 	char	c;
 
 	i = 0;
-	ft_printf("\033[31mBytecode: \033[32m");
+	ft_putendl_fd("\n ----- Reminder Table ----- \033[35m", STDERR_FILENO);
+	ft_putendl_fd("Start of Header (SOH) = 0x01", STDERR_FILENO);
+	ft_putendl_fd("Start Of Text   (STX) = 0x02", STDERR_FILENO);
+	ft_putendl_fd("End Of Text     (ETX) = 0x03", STDERR_FILENO);
+	ft_putendl_fd("End Of Line     (ENQ) = 0x05", STDERR_FILENO);
+	ft_putendl_fd("Unit Separator  (US)  = 0x1f", STDERR_FILENO);
+	ft_putendl_fd("\033[0m -------------------------- ", STDERR_FILENO);
+	ft_putstr_fd("\033[31mBytecode: \033[32m", STDERR_FILENO);
 	while (i < vct_len(bytecode))
 	{
 		c = vct_getcharat(bytecode, i);
 		if (ft_isprint(c) == TRUE)
-			ft_putchar(c);
+			ft_putchar_fd(c, STDERR_FILENO);
+		else if (c == US || c == STX || c == ETX)
+			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
+		else if (c == SOH || c == ENQ)
+			ft_dprintf(STDERR_FILENO, "\033[35m[0x%.2hhx]\033[32m", c);
 		else
-			ft_printf("\033[34m[0x%.2hhx]\033[32m", c);
+			ft_dprintf(STDERR_FILENO, "\033[36m[0x%.2hhx]\033[32m", c);
 		i++;
 	}
-	ft_printf("\033[0m\n");
+	ft_dprintf(STDERR_FILENO, "\033[0m\n");
 }
 
 const char *get_keyword(const uint8_t i)

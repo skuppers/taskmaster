@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:24:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 19:22:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,24 @@ typedef	void		(*t_help)(void);
 int			parser(t_vector *line);
 const char *get_keyword(const uint8_t i);
 
+
+/*
+** Encode
+*/
+
+# define SOH	0x01	// Start Of Header
+# define STX	0x02	// Start Of Text
+# define ETX	0x03	// End Of Text
+# define ENQ	0x05	// End of Line
+# define US		0x1f	// Unit Separator
+
+/*
+**
+** PAQUET : SOH (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ
+**
+*/
+
+
 /*
 **** History
 */
@@ -179,6 +197,8 @@ const char *get_keyword(const uint8_t i);
 # define PREV	0x04
 # define FLUSH	0x08
 # define RESET	0x10
+
+
 
 typedef	struct	s_hist
 {

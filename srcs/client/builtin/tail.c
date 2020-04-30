@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:20:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 19:05:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ static void		tail_get_dflt_nb(t_cmd *cmd)
 	i = cmd->ac - 1;
 	while (i >= 0)
 	{
-		ft_printf("i = %d\n");
 		cmd->av[i + 1] = cmd->av[i];
 		i--;
 	}
