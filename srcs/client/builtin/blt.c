@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 19:31:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 21:00:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,17 @@ t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 	return (&cmd);
 }
 
+static void	add_size(t_vector *vct)
+{
+	uint32_t	size;
+
+	size = (uint32_t)(vct_len(vct) + 4);
+	vct_addcharat(vct, (char)((size >> 24) & 0xff), 1);
+	vct_addcharat(vct, (char)((size >> 16) & 0xff), 1);
+	vct_addcharat(vct, (char)((size >> 8) & 0xff), 1);
+	vct_addcharat(vct, (char)(size & 0xff), 1);
+}
+
 t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 {
 	t_vector	*vct;
@@ -76,7 +87,6 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 	vct_add(vct, cmd->type + 128);
 	if (ocp != NO_OCP)
 		vct_add(vct, ocp + 128);
-/// AC ?
 	if (cmd->ac != 0)
 		vct_add(vct, STX);
 	i = 0;
@@ -90,5 +100,6 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 	if (cmd->ac != 0)
 		vct_add(vct, ETX);
 	vct_add(vct, ENQ);
+	add_size(vct);
 	return (vct);
 }

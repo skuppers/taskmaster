@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 19:22:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 21:01:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ const char *get_keyword(const uint8_t i);
 
 /*
 **
-** PAQUET : SOH (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ
+** PAQUET : SOH size (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ
 **
 */
 
