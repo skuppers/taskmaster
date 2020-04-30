@@ -171,7 +171,7 @@ int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 	ft_putstr("\33[2J");
 	ft_putstr("\33[0;0f");
-	ft_putstr("taskmaster> ");
+	ft_putstr(PROMPT);
 	vct_print(vct);
 	tmpidx = vct_len(vct);
 	while (tmpidx-- > 0)
@@ -188,12 +188,20 @@ int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 }
 int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-	completion(vct);
-	while (env->cursoridx-- > 0)
-		ft_putstr("\33[D");
-	ft_putstr("\33[K");
-	vct_print(vct);
-	env->cursoridx = vct_len(vct);
-	(void)env;(void)vct;(void)c;
+	(void)env;(void)c;
+	if (completion(vct) == 0)
+	{
+		while (env->cursoridx-- > 0)
+			ft_putstr("\33[D");
+		ft_putstr("\33[K");
+		vct_print(vct);
+		env->cursoridx = vct_len(vct);
+	}
+	else
+	{
+		ft_putstr(PROMPT);
+		vct_print(vct);
+		env->cursoridx = vct_len(vct);
+	}
 	return (0);
 }

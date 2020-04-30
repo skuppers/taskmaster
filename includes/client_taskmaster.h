@@ -190,7 +190,7 @@ char	*history(t_vector *line, uint8_t flag);
 **** COMPLETION
 */
 
-void	completion(t_vector *vct);
+int8_t	completion(t_vector *vct);
 
 /*
 **** BUILT_IN

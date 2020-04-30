@@ -35,7 +35,7 @@ void	print_completion(t_list *lst)
 	}
 }
 
-void	completion(t_vector *vct)
+int8_t	completion(t_vector *vct)
 {
 	char		*last_word;
 	size_t		len;
@@ -46,6 +46,7 @@ void	completion(t_vector *vct)
 	possible_cmd = NULL;
 	last_word = get_last_word(vct); // MALLOC PROTECT
 	len = ft_strlen(last_word);
+	i = 0;
 	while (i < NB_CMD)
 	{
 		if (len == 0 || ft_strnequ(last_word, get_keyword(i), len) == TRUE)
@@ -62,11 +63,15 @@ void	completion(t_vector *vct)
 		vct_add(vct, ' ');
 		free(possible_cmd->content);
 		free(possible_cmd);
+		ft_strdel(&last_word);
+		return (0);
+		
 	}
 	else
 	{
 		ft_putchar_fd('\n', STDERR_FILENO);
 		print_completion(possible_cmd);
+		ft_strdel(&last_word);
+		return (-1);
 	}
-	ft_strdel(&last_word);
 }
