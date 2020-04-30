@@ -38,4 +38,6 @@ typedef struct     		s_env
 	struct sockaddr_un	addr;
 }                  		t_env;
 
+int8_t					init_log(t_env *env);
+
 # endif

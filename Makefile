@@ -142,6 +142,7 @@ CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += signal.c
 
 DAEMON_SRCS += deamon_taskmaster.c
+DAEMON_SRCS += log.c
 
 ################# ATTRIBUTION
 

@@ -49,6 +49,7 @@ int main(int ac, char **av)
 	ft_memset(&env, 0, sizeof(t_env));
 
 	//init logger
+	init_log(&env);
 
 	// Do config file parsing
 
