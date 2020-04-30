@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/ioctl.h>
+# include <errno.h>
 # include "libft.h"
 # include "stdint.h"
 
@@ -30,7 +31,7 @@
 
 /**************** Networking *****************/
 
-# define DFLT_SOCKET				"/var/run/taskmaster.sock"
+# define DFLT_SOCKET				"/tmp/tsock"
 # define SEND_RETRYS				3
 # define SEND_PARTIAL_RETRYS		5
 
@@ -142,7 +143,6 @@ typedef struct		s_env
 	
 	t_cmd					*cmd;
 
-	int32_t					struct_padding;
 
 }					t_env;
 

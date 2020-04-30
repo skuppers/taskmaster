@@ -146,6 +146,7 @@ CLIENT_SRCS += parser.c
 CLIENT_SRCS += exit_routine.c
 CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += client_signal.c
+CLIENT_SRCS += transfert.c
 
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c

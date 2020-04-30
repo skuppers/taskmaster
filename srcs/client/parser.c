@@ -117,7 +117,7 @@ int	parser(t_vector *line)
 	{
 		debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
-		send_bytecode(bytecode, vct_len(bytecode));
+		send_bytecode(bytecode, (uint16_t)vct_len(bytecode));
 		
 		
 	}

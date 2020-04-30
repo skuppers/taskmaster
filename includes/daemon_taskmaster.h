@@ -27,7 +27,7 @@
 # include "libft.h"
 # include "stdint.h"
 
-# define DFLT_SOCKET	"/tmp/taskmstr"
+# define DFLT_SOCKET	"/tmp/tsock"
 # define DFLT_LOGPATH	"/tmp/tasklog"
 
 # define LOG_INFO		"[INFO]    "

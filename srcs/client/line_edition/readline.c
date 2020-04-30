@@ -62,10 +62,13 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 {
 	uint32_t	tmpidx;
 
-	if (put_newline(dest, src, size) != 0)
-		return (-1);
-
-	if (env->cursoridx == vct_len(dest)) // are we at the end ? matches very first character too
+	if (ft_strequ(src, "\n") == 1)
+	{
+		ft_putchar('\n');
+		if (vct_addnstr(dest, src, size) == FAILURE)
+			return (FAILURE);
+	}
+	else if (env->cursoridx == vct_len(dest)) // are we at the end ? matches very first character too
 	{
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
@@ -102,6 +105,7 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 
 int8_t		signal_catched(t_env *env)
 {
+	
 	if (env->sigint == 1)
 	{
 		return (1);
@@ -166,7 +170,7 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 				break ;
 		}
 
-		if (signal_catched(env))
+		if (signal_catched(env) != 0)
 			return (handle_signal(env));
 
 		if (ret == FAILURE)

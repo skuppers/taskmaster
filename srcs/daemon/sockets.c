@@ -36,7 +36,6 @@ int8_t		bind_socket(t_env *env)
 		print_log(env, LOG_ERR, "%s", strerror(errno));
         return (-1);
 	}
-//	unlink(DFLT_SOCKET);
   	if (listen(env->unix_socket, 5) == -1)
 	{
     	taskmaster_fatal("listen", "Failed to mark socket as passive");
