@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:04:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 14:54:44 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	parser(t_vector *line)
 {
 	t_vector			*cmd_string;
 	t_vector			*bytecode;
-	t_cmd				*cmd;
 	enum e_cmd_type		cmd_type;
 	static	t_builtin	builtin[] = {blt_add, blt_avail, blt_clear, blt_exit,
 									blt_fg, blt_help, blt_maintail, blt_open,
@@ -90,18 +89,21 @@ int	parser(t_vector *line)
 	{
 		ft_dprintf(STDERR_FILENO, "*** Unknow syntax: %s %s\n",
 					vct_getstr(cmd_string), vct_getstr(line));
+		vct_del(&cmd_string);
 		return (FAILURE);
 	}
 	vct_trimfront(line, " ");
-	cmd = get_cmd_struct(cmd_type, line);
-	debug_cmd(cmd);
-	bytecode = builtin[cmd_type](cmd);
+	g_env->cmd = get_cmd_struct(cmd_type, line);
+	debug_cmd(g_env->cmd);
+	bytecode = builtin[cmd_type](g_env->cmd);
 	if (bytecode != NULL)
 	{
 		debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
 	}
-	ft_free_tab_str(cmd->av);
+	ft_free_tab_str(g_env->cmd->av);
+	g_env->cmd->av = NULL;
 	vct_del(&bytecode);
+	vct_del(&cmd_string);
 	return (SUCCESS);
 }

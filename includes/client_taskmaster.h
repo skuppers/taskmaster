@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:20:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 14:53:42 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ typedef struct		s_env
 	volatile sig_atomic_t	sigint;
 	int32_t					socket_fd;
 	int32_t			struct_padding;
+	t_cmd			*cmd;
 
 }					t_env;
 
