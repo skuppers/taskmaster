@@ -6,11 +6,11 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 21:23:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:36:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "client_taskmaster.h"
+#include "client_taskmaster.h"
 
 static char	*get_last_word(t_vector *vct)
 {
@@ -24,15 +24,15 @@ static char	*get_last_word(t_vector *vct)
 	return (ft_strcdup(vct_getstr(vct) + i + 1, ' '));
 }
 
-void	print_completion(t_list *lst)
+size_t	get_max_len(size_t len, uint8_t flag)
 {
-	if (lst != NULL)
-	{
-		print_completion(lst->next);
-		ft_dprintf(STDERR_FILENO, "[%s]\n", (char *)(lst->content));
-		free(lst->content);
-		free(lst);
-	}
+	static size_t	max_len;
+
+	if (flag == REINIT)
+		max_len = 0;
+	else if (len > max_len)
+		max_len = len;
+	return (max_len);
 }
 
 int8_t	completion(t_vector *vct)
@@ -44,6 +44,7 @@ int8_t	completion(t_vector *vct)
 	t_list		*node;
 
 	possible_cmd = NULL;
+	get_max_len(0, REINIT);
 	last_word = get_last_word(vct); // MALLOC PROTECT
 	len = ft_strlen(last_word);
 	i = 0;
@@ -52,10 +53,12 @@ int8_t	completion(t_vector *vct)
 		if (len == 0 || ft_strnequ(last_word, get_keyword(i), len) == TRUE)
 		{
 			node = ft_lstnew(get_keyword(i), ft_strlen(get_keyword(i)) + 1);
-			ft_lstadd(&possible_cmd, node);
+			ft_lstadd_back(&possible_cmd, node);
+			get_max_len(ft_strlen(get_keyword(i)), SET);
 		}
 		i++;
 	}
+	ft_strdel(&last_word);
 	if (possible_cmd != NULL && possible_cmd->next == NULL)
 	{
 		vct_cutfrom(vct, vct_len(vct) - len);
@@ -63,15 +66,7 @@ int8_t	completion(t_vector *vct)
 		vct_add(vct, ' ');
 		free(possible_cmd->content);
 		free(possible_cmd);
-		ft_strdel(&last_word);
 		return (0);
-		
 	}
-	else
-	{
-		ft_putchar_fd('\n', STDERR_FILENO);
-		print_completion(possible_cmd);
-		ft_strdel(&last_word);
-		return (-1);
-	}
+	return (print_completion(possible_cmd));
 }

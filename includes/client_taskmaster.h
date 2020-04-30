@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 14:53:42 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 15:36:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,7 +191,13 @@ char	*history(t_vector *line, uint8_t flag);
 **** COMPLETION
 */
 
+# define REINIT	0x00
+# define GET	0x01
+# define SET	0x02
+
 int8_t	completion(t_vector *vct);
+int8_t	print_completion(t_list *list);
+size_t	get_max_len(size_t len, uint8_t flag);
 
 /*
 **** BUILT_IN
