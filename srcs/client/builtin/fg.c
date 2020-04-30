@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:32:32 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:32:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:13:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_vector	*blt_fg(t_cmd *cmd)
 	if (cmd->ac == 0)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: no process name supplied\n");
-		// call "help clear"
+		help_fg();
 		return (NULL);
 	}
 	else if (cmd->ac > 1)

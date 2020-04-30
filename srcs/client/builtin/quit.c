@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:29:11 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:29:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:22:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,4 +16,3 @@ t_vector	*blt_quit(t_cmd *cmd)
 {
 	return (blt_exit(cmd));
 }
-

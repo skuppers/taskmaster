@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 16:27:19 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:20:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_vector	*tail_option_f(t_cmd *cmd)
 			cmd->ac--;
 		return (generate_bytecode(cmd, 0x01));
 	}
-	return (NULL); 
+	return (NULL);
 }
 
 static void		tail_get_dflt_nb(t_cmd *cmd)
@@ -63,7 +63,7 @@ static t_vector	*tail_option_number(t_cmd *cmd)
 	else if (cmd->ac == 1)
 		ft_dprintf(STDERR_FILENO, "Error: too few arguments\n");
 	else if (cmd->ac >= 3 && ft_strequ(cmd->av[2], "stderr") == FALSE
-			&&  ft_strequ(cmd->av[2], "stdout") == FALSE)
+			&& ft_strequ(cmd->av[2], "stdout") == FALSE)
 		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
@@ -76,6 +76,11 @@ static t_vector	*tail_option_number(t_cmd *cmd)
 	}
 	return (NULL);
 }
+
+/*
+** ocp 0x01 : tail -f <name> [stderr/stdout]
+** ocp 0x02 : tail -NB <name> [stderr/stdout]
+*/
 
 t_vector		*blt_tail(t_cmd *cmd)
 {
@@ -94,10 +99,6 @@ t_vector		*blt_tail(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);
 		return (NULL);
 	}
-	ft_memmove(cmd->av[0] , cmd->av[0] + 1, ft_strlen(cmd->av[0]));
+	ft_memmove(cmd->av[0], cmd->av[0] + 1, ft_strlen(cmd->av[0]));
 	return (tail_option_number(cmd));
-/*
-** ocp 0x01 : tail -f <name> [stderr/stdout]
-** ocp 0x02 : tail -NB <name> [stderr/stdout]
-*/
 }

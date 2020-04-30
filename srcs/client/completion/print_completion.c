@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 15:22:32 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:36:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:29:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,10 @@ static void			process_print(t_list *lst, size_t elem_by_col)
 	}
 }
 
-void				del_completion_list(void *mem, size_t content_size)
-{
-	(void)content_size;
-	ft_memdel(&mem);
-}
-
 int8_t				print_completion(t_list *list)
 {
 	if (list != NULL)
-	{ 
+	{
 		post_process(list);
 		process_print(list, get_elem_by_col(list));
 		ft_putchar_fd('\n', STDERR_FILENO);

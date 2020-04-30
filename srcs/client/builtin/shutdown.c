@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:35:52 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:46:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:22:20 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ t_vector	*blt_shutdown(t_cmd *cmd)
 
 	(void)cmd;
 	ft_dprintf(STDERR_FILENO,
-			"Really shut the remote taskmasterd process down y/N? ");	
+			"Really shut the remote taskmasterd process down y/N? ");
 	line = vct_new(DFL_VCT_SIZE);
 	if (tsk_readline(line, STDIN_FILENO, g_env) > 0)
 	{
-	 	vct_apply(line, LOWCASE);
+		vct_apply(line, LOWCASE);
 		if (ft_strequ("y", vct_getstr(line)) == TRUE)
 		{
 			vct_del(&line);

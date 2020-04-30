@@ -6,13 +6,19 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:36:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:30:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static char	*get_last_word(t_vector *vct)
+void			del_completion_list(void *mem, size_t content_size)
+{
+	(void)content_size;
+	ft_memdel(&mem);
+}
+
+static char		*get_last_word(t_vector *vct)
 {
 	int		i;
 
@@ -24,7 +30,7 @@ static char	*get_last_word(t_vector *vct)
 	return (ft_strcdup(vct_getstr(vct) + i + 1, ' '));
 }
 
-size_t	get_max_len(size_t len, uint8_t flag)
+size_t			get_max_len(size_t len, uint8_t flag)
 {
 	static size_t	max_len;
 
@@ -35,7 +41,16 @@ size_t	get_max_len(size_t len, uint8_t flag)
 	return (max_len);
 }
 
-int8_t	completion(t_vector *vct)
+static int8_t	fill_word(t_vector *vct, t_list *possible_cmd, size_t len)
+{
+	vct_cutfrom(vct, vct_len(vct) - len);
+	vct_addstr(vct, (char *)(possible_cmd->content));
+	vct_add(vct, ' ');
+	ft_lstdel(&possible_cmd, del_completion_list);
+	return (0);
+}
+
+int8_t			completion(t_vector *vct)
 {
 	char		*last_word;
 	size_t		len;
@@ -60,13 +75,6 @@ int8_t	completion(t_vector *vct)
 	}
 	ft_strdel(&last_word);
 	if (possible_cmd != NULL && possible_cmd->next == NULL)
-	{
-		vct_cutfrom(vct, vct_len(vct) - len);
-		vct_addstr(vct, (char *)(possible_cmd->content));
-		vct_add(vct, ' ');
-		free(possible_cmd->content);
-		free(possible_cmd);
-		return (0);
-	}
+		return (fill_word(vct, possible_cmd, len));
 	return (print_completion(possible_cmd));
 }

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 17:01:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:24:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,5 +229,34 @@ t_vector	*blt_stop(t_cmd *cmd);
 t_vector	*blt_tail(t_cmd *cmd);
 t_vector	*blt_update(t_cmd *cmd);
 t_vector	*blt_version(t_cmd *cmd);
+
+/*
+**** Help
+*/
+
+void		help_add(void);
+void		help_avail(void);
+void		help_clear(void);
+void		help_exit(void);
+void		help_fg(void);
+void		help_help(void);
+void		help_maintail(void);
+void		help_open(void);
+void		help_pid(void);
+void		help_quit(void);
+void		help_reload(void);
+void		help_remove(void);
+void		help_reread(void);
+void		help_restart(void);
+void		help_shutdown(void);
+void		help_signal(void);
+void		help_start(void);
+void		help_status(void);
+void		help_stop(void);
+void		help_tail(void);
+void		help_update(void);
+void		help_version(void);
+
+void		del_completion_list(void *mem, size_t content_size);
 
 # endif

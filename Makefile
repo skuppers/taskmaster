@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/30 16:13:24 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/30 18:12:33 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,7 @@ HEADER += daemon_taskmaster.h
 
 PATH_CLIENT_SRCS += srcs/client/
 PATH_CLIENT_SRCS += srcs/client/builtin/
+PATH_CLIENT_SRCS += srcs/client/builtin/help_function
 PATH_CLIENT_SRCS += srcs/client/history/
 PATH_CLIENT_SRCS += srcs/client/completion/
 PATH_CLIENT_SRCS += srcs/client/line_edition/
@@ -169,6 +170,11 @@ CLIENT_SRCS += stop.c
 CLIENT_SRCS += tail.c
 CLIENT_SRCS += update.c
 CLIENT_SRCS += version.c
+CLIENT_SRCS += help_function_a_f.c
+CLIENT_SRCS += help_function_h_q.c
+CLIENT_SRCS += help_function_r.c
+CLIENT_SRCS += help_function_s.c
+CLIENT_SRCS += help_function_t_v.c
 
 ### DAEMON
 DAEMON_SRCS += daemon_taskmaster.c

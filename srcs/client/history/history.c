@@ -6,19 +6,19 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 01:22:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:32:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "client_taskmaster.h"
+#include "client_taskmaster.h"
 
-static void	del_hist(void *mem, size_t size)
+static void		del_hist(void *mem, size_t size)
 {
 	(void)size;
 	ft_strdel(&((t_hist *)mem)->cmd);
 }
 
-static char	*get_next_entry(t_list **cur, uint8_t flag)
+static char		*get_next_entry(t_list **cur, uint8_t flag)
 {
 	static uint8_t	end = TRUE;
 
@@ -37,7 +37,7 @@ static char	*get_next_entry(t_list **cur, uint8_t flag)
 	return (NULL);
 }
 
-static char	*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
+static char		*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
 {
 	static uint8_t	end = TRUE;
 
@@ -75,7 +75,7 @@ static t_list	*add_entry(t_list **queue, t_list **head, t_vector *line)
 	return (*queue);
 }
 
-char		*history(t_vector *line, uint8_t flag)
+char			*history(t_vector *line, uint8_t flag)
 {
 	static	t_list	*cur = NULL;
 	static	t_list	*queue = NULL;

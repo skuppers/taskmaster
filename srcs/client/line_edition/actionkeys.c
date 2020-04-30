@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 21:06:04 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:31:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)env;(void)c;
 	if (vct_len(vct) == 0)
 	{
-		ft_putstr("ciao\n");
+		ft_putstr("\nexit\n");
 		exit_routine();
 	}
 	return (0);

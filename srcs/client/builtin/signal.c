@@ -6,11 +6,16 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:02:13 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 16:09:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:16:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+/*
+** ocp 0x01 : signal <signal name> all
+** ocp 0x02 : signal <signal name> (<name> | <gname>:*) <...>
+*/
 
 t_vector	*blt_signal(t_cmd *cmd)
 {
@@ -18,7 +23,7 @@ t_vector	*blt_signal(t_cmd *cmd)
 	{
 		ft_dprintf(STDERR_FILENO,
 			"Error: signal requires a signal name and a process name\n");
-		// call "help"
+		help_signal();
 		return (NULL);
 	}
 	else if (ft_strequ(cmd->av[1], "all") == TRUE)
@@ -27,8 +32,4 @@ t_vector	*blt_signal(t_cmd *cmd)
 		return (generate_bytecode(cmd, 0x01));
 	}
 	return (generate_bytecode(cmd, 0x02));
-/*
-** ocp 0x01 : signal <signal name> all
-** ocp 0x02 : signal <signal name> (<name> | <gname>:*) <...>
-*/
 }

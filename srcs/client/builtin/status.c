@@ -6,11 +6,16 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:01:05 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 16:01:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 18:15:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+/*
+** ocp 0x01 : status [all]
+** ocp 0x02 : start (<name> | <gname>:*) <...>
+*/
 
 t_vector	*blt_status(t_cmd *cmd)
 {
@@ -20,8 +25,4 @@ t_vector	*blt_status(t_cmd *cmd)
 		return (generate_bytecode(cmd, 0x01));
 	}
 	return (generate_bytecode(cmd, 0x02));
-/*
-** ocp 0x01 : status [all]
-** ocp 0x02 : start (<name> | <gname>:*) <...>
-*/
 }
