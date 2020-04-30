@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:49:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:21:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-int		get_tab_size(char **tab)
+int			get_tab_size(char **tab)
 {
 	size_t	i;
 
@@ -22,7 +22,25 @@ int		get_tab_size(char **tab)
 	return ((int)i);
 }
 
-t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
+static void	fill_cmd(t_vector *arg, t_cmd *cmd)
+{
+	char					**tab;
+	int						i;
+
+	cmd->av = ft_strsplit_whitespaces(vct_getstr(arg));
+	cmd->ac = get_tab_size(cmd->av);
+	tab = ft_memalloc(sizeof(char **) * (cmd->ac + 3));
+	i = 0;
+	while (i < cmd->ac)
+	{
+		tab[i] = cmd->av[i];
+		i++;
+	}
+	free(cmd->av);
+	cmd->av = tab;
+}
+
+t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 {
 	static const uint8_t	flag[] = {TAB_ARG, NO_ARG, TAB_ARG, NO_ARG, TAB_ARG,
 										ONE_ARG, TAB_ARG, ONE_ARG, TAB_ARG,
@@ -31,8 +49,6 @@ t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 										TAB_ARG, TAB_ARG, TAB_ARG, TAB_ARG,
 										NO_ARG};
 	static t_cmd			cmd;
-	char					**tab;
-	int						i;
 
 	ft_bzero(&cmd, sizeof(t_cmd));
 	cmd.type = type;
@@ -46,19 +62,7 @@ t_cmd	*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 		}
 	}
 	else if (flag[type] == TAB_ARG)
-	{
-		cmd.av = ft_strsplit_whitespaces(vct_getstr(arg));
-		cmd.ac = get_tab_size(cmd.av);
-		tab = ft_memalloc(sizeof(char **) * (cmd.ac + 3));
-		i = 0;
-		while (i < cmd.ac)
-		{
-			tab[i] = cmd.av[i];
-			i++;
-		}
-		free(cmd.av);
-		cmd.av = tab;
-	}
+		fill_cmd(arg, &cmd);
 	return (&cmd);
 }
 
@@ -81,40 +85,4 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 	}
 	vct_add(vct, (char)0xff);
 	return (vct);
-}
-
-t_vector	*blt_help(t_cmd *cmd)                  // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
-}
-
-t_vector	*blt_restart(t_cmd *cmd)                // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
-}
-
-t_vector	*blt_signal(t_cmd *cmd)                  // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
-}
-
-t_vector	*blt_start(t_cmd *cmd)                   // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
-}
-
-t_vector	*blt_status(t_cmd *cmd)                  // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
-}
-
-t_vector	*blt_stop(t_cmd *cmd)                    // A FAIRE
-{
-	(void)cmd;
-	return (NULL);
 }

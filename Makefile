@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/30 15:21:21 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/30 16:13:24 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -120,6 +120,10 @@ HEADER += daemon_taskmaster.h
 
 PATH_CLIENT_SRCS += srcs/client/
 PATH_CLIENT_SRCS += srcs/client/builtin/
+PATH_CLIENT_SRCS += srcs/client/history/
+PATH_CLIENT_SRCS += srcs/client/completion/
+PATH_CLIENT_SRCS += srcs/client/line_edition/
+
 PATH_DAEMON_SRCS += srcs/daemon/
 
 ################################################################################
@@ -148,6 +152,7 @@ CLIENT_SRCS += blt.c
 CLIENT_SRCS += clear.c
 CLIENT_SRCS += exit.c
 CLIENT_SRCS += fg.c
+CLIENT_SRCS += help.c
 CLIENT_SRCS += maintail.c
 CLIENT_SRCS += open.c
 CLIENT_SRCS += pid.c
@@ -155,7 +160,12 @@ CLIENT_SRCS += quit.c
 CLIENT_SRCS += reload.c
 CLIENT_SRCS += remove.c
 CLIENT_SRCS += reread.c
+CLIENT_SRCS += restart.c
+CLIENT_SRCS += signal.c
 CLIENT_SRCS += shutdown.c
+CLIENT_SRCS += start.c
+CLIENT_SRCS += status.c
+CLIENT_SRCS += stop.c
 CLIENT_SRCS += tail.c
 CLIENT_SRCS += update.c
 CLIENT_SRCS += version.c

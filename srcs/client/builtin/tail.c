@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 13:22:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 16:27:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static t_vector	*tail_option_f(t_cmd *cmd)
 	else
 	{
 		i = 0;
+		free(cmd->av[i]);
 		while (i < cmd->ac)
 		{
 			cmd->av[i] = cmd->av[i + 1];

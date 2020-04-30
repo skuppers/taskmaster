@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_signal.c                                    :+:      :+:    :+:   */
+/*   help.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
+/*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:43:01 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/04/30 16:10:20 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/04/30 16:10:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "client_taskmaster.h"
+#include "client_taskmaster.h"
 
-void	sigint_handle(int signo)
+t_vector	*blt_help(t_cmd *cmd)
 {
-	(void)signo;
-	g_env->sigint = 1;
+	(void)cmd;
+	return (NULL);
 }
