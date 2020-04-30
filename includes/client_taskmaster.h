@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 20:22:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 13:20:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ int8_t	completion(t_vector *vct);
 */
 
 t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
+t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
 
 t_vector	*blt_add(t_cmd *cmd);
 t_vector	*blt_avail(t_cmd *cmd);

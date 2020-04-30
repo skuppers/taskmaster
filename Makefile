@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/30 11:57:26 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/30 13:43:04 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -117,6 +117,7 @@ HEADER += client_taskmaster.h
 
 PATH_SRCS += srcs/
 PATH_SRCS += srcs/client
+PATH_SRCS += srcs/client/builtin
 
 ################################################################################
 #################################               ################################
@@ -132,11 +133,28 @@ SRCS += termmode.c
 SRCS += readline.c
 SRCS += keycodes.c
 SRCS += actionkeys.c
-SRCS += blt.c
 SRCS += parser.c
 SRCS += exit_routine.c
 SRCS += client_connect.c
 SRCS += signal.c
+
+SRCS += add.c
+SRCS += avail.c
+SRCS += blt.c
+SRCS += clear.c
+SRCS += exit.c
+SRCS += fg.c
+SRCS += maintail.c
+SRCS += open.c
+SRCS += pid.c
+SRCS += quit.c
+SRCS += reload.c
+SRCS += remove.c
+SRCS += reread.c
+SRCS += shutdown.c
+SRCS += tail.c
+SRCS += update.c
+SRCS += version.c
 
 ################# ATTRIBUTION
 

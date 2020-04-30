@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 01:04:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 12:07:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void read_cmd(t_env *env)
 		{
 			history(line, ADD | RESET);
 			parser(line);
-			ft_putchar('\n'); // DEBUG
 		}
 		print_prompt();
 	}
