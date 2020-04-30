@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/29 20:31:24 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/30 12:27:42 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -141,7 +141,8 @@ CLIENT_SRCS += exit_routine.c
 CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += signal.c
 
-DAEMON_SRCS += deamon_taskmaster.c
+### DAEMON
+DAEMON_SRCS += daemon_taskmaster.c
 
 ################# ATTRIBUTION
 
