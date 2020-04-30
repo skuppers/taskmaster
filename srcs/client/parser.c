@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 21:11:22 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 22:07:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	parser(t_vector *line)
 	cmd_type = get_cmd(cmd_string);
 	if (cmd_type == BAD_CMD)
 	{
-		ft_dprintf(STDERR_FILENO, "*** Unknow syntax: %s %s\n",
+		ft_dprintf(STDERR_FILENO, "*** Unknown syntax: %s %s\n",
 					vct_getstr(cmd_string), vct_getstr(line));
 		vct_del(&cmd_string);
 		return (FAILURE);
