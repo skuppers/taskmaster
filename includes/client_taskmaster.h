@@ -23,7 +23,7 @@
 # include "libft.h"
 # include "stdint.h"
 
-# define DFLT_SOCKET	"/tmp/taskmstsock"
+# define DFLT_SOCKET	"/tmp/taskmstr"
 
 
 /*****************	Readline **************/

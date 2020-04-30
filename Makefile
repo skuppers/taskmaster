@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/30 13:43:04 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/04/30 12:27:42 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@
 ################################################################################
 
 # Name client
-NAME = taskmasterctl
+CLIENT = taskmasterctl
+DAEMON = taskmasterd
 
 # Compiler
 CC = clang
@@ -108,6 +109,8 @@ HEADER += libft.h
 
 # client_taskmaster
 HEADER += client_taskmaster.h
+# deaemon taskmaster
+HEADER += daemon_taskmaster.h
 
 ################################################################################
 #################################               ################################
@@ -115,9 +118,9 @@ HEADER += client_taskmaster.h
 #################################               ################################
 ################################################################################
 
-PATH_SRCS += srcs/
-PATH_SRCS += srcs/client
-PATH_SRCS += srcs/client/builtin
+PATH_CLIENT_SRCS += srcs/client/
+PATH_CLIENT_SRCS += srcs/client/builtin/
+PATH_DAEMON_SRCS += srcs/daemon/
 
 ################################################################################
 #################################               ################################
@@ -126,39 +129,48 @@ PATH_SRCS += srcs/client/builtin
 ################################################################################
 
 ### CLIENT
-SRCS += client_taskmaster.c
-SRCS += history.c
-SRCS += completion.c
-SRCS += termmode.c
-SRCS += readline.c
-SRCS += keycodes.c
-SRCS += actionkeys.c
-SRCS += parser.c
-SRCS += exit_routine.c
-SRCS += client_connect.c
-SRCS += signal.c
+CLIENT_SRCS += client_taskmaster.c
+CLIENT_SRCS += history.c
+CLIENT_SRCS += completion.c
+CLIENT_SRCS += termmode.c
+CLIENT_SRCS += readline.c
+CLIENT_SRCS += keycodes.c
+CLIENT_SRCS += actionkeys.c
+CLIENT_SRCS += parser.c
+CLIENT_SRCS += exit_routine.c
+CLIENT_SRCS += client_connect.c
+CLIENT_SRCS += client_signal.c
 
-SRCS += add.c
-SRCS += avail.c
-SRCS += blt.c
-SRCS += clear.c
-SRCS += exit.c
-SRCS += fg.c
-SRCS += maintail.c
-SRCS += open.c
-SRCS += pid.c
-SRCS += quit.c
-SRCS += reload.c
-SRCS += remove.c
-SRCS += reread.c
-SRCS += shutdown.c
-SRCS += tail.c
-SRCS += update.c
-SRCS += version.c
+CLIENT_SRCS += add.c
+CLIENT_SRCS += avail.c
+CLIENT_SRCS += blt.c
+CLIENT_SRCS += clear.c
+CLIENT_SRCS += exit.c
+CLIENT_SRCS += fg.c
+CLIENT_SRCS += maintail.c
+CLIENT_SRCS += open.c
+CLIENT_SRCS += pid.c
+CLIENT_SRCS += quit.c
+CLIENT_SRCS += reload.c
+CLIENT_SRCS += remove.c
+CLIENT_SRCS += reread.c
+CLIENT_SRCS += shutdown.c
+CLIENT_SRCS += tail.c
+CLIENT_SRCS += update.c
+CLIENT_SRCS += version.c
+
+### DAEMON
+DAEMON_SRCS += daemon_taskmaster.c
+DAEMON_SRCS += sockets.c
+DAEMON_SRCS += config_parser.c
+DAEMON_SRCS += log.c
+
+
 
 ################# ATTRIBUTION
 
-vpath %.c $(PATH_SRCS)
+vpath %.c $(PATH_CLIENT_SRCS)
+vpath %.c $(PATH_DAEMON_SRCS)
 
 ################################################################################
 #################################               ################################
@@ -167,7 +179,8 @@ vpath %.c $(PATH_SRCS)
 ################################################################################
 
 PATH_OBJS = objs/
-OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(SRCS))
+CLIENT_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(CLIENT_SRCS))
+DAEMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(DAEMON_SRCS))
 
 ################################################################################
 #################################               ################################
@@ -177,13 +190,22 @@ OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(SRCS))
 
 #---------------------------------- STANDARD ----------------------------------#
 
-all: $(NAME)
+all: $(CLIENT) $(DAEMON)
 
-$(NAME): $(LIBFT) $(PATH_OBJS) $(OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(OBJS) $(LIBFT) -o $@
+$(CLIENT): $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(CLIENT_OBJS) $(LIBFT) -o $@
 	printf "$(GREEN)taskmasterctl is ready.\n$(NC)"
 
-$(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
+$(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
+	$(CC) $(CFLAGS) $(I_INCLUDES) -c $< -o $@
+	printf "$(ONELINE)$(CYAN)Compiling $<"
+	printf "                                                            \n$(NC)"
+
+$(DAEMON): $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(DAEMON_OBJS) $(LIBFT) -o $@
+	printf "$(GREEN)taskmasterd is ready.\n$(NC)"
+
+$(DAEMON_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 	$(CC) $(CFLAGS) $(I_INCLUDES) -c $< -o $@
 	printf "$(ONELINE)$(CYAN)Compiling $<"
 	printf "                                                            \n$(NC)"
@@ -197,16 +219,18 @@ $(LIBFT): FORCE
 #--------------------------------- Basic Rules --------------------------------#
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(DAEMON_OBJS) $(CLIENT_OBJS)
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIBFT) clean
 	printf "$(RED)Objs from taskmasterctl removed\n$(NC)"
+	printf "$(RED)Objs from taskmasterd removed\n$(NC)"
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(CLIENT) $(DAEMON)
 	$(MAKE) -C $(PATH_LIBFT) fclean
 	printf "$(RED)taskmasterctl removed\n$(NC)"
+	printf "$(RED)taskmasterd removed\n$(NC)"
 
 re: fclean
 	$(MAKE)
