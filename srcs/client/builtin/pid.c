@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:34:09 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:15:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 21:05:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_vector	*blt_pid(t_cmd *cmd)
 		return (generate_bytecode(cmd, 0x01));
 	else if (ft_strequ(cmd->av[0], "all") == TRUE)
 	{
-		cmd->ac = 1;
+		cmd->ac = 0;
 		return (generate_bytecode(cmd, 0x02));
 	}
 	return (generate_bytecode(cmd, 0x03));

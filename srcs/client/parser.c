@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 21:01:04 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 21:11:22 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	debug_print_bytecode(t_vector *bytecode)
 		{
 			ft_dprintf(STDERR_FILENO, "[size = %u]",
 					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
-			i += 4;
+			i += 3;
 		}
 		else if (c == US || c == STX || c == ETX)
 			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
