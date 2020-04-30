@@ -49,4 +49,7 @@ int8_t					init_log(t_env *env);
 void					print_log(t_env *env, const char *priority, const char *message, ...);
 void					taskmaster_fatal(char *failed_here, char *message);
 
+int8_t					make_socket(t_env *env, char *socketpath);
+int8_t					bind_socket(t_env *env);
+
 # endif

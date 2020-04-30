@@ -143,6 +143,8 @@ CLIENT_SRCS += signal.c
 
 ### DAEMON
 DAEMON_SRCS += daemon_taskmaster.c
+DAEMON_SRCS += sockets.c
+DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += log.c
 
 ################# ATTRIBUTION
