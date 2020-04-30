@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:40:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 01:22:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,21 @@ static void	del_hist(void *mem, size_t size)
 	ft_strdel(&((t_hist *)mem)->cmd);
 }
 
-static char	*get_next_entry(t_list **cur)
+static char	*get_next_entry(t_list **cur, uint8_t flag)
 {
+	static uint8_t	end = TRUE;
+
+	if (flag & RESET)
+	{
+		end = TRUE;
+		return (NULL);
+	}
 	if (*cur != NULL && (*cur)->next != NULL)
+	{
+		end = FALSE;
 		*cur = (*cur)->next;
-	if (*cur != NULL)
+	}
+	if (*cur != NULL && end == FALSE)
 		return (((t_hist *)((*cur)->content))->cmd);
 	return (NULL);
 }
@@ -31,7 +41,7 @@ static char	*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
 {
 	static uint8_t	end = TRUE;
 
-	if (flag == RESET)
+	if (flag & RESET)
 	{
 		end = TRUE;
 		return (NULL);
@@ -72,17 +82,16 @@ char		*history(t_vector *line, uint8_t flag)
 	static	t_list	*head = NULL;
 
 	if (flag & ADD)
+	{
 		cur = add_entry(&queue, &head, line);
+		get_prev_entry(NULL, NULL, RESET);
+		get_next_entry(NULL, RESET);
+	}
 	else if (flag & NEXT)
-		return (get_next_entry(&cur));
+		return (get_next_entry(&cur, NOFLAG));
 	else if (flag & PREV)
 		return (get_prev_entry(queue, &cur, NOFLAG));
 	else if (flag & FLUSH)
 		ft_lstdel(&head, del_hist);
-	else if (flag & RESET)
-	{
-		cur = queue;
-		get_prev_entry(NULL, NULL, RESET);
-	}
 	return (NULL);
 }

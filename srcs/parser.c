@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 20:22:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 01:00:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	debug_print_bytecode(t_vector *bytecode)
 		if (ft_isprint(c) == TRUE)
 			ft_putchar(c);
 		else
-			ft_printf("\033[34m0x%.2hhx\033[32m", c);
+			ft_printf("\033[34m[0x%.2hhx]\033[32m", c);
 		i++;
 	}
 	ft_printf("\033[0m");
