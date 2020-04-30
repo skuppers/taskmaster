@@ -19,10 +19,23 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
+# include <fcntl.h>
 
 # include "libft.h"
 # include "stdint.h"
 
 # define DFLT_SOCKET	"/tmp/taskmstsock"
+# define DFLT_LOGPATH	"/tmp/tasklog"
+
+# define LOG_INFO		"[INFO]    "
+# define LOG_WARN		"[WARNING] "
+# define LOG_ERR		"[ERROR]   "
+
+typedef struct     		s_env
+{
+    int32_t				unix_socket;
+	int32_t				log_fd;
+	struct sockaddr_un	addr;
+}                  		t_env;
 
 # endif
