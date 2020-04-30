@@ -24,7 +24,8 @@
 # include "stdint.h"
 
 # define DFLT_SOCKET	"/tmp/taskmstr"
-
+# define SEND_RETRYS			3
+# define SEND_PARTIAL_RETRYS	5
 
 /*****************	Readline **************/
 
@@ -62,6 +63,7 @@ enum	e_action_keys
 	AK_CTRL_R,
 	AK_TABULATION,
 };
+/***********************************************************/
 
 # define NB_CMD			22
 # define NO_OCP			-1

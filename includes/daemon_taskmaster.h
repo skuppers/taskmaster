@@ -34,7 +34,11 @@
 # define LOG_WARN		"[WARNING] "
 # define LOG_ERR		"[ERROR]   "
 
-# define TIMEBUFFERSZ	64
+# define TIMEBUFFERSZ			64
+
+# define SEND_RETRYS			3
+# define SEND_PARTIAL_RETRYS	5
+
 
 typedef struct     		s_env
 {
