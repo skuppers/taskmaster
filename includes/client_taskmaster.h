@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:36:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 17:01:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 typedef	t_vector	*(*t_builtin)(t_cmd *);
+typedef	void		(*t_help)(void);
 
 
 /************************ Parser *****************/

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 14:54:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 17:13:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static t_vector	*clean_line(t_vector *line)
 	return (line);
 }
 
-static void	debug_cmd(t_cmd *cmd)
+void	debug_cmd(t_cmd *cmd)
 {
 	ft_printf("cmd [%d] (%s) | ac = %d\n", cmd->type, get_keyword(cmd->type), cmd->ac);
 	for (int i = 0; i < cmd->ac; i++)
@@ -94,7 +94,7 @@ int	parser(t_vector *line)
 	}
 	vct_trimfront(line, " ");
 	g_env->cmd = get_cmd_struct(cmd_type, line);
-	debug_cmd(g_env->cmd);
+//	debug_cmd(g_env->cmd); // DEBUG
 	bytecode = builtin[cmd_type](g_env->cmd);
 	if (bytecode != NULL)
 	{
