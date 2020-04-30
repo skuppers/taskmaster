@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:23:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:21:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/04/30 19:59:00 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static t_vector	*maintail_option_number(t_cmd *cmd)
 {
 	if (cmd->ac == 0)
 	{
-		cmd->av = ft_memalloc(sizeof(char **) * 2);
 		cmd->av[0] = ft_strdup("-1600");
 		cmd->ac = 1;
 	}
