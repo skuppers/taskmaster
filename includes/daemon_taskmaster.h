@@ -23,12 +23,12 @@
 # include <errno.h>
 # include <sys/time.h>
 # include <time.h>
+# include <dirent.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include "dictionary.h"
 # include "iniparser.h"
 # include "common.h"
-
-# define DFLT_SOCKET	"/tmp/tsock"
-# define DFLT_LOGPATH	"/tmp/tasklog"
 
 # define LOG_INFO		"[INFO]    "
 # define LOG_WARN		"[WARNING] "
@@ -40,14 +40,41 @@
 # define SEND_RETRYS			3
 # define SEND_PARTIAL_RETRYS	5
 
+# define DFL_WORKDIR	"/tmp/taskmaster.d/"
+
+# define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
+# define TMP_DFL_CONF	"/tmp/taskmaster.d/taskmaster.conf"
+# define TMP_DFL_SOCKET "/tmp/taskmaster.d/taskmaster.sock"
+# define TMP_DFL_LOG	"/tmp/taskmaster.d/taskmaster.log"
+
+typedef	struct			s_options
+{
+	uint16_t			logfile_maxbytes;
+	uint16_t			umask;
+	uint8_t				logfile_backups;
+	uint8_t				loglevel; // Enum ici
+	uint8_t				nodeamon;
+	uint8_t		padding;
+	char				*logfile;
+	char				*pidfile;
+	char				*user;
+	char				*directory;
+	char				*childlogdir;
+	char				*environ;
+}						t_options;
 
 typedef struct     		s_env
 {
     int32_t				unix_socket;
 	int32_t				log_fd;
+	
+	t_options			opt;
 	struct sockaddr_un	addr;
 
-	int16_t				struct_padding;
+	uint16_t	padding;
+
+	dictionary			*dict;
+
 }                  		t_env;
 
 extern	t_env			*g_env;
@@ -63,7 +90,10 @@ void 					listen_for_data(t_env *env);
 
 t_cmd					*decode_cmd(t_vector *trame);
 
-dictionary 				*parse_inifile(char *str);
+void					parse_ini_file(t_env *env, dictionary *dict);
+dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
+
+void					exit_routine(void);
 
 # endif

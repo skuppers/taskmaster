@@ -84,9 +84,12 @@ void		get_opt(t_env *env, int ac, char **av)
 	i = 0;
 	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
 	env->opt.str[PROMPT] = DFL_PROMPT;
+	env->opt.str[SERVERURL] = DFL_URL;
 	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
+	if (env->opt.mask & OPT_HELP)
+		print_help();
 	env->dict = parse_inifile(env->opt.str[CONFIGURATION]);
 	sections = iniparser_getnsec(env->dict);
 	while (sections >= 0)

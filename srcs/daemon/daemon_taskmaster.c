@@ -14,6 +14,28 @@
 
 t_env	*g_env;
 
+void	check_working_directory(void)
+{
+	DIR* dir;
+	
+	dir = opendir(DFL_WORKDIR);
+	if (dir)
+		closedir(dir);
+	else if (ENOENT == errno)
+	{
+		if (mkdir(DFL_WORKDIR, 0744) == -1)
+		{
+			taskmaster_fatal("check_working_directory(): Could not create working directory", strerror(errno));
+			exit_routine();
+		}
+	}
+	else
+	{
+    	taskmaster_fatal("check_working_directory(): Could not open working directory", strerror(errno));
+		exit_routine();
+	}
+}
+
 int main(int ac, char **av)
 {
 	(void)ac;(void)av;
@@ -22,14 +44,27 @@ int main(int ac, char **av)
 	ft_memset(&env, 0, sizeof(t_env));
 	g_env = &env;
 
+	//do cmdline opt parsing here
+	
+
+	// check working dir
+	check_working_directory();
+	// load ini file
+	env.dict = load_ini_file(TMP_DFL_CONF);
+	if (env.dict == NULL)
+		exit_routine();
+	// parse ini file
+	parse_ini_file(&env, env.dict);
+
 	//init logger
 	if (init_log(&env) != 0)
 		return (-1);
 
+
 	// Do config file parsing
 
 	// make network things
-	if (make_socket(&env, DFLT_SOCKET) != 0)
+	if (make_socket(&env, TMP_DFL_SOCKET) != 0)
 		return (-1);
 	if (bind_socket(&env) != 0)
 		return (-1);
@@ -40,7 +75,7 @@ int main(int ac, char **av)
 	listen_for_data(&env);
 	
 	close(env.unix_socket);
-	unlink(DFLT_SOCKET);
+	unlink(TMP_DFL_SOCKET);
 
 	return (0);
 }

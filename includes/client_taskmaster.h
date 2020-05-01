@@ -105,7 +105,7 @@ enum	e_action_keys
 # define CONFIGURATION		3
 # define PROMPT				4
 
-# define DFL_URL			"http://localhost:9001"
+# define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 
 typedef	struct		s_opt
@@ -163,7 +163,7 @@ int8_t      		send_bytecode(t_vector *code, uint16_t len);
 dictionary 			*parse_inifile(char *str);
 void 				free_inifile(dictionary *dict);
 int8_t				check_opt(t_env *env);
-
+void	print_help(void);
 /*********************** ACTION KEYS ********************/
 
 int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);

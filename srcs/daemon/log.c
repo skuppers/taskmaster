@@ -51,7 +51,7 @@ int8_t      init_log(t_env *env)
 {
     int32_t     debug_fd;
 
-    debug_fd = open(DFLT_LOGPATH, O_RDWR | O_APPEND | O_CREAT, 0644);
+    debug_fd = open(TMP_DFL_LOG, O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (debug_fd < 0)
 	{
 		printf("Error: Could not create log file: %s\n", strerror(errno));

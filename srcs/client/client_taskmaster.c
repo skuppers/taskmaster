@@ -60,7 +60,7 @@ void	print_help(void)
 		"-i/--interactive"
 		" -- start an interactive shell after executing commands\n"
 		"-s/--serverurl URL -- URL on which taskmaster server is listening\n"
-		"     (default \"http://localhost:9001\").\n"
+		"     (default \"%s\").\n"
 		"-u/--username USERNAME"
 		" -- username to use for authentication with server\n"
 		"-p/--password PASSWORD"
@@ -71,7 +71,8 @@ void	print_help(void)
 		"specified on the command line, a \"shell\""
 		" interpreting actions typed\n"
 		"interactively is started.  Use the action "
-		"\"help\" to find out about available\nactions.\n");
+		"\"help\" to find out about available\nactions.\n",
+		DFL_URL);
 	exit_routine();
 }
 
@@ -89,9 +90,6 @@ int		main(int ac, char **av)
 
 	get_opt(&environment, ac - 1, av + 1);
 	check_opt(&environment);
-	
-	if (environment.opt.mask & OPT_HELP)
-		print_help();
 	
 	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
 	

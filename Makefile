@@ -192,7 +192,7 @@ DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += log.c
 DAEMON_SRCS += dtransfert.c
 DAEMON_SRCS += decode_cmd.c
-
+DAEMON_SRCS += exit_routine_d.c
 
 
 ################# ATTRIBUTION
