@@ -113,10 +113,12 @@ void listen_for_data(t_env *env)
 	{
 		if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
 		{
+			if (errno == EINTR)
+				break ;
 	  		perror("accept error");
 	  		continue;
 		}
-		
+		printf("Client connected\n");
 		while ((readstatus = vct_creadline(vct, connectionfd, EOT)) > 0)
 		{
 			ft_printf("------------------------------------------\n");
@@ -146,7 +148,6 @@ void listen_for_data(t_env *env)
 		{
 	  		printf("Client disconnected\n");
 	  		close(connectionfd);
-			break;
 		}
 	}
 	vct_del(&vct);

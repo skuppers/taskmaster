@@ -26,6 +26,7 @@
 # include <dirent.h>
 # include <sys/types.h>
 # include <sys/stat.h>
+# include <signal.h>
 # include "dictionary.h"
 # include "iniparser.h"
 # include "common.h"
@@ -34,16 +35,11 @@
 
 typedef	struct			s_options
 {
+	uint64_t			optmask;
 	mode_t				umask;
-	uint8_t				loglevel;
-	uint8_t				nodeamon;
-	uint16_t			padding;
-	char				*logfile;
-	char				*configfile;
-	char				*user;
-	char				*directory;
-	char				*childlogdir;
-	char				**environ;
+	uint32_t			padding;
+	char				*str[8];
+	char				**environ;  //TODO
 }						t_options;
 
 typedef struct			s_group
@@ -61,13 +57,15 @@ typedef struct     		s_env
 {
     int32_t				unix_socket;
 	int32_t				log_fd;
-	
 	t_options			opt;
 	struct sockaddr_un	addr;
 
-	uint16_t	padding;
+	uint16_t			padding;
 
 	dictionary			*dict;
+	volatile sig_atomic_t	sigint;
+
+	uint32_t			more_padding;
 
 }                  		t_env;
 
@@ -88,7 +86,9 @@ extern	t_env			*g_env;
 # define DFL_CHLDLOGDIR		"/tmp/taskmaster.d/childlog/"
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 # define DFL_LOGFILE		"/tmp/taskmaster.d/taskmaster.log"
-# define DFL_SOCKET 		"/tmp/taskmaster.d/taskmaster.sock"
+# define DFL_SOCKET 		"/tmp/taskmaster.d/taskmasterd.sock"
+# define DFL_LOGLVL			"info"
+# define DFL_UMASK			022
 
 void						set_taskmasterd_defautls(t_env *env);
 
@@ -110,11 +110,39 @@ void 					listen_for_data(t_env *env);
 
 /******************* OPTIONS & INI ****************/
 
+# define NO_OPT					0x000
+# define OPT_NODAEMON			0x001
+# define OPT_HELP				0x002
+# define OPT_VERSION			0x004
+# define OPT_NOCLEAN			0x008
+
+# define OPT_CONFIG				0x010 // Omit
+# define OPT_USER				0x020
+# define OPT_DIRECTORY			0x040
+# define OPT_LOGFILE			0x080
+# define OPT_LOGLVL				0x100
+# define OPT_CHLDLOGDIR			0x200
+# define OPT_MINFDS				0x400	//TODO
+# define OPT_MINPROCS			0x800	//TODO
+
+# define CONFIGURATION	0
+# define USER			1
+# define DIRECTORY		2
+# define LOGFILE		3
+# define LOGLEVEL		4
+# define CHILDLOGDIR	5
+# define MINFDS			6	// TODO
+# define MINPROCS		7	// TODO
+
+void					print_help(void);
+void					print_version(void);
+void					get_opt(t_env *env, int ac, char **av);
+int8_t					check_opt(t_env *env);
 
 uint8_t					get_nodaemon(char *str);
 uint32_t				get_umask(char *str);
 char					**get_environ(char *str);
-
+void					taskmasterd_override(t_env *env, dictionary *dict);
 void					parse_ini_file(t_env *env, dictionary *dict);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
@@ -144,13 +172,13 @@ enum	e_loglevel
 int8_t					init_log(t_env *env);
 void					print_log(t_env *env, const char *priority,
 							const char *message, ...);
-uint8_t					get_loglevel(char *str);
 void					taskmaster_fatal(char *failed_here, char *message);
 
 /*****************************************************/
 
 
 t_cmd					*decode_cmd(t_vector *trame);
+void					init_signals(void);
 void					exit_routine(void);
 
 # endif

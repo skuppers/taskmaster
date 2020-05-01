@@ -12,21 +12,6 @@
 
 # include "daemon_taskmaster.h"
 
-uint8_t get_loglevel(char *str)
-{
-	if (ft_strequ(str, "debug") == 1)
-     	return (DEBG);
-	if (ft_strequ(str, "info") == 1)
-		return (INFO);
-	if (ft_strequ(str, "warning") == 1)
-		return (WARN);
-	if (ft_strequ(str, "error") == 1)
-		return (ERRO);
-	if (ft_strequ(str, "critical") == 1)
-		return (CRIT);
-	return (INFO);
-}
-
 uint8_t	get_nodaemon(char *str)
 {
 	if (ft_strequ(str, "1") == 1 || ft_strequ(str, "true") == 1)
@@ -51,13 +36,49 @@ char	**get_environ(char *str)
 
 void    set_taskmasterd_defautls(t_env *env)
 {
-	env->opt.configfile = DFL_CONFIGURATION;
-    env->opt.logfile = DFL_LOGFILE;
-    env->opt.loglevel = get_loglevel("info");
-    env->opt.nodeamon = FALSE;
-    env->opt.umask = 22;  // mode_t bits ; 0x0001x 0x0002w 0x0004r	
-	env->opt.user = NULL;
-	env->opt.directory = NULL;
-	env->opt.childlogdir = DFL_CHLDLOGDIR;
+	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
+    env->opt.str[LOGFILE] = DFL_LOGFILE;
+	env->opt.str[LOGLEVEL] = DFL_LOGLVL;
+	env->opt.str[USER] = NULL;
+	env->opt.str[DIRECTORY] = NULL;
+	env->opt.str[CHILDLOGDIR] = DFL_CHLDLOGDIR;
+    env->opt.umask = DFL_UMASK;
 	env->opt.environ = NULL;
+}
+
+void	taskmasterd_override(t_env *env, dictionary *dict)
+{
+	char	*tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL);
+	if ((env->opt.optmask & OPT_NODAEMON) == FALSE && tmp != NULL)
+		env->opt.optmask |= get_nodaemon(tmp);
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:nocleanup", NULL);
+	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE && tmp != NULL)
+		env->opt.optmask |= get_nodaemon(tmp);
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL);
+	if (tmp != NULL)
+		env->opt.umask = (mode_t)get_umask(tmp);
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL);
+	if ((env->opt.optmask & OPT_USER) == FALSE && tmp != NULL)
+		env->opt.str[USER] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:directory", NULL);
+	if ((env->opt.optmask & OPT_DIRECTORY) == FALSE && tmp != NULL)
+		env->opt.str[DIRECTORY] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:logfile", NULL);
+	if ((env->opt.optmask & OPT_LOGFILE) == FALSE && tmp != NULL)
+		env->opt.str[LOGFILE] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:loglevel", NULL);
+	if ((env->opt.optmask & OPT_LOGLVL) == FALSE && tmp != NULL)
+		env->opt.str[LOGLEVEL] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
+	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
+		env->opt.str[CHILDLOGDIR] = tmp;
 }

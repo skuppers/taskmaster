@@ -33,26 +33,8 @@ dictionary *load_ini_file(char *str)
 
 void	parse_ini_file(t_env *env, dictionary *dict)
 {
-	uint32_t	sections;
-	
-	sections = iniparser_getnsec(dict);
-	while (sections >= 0)
-	{
-		if (ft_strequ(iniparser_getsecname(dict, sections), "taskmasterd") == 1)
-		{
-			env->opt.logfile = (char *)iniparser_getstring(dict, "taskmasterd:logfile", NULL);
-			env->opt.loglevel = get_loglevel((char *)iniparser_getstring(dict, "taskmasterd:loglevel", NULL));
-			env->opt.nodeamon = get_nodaemon((char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL));
-			env->opt.umask = get_umask((char *)iniparser_getstring(dict, "taskmasterd:umask", NULL));
-			env->opt.user = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL);
-			env->opt.directory = (char *)iniparser_getstring(dict, "taskmasterd:directory", NULL);
-			env->opt.childlogdir = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
-			env->opt.environ = get_environ((char *)iniparser_getstring(dict, "taskmasterd:environment", NULL));
-			break ;
-		}
-		--sections;
-	}
-	// then look up program's
+	(void)env; (void)dict;
+	// look up program's
 
 	// then groups => assemble linked list with program's
 }

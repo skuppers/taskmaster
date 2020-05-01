@@ -14,7 +14,7 @@
 
 t_env	*g_env;
 
-void	check_working_directory(void)
+void	check_dflt_directory(void)
 {
 	DIR* dir;
 	
@@ -38,34 +38,23 @@ void	check_working_directory(void)
 
 int main(int ac, char **av)
 {
-	(void)ac;(void)av;
 	t_env   env;
 
 	ft_memset(&env, 0, sizeof(t_env));
 	ft_memset(&env.opt, 0, sizeof(t_options));
 	g_env = &env;
 
-	set_taskmasterd_defautls(&env);
-	//do cmdline opt parsing here
-	
-	// check working dir
-	check_working_directory();
+	set_taskmasterd_defautls(&env); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
 
-	// load ini file
-	env.dict = load_ini_file(env.opt.configfile);
-	if (env.dict == NULL)
-		exit_routine();
-
-	// parse ini file
+	check_dflt_directory();
+	get_opt(&env, ac - 1, av + 1);
 	parse_ini_file(&env, env.dict);
 
-
-	//init logger
+	//init logger TODO: print according to LOGLEVEL
 	if (init_log(&env) != 0)
 		return (-1);
 
-
-	// Do config file parsing
+	init_signals();
 
 	// make network things
 	if (make_socket(&env, DFL_SOCKET) != 0)
@@ -78,8 +67,5 @@ int main(int ac, char **av)
 
 	listen_for_data(&env);
 	
-	close(env.unix_socket);
-	unlink(DFL_SOCKET);
-
-	return (0);
+	exit_routine();
 }

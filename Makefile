@@ -194,6 +194,9 @@ DAEMON_SRCS += dtransfert.c
 DAEMON_SRCS += decode_cmd.c
 DAEMON_SRCS += exit_routine_d.c
 DAEMON_SRCS += defaults.c
+DAEMON_SRCS += help_d.c
+DAEMON_SRCS += opt_d.c
+DAEMON_SRCS += daemon_signals.c
 
 
 ################# ATTRIBUTION

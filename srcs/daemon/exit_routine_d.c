@@ -16,5 +16,7 @@ void	exit_routine(void)
 {
     if (g_env->dict != NULL)
 	    free_inifile(g_env->dict);
+	close(g_env->unix_socket);
+	unlink(DFL_SOCKET);
 	exit(0);
 }
