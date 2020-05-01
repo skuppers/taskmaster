@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 22:07:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 12:18:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ static void	debug_print_bytecode(t_vector *bytecode)
 	while (i < vct_len(bytecode))
 	{
 		c = vct_getcharat(bytecode, i);
-		if (ft_isprint(c) == TRUE)
-			ft_putchar_fd(c, STDERR_FILENO);
-		else if (i == 1)
+		if (i == 1)
 		{
 			ft_dprintf(STDERR_FILENO, "[size = %u]",
 					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
 			i += 3;
 		}
+		else if (ft_isprint(c) == TRUE)
+			ft_putchar_fd(c, STDERR_FILENO);
 		else if (c == US || c == STX || c == ETX)
 			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
 		else if (c == SOH || c == ENQ)
