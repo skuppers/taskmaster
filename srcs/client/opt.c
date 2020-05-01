@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+#include "iniparser.h"
 
 static void		error_opt(char *msg)
 {
@@ -76,19 +77,27 @@ static int		parse_opt(char **av, int ac, int i)
 
 void		get_opt(int ac, char **av)
 {
-	int		i;
+	int			i;
+	char		*tmp;
 
 	i = 0;
-	g_env->opt.str[CONFIGURATION] = DFL_URL;
+	g_env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
+	g_env->opt.str[PROMPT] = DFL_PROMPT;
 	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
-
-	/// PARSE config file
-	//if ((g_env->opt.mask & OPT_USERNAME) == FALSE && 'y'a `username` dans le fichier de conf')
-	//	g_env->opt.str[USERNAME] = 'string du fichier de conf' ;
-	//if ((g_env->opt.mask & OPT_PASSWORD) == FALSE && 'y'a `password` dans le fichier de conf')
-	//	g_env->opt.str[PASSWORD] = 'string du fichier de conf' ;
-	//if ((g_env->opt.mask & OPT_URL) == FALSE && 'y'a `serverurl` dans le fichier de conf')
-	//	g_env->opt.str[SERVERURL] = 'string du fichier de conf' ;
+	g_env->dict = parse_inifile(g_env->opt.str[CONFIGURATION]);
+	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:username", NULL);
+	if ((g_env->opt.mask & OPT_USERNAME) == FALSE && tmp != NULL)
+		g_env->opt.str[USERNAME] = tmp;
+	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:password", NULL);
+	if ((g_env->opt.mask & OPT_PASSWORD) == FALSE && tmp != NULL)
+		g_env->opt.str[PASSWORD] = tmp;
+	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:serverurl", NULL);
+	if ((g_env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
+		g_env->opt.str[SERVERURL] = tmp;
+	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:prompt", NULL);
+	if (tmp != NULL)
+		g_env->opt.str[PROMPT] = tmp;
+//	ft_printf("%s,%s,%s,%s\n", g_env->opt.str[SERVERURL], g_env->opt.str[USERNAME], g_env->opt.str[PASSWORD], g_env->opt.str[PROMPT]);
 }

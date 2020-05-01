@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_routine.c                                     :+:      :+:    :+:   */
+/*   opt.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 14:48:51 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/05/01 16:56:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-void	exit_routine(void)
+void free_inifile(dictionary *dict)
 {
-	if (g_env->cmd != NULL)
-		ft_free_tab_str(g_env->cmd->av);
-	free_inifile(g_env->dict);
-	release_termmode(g_env);
-	vct_del(&g_env->opt.batch_cmd);
-	free(g_env->orig);
-	free(g_env->taskmst);
-	exit(0);
+	iniparser_freedict(dict);
+}
+
+dictionary *parse_inifile(char *str)
+{
+    dictionary	*ini_dict;
+
+	ini_dict = iniparser_load(str);
+	if (ini_dict == NULL)
+	{
+		printf("Could not read ini file: %s\n", strerror(errno));
+	}
+	//iniparser_dump(ini_dict, stdout);
+	return (ini_dict);
 }

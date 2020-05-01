@@ -16,7 +16,7 @@ int8_t  make_socket(t_env *env, char *socketpath)
 {
     int32_t 			fd;
 	
-    if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+    if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == -1)
 	{
 		taskmaster_fatal("socket", "Failed to create socket");
 		print_log(env, LOG_ERR, "Socket failed - %s\n", strerror(errno));

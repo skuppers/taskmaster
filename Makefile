@@ -24,6 +24,8 @@ DAEMON = taskmasterd
 CC = clang
 
 # Lib
+PATH_LIBINI = libini/
+LIBINI = $(PATH_LIBINI)libiniparser.a
 PATH_LIBFT = libft/
 LIBFT = $(PATH_LIBFT)libft.a
 
@@ -90,8 +92,10 @@ ONELINE =\e[1A\r
 ################################################################################
 
 INCLUDES_LIBFT = libft/includes/
+INCLUDES_LIBINI = libini/src/
 INCLUDES_TASKMASTER = includes/
 
+I_LIBINIINC += -I $(INCLUDES_LIBINI)
 I_INCLUDES += -I $(INCLUDES_LIBFT)
 I_INCLUDES += -I $(INCLUDES_TASKMASTER)
 
@@ -150,6 +154,7 @@ CLIENT_SRCS += exit_routine.c
 CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += client_signal.c
 CLIENT_SRCS += ctransfert.c
+CLIENT_SRCS += parse_ini.c
 
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
@@ -215,21 +220,21 @@ DAEMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(DAEMON_SRCS))
 
 all: $(CLIENT) $(DAEMON)
 
-$(CLIENT): $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(CLIENT_OBJS) $(LIBFT) -o $@
+$(CLIENT): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(CLIENT_OBJS) $(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterctl is ready.\n$(NC)"
 
 $(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
-	$(CC) $(CFLAGS) $(I_INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) -c $< -o $@
 	printf "$(ONELINE)$(CYAN)Compiling $<"
 	printf "                                                            \n$(NC)"
 
-$(DAEMON): $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(DAEMON_OBJS) $(LIBFT) -o $@
+$(DAEMON): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(DAEMON_OBJS) $(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterd is ready.\n$(NC)"
 
 $(DAEMON_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
-	$(CC) $(CFLAGS) $(I_INCLUDES) -c $< -o $@
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) -c $< -o $@
 	printf "$(ONELINE)$(CYAN)Compiling $<"
 	printf "                                                            \n$(NC)"
 
@@ -238,6 +243,9 @@ $(PATH_OBJS):
 
 $(LIBFT): FORCE 
 	$(MAKE) -C $(PATH_LIBFT)
+
+$(LIBINI): FORCE
+	$(MAKE) -C $(PATH_LIBINI)
 
 #--------------------------------- Basic Rules --------------------------------#
 

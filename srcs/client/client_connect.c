@@ -16,7 +16,7 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 {
 	struct sockaddr_un addr;
 
-	if ( (env->unix_socket = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+	if ( (env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == -1)
 	{
    		perror("socket error");
     	return (-1);
@@ -27,7 +27,7 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 	strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
 	if (connect(env->unix_socket, (struct sockaddr*)&addr, sizeof(addr)) == -1)
 	{
-   		printf("Error: Can't connect to unix://%s\n\n", DFLT_SOCKET);
+   		printf("Error: Can't connect to unix://%s : %s\n\n", env->opt.str[SERVERURL], strerror(errno));
     	return (-1);
   	}
 	return (0);

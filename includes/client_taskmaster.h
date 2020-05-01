@@ -22,16 +22,17 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <errno.h>
+# include "dictionary.h"
+# include "iniparser.h"
 
 # include "common.h"
 
 /****************   General   ****************/
 
-# define PROMPT			"taskmaster> "
+# define DFL_PROMPT			"taskmaster> "
 
 /**************** Networking *****************/
 
-# define DFLT_SOCKET				"/tmp/tsock"
 # define SEND_RETRYS				3
 # define SEND_PARTIAL_RETRYS		5
 
@@ -96,18 +97,20 @@ enum	e_action_keys
 # define OPT_PASSWORD		0x20
 # define OPT_CONFIGURATION	0x40
 # define OPT_BATCHCMD		0x80
+# define OPT_PROMPT			0x100
 
 # define SERVERURL			0
 # define USERNAME			1
 # define PASSWORD			2
 # define CONFIGURATION		3
+# define PROMPT				4
 
 # define DFL_URL			"http://localhost:9001"
-# define DFL_CONFIGURATION	"/tmp/taskmasterd.conf"
+# define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 
 typedef	struct		s_opt
 {
-	char			*str[4];
+	char			*str[5];
 	t_vector		*batch_cmd;
 	uint64_t		mask;
 }					t_opt;
@@ -135,6 +138,7 @@ typedef struct		s_env
 	t_cmd					*cmd;
 
 	t_opt					opt;
+	dictionary				*dict;
 }					t_env;
 
 extern t_env		*g_env;
@@ -155,6 +159,9 @@ int8_t				connect_to_daemon(t_env *env, char *socketname);
 void				init_signals(void);
 
 int8_t      		send_bytecode(t_vector *code, uint16_t len);
+
+dictionary 			*parse_inifile(char *str);
+void 				free_inifile(dictionary *dict);
 
 /*********************** ACTION KEYS ********************/
 

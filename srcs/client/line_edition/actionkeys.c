@@ -171,7 +171,7 @@ int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 	ft_putstr("\33[2J");
 	ft_putstr("\33[0;0f");
-	ft_putstr(PROMPT);
+	ft_putstr(env->opt.str[PROMPT]);
 	vct_print(vct);
 	tmpidx = vct_len(vct);
 	while (tmpidx-- > 0)
@@ -199,7 +199,7 @@ int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	}
 	else
 	{
-		ft_putstr(PROMPT);
+		ft_putstr(env->opt.str[PROMPT]);
 		vct_print(vct);
 		env->cursoridx = vct_len(vct);
 	}

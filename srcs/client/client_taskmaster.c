@@ -16,7 +16,7 @@ t_env		*g_env;
 
 static int	print_prompt(void)
 {
-	return (ft_dprintf(STDERR_FILENO, PROMPT));
+	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
 }
 
 static void read_cmd(t_env *env)
@@ -86,10 +86,14 @@ int		main(int ac, char **av)
 	}
 	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
+
 	get_opt(ac - 1, av + 1);
+
 	if (environment.opt.mask & OPT_HELP)
 		print_help();
-	connect_to_daemon(&environment, DFLT_SOCKET);
+	
+	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
+	
 	init_readline(&environment);
 	if (environment.opt.mask & OPT_BATCHCMD)
 		parser(environment.opt.batch_cmd);
