@@ -25,6 +25,7 @@ dictionary *parse_inifile(char *str)
 	if (ini_dict == NULL)
 	{
 		printf("Could not read ini file: %s\n", strerror(errno));
+		exit_routine();
 	}
 	//iniparser_dump(ini_dict, stdout);
 	return (ini_dict);

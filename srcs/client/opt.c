@@ -88,7 +88,6 @@ void		get_opt(t_env *env, int ac, char **av)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
 	env->dict = parse_inifile(env->opt.str[CONFIGURATION]);
-
 	sections = iniparser_getnsec(env->dict);
 	while (sections >= 0)
 	{
@@ -104,12 +103,13 @@ void		get_opt(t_env *env, int ac, char **av)
 			if ((env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
 				env->opt.str[SERVERURL] = tmp;
 			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:prompt", NULL);
-			if (tmp != NULL)
+			if (tmp != NULL && ft_strlen(tmp) != 0)
 				env->opt.str[PROMPT] = tmp;
 			return ;
 		}
 		--sections;
 	}
+	
 }
 
 int8_t	check_opt(t_env *env)
