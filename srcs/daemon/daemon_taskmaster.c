@@ -42,19 +42,23 @@ int main(int ac, char **av)
 	t_env   env;
 
 	ft_memset(&env, 0, sizeof(t_env));
+	ft_memset(&env.opt, 0, sizeof(t_options));
 	g_env = &env;
 
+	set_taskmasterd_defautls(&env);
 	//do cmdline opt parsing here
 	
-
 	// check working dir
 	check_working_directory();
+
 	// load ini file
-	env.dict = load_ini_file(TMP_DFL_CONF);
+	env.dict = load_ini_file(env.opt.configfile);
 	if (env.dict == NULL)
 		exit_routine();
+
 	// parse ini file
 	parse_ini_file(&env, env.dict);
+
 
 	//init logger
 	if (init_log(&env) != 0)
@@ -64,7 +68,7 @@ int main(int ac, char **av)
 	// Do config file parsing
 
 	// make network things
-	if (make_socket(&env, TMP_DFL_SOCKET) != 0)
+	if (make_socket(&env, DFL_SOCKET) != 0)
 		return (-1);
 	if (bind_socket(&env) != 0)
 		return (-1);
@@ -75,7 +79,7 @@ int main(int ac, char **av)
 	listen_for_data(&env);
 	
 	close(env.unix_socket);
-	unlink(TMP_DFL_SOCKET);
+	unlink(DFL_SOCKET);
 
 	return (0);
 }
