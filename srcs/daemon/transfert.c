@@ -50,3 +50,36 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 	printf("Bytecode sent succesfully!\n");
 	return (0);
 }
+
+void listen_for_data(t_env *env)
+{
+    int connectionfd;
+	int readstatus;
+	int totalread = 0;
+	char	buffer[1500];
+	while (1)
+	{
+		if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
+		{
+	  		perror("accept error");
+	  		continue;
+		}
+		while ((readstatus = read(connectionfd, buffer, 1500)) > 0)
+		{
+	  		//printf("read %u bytes\n", readstatus);
+			  totalread += readstatus;
+		}
+		printf("Read a total of %d bytes\n", totalread);
+		if (readstatus == -1)
+		{
+	  		perror("read");
+	  		break;
+		}
+		else if (readstatus == 0)
+		{
+	  		printf("Client disconnected\n");
+	  		close(connectionfd);
+			break;
+		}
+	}
+}
