@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 12:18:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 13:16:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,11 +115,10 @@ int	parser(t_vector *line)
 	bytecode = builtin[cmd_type](g_env->cmd);
 	if (bytecode != NULL)
 	{
-		debug_print_bytecode(bytecode);	
+		if (g_env->opt.mask & OPT_DEBUG)
+			debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
 		send_bytecode(bytecode, (uint16_t)vct_len(bytecode));
-		
-		
 	}
 	ft_free_tab_str(g_env->cmd->av);
 	g_env->cmd->av = NULL;

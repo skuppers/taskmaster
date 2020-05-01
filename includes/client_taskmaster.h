@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 21:01:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 13:52:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,28 @@ typedef struct		s_cmd
 }					t_cmd;
 
 
+# define NO_OPT				0x00
+# define OPT_HELP			0x01
+# define OPT_INTERACTIVE	0x02
+# define OPT_DEBUG			0x04
+# define OPT_SERVERURL		0x08
+# define OPT_USERNAME		0x10
+# define OPT_PASSWORD		0x20
+# define OPT_CONFIGURATION	0x40
+# define OPT_BATCHCMD		0x80
+
+# define S_URL				0
+# define U_USERNAME			1
+# define P_PASSWORD			2
+# define C_CONFIGURATION	3
+
+typedef	struct		s_opt
+{
+	char			*str[4];
+	t_vector		*batch_cmd;
+	uint64_t		mask;
+}					t_opt;
+
 typedef struct		s_env
 {
 	struct termios			*orig;
@@ -143,7 +165,7 @@ typedef struct		s_env
 	
 	t_cmd					*cmd;
 
-
+	t_opt					opt;
 }					t_env;
 
 extern t_env		*g_env;
@@ -203,9 +225,13 @@ const char *get_keyword(const uint8_t i);
 /*
 **
 ** PAQUET : SOH size (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ
-**
+***/
+
+/*
+**** Get opt
 */
 
+void	get_opt(int ac, char **av);
 
 /*
 **** History
@@ -217,8 +243,6 @@ const char *get_keyword(const uint8_t i);
 # define PREV	0x04
 # define FLUSH	0x08
 # define RESET	0x10
-
-
 
 typedef	struct	s_hist
 {
@@ -239,6 +263,7 @@ char	*history(t_vector *line, uint8_t flag);
 int8_t	completion(t_vector *vct);
 int8_t	print_completion(t_list *list);
 size_t	get_max_len(size_t len, uint8_t flag);
+void		del_completion_list(void *mem, size_t content_size);
 
 /*
 **** BUILT_IN
@@ -296,7 +321,5 @@ void		help_stop(void);
 void		help_tail(void);
 void		help_update(void);
 void		help_version(void);
-
-void		del_completion_list(void *mem, size_t content_size);
 
 # endif
