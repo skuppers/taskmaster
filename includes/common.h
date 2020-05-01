@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:06:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:33:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ typedef struct		s_cmd
 	enum e_cmd_type	type;
 	int				ac;
 	int				ocp;
+	char			pad[4];
 }					t_cmd;
 
 #endif
