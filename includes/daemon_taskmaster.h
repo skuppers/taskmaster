@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 20:22:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:18:29 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@
 # include <sys/time.h>
 # include <time.h>
 
-# include "libft.h"
-# include "stdint.h"
+# include "common.h"
 
 # define DFLT_SOCKET	"/tmp/tsock"
 # define DFLT_LOGPATH	"/tmp/tasklog"
@@ -60,5 +59,8 @@ int8_t					make_socket(t_env *env, char *socketpath);
 int8_t					bind_socket(t_env *env);
 
 void 					listen_for_data(t_env *env);
+
+
+t_cmd					*decode_cmd(t_vector *trame);
 
 # endif

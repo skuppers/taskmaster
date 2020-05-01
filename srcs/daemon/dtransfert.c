@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   daemon_taskmaster.c                                :+:      :+:    :+:   */
+/*   dtransfert.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:31:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,64 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 	return (0);
 }
 
+static void	debug_print_bytecode(t_vector *bytecode)
+{
+	size_t		i;
+	char		c;
+
+	i = 0;
+	ft_putstr_fd("\033[31mBytecode: \033[32m", STDERR_FILENO);
+	while (i < vct_len(bytecode))
+	{
+		c = vct_getcharat(bytecode, i);
+		if (i == 1)
+		{
+			ft_dprintf(STDERR_FILENO, "[size = %u]",
+					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
+			i += 3;
+		}
+		else if (ft_isprint(c) == TRUE)
+			ft_putchar_fd(c, STDERR_FILENO);
+		else if (c == US || c == STX || c == ETX)
+			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
+		else if (c == SOH || c == ENQ)
+			ft_dprintf(STDERR_FILENO, "\033[35m[0x%.2hhx]\033[32m", c);
+		else
+			ft_dprintf(STDERR_FILENO, "\033[36m[0x%.2hhx]\033[32m", c);
+		i++;
+	}
+	ft_dprintf(STDERR_FILENO, "\033[0m\n");
+}
+
+const char *get_keyword(const uint8_t i)
+{
+	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
+								"help", "maintail", "open", "pid", "quit",
+								"reload", "remove", "reread", "restart",
+								"shutdown", "signal", "start", "status", "stop",
+								"tail", "update", "version"};
+
+	return (grammar[i]);
+}
+
+static void	debug_cmd(t_cmd *cmd)
+{
+	ft_printf("cmd [%#.2x] (%s) | ocp = %#.2x | ac = %d\n",
+				cmd->type + 128, get_keyword(cmd->type), cmd->ocp, cmd->ac);
+	for (int i = 0; i < cmd->ac; i++)
+		ft_printf("ARG[%d] = `%s'\n", i, cmd->av[i]);
+}
+
 void listen_for_data(t_env *env)
 {
-    int connectionfd;
-	int readstatus;
-	int totalread = 0;
-	char	buffer[1500];
+    int		 		connectionfd;
+	int 			readstatus;
+	size_t 			totalread;
+	t_vector		*vct;
+	t_cmd			*cmd;
+
+	vct = vct_new(DFL_VCT_SIZE);
+	totalread = 0;
 	while (1)
 	{
 		if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
@@ -64,12 +116,27 @@ void listen_for_data(t_env *env)
 	  		perror("accept error");
 	  		continue;
 		}
-		while ((readstatus = read(connectionfd, buffer, 1500)) > 0)
+		
+		while ((readstatus = vct_creadline(vct, connectionfd, EOT)) > 0)
 		{
-	  		//printf("read %u bytes\n", readstatus);
-			  totalread += readstatus;
+			ft_printf("------------------------------------------\n");
+	  		ft_printf("read %u bytes | trame len: %u bytes\n",
+				readstatus, vct_len(vct));
+
+			debug_print_bytecode(vct); // DEBUG
+
+			cmd = decode_cmd(vct);
+			if (cmd == NULL)
+				ft_dprintf(STDERR_FILENO, "Error: Bad trame\n");
+			else
+			{
+				debug_cmd(cmd); // DEBUG
+				ft_free_tab_str(cmd->av);
+			}
+			totalread += vct_len(vct);
+			ft_printf("------------------------------------------\n");
 		}
-		printf("Read a total of %d bytes\n", totalread);
+		ft_printf("Read a total of %d bytes\n", totalread);
 		if (readstatus == -1)
 		{
 	  		perror("read");
@@ -82,4 +149,5 @@ void listen_for_data(t_env *env)
 			break;
 		}
 	}
+	vct_del(&vct);
 }

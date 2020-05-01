@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/01 13:49:29 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/01 15:18:48 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -107,6 +107,8 @@ vpath %.h $(INCLUDES_TASKMASTER)
 # libft
 HEADER += libft.h
 
+# Common
+HEADER += common.h
 # client_taskmaster
 HEADER += client_taskmaster.h
 # deaemon taskmaster
@@ -184,6 +186,7 @@ DAEMON_SRCS += sockets.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += log.c
 DAEMON_SRCS += dtransfert.c
+DAEMON_SRCS += decode_cmd.c
 
 
 

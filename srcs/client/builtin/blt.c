@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 12:19:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:06:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 	vct = vct_new(DFL_VCT_SIZE);
 	vct_add(vct, SOH);
 	vct_add(vct, cmd->type + 128);
-	if (ocp != NO_OCP)
-		vct_add(vct, ocp + 128);
+	vct_add(vct, ocp + 128);
 	if (cmd->ac != 0)
 		vct_add(vct, STX);
 	i = 0;
@@ -101,5 +100,6 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 		vct_add(vct, ETX);
 	vct_add(vct, ENQ);
 	add_size(vct);
+	vct_add(vct, EOT);
 	return (vct);
 }

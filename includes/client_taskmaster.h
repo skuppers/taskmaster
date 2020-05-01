@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:52:09 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 14:55:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <errno.h>
-# include "libft.h"
-# include "stdint.h"
+
+# include "common.h"
 
 /****************   General   ****************/
 
@@ -73,9 +73,6 @@ enum	e_action_keys
 };
 /***********************************************************/
 
-# define NB_CMD			22
-# define NO_OCP			-1
-
 # define NO_ARG			0
 # define ONE_ARG		1
 # define TAB_ARG		2
@@ -86,40 +83,9 @@ enum	e_action_keys
 
 # define ERR_BAD_CMD	"Bad Cmd"
 
-enum	e_cmd_type
-{
-	ADD,
-	AVAIL,
-	CLEAR,
-	EXIT,
-	FG,
-	HELP,
-	MAINTAIL,
-	OPEN,
-	PID,
-	QUIT,
-	RELOAD,
-	REMOVE,
-	REREAD,
-	RESTART,
-	SHUTDOWN,
-	SIGNAL,
-	START,
-	STATUS,
-	STOP,
-	TAIL,
-	UPDATE,
-	VERSION,
-	BAD_CMD
-};
-
-typedef struct		s_cmd
-{
-	char			**av;
-	enum e_cmd_type	type;
-	int				ac;
-}					t_cmd;
-
+/*
+********* ENV
+*/
 
 # define NO_OPT				0x00
 # define OPT_HELP			0x01
@@ -210,22 +176,6 @@ typedef	void		(*t_help)(void);
 
 int			parser(t_vector *line);
 const char *get_keyword(const uint8_t i);
-
-
-/*
-** Encode
-*/
-
-# define SOH	0x01	// Start Of Header
-# define STX	0x02	// Start Of Text
-# define ETX	0x03	// End Of Text
-# define ENQ	0x05	// End of Line
-# define US		0x1f	// Unit Separator
-
-/*
-**
-** PAQUET : SOH size (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ
-***/
 
 /*
 **** Get opt

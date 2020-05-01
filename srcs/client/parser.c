@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:16:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:29:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	debug_print_bytecode(t_vector *bytecode)
 	ft_putendl_fd("Unit Separator  (US)  = 0x1f", STDERR_FILENO);
 	ft_putendl_fd("\033[0m -------------------------- ", STDERR_FILENO);
 	ft_putstr_fd("\033[31mBytecode: \033[32m", STDERR_FILENO);
-	while (i < vct_len(bytecode))
+	while (i + 1 < vct_len(bytecode))
 	{
 		c = vct_getcharat(bytecode, i);
 		if (i == 1)
@@ -83,7 +83,8 @@ static t_vector	*clean_line(t_vector *line)
 
 void	debug_cmd(t_cmd *cmd)
 {
-	ft_printf("cmd [%d] (%s) | ac = %d\n", cmd->type, get_keyword(cmd->type), cmd->ac);
+	ft_printf("cmd [%d] (%s) | ac = %d\n", cmd->type, get_keyword(cmd->type),
+			cmd->ac);
 	for (int i = 0; i < cmd->ac; i++)
 		ft_printf("ARG[%d] = `%s'\n", i, cmd->av[i]);
 }
