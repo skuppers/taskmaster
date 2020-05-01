@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:51:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 13:57:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void		set_shell_mode(int ac, char **av, int i)
 static int		parse_opt(char **av, int ac, int i)
 {
 	const char	*opt_str[] = {"-h", "--help", "-i", "--interactive",
-				"-d", "--debug", "-s", "--serveururl", "-u", "--username", "-p",
+				"-d", "--debug", "-s", "--serverurl", "-u", "--username", "-p",
 				 "--password", "-c", "--configuration"};
 	int			count;
 
