@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 14:55:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 16:56:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,13 @@ enum	e_action_keys
 # define OPT_CONFIGURATION	0x40
 # define OPT_BATCHCMD		0x80
 
-# define S_URL				0
-# define U_USERNAME			1
-# define P_PASSWORD			2
-# define C_CONFIGURATION	3
+# define SERVERURL			0
+# define USERNAME			1
+# define PASSWORD			2
+# define CONFIGURATION		3
+
+# define DFL_URL			"http://localhost:9001"
+# define DFL_CONFIGURATION	"/tmp/taskmasterd.conf"
 
 typedef	struct		s_opt
 {

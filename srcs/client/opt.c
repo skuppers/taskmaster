@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:57:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 16:56:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,16 @@ void		get_opt(int ac, char **av)
 	int		i;
 
 	i = 0;
-	g_env->opt.str[S_URL] = "http://localhost:9001";
+	g_env->opt.str[CONFIGURATION] = DFL_URL;
 	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
+
+	/// PARSE config file
+	//if ((g_env->opt.mask & OPT_USERNAME) == FALSE && 'y'a `username` dans le fichier de conf')
+	//	g_env->opt.str[USERNAME] = 'string du fichier de conf' ;
+	//if ((g_env->opt.mask & OPT_PASSWORD) == FALSE && 'y'a `password` dans le fichier de conf')
+	//	g_env->opt.str[PASSWORD] = 'string du fichier de conf' ;
+	//if ((g_env->opt.mask & OPT_URL) == FALSE && 'y'a `serverurl` dans le fichier de conf')
+	//	g_env->opt.str[SERVERURL] = 'string du fichier de conf' ;
 }
