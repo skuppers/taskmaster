@@ -147,7 +147,7 @@ CLIENT_SRCS += parser.c
 CLIENT_SRCS += exit_routine.c
 CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += client_signal.c
-CLIENT_SRCS += transfert.c
+CLIENT_SRCS += ctransfert.c
 
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
@@ -183,6 +183,7 @@ DAEMON_SRCS += daemon_taskmaster.c
 DAEMON_SRCS += sockets.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += log.c
+DAEMON_SRCS += dtransfert.c
 
 
 

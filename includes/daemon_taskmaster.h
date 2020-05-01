@@ -59,6 +59,6 @@ void					taskmaster_fatal(char *failed_here, char *message);
 int8_t					make_socket(t_env *env, char *socketpath);
 int8_t					bind_socket(t_env *env);
 
-void listen_for_data(t_env *env);
+void 					listen_for_data(t_env *env);
 
 # endif
