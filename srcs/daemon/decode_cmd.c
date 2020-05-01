@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:51:50 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:28:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 15:37:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,12 @@ t_cmd			*decode_cmd(t_vector *trame)
 		return (NULL);
 	}
 	vct_popfrom(trame, 4);
-	if ((cmd.type = ((uint8_t)(vct_getfirstchar(trame))) - 128) > NB_CMD)
+	if ((cmd.type = ((uint8_t)(vct_getfirstchar(trame))) - 128) > NB_CMD
+		|| cmd.type < 0)
 		return (NULL);
 	vct_pop(trame);
-	if ((cmd.ocp = (((uint8_t)vct_getfirstchar(trame)) - 128)) < 0)
+	if ((cmd.ocp = (((uint8_t)vct_getfirstchar(trame)) - 128)) < 0
+		|| cmd.ocp > 3)
 		return (NULL);
 	vct_pop(trame);
 	vct_cut(trame);
