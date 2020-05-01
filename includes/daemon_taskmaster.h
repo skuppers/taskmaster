@@ -36,6 +36,7 @@
 
 # define TIMEBUFFERSZ			64
 
+# define MAX_CLIENTS			1
 # define SEND_RETRYS			3
 # define SEND_PARTIAL_RETRYS	5
 
@@ -48,6 +49,8 @@ typedef struct     		s_env
 
 	int16_t				struct_padding;
 }                  		t_env;
+
+extern	t_env			*g_env;
 
 int8_t					init_log(t_env *env);
 void					print_log(t_env *env, const char *priority, const char *message, ...);

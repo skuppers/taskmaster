@@ -34,3 +34,19 @@ int16_t sendall(int sockfd, const char *buf, int16_t buflen)
         return (-1);
     return (bytes_written);
 }
+
+int8_t      send_bytecode(t_vector *code, uint16_t len)
+{
+	int8_t		status;
+
+	if ((status = sendall(g_env->unix_socket, vct_getstr(code), len)) != 0)
+	{
+		if (status == -1)
+			printf("Fatal error while sending bytecode: %s\n", strerror(errno));
+		else if (status == -2)
+			printf("Unable to send entire bytecode.\n");
+		return (-1);
+	}
+	printf("Bytecode sent succesfully!\n");
+	return (0);
+}

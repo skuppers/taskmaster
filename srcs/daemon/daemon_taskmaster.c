@@ -12,12 +12,15 @@
 
 # include "daemon_taskmaster.h"
 
+t_env	*g_env;
+
 int main(int ac, char **av)
 {
 	(void)ac;(void)av;
 	t_env   env;
 
 	ft_memset(&env, 0, sizeof(t_env));
+	g_env = &env;
 
 	//init logger
 	if (init_log(&env) != 0)
@@ -35,6 +38,7 @@ int main(int ac, char **av)
 	// And listen for incoming connections
 	int connectionfd;
 	int readstatus;
+	int totalread = 0;
 	char	buffer[1500];
 	while (1)
 	{
@@ -45,8 +49,10 @@ int main(int ac, char **av)
 		}
 		while ((readstatus = read(connectionfd, buffer, 1500)) > 0)
 		{
-	  		printf("read %u bytes\n", readstatus);
+	  		//printf("read %u bytes\n", readstatus);
+			  totalread += readstatus;
 		}
+		printf("Read a total of %d bytes\n", totalread);
 		if (readstatus == -1)
 		{
 	  		perror("read");

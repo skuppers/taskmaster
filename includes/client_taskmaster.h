@@ -139,7 +139,7 @@ typedef struct		s_env
 	volatile sig_atomic_t	sigint;
 	volatile sig_atomic_t	sigwinch;
 
-	int32_t					socket_fd;
+	int32_t					unix_socket;
 	
 	t_cmd					*cmd;
 

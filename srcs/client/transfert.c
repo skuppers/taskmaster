@@ -39,7 +39,7 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 {
 	int8_t		status;
 
-	if ((status = sendall(g_env->socket_fd, vct_getstr(code), len)) != 0)
+	if ((status = sendall(g_env->unix_socket, vct_getstr(code), len)) != 0)
 	{
 		if (status == -1)
 			printf("Fatal error while sending bytecode: %s\n", strerror(errno));

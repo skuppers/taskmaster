@@ -54,7 +54,7 @@ int8_t      init_log(t_env *env)
     debug_fd = open(DFLT_LOGPATH, O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (debug_fd < 0)
 	{
-		printf("Could not create log file.\n");
+		printf("Error: Could not create log file: %s\n", strerror(errno));
 		return (-1);
 	}
 	env->log_fd = debug_fd;
