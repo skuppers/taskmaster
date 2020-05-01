@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/04/30 18:12:33 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/01 13:49:29 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -135,6 +135,7 @@ PATH_DAEMON_SRCS += srcs/daemon/
 
 ### CLIENT
 CLIENT_SRCS += client_taskmaster.c
+CLIENT_SRCS += opt.c
 CLIENT_SRCS += history.c
 CLIENT_SRCS += completion.c
 CLIENT_SRCS += print_completion.c

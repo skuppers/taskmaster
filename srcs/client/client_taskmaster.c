@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 12:07:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/01 13:27:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,35 @@ static void	init_readline(t_env	*environment)
 	link_keys_functions(environment->actionkeys);
 }
 
-int		main(void)
+void	print_help(void)
+{
+	ft_dprintf(STDERR_FILENO, 
+		"taskmasterctl -- control applications run"
+		" by taskmasterd from the cmd line.\n\n"
+		"Usage: ./taskmasterctl [options] [action [arguments]]\n\n"
+		"Options:\n"
+		"-c/--configuration FILENAME -- configuration file path"
+		" (default ./taskmasterd.conf)\n"
+		"-h/--help -- print usage message and exit\n"
+		"-i/--interactive"
+		" -- start an interactive shell after executing commands\n"
+		"-s/--serverurl URL -- URL on which taskmaster server is listening\n"
+		"     (default \"http://localhost:9001\").\n"
+		"-u/--username USERNAME"
+		" -- username to use for authentication with server\n"
+		"-p/--password PASSWORD"
+		" -- password to use for authentication with server\n\n"
+		"action [arguments] -- see below\n\n"
+		"Actions are commands like \"tail\" or \"stop\"."
+		"  If -i is specified or no action is\n"
+		"specified on the command line, a \"shell\""
+		" interpreting actions typed\n"
+		"interactively is started.  Use the action "
+		"\"help\" to find out about available\nactions.\n");
+	exit_routine();
+}
+
+int		main(int ac, char **av)
 {
 	t_env	environment;
 
@@ -56,18 +84,21 @@ int		main(void)
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");
 		return (EXIT_FAILURE);
 	}
-
+	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
-	ft_memset(&environment, 0, sizeof(environment));
-
+	get_opt(ac - 1, av + 1);
+	if (environment.opt.mask & OPT_HELP)
+		print_help();
 	connect_to_daemon(&environment, DFLT_SOCKET);
-	
 	init_readline(&environment);
-
-	init_signals();
-
-	read_cmd(&environment);
-
+	if (environment.opt.mask & OPT_BATCHCMD)
+		parser(environment.opt.batch_cmd);
+	if (environment.opt.mask & OPT_INTERACTIVE)
+	{	
+		init_signals();
+	
+		read_cmd(&environment);
+	}
 	exit_routine();
 	return (EXIT_SUCCESS);
 }
