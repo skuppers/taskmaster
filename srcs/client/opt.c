@@ -75,29 +75,49 @@ static int		parse_opt(char **av, int ac, int i)
 	return (0);
 }
 
-void		get_opt(int ac, char **av)
+void		get_opt(t_env *env, int ac, char **av)
 {
 	int			i;
+	int			sections;
 	char		*tmp;
 
 	i = 0;
-	g_env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
-	g_env->opt.str[PROMPT] = DFL_PROMPT;
+	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
+	env->opt.str[PROMPT] = DFL_PROMPT;
 	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
-	g_env->dict = parse_inifile(g_env->opt.str[CONFIGURATION]);
-	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:username", NULL);
-	if ((g_env->opt.mask & OPT_USERNAME) == FALSE && tmp != NULL)
-		g_env->opt.str[USERNAME] = tmp;
-	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:password", NULL);
-	if ((g_env->opt.mask & OPT_PASSWORD) == FALSE && tmp != NULL)
-		g_env->opt.str[PASSWORD] = tmp;
-	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:serverurl", NULL);
-	if ((g_env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
-		g_env->opt.str[SERVERURL] = tmp;
-	tmp = (char *)iniparser_getstring(g_env->dict, "taskmasterctl:prompt", NULL);
-	if (tmp != NULL)
-		g_env->opt.str[PROMPT] = tmp;
-//	ft_printf("%s,%s,%s,%s\n", g_env->opt.str[SERVERURL], g_env->opt.str[USERNAME], g_env->opt.str[PASSWORD], g_env->opt.str[PROMPT]);
+	env->dict = parse_inifile(env->opt.str[CONFIGURATION]);
+
+	sections = iniparser_getnsec(env->dict);
+	while (sections >= 0)
+	{
+		if (ft_strequ(iniparser_getsecname(env->dict, sections), "taskmasterctl") == 1)
+		{
+			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:username", NULL);
+			if ((env->opt.mask & OPT_USERNAME) == FALSE && tmp != NULL)
+				env->opt.str[USERNAME] = tmp;
+			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:password", NULL);
+			if ((env->opt.mask & OPT_PASSWORD) == FALSE && tmp != NULL)
+				env->opt.str[PASSWORD] = tmp;
+			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:serverurl", NULL);
+			if ((env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
+				env->opt.str[SERVERURL] = tmp;
+			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:prompt", NULL);
+			if (tmp != NULL)
+				env->opt.str[PROMPT] = tmp;
+			return ;
+		}
+		--sections;
+	}
+}
+
+int8_t	check_opt(t_env *env)
+{
+	if (env->opt.str[SERVERURL] == NULL)
+	{
+		dprintf(2, "taskmasterctl:serverurl is undefined! Check your taskmaster.conf file.\n\n");
+		exit_routine();
+	}
+	return (0);
 }

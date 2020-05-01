@@ -162,6 +162,7 @@ int8_t      		send_bytecode(t_vector *code, uint16_t len);
 
 dictionary 			*parse_inifile(char *str);
 void 				free_inifile(dictionary *dict);
+int8_t				check_opt(t_env *env);
 
 /*********************** ACTION KEYS ********************/
 
@@ -191,7 +192,7 @@ const char *get_keyword(const uint8_t i);
 **** Get opt
 */
 
-void	get_opt(int ac, char **av);
+void	get_opt(t_env *env, int ac, char **av);
 
 /*
 **** History

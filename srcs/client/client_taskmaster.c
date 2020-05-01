@@ -87,8 +87,9 @@ int		main(int ac, char **av)
 	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
 
-	get_opt(ac - 1, av + 1);
-
+	get_opt(&environment, ac - 1, av + 1);
+	check_opt(&environment);
+	
 	if (environment.opt.mask & OPT_HELP)
 		print_help();
 	

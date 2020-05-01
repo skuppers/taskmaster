@@ -23,7 +23,8 @@
 # include <errno.h>
 # include <sys/time.h>
 # include <time.h>
-
+# include "dictionary.h"
+# include "iniparser.h"
 # include "common.h"
 
 # define DFLT_SOCKET	"/tmp/tsock"
@@ -60,7 +61,9 @@ int8_t					bind_socket(t_env *env);
 
 void 					listen_for_data(t_env *env);
 
-
 t_cmd					*decode_cmd(t_vector *trame);
+
+dictionary 				*parse_inifile(char *str);
+void 					free_inifile(dictionary *dict);
 
 # endif
