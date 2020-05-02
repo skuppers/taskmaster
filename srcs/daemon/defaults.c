@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config_parser.c                                    :+:      :+:    :+:   */
+/*   defaults.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:54:58 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,13 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 	if ((env->opt.optmask & OPT_LOGLVL) == FALSE && tmp != NULL)
 		env->opt.str[LOGLEVEL] = tmp;
 
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
+	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
+		env->opt.str[CHILDLOGDIR] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL);
+	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
+		env->opt.str[CHILDLOGDIR] = tmp;
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
 	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
 		env->opt.str[CHILDLOGDIR] = tmp;

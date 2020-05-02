@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:10:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:22:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:38:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,22 @@ static void	ask_help(t_cmd *cmd)
 								help_signal, help_start, help_status, help_stop,
 								help_tail, help_update, help_version};
 	uint8_t			i;
+	char			*tmp;
 
 	i = 0;
+	tmp = ft_strtrim(cmd->av[0]);
 	while (i < NB_CMD)
 	{
-		if (ft_strequ(cmd->av[0], get_keyword(i)) == TRUE)
+		if (ft_strequ(tmp, get_keyword(i)) == TRUE)
 		{
 			ft_help[i]();
-			return ;
+			break ;
 		}
 		i++;
 	}
-	ft_dprintf(STDERR_FILENO, "*** No Help on %s\n", cmd->av[0]);
+	if (i == NB_CMD)
+		ft_dprintf(STDERR_FILENO, "*** No Help on %s\n", cmd->av[0]);
+	ft_strdel(&tmp);
 }
 
 t_vector	*blt_help(t_cmd *cmd)

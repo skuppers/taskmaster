@@ -6,11 +6,11 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:31:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:44:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "daemon_taskmaster.h"
+#include "daemon_taskmaster.h"
 
 // 32,767 Bytes max message size
 int16_t sendall(int sockfd, const char *buf, int16_t buflen)
@@ -117,6 +117,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 	{
 		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
 			debug_cmd(cmd); // DEBUG
+		execute_cmd(cmd);
 		ft_free_tab_str(cmd->av);
 	}
 	ft_printf("------------------------------------------\n");
