@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:54:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:55:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-int8_t		connect_to_daemon(t_env *env, char *soketpath)
+int8_t		connect_to_daemon(t_env *env, char *socketpath)
 {
 	struct sockaddr_un addr;
 

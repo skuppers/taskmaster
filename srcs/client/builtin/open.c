@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:31:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:53:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:55:36 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_vector	*blt_open(t_cmd *cmd)
 			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE)
 	{
    		ft_dprintf(STDERR_FILENO,
-				"Error: Can't connect to %s : %s\n\n", cmd->av[0])
+				"Error: Can't connect to %s : %s\n\n", cmd->av[0]);
   	}
 	return (NULL);
 }
