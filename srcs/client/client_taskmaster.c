@@ -60,7 +60,7 @@ void	print_help(void)
 		"-i/--interactive"
 		" -- start an interactive shell after executing commands\n"
 		"-s/--serverurl URL -- URL on which taskmaster server is listening\n"
-		"     (default \"%s\").\n"
+		"     (default \"unix://%s\").\n"
 		"-u/--username USERNAME"
 		" -- username to use for authentication with server\n"
 		"-p/--password PASSWORD"
@@ -71,8 +71,7 @@ void	print_help(void)
 		"specified on the command line, a \"shell\""
 		" interpreting actions typed\n"
 		"interactively is started.  Use the action "
-		"\"help\" to find out about available\nactions.\n",
-		DFL_URL);
+		"\"help\" to find out about available\nactions.\n", DFL_URL);
 	exit_routine();
 }
 

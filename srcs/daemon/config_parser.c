@@ -55,7 +55,6 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 	return (0);
 }
 
-
 char	*get_secstring(dictionary *dict, char *secname, char *key)
 {
 	t_vector	*buffer;
@@ -87,7 +86,7 @@ int32_t	get_secint(dictionary *dict, char *secname, char *key)
 
 	buffer = vct_newstr(secname);
 	vct_addstr(buffer, key);
-	return ((int32_t)iniparser_getint(dict, vct_getstr(buffer), 0));
+	retval = (int32_t)iniparser_getint(dict, vct_getstr(buffer), 0);
 	vct_del(&buffer);
 	return (retval);
 }
@@ -128,7 +127,6 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 			prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
 			prog.environ = get_secstring(dict, secname, ":environment");
 			append_to_pgrmlist(env, &prog);
-	//		ft_strdel(&prog.name);
 		}
 		else if (ft_strnequ(secname, "group.", 6) == 1)
 		{
@@ -137,7 +135,6 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 			group.programs = get_secstring(dict, secname, ":programs");
 			group.priority = (uint16_t)get_secint(dict, secname, ":priority");
 			append_to_grplist(env, &group);
-	//		ft_strdel(&group.name);
 		}
 		else if (ft_strequ(secname, "taskmasterd") == 0
 					&& ft_strequ(secname, "taskmasterctl") == 0)

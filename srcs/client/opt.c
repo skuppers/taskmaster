@@ -60,7 +60,7 @@ static int		parse_opt(char **av, int ac, int i)
 							opt_str[count]));
 				count -= 6;
 				if (count / 2 == 0
-						&& ft_strnequ(av[i], "http://www", 10) == FALSE)
+						&& ft_strnequ(av[i], "unix://", 7) == FALSE)
 					error_opt(ft_asprintf(
 							"invalid value for -s '%s': value '%s' is not a URL",
 							av[i], av[i]));

@@ -27,7 +27,7 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 	strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
 	if (connect(env->unix_socket, (struct sockaddr*)&addr, sizeof(addr)) == -1)
 	{
-   		printf("Error: Can't connect to unix://%s : %s\n\n", env->opt.str[SERVERURL], strerror(errno));
+   		printf("Error: Can't connect to %s : %s\n\n", env->opt.str[SERVERURL], strerror(errno));
     	return (-1);
   	}
 	  
