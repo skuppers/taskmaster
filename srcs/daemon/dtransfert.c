@@ -129,12 +129,12 @@ void listen_for_data(t_env *env)
 			taskmaster_fatal("select()", strerror(errno));
 			exit_routine();
 		}
-		int i;
-		for (i = 0; i <= fd_max; i++)
+		int fd_nb;
+		for (fd_nb = 0; fd_nb <= fd_max; fd_nb++)
 		{
-			if (FD_ISSET(i, &recv_set))
+			if (FD_ISSET(fd_nb, &recv_set))
 			{
-				if (i == env->unix_socket) // Nouvelle connection
+				if (fd_nb == env->unix_socket) // Nouvelle connection
 				{
 					if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
 					{
@@ -153,14 +153,14 @@ void listen_for_data(t_env *env)
 				}
 				else // client handler
 				{
-					if ((readstatus = vct_creadline(vct, i, EOT)) <= 0)
+					if ((readstatus = vct_creadline(vct, fd_nb, EOT)) <= 0)
 					{
 						if (readstatus == -1)
 	  						perror("read");
 						else if (readstatus == 0)
 	 						printf("Client disconnected\n");
-						close(i);
-						FD_CLR(i, &master_set);
+						close(fd_nb);
+						FD_CLR(fd_nb, &master_set);
 					}
 					else 
 					{
