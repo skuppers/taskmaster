@@ -110,7 +110,7 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 			prog.umask = (mode_t)get_secint(dict, secname, ":umask");
 			prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
 			prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
-			prog.autorestart = (uint8_t)get_secint(dict, secname, ":autorestart");
+			prog.autorestart = get_secstring(dict, secname, ":autorestart");
 			prog.startsec = (uint16_t)get_secint(dict, secname, ":startsec");
 			prog.startretries = (int8_t)get_secint(dict, secname, ":startretries");
 			prog.exitcodes = get_secstring(dict, secname, ":exitcodes");

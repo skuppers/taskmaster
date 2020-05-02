@@ -46,7 +46,7 @@ typedef struct			s_group
 {
 	t_list				*prog_list;
 	uint16_t			priority;
-	
+
 	uint16_t	padding;
 	uint32_t	pad;
 	
@@ -62,10 +62,11 @@ typedef struct			s_program
 	uint16_t			startretries;
 	uint8_t				numprocs;
 	uint8_t				autostart;
-	uint8_t				autorestart;
 	uint8_t				stopsignal;
 	uint8_t				stopwaitsec;
 	uint8_t				redirect_stderr;
+	uint8_t	padding;
+	char				*autorestart;
 	char				*name;
 	char				*command;
 	char				*directory;
