@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:18:29 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:45:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,8 @@ void					taskmaster_fatal(char *failed_here, char *message);
 
 
 t_cmd					*decode_cmd(t_vector *trame);
+t_vector				*execute_cmd(t_cmd *cmd);
+
 void					init_signals(void);
 void					exit_routine(void);
 
