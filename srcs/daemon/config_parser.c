@@ -58,32 +58,38 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 
 char	*get_secstring(dictionary *dict, char *secname, char *key)
 {
-	char	buffer[256];
+	t_vector	*buffer;
+	char		*retval;
 
-	ft_bzero(buffer, 256);
-	ft_strcpy(buffer, secname);
-	ft_strcat(buffer, key);
-	return ((char *)iniparser_getstring(dict, buffer, NULL));
+	buffer = vct_newstr(secname);
+	vct_addstr(buffer, key);
+	retval = (char *)iniparser_getstring(dict, vct_getstr(buffer), NULL);
+	vct_del(&buffer);
+	return (retval);
 }
 
 int8_t	get_secbool(dictionary *dict, char *secname, char *key)
 {
-	char	buffer[256];
+	t_vector	*buffer;
+	int8_t		retval;
 
-	ft_bzero(buffer, 256);
-	ft_strcpy(buffer, secname);
-	ft_strcat(buffer, key);
-	return ((int8_t)iniparser_getboolean(dict, buffer, 0));
+	buffer = vct_newstr(secname);
+	vct_addstr(buffer, key);
+	retval = (int8_t)iniparser_getboolean(dict, vct_getstr(buffer), 0);
+	vct_del(&buffer);
+	return (retval);
 }
 
 int32_t	get_secint(dictionary *dict, char *secname, char *key)
 {
-	char	buffer[256];
+	t_vector	*buffer;
+	int32_t		retval;
 
-	ft_bzero(buffer, 256);
-	ft_strcpy(buffer, secname);
-	ft_strcat(buffer, key);
-	return ((int32_t)iniparser_getint(dict, buffer, 0));
+	buffer = vct_newstr(secname);
+	vct_addstr(buffer, key);
+	return ((int32_t)iniparser_getint(dict, vct_getstr(buffer), 0));
+	vct_del(&buffer);
+	return (retval);
 }
 
 void	parse_ini_file(t_env *env, dictionary *dict)

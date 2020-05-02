@@ -121,8 +121,6 @@ void listen_for_data(t_env *env)
 	FD_SET (env->unix_socket, &master_set);
 	fd_max = env->unix_socket;
 
-
-
 	while (1)
 	{
 		recv_set = master_set;
