@@ -39,7 +39,7 @@ typedef	struct			s_options
 	mode_t				umask;
 	uint32_t			padding;
 	char				*str[8];
-	char				**environ;  //TODO
+	char				*environ;  //TODO
 }						t_options;
 
 typedef struct			s_group

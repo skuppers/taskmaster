@@ -105,9 +105,6 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		env->opt.str[CHILDLOGDIR] = tmp;
 
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL);
-	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
-		env->opt.str[CHILDLOGDIR] = tmp;
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
-	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
-		env->opt.str[CHILDLOGDIR] = tmp;
+	if (tmp != NULL)
+		env->opt.environ = tmp;
 }
