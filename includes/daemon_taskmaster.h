@@ -44,35 +44,36 @@ typedef	struct			s_options
 
 typedef struct			s_group
 {
-	char				*name;
-	char				*programs;
 	t_list				*prog_list;
 	uint16_t			priority;
+	
+	uint16_t	padding;
+	uint32_t	pad;
+	
+	char				*name;
+	char				*programs;
 }						t_group;
 
 typedef struct			s_program
 {
-	char				*name;
-	char				*command;
-	uint8_t				numprocs;
-	char				*directory;
 	mode_t				umask;
 	uint16_t			priority;
-
-	uint8_t				autostart;
-	uint8_t				autorestart;
 	uint16_t			startsec;
 	uint16_t			startretries;
-	char				*exitcodes;
+	uint8_t				numprocs;
+	uint8_t				autostart;
+	uint8_t				autorestart;
 	uint8_t				stopsignal;
 	uint8_t				stopwaitsec;
-
-	char				*user;
 	uint8_t				redirect_stderr;
+	char				*name;
+	char				*command;
+	char				*directory;
+	char				*exitcodes;
+	char				*user;
 	char				*stdout_logfile;
 	char				*stderr_logfile;
-
-	char				**environ;			
+	char				*environ;			
 }						t_program;
 
 
@@ -82,11 +83,11 @@ typedef struct     		s_env
 	int32_t				log_fd;
 	t_options			opt;
 	struct sockaddr_un	addr;
-
+uint16_t			padding;
 	t_list				*prgm_list;
 	t_list				*goup_list;
 
-	uint16_t			padding;
+	
 
 	dictionary			*dict;
 	volatile sig_atomic_t	sigint;

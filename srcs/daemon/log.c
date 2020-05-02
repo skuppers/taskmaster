@@ -90,7 +90,6 @@ int8_t      init_log(t_env *env)
 		return (-1);
 	}
 	env->log_fd = debug_fd;
-
 	print_log(env, E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
 	print_log(env, E_LOGLVL_INFO, "Taskmaster logger is up\n");
 	return (0);
