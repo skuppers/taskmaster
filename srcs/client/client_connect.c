@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:54:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-int8_t		connect_to_daemon(t_env *env, char *socketpath)
+int8_t		connect_to_daemon(t_env *env, char *soketpath)
 {
 	struct sockaddr_un addr;
 
@@ -22,12 +22,14 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
     	return (-1);
   	}
 
-	memset(&addr, 0, sizeof(addr));
+	ft_bzero(&addr, sizeof(addr));
 	addr.sun_family = AF_UNIX;
-	strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
+	ft_strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
 	if (connect(env->unix_socket, (struct sockaddr*)&addr, sizeof(addr)) == -1)
 	{
-   		printf("Error: Can't connect to %s : %s\n\n", env->opt.str[SERVERURL], strerror(errno));
+   		ft_dprintf(STDERR_FILENO,
+				"Error: Can't connect to %s : %s\n\n", env->opt.str[SERVERURL],
+			strerror(errno));
     	return (-1);
   	}
 	  
