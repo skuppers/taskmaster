@@ -66,6 +66,16 @@ char	*get_secstring(dictionary *dict, char *secname, char *key)
 	return ((char *)iniparser_getstring(dict, buffer, NULL));
 }
 
+int8_t	get_secbool(dictionary *dict, char *secname, char *key)
+{
+	char	buffer[256];
+
+	ft_bzero(buffer, 256);
+	ft_strcpy(buffer, secname);
+	ft_strcat(buffer, key);
+	return ((int8_t)iniparser_getboolean(dict, buffer, 0));
+}
+
 int32_t	get_secint(dictionary *dict, char *secname, char *key)
 {
 	char	buffer[256];
@@ -99,7 +109,7 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 			prog.directory = get_secstring(dict, secname, ":directory");
 			prog.umask = (mode_t)get_secint(dict, secname, ":umask");
 			prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
-			prog.autostart = (uint8_t)get_secint(dict, secname, ":autostart");
+			prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
 			prog.autorestart = (uint8_t)get_secint(dict, secname, ":autorestart");
 			prog.startsec = (uint16_t)get_secint(dict, secname, ":startsec");
 			prog.startretries = (int8_t)get_secint(dict, secname, ":startretries");
@@ -107,7 +117,7 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 			prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal");
 			prog.stopwaitsec = (uint8_t)get_secint(dict, secname, ":stopwaitsec");
 			prog.user = get_secstring(dict, secname, ":user");
-			prog.redirect_stderr = (uint8_t)get_secint(dict, secname, ":redirect_stderr");
+			prog.redirect_stderr = (uint8_t)get_secbool(dict, secname, ":redirect_stderr");
 			prog.stdout_logfile = get_secstring(dict, secname, ":stdout_logfile");
 			prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
 			prog.environ = get_secstring(dict, secname, ":environment");
