@@ -30,5 +30,6 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
    		printf("Error: Can't connect to unix://%s : %s\n\n", env->opt.str[SERVERURL], strerror(errno));
     	return (-1);
   	}
+	  
 	return (0);
 }

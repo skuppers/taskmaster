@@ -107,25 +107,70 @@ void listen_for_data(t_env *env)
 	t_cmd			*cmd;
 
 	vct = vct_new(DFL_VCT_SIZE);
+
+	fd_set			master_set;
+	fd_set			recv_set;
+	int				fd_max; // suivi de fd
+
+	struct timeval	tv;
+	tv.tv_sec = 5;
+	tv.tv_usec = 0;
+
+	FD_ZERO (&master_set);
+	FD_ZERO (&recv_set);
+	FD_SET (env->unix_socket, &master_set);
+	fd_max = env->unix_socket;
+
+
+
 	while (1)
 	{
-		if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
+		recv_set = master_set;
+		if (select(fd_max + 1, &recv_set, NULL, NULL, &tv) < 0)
 		{
-			if (errno == EINTR)
-				break ;
-	  		perror("accept error");
-	  		continue;
+			taskmaster_fatal("select()", strerror(errno));
+			exit_routine();
 		}
-		printf("Client connected\n");
-		while ((readstatus = vct_creadline(vct, connectionfd, EOT)) > 0)
+		int i;
+		for (i = 0; i <= fd_max; i++)
 		{
+			if (FD_ISSET(i, &recv_set))
+			{
+				if (i == env->unix_socket) // Nouvelle connection
+				{
+					if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
+					{
+						if (errno == EINTR)
+							return ;
+	  					perror("accept error");
+	  					return ;
+					}
+					else
+					{
+						FD_SET(connectionfd, &master_set);
+						if (connectionfd > fd_max)
+							fd_max = connectionfd;
+						printf("===> Client connected\n");
+					}
+				}
+				else // client handler
+				{
+					if ((readstatus = vct_creadline(vct, i, EOT)) <= 0)
+					{
+						if (readstatus == -1)
+	  						perror("read");
+						else if (readstatus == 0)
+	 						printf("Client disconnected\n");
+						close(i);
+						FD_CLR(i, &master_set);
+					}
+					else 
+					{
 			ft_printf("------------------------------------------\n");
 	  		ft_printf("read %u bytes | trame len: %u bytes\n",
 				readstatus, vct_len(vct));
-
 			if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
 				debug_print_bytecode(vct); // DEBUG
-
 			cmd = decode_cmd(vct);
 			if (cmd == NULL)
 				ft_dprintf(STDERR_FILENO, "Error: Bad trame\n");
@@ -136,16 +181,9 @@ void listen_for_data(t_env *env)
 				ft_free_tab_str(cmd->av);
 			}
 			ft_printf("------------------------------------------\n");
-		}
-		if (readstatus == -1)
-		{
-	  		perror("read");
-	  		break;
-		}
-		else if (readstatus == 0)
-		{
-	  		printf("Client disconnected\n");
-	  		close(connectionfd);
+					}
+				}
+			}
 		}
 	}
 	vct_del(&vct);

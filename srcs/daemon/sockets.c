@@ -20,7 +20,7 @@ int8_t  make_socket(t_env *env, char *socketpath)
 	{
 		taskmaster_fatal("socket", "Failed to create socket");
 		print_log(env, E_LOGLVL_CRIT, "Socket failed - %s\n", strerror(errno));
-        return (-1);
+        exit_routine();
     }
 	env->unix_socket = fd;
   	env->addr.sun_family = AF_UNIX;
@@ -34,13 +34,13 @@ int8_t		bind_socket(t_env *env)
 	{
 		taskmaster_fatal("bind", "Failed to bind socket");
 		print_log(env, E_LOGLVL_CRIT, "Bind failed - %s\n", strerror(errno));
-        return (-1);
+        exit_routine();
 	}
   	if (listen(env->unix_socket, MAX_CLIENTS) == -1)
 	{
     	taskmaster_fatal("listen", "Failed to mark socket as passive");
 		print_log(env, E_LOGLVL_CRIT, "Listen failed - %s\n", strerror(errno));
-        return (-1);
+        exit_routine();
 	}
 	return (0);
 }

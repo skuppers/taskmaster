@@ -27,7 +27,7 @@ dictionary *load_ini_file(char *str)
 		printf("Could not read ini file: %s\n", strerror(errno));
         exit_routine();
 	}
-	iniparser_dump(ini_dict, stdout);
+//	iniparser_dump(ini_dict, stdout);
 	return (ini_dict);
 }
 
