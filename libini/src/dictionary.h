@@ -44,6 +44,7 @@ extern "C" {
 /*-------------------------------------------------------------------------*/
 typedef struct _dictionary_ {
     int             n ;     /** Number of entries in dictionary */
+    char padding[4];
     ssize_t         size ;  /** Storage size */
     char        **  val ;   /** List of string values */
     char        **  key ;   /** List of string keys */
