@@ -12,6 +12,28 @@
 
 # include "daemon_taskmaster.h"
 
+void	check_dflt_directory(void)
+{
+	DIR* dir;
+	
+	dir = opendir(DFL_WORKDIR);
+	if (dir)
+		closedir(dir);
+	else if (ENOENT == errno)
+	{
+		if (mkdir(DFL_WORKDIR, 0744) == -1)
+		{
+			taskmaster_fatal("check_working_directory(): Could not create default working directory", strerror(errno));
+			exit_routine();
+		}
+	}
+	else
+	{
+    	taskmaster_fatal("check_working_directory(): Could not open default working directory", strerror(errno));
+		exit_routine();
+	}
+}
+
 uint8_t	get_nodaemon(char *str)
 {
 	if (ft_strequ(str, "1") == 1 || ft_strequ(str, "true") == 1)

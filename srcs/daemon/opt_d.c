@@ -26,7 +26,6 @@ static int		parse_opt(char **av, int ac, int i)
                                 "-h", "--help",
 				                "-v", "--version",
 								"-k", "--nocleanup",
-								
 								"-c", "--configuration",
                                 "-u", "--user",
                                 "-d", "--directory",

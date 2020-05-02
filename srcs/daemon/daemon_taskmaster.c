@@ -14,28 +14,6 @@
 
 t_env	*g_env;
 
-void	check_dflt_directory(void)
-{
-	DIR* dir;
-	
-	dir = opendir(DFL_WORKDIR);
-	if (dir)
-		closedir(dir);
-	else if (ENOENT == errno)
-	{
-		if (mkdir(DFL_WORKDIR, 0744) == -1)
-		{
-			taskmaster_fatal("check_working_directory(): Could not create working directory", strerror(errno));
-			exit_routine();
-		}
-	}
-	else
-	{
-    	taskmaster_fatal("check_working_directory(): Could not open working directory", strerror(errno));
-		exit_routine();
-	}
-}
-
 int main(int ac, char **av)
 {
 	t_env   env;
@@ -45,14 +23,14 @@ int main(int ac, char **av)
 	g_env = &env;
 
 	set_taskmasterd_defautls(&env); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
-
 	check_dflt_directory();
-	get_opt(&env, ac - 1, av + 1);
-	parse_ini_file(&env, env.dict);
 
-	//init logger TODO: print according to LOGLEVEL
+	get_opt(&env, ac - 1, av + 1);
+
 	if (init_log(&env) != 0)
 		return (-1);
+		
+	parse_ini_file(&env, env.dict);
 
 	init_signals();
 

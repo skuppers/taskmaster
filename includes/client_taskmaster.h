@@ -72,6 +72,7 @@ enum	e_action_keys
 	AK_CTRL_R,
 	AK_TABULATION,
 };
+
 /***********************************************************/
 
 # define NO_ARG			0

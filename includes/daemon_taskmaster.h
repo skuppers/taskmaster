@@ -44,12 +44,35 @@ typedef	struct			s_options
 
 typedef struct			s_group
 {
-	char				*groupname;
+	char				*name;
+	char				*programs;
+	t_list				*prog_list;
+	uint16_t			priority;
 }						t_group;
 
 typedef struct			s_program
 {
-	char				*jobname;
+	char				*name;
+	char				*command;
+	uint8_t				numprocs;
+	char				*directory;
+	mode_t				umask;
+	uint16_t			priority;
+
+	uint8_t				autostart;
+	uint8_t				autorestart;
+	uint16_t			startsec;
+	uint16_t			startretries;
+	char				*exitcodes;
+	uint8_t				stopsignal;
+	uint8_t				stopwaitsec;
+
+	char				*user;
+	uint8_t				redirect_stderr;
+	char				*stdout_logfile;
+	char				*stderr_logfile;
+
+	char				**environ;			
 }						t_program;
 
 
@@ -59,6 +82,9 @@ typedef struct     		s_env
 	int32_t				log_fd;
 	t_options			opt;
 	struct sockaddr_un	addr;
+
+	t_list				*prgm_list;
+	t_list				*goup_list;
 
 	uint16_t			padding;
 
@@ -91,6 +117,7 @@ extern	t_env			*g_env;
 # define DFL_UMASK			022
 
 void						set_taskmasterd_defautls(t_env *env);
+void						check_dflt_directory(void);
 
 /*************************************************/
 
@@ -154,23 +181,30 @@ void 					free_inifile(dictionary *dict);
 
 # define TIMEBUFFERSZ			64
 
-# define LOG_DEBG		"[DEBUG]    "
-# define LOG_INFO		"[INFO]     "
-# define LOG_WARN		"[WARNING]  "
-# define LOG_ERRO		"[ERROR]    "
-# define LOG_CRIT		"[CRITICAL] "
+# define LOG_DEBG_STR		"[DEBUG]    "
+# define LOG_INFO_STR		"[INFO]     "
+# define LOG_WARN_STR		"[WARNING]  "
+# define LOG_ERRO_STR		"[ERROR]    "
+# define LOG_CRIT_STR		"[CRITICAL] "
 
-enum	e_loglevel
+# define LOGLVL_DEBG		"debug"
+# define LOGLVL_INFO		"info"
+# define LOGLVL_WARN		"warning"
+# define LOGLVL_ERRO		"error"
+# define LOGLVL_CRIT		"critical"
+
+enum	e_loglvl
 {
-	CRIT,
-	ERRO,
-	WARN,
-	INFO,
-	DEBG
+	E_LOGLVL_DEBG,
+	E_LOGLVL_INFO,
+	E_LOGLVL_WARN,
+	E_LOGLVL_ERRO,
+	E_LOGLVL_CRIT
 };
 
+
 int8_t					init_log(t_env *env);
-void					print_log(t_env *env, const char *priority,
+void					print_log(t_env *env, uint8_t loglvl,
 							const char *message, ...);
 void					taskmaster_fatal(char *failed_here, char *message);
 
