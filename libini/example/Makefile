@@ -2,7 +2,7 @@
 # iniparser tests Makefile
 #
 
-CC      ?= gcc
+CC      = clang
 CFLAGS  += -g -I../src
 LFLAGS  += -L.. -liniparser
 AR	    ?= ar

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:35:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:11:53 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,6 @@ int		main(int ac, char **av)
 {
 	t_env	environment;
 
-	if (isatty(STDIN_FILENO) == FALSE)
-	{
-		ft_dprintf(STDERR_FILENO, "Not a tty\n");
-		return (EXIT_FAILURE);
-	}
 	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
 
@@ -95,6 +90,11 @@ int		main(int ac, char **av)
 	init_readline(&environment);
 	if (environment.opt.mask & OPT_BATCHCMD)
 		parser(environment.opt.batch_cmd);
+	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == FALSE)
+	{
+		ft_dprintf(STDERR_FILENO, "Not a tty\n");
+		exit_routine();
+	}
 	if (environment.opt.mask & OPT_INTERACTIVE)
 	{	
 		init_signals();

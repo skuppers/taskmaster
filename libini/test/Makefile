@@ -1,4 +1,4 @@
-CC   ?= gcc
+CC   = clang
 
 ifndef V
 QUIET_CC         = @echo "CC	$@";

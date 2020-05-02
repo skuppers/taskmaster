@@ -4,7 +4,7 @@
 .PHONY: example
 
 # Compiler settings
-CC      ?= gcc
+CC      = clang
 
 CFLAGS  += -fPIC -Wall -Wextra -ansi -pedantic
 ifndef DEBUG
