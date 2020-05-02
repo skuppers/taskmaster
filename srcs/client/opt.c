@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:33:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:24:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int		parse_opt(char **av, int ac, int i)
 				{
 					if (ft_strnequ(av[i], UNIX_URI, UNIX_URI_SIZE) == FALSE)
 						error_opt(ft_asprintf(
-						"invalid value for -s '%s': value '%s' is not a URL",
+						"invalid value for -s '%s' (expected prefix: unix://)",
 						av[i], av[i]));
 					else
 						g_env->opt.str[count / 2] = av[i] + UNIX_URI_SIZE;

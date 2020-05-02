@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:04:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:25:29 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE)
 	{
    		ft_dprintf(STDERR_FILENO,
-				"Error: Can't connect to %s : %s\n\n", env->opt.str[SERVERURL],
+				"Error: Can't connect to `%s' : %s\n", env->opt.str[SERVERURL],
 			strerror(errno));
     	return (FAILURE);
   	}

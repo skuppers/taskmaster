@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 18:08:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:19:43 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:26:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	help_open(void)
 {
 	ft_dprintf(STDERR_FILENO, "%-24s%s%24c%s\n",
 		"open <url>", "Connect to a remote taskmaster process\n", ' ',
-						"(for UNIX domain socket, use unix:///socket/path)");
+						"(use unix:///socket/path)");
 }
 
 void	help_pid(void)
