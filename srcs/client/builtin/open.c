@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:31:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:04:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:05:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_vector	*blt_open(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: url must be http:// or unix://\n");
 		return (NULL);
 	}
-	close(env->unix_socket);
-	if ((env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
+	close(g_env->unix_socket);
+	if ((g_env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 	{
    		perror("socket error");
     	return (NULL);
