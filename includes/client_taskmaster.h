@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 16:56:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:34:11 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,29 +89,32 @@ enum	e_action_keys
 ********* ENV
 */
 
-# define NO_OPT				0x00
-# define OPT_HELP			0x01
-# define OPT_INTERACTIVE	0x02
-# define OPT_DEBUG			0x04
-# define OPT_SERVERURL		0x08
-# define OPT_USERNAME		0x10
-# define OPT_PASSWORD		0x20
-# define OPT_CONFIGURATION	0x40
-# define OPT_BATCHCMD		0x80
-# define OPT_PROMPT			0x100
+# define NB_OPT				10
+
+# define NO_OPT				0x0000
+# define OPT_HELP			0x0001
+# define OPT_INTERACTIVE	0x0002
+# define OPT_DEBUG			0x0004
+# define OPT_SERVERURL		0x0008
+# define OPT_CONFIGURATION	0x0010
+# define OPT_BATCHCMD		0x0020
+# define OPT_PROMPT			0x0040
 
 # define SERVERURL			0
-# define USERNAME			1
-# define PASSWORD			2
-# define CONFIGURATION		3
-# define PROMPT				4
+# define CONFIGURATION		1
+# define PROMPT				2
+
+# define NB_STR_CONF		3
+
+# define UNIX_URI			"unix://"
+# define UNIX_URI_SIZE		7
 
 # define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 
 typedef	struct		s_opt
 {
-	char			*str[5];
+	char			*str[NB_STR_CONF];
 	t_vector		*batch_cmd;
 	uint64_t		mask;
 }					t_opt;

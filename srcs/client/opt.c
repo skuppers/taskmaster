@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:18:19 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:33:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ static void		set_shell_mode(int ac, char **av, int i)
 static int		parse_opt(char **av, int ac, int i)
 {
 	const char	*opt_str[] = {"-h", "--help", "-i", "--interactive",
-				"-d", "--debug", "-s", "--serverurl", "-u", "--username", "-p",
-				 "--password", "-c", "--configuration"};
+								"-d", "--debug", "-s", "--serverurl",
+								"-c", "--configuration"};
 	int			count;
 
 	count = 0;
-	while (count < 14)
+	while (count < NB_OPT)
 	{
 		if (ft_strequ(av[i], opt_str[count]) == TRUE)
 		{
@@ -61,12 +61,12 @@ static int		parse_opt(char **av, int ac, int i)
 				count -= 6;
 				if (count / 2 == 0)
 				{
-					if (ft_strnequ(av[i], "unix://", 7) == FALSE)
+					if (ft_strnequ(av[i], UNIX_URI, UNIX_URI_SIZE) == FALSE)
 						error_opt(ft_asprintf(
-							"invalid value for -s '%s': value '%s' is not a URL",
-							av[i], av[i]));
+						"invalid value for -s '%s': value '%s' is not a URL",
+						av[i], av[i]));
 					else
-						g_env->opt.str[count / 2] = av[i] + 7;
+						g_env->opt.str[count / 2] = av[i] + UNIX_URI_SIZE;
 						
 				}
 				else
@@ -100,18 +100,15 @@ void		get_opt(t_env *env, int ac, char **av)
 	sections = iniparser_getnsec(env->dict);
 	while (sections >= 0)
 	{
-		if (ft_strequ(iniparser_getsecname(env->dict, sections), "taskmasterctl") == 1)
+		if (ft_strequ(iniparser_getsecname(env->dict, sections),
+					"taskmasterctl") == 1)
 		{
-			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:username", NULL);
-			if ((env->opt.mask & OPT_USERNAME) == FALSE && tmp != NULL)
-				env->opt.str[USERNAME] = tmp;
-			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:password", NULL);
-			if ((env->opt.mask & OPT_PASSWORD) == FALSE && tmp != NULL)
-				env->opt.str[PASSWORD] = tmp;
-			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:serverurl", NULL);
+			tmp = (char *)iniparser_getstring(env->dict,
+						"taskmasterctl:serverurl", NULL);
 			if ((env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
 				env->opt.str[SERVERURL] = tmp;
-			tmp = (char *)iniparser_getstring(env->dict, "taskmasterctl:prompt", NULL);
+			tmp = (char *)iniparser_getstring(env->dict,
+						"taskmasterctl:prompt", NULL);
 			if (tmp != NULL && ft_strlen(tmp) != 0)
 				env->opt.str[PROMPT] = tmp;
 			return ;
@@ -125,7 +122,8 @@ int8_t	check_opt(t_env *env)
 {
 	if (env->opt.str[SERVERURL] == NULL)
 	{
-		dprintf(2, "taskmasterctl:serverurl is undefined! Check your taskmaster.conf file.\n\n");
+		dprintf(2, "taskmasterctl:serverurl is undefined! "
+					"Check your taskmaster.conf file.\n\n");
 		exit_routine();
 	}
 	return (0);

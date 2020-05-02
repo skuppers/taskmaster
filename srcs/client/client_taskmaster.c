@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:27:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:35:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,11 @@ static void read_cmd(t_env *env)
 		print_prompt();
 	}
 	vct_del(&line);
-	//if (ret == FAILURE) read_error
+	if (ret == FAILURE)
+	{
+		perror("ERROR: read: ");
+		exit_routine();
+	}
 }
 
 static void	init_readline(t_env	*environment)
@@ -61,10 +65,6 @@ void	print_help(void)
 		" -- start an interactive shell after executing commands\n"
 		"-s/--serverurl URL -- URL on which taskmaster server is listening\n"
 		"     (default \"unix://%s\").\n"
-		"-u/--username USERNAME"
-		" -- username to use for authentication with server\n"
-		"-p/--password PASSWORD"
-		" -- password to use for authentication with server\n\n"
 		"action [arguments] -- see below\n\n"
 		"Actions are commands like \"tail\" or \"stop\"."
 		"  If -i is specified or no action is\n"
