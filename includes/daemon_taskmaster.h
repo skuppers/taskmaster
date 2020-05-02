@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:45:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 19:24:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,4 +219,22 @@ t_vector				*execute_cmd(t_cmd *cmd);
 void					init_signals(void);
 void					exit_routine(void);
 
+
+/*
+************************ ENV
+*/
+
+t_list		*envtolst(char **tab);
+char		**envtotab(t_list *lst);
+void		print_lst(t_list *lst);
+char		*get_var(t_list *intern, char *name);
+int8_t		add_var(t_list **alst, char *name, char *data);
+void		free_node(void *node);
+int8_t		free_var(t_list **alst, char *name);
+
+typedef struct					s_variable
+{
+	char						*name;
+	char						*data;
+}								t_variable;
 # endif

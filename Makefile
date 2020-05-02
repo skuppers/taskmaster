@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/02 18:47:38 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/02 19:25:37 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -126,12 +126,13 @@ HEADER += daemon_taskmaster.h
 
 PATH_CLIENT_SRCS += srcs/client/
 PATH_CLIENT_SRCS += srcs/client/builtin/
-PATH_CLIENT_SRCS += srcs/client/builtin/help_function
+PATH_CLIENT_SRCS += srcs/client/builtin/help_function/
 PATH_CLIENT_SRCS += srcs/client/history/
 PATH_CLIENT_SRCS += srcs/client/completion/
 PATH_CLIENT_SRCS += srcs/client/line_edition/
 
 PATH_DAEMON_SRCS += srcs/daemon/
+PATH_DAEMON_SRCS += srcs/daemon/intern_var/
 
 ################################################################################
 #################################               ################################
@@ -199,6 +200,8 @@ DAEMON_SRCS += help_d.c
 DAEMON_SRCS += opt_d.c
 DAEMON_SRCS += daemon_signals.c
 
+DAEMON_SRCS += intern_var_manager.c
+DAEMON_SRCS += intern_var_free.c
 
 ################# ATTRIBUTION
 
