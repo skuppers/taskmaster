@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:31:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:23:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:30:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ t_vector	*blt_open(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: Too few arguments\n");
 		return (NULL);
 	}
-	close(g_env->unix_socket);
 	if (ft_strnequ(cmd->av[0], UNIX_URI, UNIX_URI_SIZE) == FALSE)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: Url must be unix://\n");
 		return (NULL);
 	}
+	close(g_env->unix_socket);
 	if ((g_env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 	{
    		perror("socket error");
