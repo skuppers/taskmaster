@@ -16,6 +16,8 @@
 # include "libft.h"
 # include "stdint.h"
 
+#define DFL_FD_SETSIZE 16
+
 /*
 ******************* Encode
 */
@@ -37,7 +39,7 @@
 ******************* CMD
 */
 
-# define NB_CMD			22
+# define NB_CMD			24
 # define NO_OCP			0
 
 enum	e_cmd_type
@@ -64,6 +66,8 @@ enum	e_cmd_type
 	TAIL,
 	UPDATE,
 	VERSION,
+	SYN,
+	ACK,
 	BAD_CMD
 };
 

@@ -88,8 +88,8 @@ uint16_t			padding;
 	t_list				*prgm_list;
 	t_list				*goup_list;
 
-	
-
+	uint8_t				client_connected;
+	char paddng[7];
 	dictionary			*dict;
 	volatile sig_atomic_t	sigint;
 

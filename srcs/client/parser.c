@@ -12,7 +12,7 @@
 
 #include "client_taskmaster.h"
 
-static void	debug_print_bytecode(t_vector *bytecode)
+void	debug_print_bytecode(t_vector *bytecode)
 {
 	size_t	i;
 	char	c;
@@ -119,7 +119,9 @@ int	parser(t_vector *line)
 		if (g_env->opt.mask & OPT_DEBUG)
 			debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
-		send_bytecode(bytecode, (uint16_t)vct_len(bytecode));
+			send_bytecode(bytecode, vct_len(bytecode));
+	//	request_daemon(bytecode, vct_len(bytecode));
+			
 	}
 	ft_free_tab_str(g_env->cmd->av);
 	g_env->cmd->av = NULL;

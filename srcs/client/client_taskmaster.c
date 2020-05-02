@@ -84,7 +84,7 @@ int		main(int ac, char **av)
 
 	get_opt(&environment, ac - 1, av + 1);
 	check_opt(&environment);
-	
+	init_signals();
 	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
 	
 	init_readline(&environment);
@@ -97,7 +97,7 @@ int		main(int ac, char **av)
 	}
 	if (environment.opt.mask & OPT_INTERACTIVE)
 	{	
-		init_signals();
+		
 	
 		read_cmd(&environment);
 	}

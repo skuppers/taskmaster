@@ -47,7 +47,7 @@ t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 										NO_ARG, NO_ARG, TAB_ARG, NO_ARG,
 										TAB_ARG, NO_ARG, TAB_ARG, TAB_ARG,
 										TAB_ARG, TAB_ARG, TAB_ARG, TAB_ARG,
-										NO_ARG};
+										NO_ARG, NO_ARG, NO_ARG};
 	static t_cmd			cmd;
 
 	ft_bzero(&cmd, sizeof(t_cmd));

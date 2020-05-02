@@ -25,13 +25,21 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 	addr.sun_family = AF_UNIX;
 	ft_strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
 	if (connect(env->unix_socket,
-			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE)
+			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE
+			|| env->sigpipe == 1)
 	{
+		env->sigpipe = 0;
    		ft_dprintf(STDERR_FILENO,
 				"Error: Can't connect to `%s' : %s\n", env->opt.str[SERVERURL],
 			strerror(errno));
     	return (FAILURE);
   	}
-	  
+	if (check_connection(env) != 0)
+	{
+		dprintf(STDERR_FILENO, "Error connecting to taskmasterd (sigpipe), maybe another client is running?");
+		close(env->unix_socket);
+		return (FAILURE);
+	}
+	dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
 	return (SUCCESS);
 }

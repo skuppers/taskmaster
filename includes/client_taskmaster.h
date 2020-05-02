@@ -19,12 +19,14 @@
 # include <sys/un.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <fcntl.h>
+# include <errno.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <signal.h>
 # include <sys/ioctl.h>
-# include <errno.h>
 # include "dictionary.h"
 # include "iniparser.h"
-
 # include "common.h"
 
 /****************   General   ****************/
@@ -135,10 +137,11 @@ typedef struct		s_env
 	uint16_t				winhei;
 
 	volatile sig_atomic_t	sigint;
+	volatile sig_atomic_t	sigpipe;
 	volatile sig_atomic_t	sigwinch;
 
 	int32_t					unix_socket;
-	
+	char	padding[4];
 	t_cmd					*cmd;
 
 	t_opt					opt;
@@ -159,6 +162,9 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
+int8_t				request_daemon(t_vector *bytecode, size_t codelen);
+int8_t     			check_connection(t_env *env);
+void				debug_print_bytecode(t_vector *bytecode);
 
 void				init_signals(void);
 
