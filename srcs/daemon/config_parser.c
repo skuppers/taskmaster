@@ -27,7 +27,7 @@ dictionary *load_ini_file(char *str)
 		printf("Could not read ini file: %s\n", strerror(errno));
         exit_routine();
 	}
-//	iniparser_dump(ini_dict, stdout);
+	iniparser_dump(ini_dict, stdout);
 	return (ini_dict);
 }
 
@@ -129,7 +129,7 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 			group.name = ft_strsub(secname, 6, ft_strlen(secname) - 6);
 print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 			group.programs = get_secstring(dict, secname, ":programs");
-			group.priority = (uint8_t)get_secint(dict, secname, ":priority");
+			group.priority = (uint16_t)get_secint(dict, secname, ":priority");
 			append_to_grplist(env, &group);
 	//		ft_strdel(&group.name);
 		}

@@ -103,12 +103,10 @@ void listen_for_data(t_env *env)
 {
     int		 		connectionfd;
 	int 			readstatus;
-	size_t 			totalread;
 	t_vector		*vct;
 	t_cmd			*cmd;
 
 	vct = vct_new(DFL_VCT_SIZE);
-	totalread = 0;
 	while (1)
 	{
 		if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
@@ -125,20 +123,20 @@ void listen_for_data(t_env *env)
 	  		ft_printf("read %u bytes | trame len: %u bytes\n",
 				readstatus, vct_len(vct));
 
-			debug_print_bytecode(vct); // DEBUG
+			if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
+				debug_print_bytecode(vct); // DEBUG
 
 			cmd = decode_cmd(vct);
 			if (cmd == NULL)
 				ft_dprintf(STDERR_FILENO, "Error: Bad trame\n");
 			else
 			{
-				debug_cmd(cmd); // DEBUG
+				if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
+					debug_cmd(cmd); // DEBUG
 				ft_free_tab_str(cmd->av);
 			}
-			totalread += vct_len(vct);
 			ft_printf("------------------------------------------\n");
 		}
-		ft_printf("Read a total of %d bytes\n", totalread);
 		if (readstatus == -1)
 		{
 	  		perror("read");

@@ -63,8 +63,9 @@ int main(int ac, char **av)
 		return (-1);
 
 	parse_ini_file(&env, env.dict);
-
-	print_dbg(&env);
+	
+	if (ft_strequ(env.opt.str[LOGLEVEL], "debug") == 1)
+		print_dbg(&env);
 
 	init_signals();
 
