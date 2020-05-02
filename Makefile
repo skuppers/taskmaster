@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/01 15:18:48 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/02 17:21:37 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -258,6 +258,7 @@ clean:
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIBFT) clean
+	$(MAKE) -C $(PATH_LIBINI) clean
 	printf "$(RED)Objs from taskmasterctl removed\n$(NC)"
 	printf "$(RED)Objs from taskmasterd removed\n$(NC)"
 

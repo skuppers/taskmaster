@@ -4,6 +4,13 @@
 # Obj
 *.o
 
+# Lib
+*.a
+*.so
+*.so*
+
 #exec
 taskmasterctl
 taskmasterd
+
+libini

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 16:56:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 17:18:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,18 @@ static int		parse_opt(char **av, int ac, int i)
 					error_opt(ft_asprintf("option '%s' requires argument",
 							opt_str[count]));
 				count -= 6;
-				if (count / 2 == 0
-						&& ft_strnequ(av[i], "unix://", 7) == FALSE)
-					error_opt(ft_asprintf(
+				if (count / 2 == 0)
+				{
+					if (ft_strnequ(av[i], "unix://", 7) == FALSE)
+						error_opt(ft_asprintf(
 							"invalid value for -s '%s': value '%s' is not a URL",
 							av[i], av[i]));
-				g_env->opt.str[count / 2] = av[i];
+					else
+						g_env->opt.str[count / 2] = av[i] + 7;
+						
+				}
+				else
+					g_env->opt.str[count / 2] = av[i];
 				return (2);
 			}
 			return (1);
