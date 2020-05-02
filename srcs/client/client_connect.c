@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:55:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 18:04:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 {
 	struct sockaddr_un addr;
 
-	if ( (env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == -1)
+	if ((env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 	{
    		perror("socket error");
-    	return (-1);
+    	return (FAILURE);
   	}
-
 	ft_bzero(&addr, sizeof(addr));
 	addr.sun_family = AF_UNIX;
 	ft_strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
-	if (connect(env->unix_socket, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+	if (connect(env->unix_socket,
+			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE)
 	{
    		ft_dprintf(STDERR_FILENO,
 				"Error: Can't connect to %s : %s\n\n", env->opt.str[SERVERURL],
 			strerror(errno));
-    	return (-1);
+    	return (FAILURE);
   	}
 	  
-	return (0);
+	return (SUCCESS);
 }
