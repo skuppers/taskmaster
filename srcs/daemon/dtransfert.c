@@ -166,5 +166,7 @@ void listen_for_data(t_env *env)
 			else
 				handle_client_requests(env, fd_nb, &master_set);
 		}
+		waiter(env);
+		
 	}
 }

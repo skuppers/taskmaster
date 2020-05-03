@@ -193,6 +193,9 @@ CLIENT_SRCS += help_function_t_v.c
 DAEMON_SRCS += daemon_taskmaster.c
 DAEMON_SRCS += sockets.c
 DAEMON_SRCS += jobs.c
+DAEMON_SRCS += waiter.c
+DAEMON_SRCS += instance_utils.c
+DAEMON_SRCS += instance_tools.c
 
 #builtin
 DAEMON_SRCS += execute_cmd.c

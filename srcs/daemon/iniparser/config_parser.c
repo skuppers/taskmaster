@@ -47,7 +47,7 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
 	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
 	prog.autorestart = get_secstring(dict, secname, ":autorestart");
-	prog.startsec = (uint16_t)get_secint(dict, secname, ":startsec");
+	prog.startsec = get_secint(dict, secname, ":startsec");
 	prog.startretries = (int8_t)get_secint(dict, secname, ":startretries");
 	prog.exitcodes = get_secstring(dict, secname, ":exitcodes");
 	prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal");

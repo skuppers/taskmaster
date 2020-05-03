@@ -63,7 +63,10 @@ typedef struct			s_instance
 	uint8_t				state;
 	char	pad[1];
 	pid_t				pid;
+	uint8_t				backoff;
 	time_t				start_time;
+	time_t				stop_time;
+	int32_t				uptime;
 	struct s_instance	*next;
 	// uptime		
 }						t_instance;
@@ -75,26 +78,23 @@ typedef struct			s_program
 
 	char				*bin;					// /usr/bin/cat
 	char				**avs;					// [1] syslog
-	t_instance			*instance;				
+	t_instance			*instance;				// Simple list
 
-	char				*user;
+	char				*user;				
 	mode_t				umask;
 	char				*directory;
-
 	uint16_t			priority;
 
-	uint16_t			startsec;
-	uint16_t			startretries;
+	int32_t				startsec;			// Done
+	uint16_t			stopwaitsec;		// TODO: SIGCHLD
+	uint8_t				numprocs;			// Done
+	uint8_t				stopsignal;			// Done
+	uint8_t				autostart;			// Done
 
-	uint8_t				numprocs;
-
-	uint8_t				autostart;
-	char				*autorestart;
-
-	char				*exitcodes;
-	uint8_t				stopsignal;
-	uint8_t				stopwaitsec;
-
+	uint8_t			startretries; // START-retries (not reached running state)
+	char				*autorestart; // auto-RE-start (IN running state) // false, true, unexpected
+	char				*exitcodes;		
+	
 	uint8_t				redirect_stderr;
 	uint8_t	padding;
 	
@@ -139,21 +139,50 @@ extern	t_env			*g_env;
 /*********************  JOBS  ********************/
 
 # define STATE_STARTING	"STARTING"
+# define STATE_BACKOFF	"BACKOFF"
 # define STATE_RUNNING	"RUNNING"
 # define STATE_STOPPING	"STOPPING"
 # define STATE_STOPPED	"STOPPED"
+# define STATE_EXITED	"EXITED"
+# define STATE_FATAL	"FATAL"
 # define STATE_UNKNOWN	"UNKNOWN"
+
+# define ERR_UNDEF_INST	3
+# define ERR_FORK		2
+# define ERR_EXEC		1
+# define ERR_STARTING	-1
+# define ERR_BACKOFF	-2
+# define ERR_RUNNING	-3
+# define ERR_STOPPING	-4
+# define ERR_STOPPED	-5
+# define ERR_FATAL		-6
+# define ERR_EXITED		-7
 
 enum e_prg_state
 {
 	E_STARTING,
+	E_BACKOFF,
 	E_RUNNING,
 	E_STOPPING,
-	E_STOPPED
+	E_STOPPED,
+	E_EXITED,
+	E_FATAL
 };
 
-void    					launch_jobs(t_env *env);
+t_instance				*new_instance(uint8_t id);
+int8_t					del_instance(t_program *prg, uint8_t id);
+int8_t					add_instance(t_program *prg, t_instance *inst);
+int8_t					start_instance(t_program *prog, uint8_t id, t_list *environ);
+int8_t					stop_instance(t_program *prog, t_instance *instance);
 
+t_instance				*get_instance(t_program *prg, uint8_t id);
+char					*get_instance_state(t_instance *instance);
+void    				launch_jobs(t_env *env);
+int     				child_process(t_program *prog, t_instance *instance, t_list *env);
+int8_t					waiter(t_env *env);
+void					update_instance_uptime(t_instance *instance);
+
+void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 
 /*************************************************/
 
