@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 12:08:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:50:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	parser(t_vector *line)
 		if (g_env->opt.mask & OPT_DEBUG)
 			debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
-			send_bytecode(bytecode, vct_len(bytecode));
+		send_bytecode(bytecode, vct_len(bytecode));
 	//	request_daemon(bytecode, vct_len(bytecode));
 			
 	}

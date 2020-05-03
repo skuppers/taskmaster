@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 15:10:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:29:42 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_dbg(t_env *env)
 		printf(" - stderr_logfile:\t%s\n", ((t_program *)ptr->content)->stderr_logfile);
 		printf(" - environment:\t%s\n\n", ((t_program *)ptr->content)->environ);
 	}
-	for (ptr = env->goup_list ; ptr != NULL; ptr = ptr->next)
+	for (ptr = env->group_list ; ptr != NULL; ptr = ptr->next)
 	{
 		printf("Group: %s\n", ((t_group *)ptr->content)->name);
 		printf(" - programs: %s\n", ((t_group *)ptr->content)->programs);
@@ -48,19 +48,10 @@ void	print_dbg(t_env *env)
 
 void	set_daemon_environment(t_env *env, char **environ)
 {
-	t_vector	*vct;
-	t_vector	*split;
-
 	env->environ = envtolst(environ);
 	if (env->opt.environ == NULL)
 		return ;
-	vct = vct_newstr(env->opt.environ);
-	while ((split = vct_split(vct, DELIMITER_STR, NO_SEP)) != NULL)
-	{
-		add_var_vct(&env->environ, split);
-		vct_del(&split);
-	}
-	vct_del(&vct);
+	strvalue_to_lst(&env->environ, env->opt.environ);
 //	print_lst(env->environ); // DEBUG LIST ENV
 }
 

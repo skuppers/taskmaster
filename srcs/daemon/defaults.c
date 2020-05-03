@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 14:41:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:16:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ uint8_t	get_nodaemon(char *str)
 
 uint32_t	get_umask(char *str)
 {
-	if (ft_strlen(str) > 4)
-		return (22);
+	if (str == NULL || ft_strlen(str) > 4)
+		return (22); // 22 ou 022
 	if (ft_strcheck(str, ft_isdigit) == FALSE)
 		return (22);
 	return (ft_atoi(str));
@@ -80,10 +80,6 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE && tmp != NULL)
 		env->opt.optmask |= get_nodaemon(tmp);
 
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL);
-	if (tmp != NULL)
-		env->opt.umask = (mode_t)get_umask(tmp);
-
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL);
 	if ((env->opt.optmask & OPT_USER) == FALSE && tmp != NULL)
 		env->opt.str[USER] = tmp;
@@ -103,6 +99,9 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
 	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
 		env->opt.str[CHILDLOGDIR] = tmp;
+
+	tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL);
+	env->opt.umask = (mode_t)get_umask(tmp);
 
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL);
 	env->opt.environ = tmp;

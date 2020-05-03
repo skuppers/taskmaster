@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 15:06:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 16:24:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ typedef struct     		s_env
 	struct sockaddr_un	addr;
 uint16_t			padding;
 	t_list				*prgm_list;
-	t_list				*goup_list;
+	t_list				*group_list;
 
 	uint8_t				client_connected;
 	char paddng[7];
@@ -234,8 +234,13 @@ void		print_lst(t_list *lst);
 char		*get_var(t_list *intern, char *name);
 int8_t		add_var(t_list **alst, char *name, char *data);
 int8_t		add_var_vct(t_list **alst, t_vector *val);
+void		strvalue_to_lst(t_list **lst, char *str);
+
 void		free_node(void *node, size_t content_size);
 int8_t		free_var(t_list **alst, char *name);
+void		free_env(void *node, size_t content_size);
+void		del_group(void *node, size_t content_size);
+void		del_prgm(void *node, size_t content_size);
 
 typedef struct					s_variable
 {

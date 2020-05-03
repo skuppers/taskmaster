@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 17:12:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,82 @@ dictionary *load_ini_file(char *str)
 	return (ini_dict);
 }
 
+t_list	*get_prgm_node(t_list *prog_list, char *name)
+{
+	char	*node_name;
+
+	while (prog_list != NULL)
+	{
+		if (prog_list->content != NULL)
+		{
+			node_name = (char *)(((t_program *)(prog_list->content))->name);
+			if (node_name != NULL)
+			{
+				if (ft_strequ(node_name, name) == TRUE)
+					return (ft_lstnew_nomalloc(prog_list->content,
+						sizeof(t_program)));
+			}
+		}
+		prog_list = prog_list->next;
+	}
+	return (NULL);
+}
+
+void	set_grp_list(t_env *env)
+{
+	t_vector	*vct;
+	t_vector	*split;
+	t_list		*lst_grp;
+	t_group		*cur_grp;
+	t_list		*prgm_node;
+
+	lst_grp = env->group_list;
+	while (lst_grp != NULL)
+	{
+		cur_grp = (t_group *)(lst_grp->content);
+		if (cur_grp != NULL || cur_grp->programs == NULL)
+		{
+			vct = vct_newstr(cur_grp->programs);
+			cur_grp->prog_list = NULL;
+			while ((split = vct_split(vct, DELIMITER_STR, NO_SEP)) != NULL)
+			{
+				vct_trim(split, "\t ");
+				prgm_node = get_prgm_node(env->prgm_list, vct_getstr(split));
+				if (prgm_node == NULL)
+					 ft_dprintf(STDERR_FILENO,
+							"prog %s is not set in conf file\n",
+							vct_getstr(split));// print dans debug
+				else
+					ft_lstadd(&cur_grp->prog_list, prgm_node);
+				vct_del(&split);
+			}
+			vct_del(&vct);
+		}
+		lst_grp = lst_grp->next;
+	}
+	/// DEBUG //////////////
+
+	lst_grp = env->group_list;
+	while (lst_grp != NULL)
+	{
+		cur_grp = (t_group *)(lst_grp->content);
+		ft_printf("----- GROUP `%s' -----\n", cur_grp->name);
+		for (t_list *tmp = cur_grp->prog_list; tmp != NULL; tmp = tmp->next)
+		{
+			char *name = (tmp->content == NULL) ? ""
+				: ((t_program *)(tmp->content))->name;
+			ft_printf("\t+--> prog: %s\n", name);
+		}
+		lst_grp = lst_grp->next;
+	}
+}
+
 int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 {
 	t_list		*list;
 
 	list = ft_lstnew(pgrm, sizeof(t_program));
-	if (env->prgm_list == NULL)
-		env->prgm_list = list;
-	else
-		ft_lstadd(&env->prgm_list, list);
+	ft_lstadd(&env->prgm_list, list);
 	return (0);
 }
 
@@ -48,10 +115,7 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 	t_list		*list;
 
 	list = ft_lstnew(grp, sizeof(t_group));
-	if (env->goup_list == NULL)
-		env->goup_list = list;
-	else
-		ft_lstadd(&env->goup_list, list);
+	ft_lstadd(&env->group_list, list);
 	return (0);
 }
 
@@ -99,6 +163,8 @@ void	parse_ini_file(t_env *env, dictionary *dict)
 	t_group		group;
 
 	sections = iniparser_getnsec(dict);
+	env->prgm_list = NULL;
+	env->group_list = NULL;
 	print_log(env, E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
 	while (sections > 0)
 	{
@@ -130,6 +196,7 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 		}
 		else if (ft_strnequ(secname, "group.", 6) == 1)
 		{
+			group.prog_list = NULL;
 			group.name = ft_strsub(secname, 6, ft_strlen(secname) - 6);
 print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 			group.programs = get_secstring(dict, secname, ":programs");
@@ -142,4 +209,5 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 			print_log(env, E_LOGLVL_ERRO, "Inifile: Unknown section: %s\n", secname);
 		}
 	}
+	set_grp_list(env);
 }

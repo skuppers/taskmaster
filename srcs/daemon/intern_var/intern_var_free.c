@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 19:28:10 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 14:55:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 17:12:00 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,27 @@ int8_t			free_var(t_list **alst, char *name)
 		return (SUCCESS);
 	}
 	return (del_node(intern, name));
+}
+
+void			free_env(void *node, size_t content_size)
+{
+	free_node(node, content_size);
+	free(node);
+}
+
+void			del_prgm(void *node, size_t content_size)
+{
+	(void)content_size;
+	if (node != NULL)
+		ft_strdel(&((t_program *)node)->name);
+	free(node);
+}
+
+void			del_group(void *node, size_t content_size)
+{
+	(void)content_size;
+	if (node != NULL)
+		ft_lstdel(&((t_group *)node)->prog_list, NULL);
+	free(((t_group *)node)->name);
+	free(node);
 }

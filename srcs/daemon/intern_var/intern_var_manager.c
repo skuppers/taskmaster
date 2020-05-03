@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 19:05:15 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 15:09:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:27:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,3 +162,18 @@ int8_t			add_var_vct(t_list **alst, t_vector *val)
 	vct_del(&name);
 	return (SUCCESS);
 }
+
+void	strvalue_to_lst(t_list **lst, char *str)
+{
+	t_vector	*vct;
+	t_vector	*split;
+
+	vct = vct_newstr(str);
+	while ((split = vct_split(vct, DELIMITER_STR, NO_SEP)) != NULL)
+	{
+		add_var_vct(lst, split);
+		vct_del(&split);
+	}
+	vct_del(&vct);
+}
+
