@@ -57,6 +57,7 @@ typedef struct			s_instance
 {
 	uint16_t			id;
 	uint8_t				state;
+	char	pad[1];
 	pid_t				pid;
 	time_t				start_time;
 	struct s_instance	*next;
@@ -125,7 +126,22 @@ extern	t_env			*g_env;
 
 /*********************  JOBS  ********************/
 
+# define STATE_STARTING	"STARTING"
+# define STATE_RUNNING	"RUNNING"
+# define STATE_STOPPING	"STOPPING"
+# define STATE_STOPPED	"STOPPED"
+# define STATE_UNKNOWN	"UNKNOWN"
+
+enum e_prg_state
+{
+	E_STARTING,
+	E_RUNNING,
+	E_STOPPING,
+	E_STOPPED
+};
+
 void    					launch_jobs(t_env *env);
+
 
 /*************************************************/
 
@@ -234,13 +250,6 @@ void					taskmaster_fatal(char *failed_here, char *message);
 
 /*****************************************************/
 
-enum e_prg_state
-{
-	E_STARTING,
-	E_RUNNING,
-	E_STOPPING,
-	E_STOPPED
-};
 
 t_cmd					*decode_cmd(t_vector *trame);
 t_vector				*execute_cmd(t_cmd *cmd);

@@ -37,7 +37,7 @@ int     child_process(t_program *prog, t_instance *instance)
 	exit(1);
 }
 
-t_instance		*get_instance(t_program *prg, uint8_t id)
+t_instance	*get_instance(t_program *prg, uint8_t id)
 {
 	t_instance *ptr;
 
@@ -98,8 +98,6 @@ int8_t		add_instance(t_program *prg, t_instance *inst)
 	return (0);
 }
 
-
-
 t_instance	*new_instance(uint8_t id)
 {
 	t_instance	*new;
@@ -115,7 +113,7 @@ t_instance	*new_instance(uint8_t id)
 	return (new);
 }	
 
-int8_t	start_instance(t_program *prog, uint8_t id)
+int8_t		start_instance(t_program *prog, uint8_t id)
 {
 	t_instance	*inst;
 
@@ -140,9 +138,24 @@ int8_t	start_instance(t_program *prog, uint8_t id)
 int8_t	stop_instance(t_program *prog, uint8_t id)
 {
 	(void)prog;(void)id;
+	// send SIGTERM signal to child
+	// wait for <stopwaitsec> to return positive
+	// if not stopped => send SIGKILL
 	return (0);
 }
 
+char	*get_instance_state(t_instance *instance)
+{
+	if (instance->state == E_STARTING)
+		return (STATE_STARTING);
+	if (instance->state == E_RUNNING)
+		return (STATE_RUNNING);
+	if (instance->state == E_STOPPING)
+		return (STATE_STOPPING);
+	if (instance->state == E_STOPPED)
+		return (STATE_STOPPED);
+	return (STATE_UNKNOWN);
+}
 void    launch_jobs(t_env *env)
 {
     t_list      *ptr;
@@ -156,8 +169,6 @@ void    launch_jobs(t_env *env)
     {
 		inst_nb = 0;
         prog = ptr->content;
-		
-		// create program instances
 		while (inst_nb < prog->numprocs)
 		{
 			inst = new_instance(inst_nb);	// create instance meta
@@ -171,8 +182,9 @@ void    launch_jobs(t_env *env)
 			{
 				launch_success = start_instance(prog, inst_nb);
 				if (launch_success == 0)
-					dprintf(STDERR_FILENO, "Launched instance %d of %s with pid %d.\n",
-							inst_nb, prog->name, get_instance(prog, inst_nb)->pid);
+					dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+							inst_nb, prog->name, get_instance(prog, inst_nb)->pid,
+							get_instance_state(get_instance(prog, inst_nb)));
 				else
 				{
 					if (launch_success == -1)

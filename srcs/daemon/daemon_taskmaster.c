@@ -83,9 +83,12 @@ int main(int ac, char **av)
 	// And listen for incoming connections
 	launch_jobs(&env);
 
-	
 
-	listen_for_data(&env);
+	while (1)
+	{
+		//	check childs notification => waitpid / startsec / startretries / autoretries etc..
+		listen_for_data(&env);
+	}
 	
 	exit_routine();
 }
