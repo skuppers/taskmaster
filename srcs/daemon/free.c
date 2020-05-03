@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:19:43 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:47:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:27:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void			del_prgm(void *node, size_t content_size)
 {
 	(void)content_size;
 	if (node != NULL)
+	{
+		ft_lstdel(&((t_program *)node)->env, free_env);
 		ft_strdel(&((t_program *)node)->name);
+	}
 	free(node);
 }
 
