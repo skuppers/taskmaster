@@ -147,21 +147,24 @@ void listen_for_data(t_env *env)
 	FD_ZERO (&master_set);
 	FD_ZERO (&recv_set);
 	FD_SET (env->unix_socket, &master_set);
-	recv_set = master_set;
-	my_select(env, &recv_set);
-	fd_nb = -1;
-	while (++fd_nb < DFL_FD_SETSIZE)
+	while (1)
 	{
-		if (FD_ISSET(fd_nb, &recv_set) == 0)
-			continue ;
-		if (fd_nb == env->unix_socket)
+		recv_set = master_set;
+		my_select(env, &recv_set);
+		fd_nb = -1;
+		while (++fd_nb < DFL_FD_SETSIZE)
 		{
-			if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
-	 				accept_error(env);
+			if (FD_ISSET(fd_nb, &recv_set) == 0)
+				continue ;
+			if (fd_nb == env->unix_socket)
+			{
+				if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
+		 				accept_error(env);
+				else
+					client_connected(env, &master_set, connectionfd);
+			}
 			else
-				client_connected(env, &master_set, connectionfd);
+				handle_client_requests(env, fd_nb, &master_set);
 		}
-		else
-			handle_client_requests(env, fd_nb, &master_set);
 	}
 }
