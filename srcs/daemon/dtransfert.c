@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 11:43:42 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 19:46:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 	ft_printf("read %u bytes | trame len: %u bytes\n",
 				readstatus, vct_len(vct));
 	
-	if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
+	if (ft_strequ(env->opt.str[LOGLEVEL], "DEBUG") == 1)
 			debug_print_bytecode(vct); // DEBUG
 	
 	cmd = decode_cmd(vct);
@@ -67,7 +67,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 		ft_dprintf(STDERR_FILENO, "Error: Bad trame\n");
 	else
 	{
-		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
+		if (ft_strequ(env->opt.str[LOGLEVEL], "DEBUG") == 1)
 			debug_cmd(cmd); // DEBUG
 		execute_cmd(cmd);
 		ft_free_tab_str(cmd->av);

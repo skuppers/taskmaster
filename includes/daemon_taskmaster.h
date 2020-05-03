@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:25:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 19:28:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,10 +262,6 @@ void					taskmaster_fatal(char *failed_here, char *message);
 
 /*****************************************************/
 
-
-t_cmd					*decode_cmd(t_vector *trame);
-t_vector				*execute_cmd(t_cmd *cmd);
-
 void					init_signals(void);
 void					exit_routine(void);
 
@@ -304,5 +300,33 @@ int8_t		get_secbool(dictionary *dict, char *secname, char *key);
 char		*get_secstring(dictionary *dict, char *secname, char *key);
 
 void		set_grp_list(t_env *env);
+
+/*
+************************ INIPARSER
+*/
+
+typedef	t_vector	*(*t_process_cmd)(t_cmd *);
+
+t_vector				*execute_cmd(t_cmd *cmd);
+
+t_vector			*cmd_add(t_cmd *cmd);
+t_vector			*cmd_avail(t_cmd *cmd);
+t_vector			*cmd_clear(t_cmd *cmd);
+t_vector			*cmd_fg(t_cmd *cmd);
+t_vector			*cmd_maintail(t_cmd *cmd);
+t_vector			*cmd_open(t_cmd *cmd);
+t_vector			*cmd_pid(t_cmd *cmd);
+t_vector			*cmd_reload(t_cmd *cmd);
+t_vector			*cmd_remove(t_cmd *cmd);
+t_vector			*cmd_reread(t_cmd *cmd);
+t_vector			*cmd_restart(t_cmd *cmd);
+t_vector			*cmd_shutdown(t_cmd *cmd);
+t_vector			*cmd_signal(t_cmd *cmd);
+t_vector			*cmd_start(t_cmd *cmd);
+t_vector			*cmd_status(t_cmd *cmd);
+t_vector			*cmd_stop(t_cmd *cmd);
+t_vector			*cmd_tail(t_cmd *cmd);
+t_vector			*cmd_update(t_cmd *cmd);
+t_vector			*cmd_version(t_cmd *cmd);
 
 # endif
