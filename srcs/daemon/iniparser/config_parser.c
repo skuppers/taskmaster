@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:44:57 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:02:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,12 @@
 int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 {
 	t_list		*list;
+	char		**avs;
 
+	pgrm->instance = NULL;
+	avs = ft_strsplit(pgrm->command, ' ');
+	pgrm->bin = avs[0];
+	pgrm->avs = avs;
 	list = ft_lstnew(pgrm, sizeof(t_program));
 	ft_lstadd(&env->prgm_list, list);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:38:47 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:04:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,32 @@ typedef struct			s_group
 	t_list				*prog_list;
 	uint16_t			priority;
 
-	uint16_t	padding;
-	uint32_t	pad;
+	char	pad[6];
 	
 	char				*name;
 	char				*programs;
 }						t_group;
 
+typedef struct			s_instance
+{
+	uint16_t			id;
+	uint8_t				state;
+	char	pad[1];
+	pid_t				pid;
+	time_t				start_time;
+	struct s_instance	*next;
+	// uptime		
+}						t_instance;
+
 typedef struct			s_program
 {
+	char				*name;
+
+	char				*bin;
+	char				**avs;
+	t_instance			*instance;
+
+	char				*command;
 	mode_t				umask;
 	uint16_t			priority;
 	uint16_t			startsec;
@@ -70,8 +87,7 @@ typedef struct			s_program
 	uint8_t				redirect_stderr;
 	uint8_t	padding;
 	char				*autorestart;
-	char				*name;
-	char				*command;
+	
 	char				*directory;
 	char				*exitcodes;
 	char				*user;
@@ -80,14 +96,15 @@ typedef struct			s_program
 	char				*environ;			
 }						t_program;
 
-
 typedef struct     		s_env
 {
     int32_t				unix_socket;
 	int32_t				log_fd;
 	t_options			opt;
 	struct sockaddr_un	addr;
+
 uint16_t			padding;
+
 	t_list				*prgm_list;
 	t_list				*group_list;
 
@@ -107,6 +124,27 @@ uint16_t			padding;
 /******************** GLOBALS ********************/
 
 extern	t_env			*g_env;
+
+/*************************************************/
+
+
+/*********************  JOBS  ********************/
+
+# define STATE_STARTING	"STARTING"
+# define STATE_RUNNING	"RUNNING"
+# define STATE_STOPPING	"STOPPING"
+# define STATE_STOPPED	"STOPPED"
+# define STATE_UNKNOWN	"UNKNOWN"
+
+enum e_prg_state
+{
+	E_STARTING,
+	E_RUNNING,
+	E_STOPPING,
+	E_STOPPED
+};
+
+void    					launch_jobs(t_env *env);
 
 
 /*************************************************/
