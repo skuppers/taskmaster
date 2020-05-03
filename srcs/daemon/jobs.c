@@ -156,6 +156,7 @@ char	*get_instance_state(t_instance *instance)
 		return (STATE_STOPPED);
 	return (STATE_UNKNOWN);
 }
+
 void    launch_jobs(t_env *env)
 {
     t_list      *ptr;

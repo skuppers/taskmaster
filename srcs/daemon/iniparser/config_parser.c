@@ -88,10 +88,13 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 		--sections;
 		secname = (char*)iniparser_getsecname(env->dict, sections);
 		print_log(env, E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
+
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
 			get_new_prog(env, dict, secname);
+
 		else if (ft_strnequ(secname, "group.", 6) == TRUE)
 			get_new_group(env, dict, secname);
+			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)
 			print_log(env, E_LOGLVL_ERRO,
