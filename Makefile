@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/03 12:05:49 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/03 17:45:23 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -132,7 +132,8 @@ PATH_CLIENT_SRCS += srcs/client/completion/
 PATH_CLIENT_SRCS += srcs/client/line_edition/
 
 PATH_DAEMON_SRCS += srcs/daemon/
-PATH_DAEMON_SRCS += srcs/daemon/intern_var/
+PATH_DAEMON_SRCS += srcs/daemon/env_var/
+PATH_DAEMON_SRCS += srcs/daemon/iniparser/
 
 PATH_COMMON_SRCS += srcs/common/
 
@@ -190,18 +191,26 @@ CLIENT_SRCS += help_function_t_v.c
 ### DAEMON
 DAEMON_SRCS += daemon_taskmaster.c
 DAEMON_SRCS += sockets.c
+
+#iniparser
+DAEMON_SRCS += defaults.c
 DAEMON_SRCS += config_parser.c
+DAEMON_SRCS += iniparser_tools.c
+DAEMON_SRCS += set_grp.c
+
 DAEMON_SRCS += log.c
 DAEMON_SRCS += dtransfert.c
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += exit_routine_d.c
-DAEMON_SRCS += defaults.c
 DAEMON_SRCS += help_d.c
 DAEMON_SRCS += opt_d.c
+DAEMON_SRCS += free.c
 DAEMON_SRCS += daemon_signals.c
 
-DAEMON_SRCS += intern_var_manager.c
-DAEMON_SRCS += intern_var_free.c
+#var
+DAEMON_SRCS += env_var_manager.c
+DAEMON_SRCS += env_var_free.c
+DAEMON_SRCS += env_var_tools.c
 
 ### COMMON
 COMMON_SRCS += decode_cmd.c

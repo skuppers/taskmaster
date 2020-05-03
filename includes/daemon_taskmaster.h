@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 16:24:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 17:38:47 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,4 +247,16 @@ typedef struct					s_variable
 	char						*name;
 	char						*data;
 }								t_variable;
+
+/*
+************************ INIPARSER
+*/
+
+dictionary 	*load_ini_file(char *str);
+int32_t		get_secint(dictionary *dict, char *secname, char *key);
+int8_t		get_secbool(dictionary *dict, char *secname, char *key);
+char		*get_secstring(dictionary *dict, char *secname, char *key);
+
+void		set_grp_list(t_env *env);
+
 # endif
