@@ -34,6 +34,13 @@ dictionary *load_ini_file(char *str)
 int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 {
 	t_list		*list;
+	char		**avs;
+
+	avs = ft_strsplit(pgrm->command, ' ');
+	pgrm->state = E_STOPPED;
+	pgrm->pgid = 0;
+	pgrm->process_name = avs[0];
+	pgrm->args = avs;
 
 	list = ft_lstnew(pgrm, sizeof(t_program));
 	if (env->prgm_list == NULL)

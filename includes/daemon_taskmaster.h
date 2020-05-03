@@ -47,8 +47,7 @@ typedef struct			s_group
 	t_list				*prog_list;
 	uint16_t			priority;
 
-	uint16_t	padding;
-	uint32_t	pad;
+	char	pad[6];
 	
 	char				*name;
 	char				*programs;
@@ -65,6 +64,13 @@ typedef struct			s_program
 	uint8_t				stopsignal;
 	uint8_t				stopwaitsec;
 	uint8_t				redirect_stderr;
+
+	char		*process_name;
+	char		**args;
+	uint8_t		state;
+	pid_t		pid;
+	pid_t		pgid;
+
 	uint8_t	padding;
 	char				*autorestart;
 	char				*name;
@@ -77,14 +83,15 @@ typedef struct			s_program
 	char				*environ;			
 }						t_program;
 
-
 typedef struct     		s_env
 {
     int32_t				unix_socket;
 	int32_t				log_fd;
 	t_options			opt;
 	struct sockaddr_un	addr;
+
 uint16_t			padding;
+
 	t_list				*prgm_list;
 	t_list				*goup_list;
 
@@ -212,6 +219,13 @@ void					taskmaster_fatal(char *failed_here, char *message);
 
 /*****************************************************/
 
+enum e_prg_state
+{
+	E_STARTING,
+	E_RUNNING,
+	E_STOPPING,
+	E_STOPPED
+};
 
 t_cmd					*decode_cmd(t_vector *trame);
 t_vector				*execute_cmd(t_cmd *cmd);
