@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:33:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 12:06:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,10 @@
 /*
 ******************* CMD
 */
+
+# define NO_ARG			0
+# define ONE_ARG		1
+# define TAB_ARG		2
 
 # define NB_CMD			24
 # define NO_OCP			0
@@ -79,5 +83,12 @@ typedef struct		s_cmd
 	int				ocp;
 	char			pad[4];
 }					t_cmd;
+
+void		debug_print_bytecode(t_vector *bytecode);
+const char *get_keyword(const uint8_t i);
+void		debug_cmd(t_cmd *cmd);
+t_cmd		*decode_cmd(t_vector *trame);
+t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
+t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
 
 #endif

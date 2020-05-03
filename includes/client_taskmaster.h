@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 17:34:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 12:06:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,6 @@ enum	e_action_keys
 };
 
 /***********************************************************/
-
-# define NO_ARG			0
-# define ONE_ARG		1
-# define TAB_ARG		2
 
 /*
 ********* ERROR MANAGEMENT

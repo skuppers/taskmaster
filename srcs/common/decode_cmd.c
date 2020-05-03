@@ -6,21 +6,11 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:51:50 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:37:57 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 12:02:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "daemon_taskmaster.h"
-
-static int		get_tab_size(char **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i] != NULL)
-		i++;
-	return ((int)i);
-}
+# include "common.h"
 
 static t_cmd	*fill_arg(t_cmd *cmd, t_vector *trame)
 {
@@ -32,7 +22,7 @@ static t_cmd	*fill_arg(t_cmd *cmd, t_vector *trame)
 	vct_pop(trame);
 	vct_cut(trame);
 	cmd->av = ft_strsplit(vct_getstr(trame), US);
-	cmd->ac = get_tab_size(cmd->av); 
+	cmd->ac = ft_tabsize(cmd->av); 
 	return (cmd);
 }
 

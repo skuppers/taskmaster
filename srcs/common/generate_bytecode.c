@@ -1,26 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   blt.c                                              :+:      :+:    :+:   */
+/*   generate_bytecode.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 13:08:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 15:06:17 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/05/03 11:47:07 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/05/03 12:02:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client_taskmaster.h"
-
-int			get_tab_size(char **tab)
-{
-	size_t	i;
-
-	i = 0;
-	while (tab[i] != NULL)
-		i++;
-	return ((int)i);
-}
+#include "common.h"
 
 static void	fill_cmd(t_vector *arg, t_cmd *cmd)
 {
@@ -28,7 +18,7 @@ static void	fill_cmd(t_vector *arg, t_cmd *cmd)
 	int						i;
 
 	cmd->av = ft_strsplit_whitespaces(vct_getstr(arg));
-	cmd->ac = get_tab_size(cmd->av);
+	cmd->ac = ft_tabsize(cmd->av);
 	tab = ft_memalloc(sizeof(char **) * (cmd->ac + 3));
 	i = 0;
 	while (i < cmd->ac)

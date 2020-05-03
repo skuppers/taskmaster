@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/02 19:25:37 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/03 12:05:49 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -134,6 +134,8 @@ PATH_CLIENT_SRCS += srcs/client/line_edition/
 PATH_DAEMON_SRCS += srcs/daemon/
 PATH_DAEMON_SRCS += srcs/daemon/intern_var/
 
+PATH_COMMON_SRCS += srcs/common/
+
 ################################################################################
 #################################               ################################
 #################################    SOURCES    ################################
@@ -159,7 +161,6 @@ CLIENT_SRCS += parse_ini.c
 
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
-CLIENT_SRCS += blt.c
 CLIENT_SRCS += clear.c
 CLIENT_SRCS += exit.c
 CLIENT_SRCS += fg.c
@@ -192,7 +193,6 @@ DAEMON_SRCS += sockets.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += log.c
 DAEMON_SRCS += dtransfert.c
-DAEMON_SRCS += decode_cmd.c
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += exit_routine_d.c
 DAEMON_SRCS += defaults.c
@@ -203,10 +203,16 @@ DAEMON_SRCS += daemon_signals.c
 DAEMON_SRCS += intern_var_manager.c
 DAEMON_SRCS += intern_var_free.c
 
+### COMMON
+COMMON_SRCS += decode_cmd.c
+COMMON_SRCS += generate_bytecode.c
+COMMON_SRCS += cmd.c
+
 ################# ATTRIBUTION
 
 vpath %.c $(PATH_CLIENT_SRCS)
 vpath %.c $(PATH_DAEMON_SRCS)
+vpath %.c $(PATH_COMMON_SRCS)
 
 ################################################################################
 #################################               ################################
@@ -217,6 +223,7 @@ vpath %.c $(PATH_DAEMON_SRCS)
 PATH_OBJS = objs/
 CLIENT_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(CLIENT_SRCS))
 DAEMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(DAEMON_SRCS))
+COMMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(COMMON_SRCS))
 
 ################################################################################
 #################################               ################################
@@ -228,8 +235,8 @@ DAEMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(DAEMON_SRCS))
 
 all: $(CLIENT) $(DAEMON)
 
-$(CLIENT): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(CLIENT_OBJS) $(LIBFT) $(LIBINI) -o $@
+$(CLIENT): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS) $(COMMON_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(CLIENT_OBJS) $(COMMON_OBJS) $(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterctl is ready.\n$(NC)"
 
 $(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -237,11 +244,16 @@ $(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 	printf "$(ONELINE)$(CYAN)Compiling $<"
 	printf "                                                            \n$(NC)"
 
-$(DAEMON): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(DAEMON_OBJS) $(LIBFT) $(LIBINI) -o $@
+$(DAEMON): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS) $(COMMON_OBJS)
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(DAEMON_OBJS) $(COMMON_OBJS) $(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterd is ready.\n$(NC)"
 
 $(DAEMON_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) -c $< -o $@
+	printf "$(ONELINE)$(CYAN)Compiling $<"
+	printf "                                                            \n$(NC)"
+
+$(COMMON_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) -c $< -o $@
 	printf "$(ONELINE)$(CYAN)Compiling $<"
 	printf "                                                            \n$(NC)"
