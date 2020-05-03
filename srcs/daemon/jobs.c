@@ -6,14 +6,33 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:16:00 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:46:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-int     child_process(t_program *prog, t_instance *instance)
+void	concat_env_to_daemon_env(t_program *prog, t_list *env)
 {
+	t_list	*env_prog;
+
+	if (prog->env == NULL)
+	{
+		prog->env = env;
+		return ;
+	}
+	env_prog = prog->env;
+	while (env_prog != NULL && env_prog->next != NULL)
+		env_prog = env_prog->next;
+	env_prog->next = env;
+}
+
+int     child_process(t_program *prog, t_instance *instance, t_list *env)
+{
+	char	**environ;
+	
+	concat_env_to_daemon_env(prog, env);	
+	environ = envtotab(prog->env);
 //	FILE *stderrfile;
 //	FILE *stdoutfile;
 
@@ -31,9 +50,10 @@ int     child_process(t_program *prog, t_instance *instance)
 	fclose(stdoutfile);
 	fclose(stderrfile);*/
 
-    if (execve(prog->bin, prog->avs, NULL) == FAILURE)
+    if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		ft_dprintf(2, "taskmasterd: Program %s instance %d execution error\n",
 				prog->name, instance->id);
+	ft_free_tab_str(environ);
 	exit(1);
 }
 
@@ -113,7 +133,7 @@ t_instance	*new_instance(uint8_t id)
 	return (new);
 }	
 
-int8_t		start_instance(t_program *prog, uint8_t id)
+int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 {
 	t_instance	*inst;
 
@@ -124,7 +144,7 @@ int8_t		start_instance(t_program *prog, uint8_t id)
 		if ((inst->pid = fork()) < 0)
 			return (-2);
 		else if (inst->pid == 0)	// child 
-			child_process(prog, inst);
+			child_process(prog, inst, environ);
 		else
 		{
 			inst->state = E_STARTING;
@@ -180,7 +200,7 @@ void    launch_jobs(t_env *env)
 			add_instance(prog, inst);		//add instance to program_list
 			if (prog->autostart == TRUE)
 			{
-				launch_success = start_instance(prog, inst_nb);
+				launch_success = start_instance(prog, inst_nb, env->environ);
 				if (launch_success == 0)
 					dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
 							inst_nb, prog->name, get_instance(prog, inst_nb)->pid,

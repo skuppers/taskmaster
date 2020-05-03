@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:42:29 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:45:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ t_list	*envtolst(char **tab)
 	{
 		variable.name = ft_strcdup(tab[i], '=');
 		variable.data = (variable.name == NULL) ?
-				NULL : ft_strdup(tab[i] + ft_strlen(variable.name));
+				NULL : ft_strdup(tab[i] + ft_strlen(variable.name) + 1);
 		if ((tmp = ft_lstnew(&variable, sizeof(t_variable))) == NULL)
 		{
 			ft_lstdel(&lst, NULL);

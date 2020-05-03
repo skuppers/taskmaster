@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:02:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:40:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.stdout_logfile = get_secstring(dict, secname, ":stdout_logfile");
 	prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
 	prog.environ = get_secstring(dict, secname, ":environment");
+	prog.env = NULL;
+	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
 	print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 }

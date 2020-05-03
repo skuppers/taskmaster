@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:04:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 18:25:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct			s_program
 	char				*stdout_logfile;
 	char				*stderr_logfile;
 	char				*environ;			
+	t_list				*env;
 }						t_program;
 
 typedef struct     		s_env
