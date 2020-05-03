@@ -199,7 +199,6 @@ DAEMON_SRCS += defaults.c
 DAEMON_SRCS += help_d.c
 DAEMON_SRCS += opt_d.c
 DAEMON_SRCS += daemon_signals.c
-DAEMON_SRCS += jobs.c
 
 DAEMON_SRCS += intern_var_manager.c
 DAEMON_SRCS += intern_var_free.c
