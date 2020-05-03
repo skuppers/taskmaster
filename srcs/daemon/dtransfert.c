@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:44:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 11:43:42 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,54 +49,6 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 	}
 	printf("Bytecode sent succesfully!\n");
 	return (0);
-}
-
-static void	debug_print_bytecode(t_vector *bytecode)
-{
-	size_t		i;
-	char		c;
-
-	i = 0;
-	ft_putstr_fd("\033[31mBytecode: \033[32m", STDERR_FILENO);
-	while (i < vct_len(bytecode))
-	{
-		c = vct_getcharat(bytecode, i);
-		if (i == 1)
-		{
-			ft_dprintf(STDERR_FILENO, "[size = %u]",
-					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
-			i += 3;
-		}
-		else if (ft_isprint(c) == TRUE)
-			ft_putchar_fd(c, STDERR_FILENO);
-		else if (c == US || c == STX || c == ETX)
-			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
-		else if (c == SOH || c == ENQ)
-			ft_dprintf(STDERR_FILENO, "\033[35m[0x%.2hhx]\033[32m", c);
-		else
-			ft_dprintf(STDERR_FILENO, "\033[36m[0x%.2hhx]\033[32m", c);
-		i++;
-	}
-	ft_dprintf(STDERR_FILENO, "\033[0m\n");
-}
-
-const char *get_keyword(const uint8_t i)
-{
-	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
-								"help", "maintail", "open", "pid", "quit",
-								"reload", "remove", "reread", "restart",
-								"shutdown", "signal", "start", "status", "stop",
-								"tail", "update", "version", "syn", "ack"};
-
-	return (grammar[i]);
-}
-
-static void	debug_cmd(t_cmd *cmd)
-{
-	ft_printf("cmd [%#.2x] (%s) | ocp = %#.2x | ac = %d\n",
-				cmd->type + 128, get_keyword(cmd->type), cmd->ocp, cmd->ac);
-	for (int i = 0; i < cmd->ac; i++)
-		ft_printf("ARG[%d] = `%s'\n", i, cmd->av[i]);
 }
 
 void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
