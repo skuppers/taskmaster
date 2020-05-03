@@ -6,16 +6,17 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 19:28:10 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 19:28:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 14:55:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-void			free_node(void *node)
+void			free_node(void *node, size_t content_size)
 {
 	t_variable	*variable;
 
+	(void)content_size;
 	variable = (t_variable *)node;
 	if (variable != NULL)
 	{
@@ -35,7 +36,7 @@ static int8_t	del_node(t_list *intern, char *name)
 		if (ft_strequ(((t_variable *)intern->content)->name, name) == TRUE)
 		{
 			tmp->next = intern->next;
-			free_node(intern->content);
+			free_node(intern->content, sizeof(t_variable));
 			free(intern->content);
 			free(intern);
 			return (SUCCESS);
@@ -58,7 +59,7 @@ int8_t			free_var(t_list **alst, char *name)
 	if (ft_strequ(var->name, name) == TRUE)
 	{
 		*alst = intern->next;
-		free_node(intern->content);
+		free_node(intern->content, sizeof(t_variable));
 		free(intern->content);
 		free(intern);
 		return (SUCCESS);

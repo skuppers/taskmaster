@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:10:36 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,35 @@ void	print_dbg(t_env *env)
 	}
 }
 
-int main(int ac, char **av)
+void	set_daemon_environment(t_env *env, char **environ)
+{
+	t_vector	*vct;
+	t_vector	*split;
+
+	env->environ = envtolst(environ);
+	if (env->opt.environ == NULL)
+		return ;
+	vct = vct_newstr(env->opt.environ);
+	while ((split = vct_split(vct, DELIMITER_STR, NO_SEP)) != NULL)
+	{
+		add_var_vct(&env->environ, split);
+		vct_del(&split);
+	}
+	vct_del(&vct);
+//	print_lst(env->environ); // DEBUG LIST ENV
+}
+
+int main(int ac, char **av, char **environ)
 {
 	t_env   env;
 
 	ft_memset(&env, 0, sizeof(t_env));
 	ft_memset(&env.opt, 0, sizeof(t_options));
 	g_env = &env;
-
 	set_taskmasterd_defautls(&env); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
 	check_dflt_directory();
-
 	get_opt(&env, ac - 1, av + 1);
-
+	set_daemon_environment(&env, environ);
 	if (init_log(&env) != 0)
 		return (-1);
 

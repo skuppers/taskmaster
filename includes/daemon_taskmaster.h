@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 19:24:17 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:06:36 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # include "dictionary.h"
 # include "iniparser.h"
 # include "common.h"
+
+# define DELIMITER_STR	","
+# define DELIMITER_CHAR	','
 
 /******************* STRUCTURES *****************/
 
@@ -94,6 +97,7 @@ uint16_t			padding;
 	volatile sig_atomic_t	sigint;
 
 	uint32_t			more_padding;
+	t_list				*environ;
 
 }                  		t_env;
 
@@ -229,7 +233,8 @@ char		**envtotab(t_list *lst);
 void		print_lst(t_list *lst);
 char		*get_var(t_list *intern, char *name);
 int8_t		add_var(t_list **alst, char *name, char *data);
-void		free_node(void *node);
+int8_t		add_var_vct(t_list **alst, t_vector *val);
+void		free_node(void *node, size_t content_size);
 int8_t		free_var(t_list **alst, char *name);
 
 typedef struct					s_variable

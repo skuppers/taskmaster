@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 19:05:15 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 19:33:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/03 15:09:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,27 @@ int8_t			add_var(t_list **alst, char *name, char *data)
 		lst = lst->next;
 	}
 	return (create_node(alst, name, data));
+}
+
+int8_t			add_var_vct(t_list **alst, t_vector *val)
+{
+	t_vector	*name;
+
+	if (val == NULL) 
+		return (FAILURE);
+	vct_trimfront(val, " \t");
+	if (vct_apply(val, IS_PRINTABLE) == FALSE || vct_getfirstchar(val) == '='
+		|| vct_len(val) == 0)
+		return (FAILURE);
+	name = vct_splitchr(val, '=', DEL_CHAR);
+	vct_trimfront(val, " \t");
+	if ((vct_getfirstchar(val) == '"' && vct_getlastchar(val) == '"')
+		|| (vct_getfirstchar(val) == '\'' && vct_getlastchar(val) == '\''))
+	{
+		vct_pop(val);
+		vct_cut(val);
+	}
+	add_var(alst, vct_getstr(name), vct_getstr(val));
+	vct_del(&name);
+	return (SUCCESS);
 }
