@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/time.h>
+# include <sys/wait.h>
 # include <time.h>
 # include <dirent.h>
 # include <sys/types.h>

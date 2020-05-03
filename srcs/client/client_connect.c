@@ -34,12 +34,12 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 			strerror(errno));
     	return (FAILURE);
   	}
-	if (check_connection(env) != 0)
+/*	if (check_connection(env) != 0)
 	{
 		dprintf(STDERR_FILENO, "Error connecting to taskmasterd (sigpipe), maybe another client is running?");
 		close(env->unix_socket);
 		return (FAILURE);
-	}
+	}*/
 	dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
 	return (SUCCESS);
 }
