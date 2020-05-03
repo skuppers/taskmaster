@@ -41,7 +41,7 @@ typedef	struct			s_options
 	char				*str[8];
 	char				*environ;  //TODO
 }						t_options;
-
+/*
 typedef struct			s_group
 {
 	t_list				*prog_list;
@@ -52,9 +52,26 @@ typedef struct			s_group
 	char				*name;
 	char				*programs;
 }						t_group;
+*/
+typedef struct			s_instance
+{
+	uint16_t			id;
+	uint8_t				state;
+	pid_t				pid;
+	time_t				start_time;
+	struct s_instance	*next;
+	// uptime		
+}						t_instance;
 
 typedef struct			s_program
 {
+	char				*name;
+
+	char				*bin;
+	char				**avs;
+	t_instance			*instance;
+
+	char				*command;
 	mode_t				umask;
 	uint16_t			priority;
 	uint16_t			startsec;
@@ -64,17 +81,9 @@ typedef struct			s_program
 	uint8_t				stopsignal;
 	uint8_t				stopwaitsec;
 	uint8_t				redirect_stderr;
-
-	char		*process_name;
-	char		**args;
-	uint8_t		state;
-	pid_t		pid;
-	pid_t		pgid;
-
 	uint8_t	padding;
 	char				*autorestart;
-	char				*name;
-	char				*command;
+	
 	char				*directory;
 	char				*exitcodes;
 	char				*user;
@@ -111,6 +120,12 @@ uint16_t			padding;
 
 extern	t_env			*g_env;
 
+/*************************************************/
+
+
+/*********************  JOBS  ********************/
+
+void    					launch_jobs(t_env *env);
 
 /*************************************************/
 

@@ -36,11 +36,10 @@ int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 	t_list		*list;
 	char		**avs;
 
+	pgrm->instance = NULL;
 	avs = ft_strsplit(pgrm->command, ' ');
-	pgrm->state = E_STOPPED;
-	pgrm->pgid = 0;
-	pgrm->process_name = avs[0];
-	pgrm->args = avs;
+	pgrm->bin = avs[0];
+	pgrm->avs = avs;
 
 	list = ft_lstnew(pgrm, sizeof(t_program));
 	if (env->prgm_list == NULL)
@@ -49,7 +48,7 @@ int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 		ft_lstadd(&env->prgm_list, list);
 	return (0);
 }
-
+/*
 int8_t	append_to_grplist(t_env *env, t_group *grp)
 {
 	t_list		*list;
@@ -60,7 +59,7 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 	else
 		ft_lstadd(&env->goup_list, list);
 	return (0);
-}
+}*/
 
 char	*get_secstring(dictionary *dict, char *secname, char *key)
 {
@@ -103,7 +102,7 @@ void	parse_ini_file(t_env *env, dictionary *dict)
 	int32_t		sections;
 	char		*secname;
 	t_program	prog;
-	t_group		group;
+//	t_group		group;
 
 	sections = iniparser_getnsec(dict);
 	print_log(env, E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
@@ -137,11 +136,12 @@ print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
 		}
 		else if (ft_strnequ(secname, "group.", 6) == 1)
 		{
-			group.name = ft_strsub(secname, 6, ft_strlen(secname) - 6);
+/*			group.name = ft_strsub(secname, 6, ft_strlen(secname) - 6);
 print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 			group.programs = get_secstring(dict, secname, ":programs");
 			group.priority = (uint16_t)get_secint(dict, secname, ":priority");
 			append_to_grplist(env, &group);
+*/
 		}
 		else if (ft_strequ(secname, "taskmasterd") == 0
 					&& ft_strequ(secname, "taskmasterctl") == 0)

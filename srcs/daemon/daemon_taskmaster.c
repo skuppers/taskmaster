@@ -22,7 +22,8 @@ void	print_dbg(t_env *env)
 	{
 		printf("Program: %s\n", ((t_program *)ptr->content)->name);
 		printf(" - command:\t%s\n", ((t_program *)ptr->content)->command);
-		printf(" - bin:\t%s\n", ((t_program *)ptr->content)->process_name);
+		printf(" - bin:\t%s\n", ((t_program *)ptr->content)->bin);
+	//	printf(" - bin:\t%s\n", ((t_program *)ptr->content)->avs);
 		printf(" - numprocs:\t%d\n", ((t_program *)ptr->content)->numprocs);
 		printf(" - directory:\t%s\n", ((t_program *)ptr->content)->directory);
 		printf(" - umask:\t%u\n", ((t_program *)ptr->content)->umask);
@@ -42,9 +43,10 @@ void	print_dbg(t_env *env)
 	}
 	for (ptr = env->goup_list ; ptr != NULL; ptr = ptr->next)
 	{
-		printf("Group: %s\n", ((t_group *)ptr->content)->name);
+/*		printf("Group: %s\n", ((t_group *)ptr->content)->name);
 		printf(" - programs: %s\n", ((t_group *)ptr->content)->programs);
 		printf(" - priority: %d\n", ((t_group *)ptr->content)->priority);
+*/
 	}
 }
 
@@ -79,7 +81,9 @@ int main(int ac, char **av)
 
 	//once all is ready, daemonize
 	// And listen for incoming connections
-	start_jobs(&env);
+	launch_jobs(&env);
+
+	
 
 	listen_for_data(&env);
 	
