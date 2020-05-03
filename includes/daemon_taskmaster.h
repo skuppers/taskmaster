@@ -69,30 +69,36 @@ typedef struct			s_instance
 
 typedef struct			s_program
 {
-	char				*name;
+	char				*name;					// [program.name]
+	char				*command;				// command=/usr/bin/cat syslog
 
-	char				*bin;
-	char				**avs;
-	t_instance			*instance;
+	char				*bin;					// /usr/bin/cat
+	char				**avs;					// [1] syslog
+	t_instance			*instance;				
 
-	char				*command;
+	char				*user;
 	mode_t				umask;
+	char				*directory;
+
 	uint16_t			priority;
+
 	uint16_t			startsec;
 	uint16_t			startretries;
+
 	uint8_t				numprocs;
+
 	uint8_t				autostart;
+	char				*autorestart;
+
+	char				*exitcodes;
 	uint8_t				stopsignal;
 	uint8_t				stopwaitsec;
+
 	uint8_t				redirect_stderr;
 	uint8_t	padding;
-	char				*autorestart;
 	
-	char				*directory;
-	char				*exitcodes;
-	char				*user;
-	char				*stdout_logfile;
-	char				*stderr_logfile;
+	char				*stdout_logfile;		// should be done
+	char				*stderr_logfile;		// should be done
 	char				*environ;			
 }						t_program;
 
