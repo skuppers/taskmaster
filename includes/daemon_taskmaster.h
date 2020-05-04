@@ -31,6 +31,7 @@
 # include "dictionary.h"
 # include "iniparser.h"
 # include "common.h"
+# include <assert.h>
 
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
@@ -170,7 +171,8 @@ enum e_prg_state
 	E_STOPPING,
 	E_STOPPED,
 	E_EXITED,
-	E_FATAL
+	E_FATAL,
+	E_UNKNOWN
 };
 
 t_instance				*new_instance(uint8_t id);

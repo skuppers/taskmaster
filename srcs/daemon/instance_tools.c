@@ -47,6 +47,7 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 		before->next = after;
 		free(to_del);
 	}
+	//TODO: Recalc ID
 	return (SUCCESS);
 }
 
@@ -79,13 +80,17 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 		return (ERR_STARTING);
 	if (inst->state == E_RUNNING)
 		return (ERR_RUNNING);
+
 	if ((inst->pid = fork()) < 0)
 		return (ERR_FORK);
 	else if (inst->pid == 0)	// child 
 		child_process(prog, inst, environ);
-	inst->state = E_STARTING;
-	inst->start_time = time(NULL);
-	return (SUCCESS);		// launch success
+	else
+	{
+		inst->state = E_STARTING;
+		inst->start_time = time(NULL);
+		return (SUCCESS);
+	}
 }
 
 int8_t		stop_instance(t_program *prog, t_instance *instance)

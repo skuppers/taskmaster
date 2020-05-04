@@ -37,7 +37,7 @@ void		check_instance(t_program *prog, t_instance *instance)
 	else if (instance->state == E_STOPPING
 		&& instance->uptime >= (instance->stop_time + prog->stopwaitsec))
 	{
-		kill(instance->pid, SIGKILL);
+		kill(instance->pid, SIGKILL); //TODO protect
 		instance->state = E_STOPPED;
 		instance->pid = 0;
 		instance->start_time = 0;
@@ -70,12 +70,12 @@ void		check_instance(t_program *prog, t_instance *instance)
 void        terminate_instance(t_program *prog, t_instance *instance, int status)
 {
 	if (WIFSTOPPED(status))
-		instance_stopped(prog, instance);
+		instance_stopped(prog, instance); // Ecriture sur terminal ? tcsetpgrp()
 	else if (WIFCONTINUED(status))
 		instance_continued(prog, instance);
 	else
 	{
-		if (instance->uptime < prog->startsec)
+		if (instance->uptime < prog->startsec) // Crash avant running state
 		{
 			if (instance->backoff >= prog->startretries)
 			{
@@ -123,6 +123,12 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 				dprintf(STDERR_FILENO, "==> Instance %d of %s exited with code %d\n",
 					instance->id, prog->name, instance->exitcode);
 			}
+			else
+			{
+				dprintf(STDERR_FILENO, "|%s|\n", get_instance_state(instance));
+				assert(FALSE);
+			}
+			
 		}
 	}
 }
@@ -132,11 +138,9 @@ int8_t      waiter(t_env *env)
     t_list      *list_ptr;
     t_program   *prog;
     t_instance  *instance;
-    uint8_t     all_progs_checked;
     int         status;
 
     list_ptr = env->prgm_list;
-    all_progs_checked = 0;
     while (list_ptr != NULL) // Check all programs
     {
         prog = list_ptr->content;
@@ -144,12 +148,12 @@ int8_t      waiter(t_env *env)
         while (instance != NULL)
         {
             status = 0;
-			update_instance_uptime(instance);
-			if (instance->state != E_STOPPED)
+			update_instance_uptime(instance); //TODO: Protect
+			if (instance->state != E_STOPPED && instance->state != E_FATAL && instance->state != E_EXITED) // Plus de protect
            		if (waitpid(instance->pid, &status, WNOHANG | WUNTRACED | WCONTINUED))
                 	terminate_instance(prog, instance, status);
+			
 			check_instance(prog, instance);
-            
 			instance = instance->next;
         }
         list_ptr = list_ptr->next;

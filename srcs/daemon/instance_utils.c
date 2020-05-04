@@ -28,6 +28,7 @@ char	*get_instance_state(t_instance *instance)
 		return (STATE_EXITED);
 	if (instance->state == E_FATAL)
 		return (STATE_FATAL);
+	assert(instance->state != E_UNKNOWN);
 	return (STATE_UNKNOWN);
 }
 

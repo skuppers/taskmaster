@@ -59,7 +59,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 	ft_printf("read %u bytes | trame len: %u bytes\n",
 				readstatus, vct_len(vct));
 	
-	if (ft_strequ(env->opt.str[LOGLEVEL], "DEBUG") == 1)
+	if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
 			debug_print_bytecode(vct); // DEBUG
 	
 	cmd = decode_cmd(vct);
@@ -67,7 +67,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 		ft_dprintf(STDERR_FILENO, "Error: Bad trame\n");
 	else
 	{
-		if (ft_strequ(env->opt.str[LOGLEVEL], "DEBUG") == 1)
+		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
 			debug_cmd(cmd); // DEBUG
 		execute_cmd(cmd);
 		ft_free_tab_str(cmd->av);
@@ -167,6 +167,5 @@ void listen_for_data(t_env *env)
 				handle_client_requests(env, fd_nb, &master_set);
 		}
 		waiter(env);
-		
 	}
 }
