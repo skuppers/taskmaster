@@ -6,11 +6,72 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 19:34:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:07:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
+
+t_vector	*action_start(t_instance *instance, t_program *program)
+{
+	if (instance != NULL && program != NULL)
+	{
+		if (instance->state == E_RUNNING || instance->state == E_STARTING)
+			return (get_msg(instance->name, "already started", ERR_MSG));
+		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
+			return (get_msg(instance->name, "started", INFO_MSG));
+	}
+	return (get_msg(instance->name, "start-up error", ERR_MSG));
+}
+
+t_vector	*action_stop(t_instance *instance, t_program *program)
+{
+	if (instance != NULL && program != NULL)
+	{
+		if (instance->state != E_RUNNING && instance->state != E_STARTING)
+			return (get_msg(instance->name, "already stoped", ERR_MSG));
+		if (stop_instance(program, instance) == SUCCESS)
+			return (get_msg(instance->name, "stoped", INFO_MSG));
+	}
+	return (get_msg(instance->name, "unknow error", ERR_MSG));
+}
+
+t_vector	*action_restart(t_instance *instance, t_program *program)
+{
+	if (instance != NULL && program != NULL)
+	{
+		if (instance->state == E_RUNNING || instance->state == E_STARTING)
+			stop_instance(program, instance);
+		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
+			return (get_msg(instance->name, "restarted", INFO_MSG));
+	}
+	return (get_msg(instance->name, "start-up error", ERR_MSG));
+}
+
+t_vector	*action_status(t_instance *instance, t_program *program)
+{
+	t_vector	*vct;
+	char		*str;
+	char		*state;
+
+	vct = NULL;
+	(void)program;
+	if (instance != NULL && program != NULL)
+	{
+		state = get_instance_state(instance);
+		str = ft_asprintf("%s\t\t%s\tpid %5d, uptime %d\n", instance->name,
+					state, instance->pid, instance->uptime); // A FORMATER EM FONCTION DES STATUTS
+		vct = vct_newstr(str);
+		ft_strdel(&str);
+	}
+	return (vct);
+}
+
+
+
+
+
+
 
 t_vector			*cmd_add(t_cmd *cmd)
 {
@@ -74,8 +135,14 @@ t_vector			*cmd_reread(t_cmd *cmd)
 
 t_vector			*cmd_restart(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	if (cmd->ocp == 0x01)
+		vct = exec_action_all(action_restart);
+	else if (cmd->ocp == 0x02)
+		vct = exec_action_args(cmd->av, cmd->ac, action_restart);
+	return (vct);
 }
 
 t_vector			*cmd_shutdown(t_cmd *cmd)
@@ -93,20 +160,38 @@ t_vector			*cmd_signal(t_cmd *cmd)
 
 t_vector			*cmd_start(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	if (cmd->ocp == 0x01)
+		vct = exec_action_all(action_start);
+	else if (cmd->ocp == 0x02)
+		vct = exec_action_args(cmd->av, cmd->ac, action_start);
+	return (vct);
 }
 
 t_vector			*cmd_status(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	if (cmd->ocp == 0x01)
+		vct = exec_action_all(action_status);
+	else if (cmd->ocp == 0x02)
+		vct = exec_action_args(cmd->av, cmd->ac, action_status);
+	return (vct);
 }
 
 t_vector			*cmd_stop(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	if (cmd->ocp == 0x01)
+		vct = exec_action_all(action_stop);
+	else if (cmd->ocp == 0x02)
+		vct = exec_action_args(cmd->av, cmd->ac, action_stop);
+	return (vct);
 }
 
 t_vector			*cmd_tail(t_cmd *cmd)
@@ -126,7 +211,7 @@ t_vector			*cmd_version(t_cmd *cmd)
 	(void)cmd;
 	t_vector *vct = vct_newstr("Version alpha 0.1\n");
 	
-	return (generate_feedback(vct));
+	return (vct);
 }
 
 static int			is_invalid_cmd(enum e_cmd_type type)
@@ -149,5 +234,5 @@ t_vector			*execute_cmd(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Cmd %#.2x is not recognized\n", cmd->type);
 		return (NULL);
 	}
-	return (process_cmd[cmd->type](cmd));
+	return (generate_feedback(process_cmd[cmd->type](cmd)));
 }

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 19:28:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:06:29 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct			s_instance
 {
 	uint16_t			id;
 	uint8_t				state;
+	char				*name;
 	char	pad[1];
 	pid_t				pid;
 	uint8_t				backoff;
@@ -175,7 +176,7 @@ enum e_prg_state
 	E_UNKNOWN
 };
 
-t_instance				*new_instance(uint8_t id);
+t_instance				*new_instance(uint8_t id, char *prog_name);
 int8_t					del_instance(t_program *prg, uint8_t id);
 int8_t					add_instance(t_program *prg, t_instance *inst);
 int8_t					start_instance(t_program *prog, uint8_t id, t_list *environ);
@@ -340,8 +341,11 @@ char		*get_secstring(dictionary *dict, char *secname, char *key);
 void		set_grp_list(t_env *env);
 
 /*
-************************ INIPARSER
+************************ BUILTIN
 */
+
+# define ERR_MSG	0
+# define INFO_MSG	1
 
 typedef	t_vector	*(*t_process_cmd)(t_cmd *);
 
@@ -366,5 +370,17 @@ t_vector			*cmd_stop(t_cmd *cmd);
 t_vector			*cmd_tail(t_cmd *cmd);
 t_vector			*cmd_update(t_cmd *cmd);
 t_vector			*cmd_version(t_cmd *cmd);
+
+typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
+
+t_vector	*exec_action_args(char **arg, int ac, t_action to_do);
+t_vector	*exec_action_all(t_action to_do);
+t_vector	*get_msg(char *name, char *msg, uint8_t flag);
+
+
+t_vector	*action_status(t_instance *instance, t_program *program);
+t_vector	*action_restart(t_instance *instance, t_program *program);
+t_vector	*action_stop(t_instance *instance, t_program *program);
+t_vector	*action_start(t_instance *instance, t_program *program);
 
 # endif

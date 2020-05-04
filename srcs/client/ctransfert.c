@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   transfert.c                                        :+:      :+:    :+:   */
+/*   ctransfert.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:43:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 21:52:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ t_vector		*get_response(t_env *env)
 		dprintf(STDERR_FILENO, "select failed.\n");
 		return (NULL);
 	}
-	vct = vct_new(DFL_VCT_SIZE);
 	readbytes = 0;
 	while (++fd < DFL_FD_SETSIZE)
 	{
@@ -98,10 +97,12 @@ t_vector		*get_response(t_env *env)
 			continue ;
 		if (fd == env->unix_socket)
 		{
+			vct = vct_new(DFL_VCT_SIZE);
 			if ((readbytes = vct_creadline(vct, fd, EOT)) <= 0)
 				dprintf(STDERR_FILENO, "Vctrealine failed: %s\n", strerror(errno));
 			else
 				return (decode_feedback(vct));
+			vct_del(&vct);
 		}
 	}
 	return (NULL);

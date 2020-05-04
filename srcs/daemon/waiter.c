@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:46:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 20:23:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 			else
 			{
 				dprintf(STDERR_FILENO, "|%s|\n", get_instance_state(instance));
-				assert(FALSE);
+				assert(instance->state == E_STARTING); // Plus de protect
 			}
 			
 		}
@@ -149,7 +149,8 @@ int8_t      waiter(t_env *env)
         {
             status = 0;
 			update_instance_uptime(instance); //TODO: Protect
-			if (instance->state != E_STOPPED && instance->state != E_FATAL && instance->state != E_EXITED) // Plus de protect
+			if (instance->state != E_STOPPED && instance->state != E_FATAL
+				&& instance->state != E_EXITED) // Plus de protect
            		if (waitpid(instance->pid, &status, WNOHANG | WUNTRACED | WCONTINUED))
                 	terminate_instance(prog, instance, status);
 			

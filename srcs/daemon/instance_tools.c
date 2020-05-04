@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 17:40:14 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 21:57:29 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-t_instance	*new_instance(uint8_t id)
+t_instance	*new_instance(uint8_t id, char *prog_name)
 {
 	t_instance	*new;
 
@@ -21,6 +21,7 @@ t_instance	*new_instance(uint8_t id)
 		return (NULL);
     ft_memset(new, 0, sizeof(t_instance));
 	new->id = id;
+	new->name = ft_asprintf("%s:%d", prog_name, id);
 	new->state = E_STOPPED;
 	new->next = NULL;
 	return (new);
@@ -45,6 +46,8 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 	{
 		before = get_instance(prg, id - 1);
 		before->next = after;
+		if (to_del != NULL)
+			free(to_del->name);
 		free(to_del);
 	}
 	//TODO: Recalc ID

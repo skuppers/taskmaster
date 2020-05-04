@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/03 19:29:55 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/04 21:20:28 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -199,6 +199,7 @@ DAEMON_SRCS += instance_tools.c
 
 #builtin
 DAEMON_SRCS += execute_cmd.c
+DAEMON_SRCS += getter.c
 
 #iniparser
 DAEMON_SRCS += defaults.c

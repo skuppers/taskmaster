@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:46:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 21:56:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void    launch_jobs(t_env *env)
         prog = ptr->content;
 		while (inst_nb < prog->numprocs)
 		{
-			inst = new_instance(inst_nb);	// create instance meta
+			inst = new_instance(inst_nb, prog->name);	// create instance meta
 			if (inst == NULL)
 			{
 				dprintf(STDERR_FILENO, "Failed to allocate instance\n");
