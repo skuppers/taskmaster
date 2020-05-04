@@ -47,36 +47,46 @@ void		check_instance(t_program *prog, t_instance *instance)
 	}
 	else if (instance->state == E_BACKOFF)
 	{
-		int ret = start_instance(prog, instance->id, g_env->environ);
-		print_cmd_success("(re)start", ret, prog, instance->id);
+		start_instance(prog, instance->id, g_env->environ);
+	//	print_cmd_success("(re)start", ret, prog, instance->id);
+		dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+							instance->id, prog->name,instance->pid,
+							get_instance_state(instance));
+	}
+	else if (instance->state == E_EXITED && prog->autorestart != FALSE)
+	{
+		if (prog->autorestart == TRUE
+			|| (prog->autorestart == UNEXPECTED && !is_expected_exitcode(prog, instance))) // always
+		{
+			start_instance(prog, instance->id, g_env->environ);
+			dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+							instance->id, prog->name,instance->pid,
+							get_instance_state(instance));
+			//print_cmd_success("(re)start", ret, prog, instance->id);
+		}
 	}
 }
 
 void        terminate_instance(t_program *prog, t_instance *instance, int status)
 {
-    int exit_code;
-	
 	if (WIFSTOPPED(status))
 		instance_stopped(prog, instance);
 	else if (WIFCONTINUED(status))
 		instance_continued(prog, instance);
 	else
 	{
-		//exit_code = WEXITSTATUS(status);
-		//dprintf(STDERR_FILENO, "=> Instance %d from %s exited with code %d\n",
-		//	instance->id, prog->name, exit_code);
 		if (instance->uptime < prog->startsec)
 		{
 			if (instance->backoff >= prog->startretries)
 			{
-				dprintf(STDERR_FILENO, "=====> Instance %d from %s entered FATAL state.\n",
+				dprintf(STDERR_FILENO, "=====> Instance %d of %s entered FATAL state.\n",
 					instance->id, prog->name);
 				instance->state = E_FATAL;
 				instance->backoff = 0;
 			}
 			else
 			{
-				dprintf(STDERR_FILENO, "===> Instance %d from %s backoff.\n",
+				dprintf(STDERR_FILENO, "===> Instance %d of %s backoff.\n",
 				instance->id, prog->name);
 				instance->state = E_BACKOFF;
 				instance->backoff++;
@@ -85,12 +95,34 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 			instance->start_time = 0;
 			instance->stop_time = time(NULL);
 			instance->uptime = 0;
+			instance->exitcode = 0;
 		}
-		else //expected ?  { restart x times }
+		else // was in RUNNING state
 		{
-			instance->state = E_STOPPED;
-			instance->pid = 0;
-			instance->start_time = 0;
+			if (instance->state == E_STOPPING) // stopped by user dont restart
+			{	// SIGCHLD proper way
+				instance->state = E_STOPPED;
+				instance->pid = 0;
+				instance->start_time = 0;
+				instance->stop_time = time(NULL);
+				instance->uptime = 0;
+				instance->backoff = 0;
+				instance->exitcode = 0;
+				dprintf(STDERR_FILENO, "=> Instance %d of %s stopped\n",
+					instance->id, prog->name);
+			}
+			else if (instance->state == E_RUNNING) // Exited self
+			{
+				instance->exitcode = WEXITSTATUS(status);
+				instance->state = E_EXITED;
+				instance->pid = 0;
+				instance->start_time = 0;
+				instance->stop_time = time(NULL);
+				instance->uptime = 0;
+				instance->backoff = 0;
+				dprintf(STDERR_FILENO, "==> Instance %d of %s exited with code %d\n",
+					instance->id, prog->name, instance->exitcode);
+			}
 		}
 	}
 }
@@ -111,13 +143,6 @@ int8_t      waiter(t_env *env)
         instance = prog->instance;
         while (instance != NULL)
         {
-			// TESTS
-	/*		if (instance->uptime >= 3 && instance->state != E_STOPPED)
-			{
-				int sc = stop_instance(prog, instance);
-				print_cmd_success("stop", sc, prog, instance->id);
-			}
-*/
             status = 0;
 			update_instance_uptime(instance);
 			if (instance->state != E_STOPPED)

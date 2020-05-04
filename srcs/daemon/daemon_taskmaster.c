@@ -29,10 +29,11 @@ void	print_dbg(t_env *env)
 		printf(" - umask:\t%u\n", ((t_program *)ptr->content)->umask);
 		printf(" - priority:\t%d\n", ((t_program *)ptr->content)->priority);
 		printf(" - autostart:\t%d\n", ((t_program *)ptr->content)->autostart);
-		printf(" - autorestart:\t%s\n", ((t_program *)ptr->content)->autorestart);
+		printf(" - autorestart:\t%d\n", ((t_program *)ptr->content)->autorestart);
 		printf(" - startsecs:\t%d\n", ((t_program *)ptr->content)->startsec);
 		printf(" - startretries:\t%d\n", ((t_program *)ptr->content)->startretries);
-		printf(" - exitcodes:\t%s\n", ((t_program *)ptr->content)->exitcodes);
+		printf(" - exitcodes:\n");
+		ft_print_strtab(((t_program *)ptr->content)->exitcodes);
 		printf(" - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
 		printf(" - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsec);
 		printf(" - user:\t\t%s\n", ((t_program *)ptr->content)->user);

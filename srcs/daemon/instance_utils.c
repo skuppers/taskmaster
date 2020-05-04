@@ -55,3 +55,17 @@ void		update_instance_uptime(t_instance *instance)
 		instance->uptime = (uint32_t)(now - instance->start_time);
 	}
 }
+
+int8_t		is_expected_exitcode(t_program *prg, t_instance *inst)
+{
+	int i;
+
+	i = 0;
+	while (prg->exitcodes[i])
+	{
+		if (ft_atoi(prg->exitcodes[i]) == inst->exitcode)
+			return (TRUE);
+		++i;
+	}
+	return (FALSE);
+}

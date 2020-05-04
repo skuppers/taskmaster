@@ -67,6 +67,7 @@ typedef struct			s_instance
 	time_t				start_time;
 	time_t				stop_time;
 	int32_t				uptime;
+	int32_t				exitcode;
 	struct s_instance	*next;
 	// uptime		
 }						t_instance;
@@ -92,14 +93,15 @@ typedef struct			s_program
 	uint8_t				autostart;			// Done
 
 	uint8_t			startretries; // START-retries (not reached running state)
-	char				*autorestart; // auto-RE-start (IN running state) // false, true, unexpected
-	char				*exitcodes;		
+	
+	uint8_t				autorestart; // auto-RE-start (IN running state) // false, true, unexpected
+	char				**exitcodes;
 	
 	uint8_t				redirect_stderr;
 	uint8_t	padding;
-	
 	char				*stdout_logfile;		// should be done
 	char				*stderr_logfile;		// should be done
+	
 	char				*environ;			
 	t_list				*env;
 }						t_program;
@@ -158,6 +160,8 @@ extern	t_env			*g_env;
 # define ERR_FATAL		-6
 # define ERR_EXITED		-7
 
+# define UNEXPECTED		2
+
 enum e_prg_state
 {
 	E_STARTING,
@@ -181,6 +185,9 @@ void    				launch_jobs(t_env *env);
 int     				child_process(t_program *prog, t_instance *instance, t_list *env);
 int8_t					waiter(t_env *env);
 void					update_instance_uptime(t_instance *instance);
+
+
+int8_t		is_expected_exitcode(t_program *prg, t_instance *inst);
 
 void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 

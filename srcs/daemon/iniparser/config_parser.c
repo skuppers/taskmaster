@@ -35,6 +35,32 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 	return (0);
 }
 
+void		get_exitcodes(t_program *prog, dictionary *dict, char *secname)
+{
+	char	*to_split;
+
+	to_split = get_secstring(dict, secname, ":exitcodes");
+	if (to_split == NULL)
+		to_split = "0";
+	prog->exitcodes = ft_strsplit(to_split, ',');
+}
+
+uint8_t		get_autorestart(dictionary *dict, char *secname)
+{
+	char	*str;
+
+	str = get_secstring(dict, secname, ":autorestart");
+	if (ft_strequ(str, "true") == 1)
+		return (TRUE);
+	if (ft_strequ(str, "false") == 1)
+		return (FALSE);
+	if (ft_strequ(str, "unexpected") == 1)
+		return (UNEXPECTED);
+	dprintf(STDERR_FILENO, "Autorestart: Unknown string: %s, defaulting to false\n", str);
+	return (FALSE);
+}
+
+
 static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 {
 	t_program	prog;
@@ -46,10 +72,10 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.umask = (mode_t)get_secint(dict, secname, ":umask");
 	prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
 	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
-	prog.autorestart = get_secstring(dict, secname, ":autorestart");
+	prog.autorestart = get_autorestart(dict, secname);
 	prog.startsec = get_secint(dict, secname, ":startsec");
 	prog.startretries = (int8_t)get_secint(dict, secname, ":startretries");
-	prog.exitcodes = get_secstring(dict, secname, ":exitcodes");
+	get_exitcodes(&prog, dict, secname);
 	prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal");
 	prog.stopwaitsec = (uint8_t)get_secint(dict, secname, ":stopwaitsec");
 	prog.user = get_secstring(dict, secname, ":user");

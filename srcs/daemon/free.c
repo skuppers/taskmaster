@@ -40,6 +40,7 @@ void			del_prgm(void *node, size_t content_size)
 		if (((t_program *)node)->instance != NULL)
 			clear_instances(((t_program *)node)->instance);
 		ft_free_tab_str(((t_program *)node)->avs);
+		ft_free_tab_str(((t_program *)node)->exitcodes	);
 	}
 	free(node);
 }
