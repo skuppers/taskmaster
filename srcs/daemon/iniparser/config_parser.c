@@ -45,49 +45,148 @@ void		get_exitcodes(t_program *prog, dictionary *dict, char *secname)
 	prog->exitcodes = ft_strsplit(to_split, ',');
 }
 
-uint8_t		get_autorestart(dictionary *dict, char *secname)
+uint8_t		get_autorestart(uint8_t *error, dictionary *dict, char *secname)
 {
 	char	*str;
 
 	str = get_secstring(dict, secname, ":autorestart");
-	if (ft_strequ(str, "true") == 1)
-		return (TRUE);
-	if (ft_strequ(str, "false") == 1)
-		return (FALSE);
-	if (ft_strequ(str, "unexpected") == 1)
+	if (str == NULL)
 		return (UNEXPECTED);
-	dprintf(STDERR_FILENO, "Autorestart: Unknown string: %s, defaulting to false\n", str);
+	if (ft_strequ(str, "true") || ft_strequ(str, "TRUE") || ft_strequ(str, "1"))
+		return (TRUE);
+	if (ft_strequ(str, "false") || ft_strequ(str, "FALSE") || ft_strequ(str, "0"))
+		return (FALSE);
+	if (ft_strequ(str, "unexpected") || ft_strequ(str, "UNEXPECTED"))
+		return (UNEXPECTED);
+	dprintf(STDERR_FILENO, "[%s] - autorestart does not match known instructions:"
+							" TRUE / FALSE / UNEXPECTED\n", secname);
+	*error = 1;
 	return (FALSE);
 }
 
+int8_t		is_in_range(int32_t i, int32_t min, int32_t max)
+{
+	if (i < min || i > max)
+		return (FALSE);
+	return (TRUE);
+}	
+
+uint8_t		get_numprocs(uint8_t *error, dictionary *d, char *name)
+{
+	int32_t		get;
+
+	get = get_secint(d, name, ":numprocs");
+	if (get == 0)
+		return (1);
+	if (!is_in_range(get, 1, 255))
+	{
+		dprintf(STDERR_FILENO, "[%s] - numprocs is not in range 1-255\n", name);
+		*error = 1;
+		return (0);
+	}
+	return ((uint8_t)get);
+}
+
+char		*get_command(uint8_t *error, dictionary *d, char *name)
+{
+	char	*cmd;
+
+	cmd = get_secstring(d, name, ":command");
+	if (cmd == NULL || ft_strlen(cmd) == 0)
+	{
+		dprintf(STDERR_FILENO, "[%s] - You need to specify a command!\n", name);
+		*error = 1;
+		return (NULL);
+	}
+	return (cmd);
+}
+
+uint8_t		get_startsecs(uint8_t *error, dictionary *d, char *name)
+{
+	int32_t get;
+
+	get = get_secint(d, name, ":startsecs");
+	if (get == 0)
+		get = 1;
+	if (!is_in_range(get, 1, 255))
+	{
+		dprintf(STDERR_FILENO, "[%s] - startsecs is not in range: 1-255\n", name);
+		*error = 1;
+		return (0);
+	}
+	return ((uint8_t)get);
+}
+
+uint8_t		get_startretries(uint8_t *err, dictionary *d, char *name)
+{
+	int32_t get;
+	
+	get = get_secint(d, name, ":startretries");
+	if (get == 0)
+		get = 3;
+	if (!is_in_range(get, 1, 255))
+	{
+		dprintf(STDERR_FILENO, "[%s] - startretries is not in range: 1-255\n", name);
+		*err = 1;
+		return (0);
+	}
+	return ((uint8_t)get);
+}
+
+uint8_t		get_stopwaitsecs(uint8_t *err, dictionary *d, char *name)
+{
+	int32_t get;
+	
+	get = get_secint(d, name, ":stopwaitsecs");
+	if (get == 0)
+		get = 1;
+	if (!is_in_range(get, 1, 255))
+	{
+		dprintf(STDERR_FILENO, "[%s] - stopwaitsecs is not in range: 1-255\n", name);
+		*err = 1;
+		return (0);
+	}
+	return ((uint8_t)get);
+}
 
 static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 {
 	t_program	prog;
+	uint8_t		error;
 
+	error = 0;
 	prog.name = ft_strsub(secname, 8, ft_strlen(secname) - 8);
-	prog.command = get_secstring(dict, secname, ":command");
-	prog.numprocs = (uint8_t)get_secint(dict, secname, ":numprocs");
+	
+	prog.command =  get_command(&error, dict, secname);
+	prog.numprocs = get_numprocs(&error, dict, secname);
+	prog.autostart = get_secbool(dict, secname, ":autostart");;
+	prog.autorestart = get_autorestart(&error, dict, secname);
+	prog.startsecs = get_startsecs(&error, dict, secname);
+	prog.startretries = get_startretries(&error, dict, secname);
+	prog.stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
+	get_exitcodes(&prog, dict, secname);
+
+
+	prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal"); //TODO
+	
+	prog.user = get_secstring(dict, secname, ":user");
+	prog.redirect_stderr = (uint8_t)get_secbool(dict, secname, ":redirect_stderr");
+	prog.stdout_logfile = get_secstring(dict, secname, ":stdout_logfile");
+	prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
 	prog.directory = get_secstring(dict, secname, ":directory");
 	prog.umask = (mode_t)get_secint(dict, secname, ":umask");
 	prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
-	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
-	prog.autorestart = get_autorestart(dict, secname);
-	prog.startsec = get_secint(dict, secname, ":startsec");
-	prog.startretries = (int8_t)get_secint(dict, secname, ":startretries");
-	get_exitcodes(&prog, dict, secname);
-	prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal");
-	prog.stopwaitsec = (uint8_t)get_secint(dict, secname, ":stopwaitsec");
-	prog.user = get_secstring(dict, secname, ":user");
-	prog.redirect_stderr = (uint8_t)get_secbool(dict, secname,
-													":redirect_stderr");
-	prog.stdout_logfile = get_secstring(dict, secname, ":stdout_logfile");
-	prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
+
 	prog.environ = get_secstring(dict, secname, ":environment");
 	prog.env = NULL;
 	strvalue_to_lst(&prog.env, prog.environ);
+	if (error == 1)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
+		exit_routine();
+	}
 	append_to_pgrmlist(env, &prog);
-	print_log(env, E_LOGLVL_DEBG, "Inifile: found program: %s\n", prog.name);
+	print_log(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
 }
 
 static void	get_new_group(t_env *env, dictionary *dict, char *secname)

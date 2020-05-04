@@ -28,14 +28,14 @@ void    instance_continued(t_program *prog, t_instance *instance)
 
 void		check_instance(t_program *prog, t_instance *instance)
 {
-	if (instance->state == E_STARTING && instance->uptime >= prog->startsec)
+	if (instance->state == E_STARTING && instance->uptime >= prog->startsecs)
 	{
 		instance->state = E_RUNNING;
    		dprintf(STDERR_FILENO, "Instance %d of %s entered %s state after %d secs\n",
                 instance->id, prog->name, STATE_RUNNING, instance->uptime);
 	}
 	else if (instance->state == E_STOPPING
-		&& instance->uptime >= (instance->stop_time + prog->stopwaitsec))
+		&& instance->uptime >= (instance->stop_time + prog->stopwaitsecs))
 	{
 		kill(instance->pid, SIGKILL); //TODO protect
 		instance->state = E_STOPPED;
@@ -75,7 +75,7 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 		instance_continued(prog, instance);
 	else
 	{
-		if (instance->uptime < prog->startsec) // Crash avant running state
+		if (instance->uptime < prog->startsecs) // Crash avant running state
 		{
 			if (instance->backoff >= prog->startretries)
 			{

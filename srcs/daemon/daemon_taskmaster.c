@@ -25,17 +25,18 @@ void	print_dbg(t_env *env)
 		printf(" - bin:\t%s\n", ((t_program *)ptr->content)->bin);
 	//	printf(" - bin:\t%s\n", ((t_program *)ptr->content)->avs);
 		printf(" - numprocs:\t%d\n", ((t_program *)ptr->content)->numprocs);
+		printf(" - autostart:\t%d\n", ((t_program *)ptr->content)->autostart);
+		printf(" - autorestart:\t%d\n", ((t_program *)ptr->content)->autorestart);
+		printf(" - startsecs:\t%d\n", ((t_program *)ptr->content)->startsecs);
+		printf(" - startretries:\t%d\n", ((t_program *)ptr->content)->startretries);
+		printf(" - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsecs);
+		printf(" - exitcodes:\n");
+		ft_print_strtab(((t_program *)ptr->content)->exitcodes);
+
 		printf(" - directory:\t%s\n", ((t_program *)ptr->content)->directory);
 		printf(" - umask:\t%u\n", ((t_program *)ptr->content)->umask);
 		printf(" - priority:\t%d\n", ((t_program *)ptr->content)->priority);
-		printf(" - autostart:\t%d\n", ((t_program *)ptr->content)->autostart);
-		printf(" - autorestart:\t%d\n", ((t_program *)ptr->content)->autorestart);
-		printf(" - startsecs:\t%d\n", ((t_program *)ptr->content)->startsec);
-		printf(" - startretries:\t%d\n", ((t_program *)ptr->content)->startretries);
-		printf(" - exitcodes:\n");
-		ft_print_strtab(((t_program *)ptr->content)->exitcodes);
 		printf(" - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
-		printf(" - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsec);
 		printf(" - user:\t\t%s\n", ((t_program *)ptr->content)->user);
 		printf(" - redirect_stderr:\t%d\n", ((t_program *)ptr->content)->redirect_stderr);
 		printf(" - stdout_logfile:\t%s\n", ((t_program *)ptr->content)->stdout_logfile);

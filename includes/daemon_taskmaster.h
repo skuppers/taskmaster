@@ -88,8 +88,8 @@ typedef struct			s_program
 	char				*directory;
 	uint16_t			priority;
 
-	int32_t				startsec;			// Done
-	uint16_t			stopwaitsec;		// TODO: SIGCHLD
+	uint8_t			startsecs;			// Done
+	uint8_t				stopwaitsecs;		// TODO: SIGCHLD
 	uint8_t				numprocs;			// Done
 	uint8_t				stopsignal;			// Done
 	uint8_t				autostart;			// Done
