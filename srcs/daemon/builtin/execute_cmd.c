@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 22:07:17 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:37:27 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 t_vector	*action_start(t_instance *instance, t_program *program)
 {
+	(void)sig;
 	if (instance != NULL && program != NULL)
 	{
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
@@ -26,11 +27,12 @@ t_vector	*action_start(t_instance *instance, t_program *program)
 
 t_vector	*action_stop(t_instance *instance, t_program *program)
 {
+	(void)sig;
 	if (instance != NULL && program != NULL)
 	{
 		if (instance->state != E_RUNNING && instance->state != E_STARTING)
 			return (get_msg(instance->name, "already stoped", ERR_MSG));
-		if (stop_instance(program, instance) == SUCCESS)
+		if (stop_instance(program, instance, SIGTERM) == SUCCESS)
 			return (get_msg(instance->name, "stoped", INFO_MSG));
 	}
 	return (get_msg(instance->name, "unknow error", ERR_MSG));
@@ -38,10 +40,11 @@ t_vector	*action_stop(t_instance *instance, t_program *program)
 
 t_vector	*action_restart(t_instance *instance, t_program *program)
 {
+	(void)sig;
 	if (instance != NULL && program != NULL)
 	{
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
-			stop_instance(program, instance);
+			stop_instance(program, instance, SIGTERM);
 		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
 			return (get_msg(instance->name, "restarted", INFO_MSG));
 	}
@@ -56,6 +59,7 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 
 	vct = NULL;
 	(void)program;
+	(void)sig;
 	if (instance != NULL && program != NULL)
 	{
 		state = get_instance_state(instance);
@@ -67,7 +71,19 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	return (vct);
 }
 
-
+t_vector	*action_signal(t_instance *instance, t_program *program)
+{
+	(void)sig;
+	if (instance != NULL && program != NULL)
+	{
+		if (instance->state != E_RUNNING && instance->state != E_STARTING)
+			return (get_msg(instance->name,
+				"attempting to send signal but it wasn't running", ERR_MSG));
+		if (stop_instance(program, instance, g_env->sig_tmp) == SUCCESS)
+			return (get_msg(instance->name, "signaled", INFO_MSG));
+	}
+	return (get_msg(instance->name, "Unknow error", ERR_MSG));
+}
 
 
 
@@ -154,7 +170,24 @@ t_vector			*cmd_shutdown(t_cmd *cmd)
 
 t_vector			*cmd_signal(t_cmd *cmd)
 {
-	(void)cmd;
+	t_vector	*vct;
+
+	if (cmd->ac == 1)
+		return (NULL);
+	if (ft_strcheck(cmd->av[0], ft_isdigit) == FALSE
+		|| ft_strlen(cmd->av[0]) > 2 || ft_atoi(cmd->av[0]) > 32)
+	{
+		vct = vct_new("Bad signal: ");
+		vct_addstr(av[0]);
+		vct_add('\n');
+		return (vct);
+	}
+	g_env->sig_tmp = ft_atoi(cmd->av[0]); 
+	if (cmd->ocp == 0x01)
+		vct = exec_action_all(action_start);
+	else if (cmd->ocp == 0x02)
+		vct = exec_action_args(cmd->av + 1, cmd->ac - 1, action_start);
+	g_env->sig_tmp = 0; 
 	return (NULL);
 }
 

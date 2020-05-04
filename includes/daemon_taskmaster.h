@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 22:06:29 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:33:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,11 @@ uint16_t			padding;
 	t_list				*group_list;
 
 	uint8_t				client_connected;
+	int					sig_tmp;
 	char paddng[7];
 	dictionary			*dict;
 	volatile sig_atomic_t	sigint;
-
+	
 	uint32_t			more_padding;
 	t_list				*environ;
 
