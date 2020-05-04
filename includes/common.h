@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 12:06:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 17:38:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ void		debug_cmd(t_cmd *cmd);
 t_cmd		*decode_cmd(t_vector *trame);
 t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
 t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
+t_vector	*generate_feedback(t_vector *input);
+t_vector	*decode_feedback(t_vector *trame);
 
 #endif

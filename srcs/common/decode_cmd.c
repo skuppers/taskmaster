@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:51:50 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 12:02:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 17:39:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,38 @@ static t_cmd	*fill_arg(t_cmd *cmd, t_vector *trame)
 	return (cmd);
 }
 
-t_cmd			*decode_cmd(t_vector *trame)
+static int		pre_trame(t_vector *trame)
 {
-	static t_cmd	cmd;
 	uint32_t		size;
 
-	ft_bzero(&cmd, sizeof(t_cmd));
 	if (vct_getfirstchar(trame) != SOH || vct_getlastchar(trame) != ENQ)
-		return (NULL);
+		return (FAILURE);
 	vct_pop(trame);
 	size = (*((uint64_t *)vct_getstr(trame)) & 0xffffffff);
 	if (size - 1 != vct_len(trame))
 	{
 		ft_dprintf(STDERR_FILENO, "Error: Trame has bad size\n");
-		return (NULL);
+		return (FAILURE);
 	}
 	vct_popfrom(trame, 4);
+	return (SUCCESS);
+}
+
+t_vector		*decode_feedback(t_vector *trame)
+{
+	if (pre_trame(trame) == FAILURE)
+		return (NULL);
+	vct_cut(trame);
+	return (trame);
+}
+
+t_cmd			*decode_cmd(t_vector *trame)
+{
+	static t_cmd	cmd;
+
+	ft_bzero(&cmd, sizeof(t_cmd));
+	if (pre_trame(trame) == FAILURE)
+		return (NULL);
 	if ((cmd.type = ((uint8_t)(vct_getfirstchar(trame))) - 128) > NB_CMD
 		|| cmd.type < 0)
 		return (NULL);

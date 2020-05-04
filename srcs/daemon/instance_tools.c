@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:46:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 17:40:14 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 		inst->start_time = time(NULL);
 		return (SUCCESS);
 	}
+	return (SUCCESS); // ?
 }
 
 int8_t		stop_instance(t_program *prog, t_instance *instance)

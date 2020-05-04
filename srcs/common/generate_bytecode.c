@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:47:07 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 12:02:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 17:37:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,13 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp)
 	add_size(vct);
 	vct_add(vct, EOT);
 	return (vct);
+}
+
+t_vector	*generate_feedback(t_vector *input)
+{
+	vct_push(input, SOH);
+	vct_add(input, ENQ);
+	add_size(input);
+	vct_add(input, EOT);
+	return (input);
 }
