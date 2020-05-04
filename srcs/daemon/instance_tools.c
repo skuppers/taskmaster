@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 21:57:29 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:55:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 	if (id == 0)
 	{
 		prg->instance = after;
+		if (to_del != NULL)
+			free(to_del->name);
 		free(to_del);
 	}
 	else
@@ -97,13 +99,14 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 	return (SUCCESS); // ?
 }
 
-int8_t		stop_instance(t_program *prog, t_instance *instance)
+int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 {
+	(void)prog;
 	if (instance->state == E_STOPPING)
 		return (ERR_STOPPING);
 	if (instance->state == E_STOPPED)
 		return (ERR_STOPPED);
-	kill(instance->pid, prog->stopsignal);
+	kill(instance->pid, signo);
 	instance->stop_time = time(NULL);
 	instance->state = E_STOPPING;
 	return (SUCCESS);

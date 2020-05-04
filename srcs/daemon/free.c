@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:19:43 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:27:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:58:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	clear_instances(t_instance *in)
 	while (in != NULL)
 	{
 		next = in->next;
+		free(in->name);
 		free(in);
 		in = next;
 	}
@@ -44,6 +45,7 @@ void			del_prgm(void *node, size_t content_size)
 	}
 	free(node);
 }
+
 
 void			del_group(void *node, size_t content_size)
 {

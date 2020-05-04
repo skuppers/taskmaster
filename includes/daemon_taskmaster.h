@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 22:33:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/04 22:43:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ t_instance				*new_instance(uint8_t id, char *prog_name);
 int8_t					del_instance(t_program *prg, uint8_t id);
 int8_t					add_instance(t_program *prg, t_instance *inst);
 int8_t					start_instance(t_program *prog, uint8_t id, t_list *environ);
-int8_t					stop_instance(t_program *prog, t_instance *instance);
+int8_t					stop_instance(t_program *prog, t_instance *instance, int signo);
 
 t_instance				*get_instance(t_program *prg, uint8_t id);
 char					*get_instance_state(t_instance *instance);
@@ -383,5 +383,6 @@ t_vector	*action_status(t_instance *instance, t_program *program);
 t_vector	*action_restart(t_instance *instance, t_program *program);
 t_vector	*action_stop(t_instance *instance, t_program *program);
 t_vector	*action_start(t_instance *instance, t_program *program);
+t_vector	*action_signal(t_instance *instance, t_program *program);
 
 # endif
