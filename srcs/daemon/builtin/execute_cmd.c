@@ -124,7 +124,9 @@ t_vector			*cmd_update(t_cmd *cmd)
 t_vector			*cmd_version(t_cmd *cmd)
 {
 	(void)cmd;
-	return (NULL);
+	t_vector *vct = vct_newstr("Version alpha 0.1\n");
+	
+	return (generate_feedback(vct));
 }
 
 static int			is_invalid_cmd(enum e_cmd_type type)

@@ -32,14 +32,14 @@ int16_t sendall(int sockfd, const char *buf, int16_t buflen)
     }
     if (max_retries == 0)
         return (-1);
-    return (bytes_written);
+    return (0);
 }
 
-int8_t      send_bytecode(t_vector *code, uint16_t len)
+int8_t      send_bytecode(t_vector *code, uint16_t len, int fd)
 {
 	int8_t		status;
 
-	if ((status = sendall(g_env->unix_socket, vct_getstr(code), len)) != 0)
+	if ((status = sendall(fd, vct_getstr(code), len)) != 0)
 	{
 		if (status == -1)
 			printf("Fatal error while sending bytecode: %s\n", strerror(errno));
@@ -47,13 +47,14 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 			printf("Unable to send entire bytecode.\n");
 		return (-1);
 	}
-	printf("Bytecode sent succesfully!\n");
+	dprintf(STDERR_FILENO, "Bytecode sent succesfully!\n");
 	return (0);
 }
 
-void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
+void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 {
 	t_cmd			*cmd;
+	t_vector		*resp;
 
 	ft_printf("------------------------------------------\n");
 	ft_printf("read %u bytes | trame len: %u bytes\n",
@@ -69,7 +70,13 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus)
 	{
 		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
 			debug_cmd(cmd); // DEBUG
-		execute_cmd(cmd);
+		resp = execute_cmd(cmd);
+		if (resp != NULL)
+		{
+			debug_print_bytecode(resp);
+			send_bytecode(resp, vct_len(resp), fd);
+		}
+		vct_del(&resp);
 		ft_free_tab_str(cmd->av);
 	}
 	ft_printf("------------------------------------------\n");
@@ -95,7 +102,7 @@ void	handle_client_requests(t_env *env, int fd_nb, fd_set *master_set)
 	if ((readstatus = vct_creadline(vct, fd_nb, EOT)) <= 0)
 		realine_error(env, readstatus, fd_nb, master_set);
 	else 
-		handle_client_data(env, vct, readstatus);
+		handle_client_data(env, vct, readstatus, fd_nb);
 	vct_del(&vct);
 }
 

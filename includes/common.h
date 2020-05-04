@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include "stdint.h"
+# include <sys/select.h>
 
 #define DFL_FD_SETSIZE 16
 

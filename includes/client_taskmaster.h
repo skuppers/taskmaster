@@ -158,7 +158,7 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
-int8_t				request_daemon(t_vector *bytecode, size_t codelen);
+t_vector			*get_response(t_env *env);
 int8_t     			check_connection(t_env *env);
 void				debug_print_bytecode(t_vector *bytecode);
 

@@ -11,51 +11,6 @@
 /* ************************************************************************** */
 
 # include "client_taskmaster.h"
-/*
-void	select_error(void)
-{
-	printf("Select() errror\n");
-	exit_routine();
-}
-
-int8_t		receive_ack(t_env *env)
-{
-	struct timeval	tv;
-	fd_set			recv_set;
-
-
-	tv.tv_sec = 3;
-	tv.tv_usec = 0;
-	FD_SET (env->unix_socket, &recv_set);
-
-	if (select(DFL_FD_SETSIZE, &recv_set, NULL, NULL, &tv) < 0)
-		select_error();
-
-	int32_t		readstatus;
-	t_vector	*vct;
-	int fd_nb = -1;
-	while (++fd_nb < DFL_FD_SETSIZE)
-	{
-		if (FD_ISSET(fd_nb, &recv_set) != 0)
-		{
-			if (fd_nb == env->unix_socket)
-			{
-				vct = vct_new(DFL_VCT_SIZE);
-				if ((readstatus = vct_creadline(vct, env->unix_socket, EOT)) <= 0)
-				{
-					printf("No data / Error\n");
-					return (-1);
-				}
-				else 
-				{
-					printf("ACK\n");
-					return (0);
-				}	
-			}
-		}
-	}
-	return (-1);
-}*/
 
 // 32,767 Bytes max message size
 int8_t		sendall(int sockfd, const char *buf, uint16_t buflen)
@@ -116,14 +71,38 @@ int8_t		check_connection(t_env *env)
 	return (0);
 }
 
-int8_t		request_daemon(t_vector *bytecode, size_t codelen)
+t_vector		*get_response(t_env *env)
 {
-	(void)codelen;
-	if (check_connection(g_env) < 0)
+	t_vector		*vct;
+	int				readbytes;
+	fd_set			recv_set;
+	struct timeval	tv;
+	int				fd;
+
+	fd = -1;
+	tv.tv_sec = 2;
+	tv.tv_usec = 0;
+	FD_ZERO (&recv_set);
+	FD_SET (env->unix_socket, &recv_set);
+	
+	if (select(DFL_FD_SETSIZE, &recv_set, NULL, NULL, &tv) < 0)
 	{
-		dprintf(STDERR_FILENO, "Connection is not alive: broken pipe\n");
-		return (-1);
+		dprintf(STDERR_FILENO, "select failed.\n");
+		return (NULL);
 	}
-	send_bytecode(bytecode, (uint16_t)vct_len(bytecode));
-	return (0);
+	vct = vct_new(DFL_VCT_SIZE);
+	readbytes = 0;
+	while (++fd < DFL_FD_SETSIZE)
+	{
+		if (FD_ISSET(fd, &recv_set) == 0)
+			continue ;
+		if (fd == env->unix_socket)
+		{
+			if ((readbytes = vct_creadline(vct, fd, EOT)) <= 0)
+				dprintf(STDERR_FILENO, "Vctrealine failed: %s\n", strerror(errno));
+			else
+				return (decode_feedback(vct));
+		}
+	}
+	return (NULL);
 }

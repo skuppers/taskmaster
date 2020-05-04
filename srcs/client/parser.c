@@ -36,6 +36,7 @@ static t_vector	*clean_line(t_vector *line)
 
 int	parser(t_vector *line)
 {
+	t_vector			*response;
 	t_vector			*cmd_string;
 	t_vector			*bytecode;
 	enum e_cmd_type		cmd_type;
@@ -59,14 +60,19 @@ int	parser(t_vector *line)
 	g_env->cmd = get_cmd_struct(cmd_type, line);
 //	debug_cmd(g_env->cmd); // DEBUG
 	bytecode = builtin[cmd_type](g_env->cmd);
+
 	if (bytecode != NULL)
 	{
 		if (g_env->opt.mask & OPT_DEBUG)
 			debug_print_bytecode(bytecode);	
 			///////////////// LAUNCH CMD
 		send_bytecode(bytecode, vct_len(bytecode));
-	//	request_daemon(bytecode, vct_len(bytecode));
-			
+		response = get_response(g_env);
+		if (response == NULL)
+			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
+		else
+			dprintf(STDERR_FILENO, "%s", vct_getstr(response));
+		vct_del(&response);
 	}
 	ft_free_tab_str(g_env->cmd->av);
 	g_env->cmd->av = NULL;
