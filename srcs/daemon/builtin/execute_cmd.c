@@ -30,7 +30,7 @@ t_vector	*action_stop(t_instance *instance, t_program *program)
 	{
 		if (instance->state != E_RUNNING && instance->state != E_STARTING)
 			return (get_msg(instance->name, "already stoped", ERR_MSG));
-		if (stop_instance(program, instance) == SUCCESS)
+		if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
 			return (get_msg(instance->name, "stoped", INFO_MSG));
 	}
 	return (get_msg(instance->name, "unknow error", ERR_MSG));
@@ -41,7 +41,7 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 	if (instance != NULL && program != NULL)
 	{
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
-			stop_instance(program, instance);
+			stop_instance(program, instance, program->stopsignal);
 		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
 			return (get_msg(instance->name, "restarted", INFO_MSG));
 	}

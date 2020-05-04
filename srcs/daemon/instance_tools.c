@@ -97,13 +97,13 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 	return (SUCCESS); // ?
 }
 
-int8_t		stop_instance(t_program *prog, t_instance *instance)
+int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 {
 	if (instance->state == E_STOPPING)
 		return (ERR_STOPPING);
 	if (instance->state == E_STOPPED)
 		return (ERR_STOPPED);
-	kill(instance->pid, prog->stopsignal);
+	kill(instance->pid, signo);
 	instance->stop_time = time(NULL);
 	instance->state = E_STOPPING;
 	return (SUCCESS);
