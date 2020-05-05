@@ -35,14 +35,33 @@ int8_t	append_to_grplist(t_env *env, t_group *grp)
 	return (0);
 }
 
-void		get_exitcodes(t_program *prog, dictionary *dict, char *secname)
+void		get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict, char *secname)
 {
+	int 	i;
 	char	*to_split;
 
 	to_split = get_secstring(dict, secname, ":exitcodes");
 	if (to_split == NULL)
 		to_split = "0";
 	prog->exitcodes = ft_strsplit(to_split, ',');
+	i = 0;
+	while (prog->exitcodes[i] != NULL)
+	{
+		if (ft_strlen(prog->exitcodes[i]) > 3)
+		{
+			*err = 1;
+			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not in range 0-255\n", secname);
+			return ;
+		}
+		else if (ft_atoi(prog->exitcodes[i]) > 255
+				|| ft_atoi(prog->exitcodes[i]) < 0)
+		{
+			*err = 1;
+			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not in range 0-255\n", secname);
+			return ;
+		}
+		++i;
+	}
 }
 
 uint8_t		get_autorestart(uint8_t *error, dictionary *dict, char *secname)
@@ -80,7 +99,7 @@ uint8_t		get_numprocs(uint8_t *error, dictionary *d, char *name)
 		return (1);
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - numprocs is not in range 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - numprocs is not in range 1-255: %d\n", name, get);
 		*error = 1;
 		return (0);
 	}
@@ -283,7 +302,7 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.startsecs = get_startsecs(&error, dict, secname);
 	prog.startretries = get_startretries(&error, dict, secname);
 	prog.stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
-	get_exitcodes(&prog, dict, secname);
+	get_exitcodes(&error, &prog, dict, secname);
 	prog.stopsignal = get_stopsig(&error, dict, secname);
 	prog.user = get_user(&error, dict, secname);
 	prog.directory = get_directory(&error, dict, secname);
