@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:38:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:47:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:15:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_list	*get_prgm_node(t_list *prog_list, char *name)
 	return (NULL);
 }
 
-void			set_grp_list(t_env *env)
+void			set_grp_list(t_denv *env)
 {
 	t_vector	*vct;
 	t_vector	*split;
@@ -65,19 +65,4 @@ void			set_grp_list(t_env *env)
 		}
 		lst_grp = lst_grp->next;
 	}
-/*	/// DEBUG //////////////
-
-	lst_grp = env->group_list;
-	while (lst_grp != NULL)
-	{
-		cur_grp = (t_group *)(lst_grp->content);
-		ft_printf("----- GROUP `%s' -----\n", cur_grp->name);
-		for (t_list *tmp = cur_grp->prog_list; tmp != NULL; tmp = tmp->next)
-		{
-			char *name = (tmp->content == NULL) ? ""
-				: ((t_program *)(tmp->content))->name;
-			ft_printf("\t+--> prog: %s\n", name);
-		}
-		lst_grp = lst_grp->next;
-	}*/
 }

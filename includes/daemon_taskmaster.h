@@ -6,14 +6,16 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:38:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:53:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DAEMON_TASKMASTER_H
 # define DAEMON_TASKMASTER_H
 
+# include "libft.h"
 # include <unistd.h>
+# include <stdint.h>
 # include <sys/socket.h>
 # include <sys/un.h>
 # include <stdio.h>
@@ -35,6 +37,7 @@
 
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
+
 
 /******************* STRUCTURES *****************/
 
@@ -107,7 +110,7 @@ typedef struct			s_program
 	char					**exitcodes;
 }							t_program;
 
-typedef struct     			s_env
+typedef struct     			s_denv
 {
 	int						sig_tmp;
 	volatile sig_atomic_t	sigint;
@@ -123,16 +126,12 @@ typedef struct     			s_env
 	struct sockaddr_un		addr;
 	uint8_t					client_connected;
 	char					padding[1];
-}                  			t_env;
-
-/*************************************************/
+}                  			t_denv;
 
 
 /******************** GLOBALS ********************/
 
-extern	t_env			*g_env;
-
-/*************************************************/
+extern	t_denv			*g_denv;
 
 
 /*********************  JOBS  ********************/
@@ -179,9 +178,9 @@ int8_t					stop_instance(t_program *prog, t_instance *instance, int signo);
 
 t_instance				*get_instance(t_program *prg, uint8_t id);
 char					*get_instance_state(t_instance *instance);
-void    				launch_jobs(t_env *env);
+void    				launch_jobs(t_denv *env);
 int     				child_process(t_program *prog, t_instance *instance, t_list *env);
-int8_t					waiter(t_env *env);
+int8_t					waiter(t_denv *env);
 void					update_instance_uptime(t_instance *instance);
 
 
@@ -202,10 +201,10 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 # define DFL_LOGLVL			"info"
 # define DFL_UMASK			022
 
-void						set_taskmasterd_defautls(t_env *env);
+void						set_taskmasterd_defautls(t_denv *env);
 void						check_dflt_directory(void);
 
-int							daemonize(t_env *env);
+int							daemonize(t_denv *env);
 
 /*************************************************/
 
@@ -216,9 +215,9 @@ int							daemonize(t_env *env);
 # define SEND_RETRYS			3
 # define SEND_PARTIAL_RETRYS	5
 
-int8_t					make_socket(t_env *env, char *socketpath);
-int8_t					bind_socket(t_env *env);
-void 					listen_for_data(t_env *env);
+int8_t					make_socket(t_denv *env, char *socketpath);
+int8_t					bind_socket(t_denv *env);
+void 					listen_for_data(t_denv *env);
 
 /**************************************************/
 
@@ -251,49 +250,16 @@ void 					listen_for_data(t_env *env);
 
 void					print_help(void);
 void					print_version(void);
-void					get_opt(t_env *env, int ac, char **av);
-int8_t					check_opt(t_env *env);
+void					get_opt(t_denv *env, int ac, char **av);
+int8_t					check_opt(t_denv *env);
 
 uint8_t					get_nodaemon(char *str);
 uint32_t				get_umask(char *str);
 char					**get_environ(char *str);
-void					taskmasterd_override(t_env *env, dictionary *dict);
-void					parse_ini_file(t_env *env, dictionary *dict);
+void					taskmasterd_override(t_denv *env, dictionary *dict);
+void					parse_ini_file(t_denv *env, dictionary *dict);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
-
-/**************************************************/
-
-
-/********************** LOGGER ********************/
-
-# define TIMEBUFFERSZ			64
-
-# define LOG_DEBG_STR		"[DEBUG]    "
-# define LOG_INFO_STR		"[INFO]     "
-# define LOG_WARN_STR		"[WARNING]  "
-# define LOG_ERRO_STR		"[ERROR]    "
-# define LOG_CRIT_STR		"[CRITICAL] "
-
-# define LOGLVL_DEBG		"debug"
-# define LOGLVL_INFO		"info"
-# define LOGLVL_WARN		"warning"
-# define LOGLVL_ERRO		"error"
-# define LOGLVL_CRIT		"critical"
-
-enum	e_loglvl
-{
-	E_LOGLVL_DEBG,
-	E_LOGLVL_INFO,
-	E_LOGLVL_WARN,
-	E_LOGLVL_ERRO,
-	E_LOGLVL_CRIT
-};
-
-
-int8_t					init_log(t_env *env);
-void					tlog(t_env *env, uint8_t loglvl,
-							const char *message, ...);
 
 /*****************************************************/
 
@@ -334,7 +300,7 @@ int32_t		get_secint(dictionary *dict, char *secname, char *key);
 int8_t		get_secbool(dictionary *dict, char *secname, char *key);
 char		*get_secstring(dictionary *dict, char *secname, char *key);
 
-void		set_grp_list(t_env *env);
+void		set_grp_list(t_denv *env);
 
 /*
 ************************ BUILTIN

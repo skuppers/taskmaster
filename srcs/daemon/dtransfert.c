@@ -6,19 +6,20 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:32:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:07:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
+
+void	handle_client_data(t_denv *env, t_vector *vct, int32_t readstatus, int fd)
 {
 	t_cmd			*cmd;
 	t_vector		*resp;
 
-	ft_printf("------------------------------------------\n");
-	ft_printf("read %u bytes | trame len: %u bytes\n",
+	dprintf(STDERR_FILENO, "------------------------------------------\n");
+	dprintf(STDERR_FILENO, "read %u bytes | trame len: %zu bytes\n",
 				readstatus, vct_len(vct));
 	
 	if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
@@ -26,7 +27,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 	
 	cmd = decode_cmd(vct);
 	if (cmd == NULL)
-		tlog(g_env, E_LOGLVL_ERRO, "Error: Bad trame\n");
+		tlog(E_LOGLVL_ERRO, "Error: Bad trame\n");
 	else
 	{
 		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
@@ -34,29 +35,28 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 		resp = execute_cmd(cmd);
 		if (resp != NULL)
 		{
-			tlog(env, E_LOGLVL_DEBG, "Responding.\n");
-			debug_print_bytecode(resp);
-			if (send_trame(fd, resp, vct_len(resp)) == SUCCESS)
-				tlog(g_env, E_LOGLVL_INFO, "Bytecode sent succesfully!\n");
+			tlog(E_LOGLVL_DEBG, "Responding.\n");
+			debug_print_bytecode(resp); // DEBUG
+			try_to_send_trame(fd, resp, TO_LOG, tlog);
 		}
 		vct_del(&resp);
 		ft_free_tab_str(cmd->av);
 	}
-	ft_printf("------------------------------------------\n");
+	dprintf(STDERR_FILENO, "------------------------------------------\n");
 }
 
-void	realine_error(t_env *env, int32_t readstatus, int fd_nb, fd_set *master_set)
+void	realine_error(t_denv *env, int32_t readstatus, int fd_nb, fd_set *master_set)
 {
 	if (readstatus == -1)
-	  	tlog(env, E_LOGLVL_ERRO, "Vct_readline() failed\n");
+	  	tlog(E_LOGLVL_ERRO, "Vct_readline() failed\n");
 	else if (readstatus == 0)
-	 	tlog(env, E_LOGLVL_DEBG, "=> Client disconnected\n");
+	 	tlog(E_LOGLVL_DEBG, "=> Client disconnected\n");
 	close(fd_nb);
 	FD_CLR(fd_nb, master_set);
 	env->client_connected = 0;
 }
 
-void	handle_client_requests(t_env *env, int fd_nb, fd_set *master_set)
+void	handle_client_requests(t_denv *env, int fd_nb, fd_set *master_set)
 {
 	int32_t		readstatus;
 	t_vector	*vct;
@@ -69,33 +69,35 @@ void	handle_client_requests(t_env *env, int fd_nb, fd_set *master_set)
 	vct_del(&vct);
 }
 
-void	client_connected(t_env *env, fd_set *master_set, int connectionfd)
+void	client_connected(t_denv *env, fd_set *master_set, int connectionfd)
 {
-	tlog(env, E_LOGLVL_DEBG, "=> Client connecting...\n");
+	tlog(E_LOGLVL_DEBG, "=> Client connecting...\n");
 	if (env->client_connected == 1)
 	{
-		tlog(env, E_LOGLVL_DEBG, "=> Client trying to connect, but no slot is avaible\n");
+		tlog(E_LOGLVL_DEBG, "=> Client trying to connect, but no slot is avaible\n");
 		close(connectionfd);
 		return ;
 	}
 	FD_SET(connectionfd, master_set);
-	tlog(env, E_LOGLVL_DEBG, "=> Client connected\n");
+	tlog(E_LOGLVL_DEBG, "=> Client connected\n");
 	env->client_connected = 1;
 }
 
-void	select_error(t_env *env)
+void	select_error(t_denv *env)
 {
-	tlog(env, E_LOGLVL_CRIT, "Select syscall failed: %s\n", strerror(errno));
+	(void)env;
+	tlog(E_LOGLVL_CRIT, "Select syscall failed: %s\n", strerror(errno));
 	exit_routine();
 }
 
-void	accept_error(t_env *env)
+void	accept_error(t_denv *env)
 {
-	tlog(env, E_LOGLVL_CRIT, "Select accept() failed: %s\n", strerror(errno));
+	(void)env;
+	tlog(E_LOGLVL_CRIT, "Select accept() failed: %s\n", strerror(errno));
 	exit_routine();
 }
 
-void	my_select(t_env *env, fd_set *recv_set)
+void	my_select(t_denv *env, fd_set *recv_set)
 {
 	struct timeval	tv;
 
@@ -105,7 +107,7 @@ void	my_select(t_env *env, fd_set *recv_set)
 		select_error(env);
 }
 
-void listen_for_data(t_env *env)
+void listen_for_data(t_denv *env)
 {
     int		 		connectionfd;
 	fd_set			recv_set;

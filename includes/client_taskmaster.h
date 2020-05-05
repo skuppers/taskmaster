@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:29:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:13:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,6 @@ void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
 t_vector			*get_feedback(t_env *env);
-int8_t     			check_connection(t_env *env);
 void				debug_print_bytecode(t_vector *bytecode);
 
 void				init_signals(void);

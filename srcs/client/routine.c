@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 12:49:15 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:30:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:07:44 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,16 +86,19 @@ int	send_and_receive(t_vector *trame)
 {
 	t_vector		*feedback;
 	
-	send_trame(g_env->unix_socket, trame, vct_len(trame));
-	feedback = get_feedback(g_env);
-	if (feedback == NULL)
+	if (try_to_send_trame(g_env->unix_socket, trame, TO_PRINT, dprintf) == SUCCESS)
 	{
-		dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
-		return (FAILURE);
+		feedback = get_feedback(g_env);
+		if (feedback == NULL)
+		{
+			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
+			return (FAILURE);
+		}
+		vct_print_fd(feedback, STDERR_FILENO);
+		vct_del(&feedback);
+		return (SUCCESS);
 	}
-	vct_print_fd(feedback, STDERR_FILENO);
-	vct_del(&feedback);
-	return (SUCCESS);
+	return (FAILURE);
 }
 
 int	routine(t_vector *line)

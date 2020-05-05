@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 16:56:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:16:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,14 @@ static int		parse_opt(char **av, int ac, int i)
 	{
 		if (ft_strequ(av[i], opt_str[count]) == TRUE)
 		{
-			g_env->opt.optmask |= (1 << (count / 2));
+			g_denv->opt.optmask |= (1 << (count / 2));
 			if (count >= 8) // needs arguments
 			{
 				i++;
 				if (i == ac || av[i][0] == '-')
 					error_opt(ft_asprintf("option '%s' requires argument", opt_str[count]));
 				count -= 8;
-				g_env->opt.str[count / 2] = av[i];
+				g_denv->opt.str[count / 2] = av[i];
 				return (2);
 			}
 			return (1);
@@ -59,7 +59,7 @@ static int		parse_opt(char **av, int ac, int i)
 	return (0);
 }
 
-void		get_opt(t_env *env, int ac, char **av)
+void		get_opt(t_denv *env, int ac, char **av)
 {
 	int			i;
 	int			sections;

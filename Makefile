@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/05 19:24:24 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/05 20:59:13 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -308,7 +308,6 @@ $(LIBINI): FORCE
 #--------------------------------- Basic Rules --------------------------------#
 
 clean:
-	$(RM) $(DAEMON_OBJS) $(CLIENT_OBJS)
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIBFT) clean

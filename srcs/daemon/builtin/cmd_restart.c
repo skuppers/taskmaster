@@ -18,7 +18,7 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 	{
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
 			stop_instance(program, instance, program->stopsignal);
-		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
+		if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 			return (get_msg(instance->name, "restarted", INFO_MSG));
 	}
 	return (get_msg(instance == NULL ? "???" : instance->name,

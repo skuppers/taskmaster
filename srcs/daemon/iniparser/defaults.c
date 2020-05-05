@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:34:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:47:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**get_environ(char *str)
 	return (NULL);
 }
 
-void    set_taskmasterd_defautls(t_env *env)
+void    set_taskmasterd_defautls(t_denv *env)
 {
 	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
     env->opt.str[LOGFILE] = DFL_LOGFILE;
@@ -70,7 +70,7 @@ void    set_taskmasterd_defautls(t_env *env)
 	env->opt.environ = NULL;
 }
 
-void	taskmasterd_override(t_env *env, dictionary *dict)
+void	taskmasterd_override(t_denv *env, dictionary *dict)
 {
 	char	*tmp;
 
@@ -92,7 +92,7 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - user cannot be blank\n");
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - user cannot be blank\n");
 				exit_routine();
 			}
 			env->opt.str[USER] = tmp;
@@ -104,7 +104,7 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - directory cannot be blank\n");
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - directory cannot be blank\n");
 				exit_routine();
 			}
 			env->opt.str[DIRECTORY] = tmp;
@@ -116,7 +116,7 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - logfile cannot be blank\n");
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - logfile cannot be blank\n");
 				exit_routine();
 			}
 			env->opt.str[LOGFILE] = tmp;
@@ -128,7 +128,7 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - loglevel cannot be blank\n");
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - loglevel cannot be blank\n");
 				exit_routine();
 			}
 			env->opt.str[LOGLEVEL] = tmp;
@@ -140,7 +140,7 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - childlogdir cannot be blank\n");
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - childlogdir cannot be blank\n");
 				exit_routine();
 			}
 			env->opt.str[CHILDLOGDIR] = tmp;

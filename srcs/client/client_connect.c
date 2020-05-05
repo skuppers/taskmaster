@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:25:29 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:13:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,6 @@ int8_t		connect_to_daemon(t_env *env, char *socketpath)
 			strerror(errno));
     	return (FAILURE);
   	}
-/*	if (check_connection(env) != 0)
-	{
-		dprintf(STDERR_FILENO, "Error connecting to taskmasterd (sigpipe), maybe another client is running?");
-		close(env->unix_socket);
-		return (FAILURE);
-	}*/
 	dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
 	return (SUCCESS);
 }

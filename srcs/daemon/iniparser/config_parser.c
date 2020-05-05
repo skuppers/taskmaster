@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:40:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:48:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
+int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm)
 {
 	t_list		*list;
 	char		**avs;
@@ -26,7 +26,7 @@ int8_t	append_to_pgrmlist(t_env *env, t_program *pgrm)
 	return (0);
 }
 
-int8_t	append_to_grplist(t_env *env, t_group *grp)
+int8_t	append_to_grplist(t_denv *env, t_group *grp)
 {
 	t_list		*list;
 
@@ -287,7 +287,7 @@ char	*get_environement(uint8_t *err, dictionary *d, char *name)
 	return (get);
 }
 
-static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
+static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 {
 	t_program	prog;
 	uint8_t		error;
@@ -321,10 +321,10 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.env = NULL;
 	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
-	tlog(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
+	tlog(E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
 }
 
-static void	get_new_group(t_env *env, dictionary *dict, char *secname)
+static void	get_new_group(t_denv *env, dictionary *dict, char *secname)
 {
 	t_group		group;
 
@@ -333,10 +333,10 @@ static void	get_new_group(t_env *env, dictionary *dict, char *secname)
 	group.programs = get_secstring(dict, secname, ":programs");
 	group.priority = (uint16_t)get_secint(dict, secname, ":priority");
 	append_to_grplist(env, &group);
-	tlog(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
+	tlog(E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 }
 
-void			parse_ini_file(t_env *env, dictionary *dict)
+void			parse_ini_file(t_denv *env, dictionary *dict)
 {
 	int32_t		sections;
 	char		*secname;
@@ -344,12 +344,12 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 	sections = iniparser_getnsec(dict);
 	env->prgm_list = NULL;
 	env->group_list = NULL;
-	tlog(env, E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
+	tlog(E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
 	while (sections > 0)
 	{
 		--sections;
 		secname = (char*)iniparser_getsecname(env->dict, sections);
-		tlog(env, E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
+		tlog(E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
 
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
 			get_new_prog(env, dict, secname);
@@ -359,7 +359,7 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)
-			tlog(env, E_LOGLVL_ERRO,
+			tlog(E_LOGLVL_ERRO,
 				"Inifile: Unknown section: %s\n", secname);
 	}
 	set_grp_list(env);

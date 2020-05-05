@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 19:05:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:02:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,38 +56,39 @@ static void		getstr_time(char *buffer)
 	snprintf(buffer, TIMEBUFFERSZ, "%s.%06ld", tmbuf, tv.tv_usec);
 }
 
-void		tlog(t_env *env, uint8_t loglvl, const char *message, ...)
+int			tlog(int loglvl, const char *message, ...)
 {
 	
 	va_list			args;
 	char			time_buffer[TIMEBUFFERSZ];
 
-	if (loglvl >= get_loglevel(env->opt.str[LOGLEVEL]))
+	if (loglvl >= get_loglevel(g_denv->opt.str[LOGLEVEL]))
 	{
 		ft_bzero(&time_buffer, TIMEBUFFERSZ);
 		getstr_time(time_buffer);
-		ft_dprintf(env->log_fd, "[%s] %s- ", time_buffer, loglvl_tostr(loglvl));
+		ft_dprintf(g_denv->log_fd, "[%s] %s- ", time_buffer, loglvl_tostr(loglvl));
 		va_start(args, message);
-		vdprintf(env->log_fd, message, args);
+		vdprintf(g_denv->log_fd, message, args);
 		va_end(args);
 	}
+	return (SUCCESS);
 }
 
-int8_t      init_log(t_env *env)
+int8_t      init_log()
 {
     int32_t     debug_fd;
 
-	if (env->opt.optmask & OPT_NODAEMON)
+	if (g_denv->opt.optmask & OPT_NODAEMON)
 		debug_fd = STDERR_FILENO;
 	else
-    	debug_fd = open(env->opt.str[LOGFILE], O_RDWR | O_APPEND | O_CREAT, 0644);
+    	debug_fd = open(g_denv->opt.str[LOGFILE], O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (debug_fd < 0)
 	{
-		printf("Error: Could not create log file: %s\n", strerror(errno));
+		dprintf(STDERR_FILENO, "Error: Could not create log file: %s\n", strerror(errno));
 		return (-1);
 	}
-	env->log_fd = debug_fd;
-	tlog(env, E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
-	tlog(env, E_LOGLVL_INFO, "Taskmaster logger is up\n");
+	g_denv->log_fd = debug_fd;
+	tlog(E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
+	tlog(E_LOGLVL_INFO, "Taskmaster logger is up\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:34:00 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 20:43:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_vector			*execute_cmd(t_cmd *cmd)
 
 	if (is_invalid_cmd(cmd->type) == TRUE)	
 	{
-		tlog(g_env, E_LOGLVL_INFO, "Cmd %#.2x is not recognized\n", cmd->type);
+		tlog(E_LOGLVL_INFO, "Cmd %#.2x is not recognized\n", cmd->type);
 		return (NULL);
 	}
 	return (generate_feedback(process_cmd[cmd->type](cmd)));
