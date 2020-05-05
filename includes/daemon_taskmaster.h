@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 22:43:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 02:34:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -357,7 +357,6 @@ t_vector			*cmd_avail(t_cmd *cmd);
 t_vector			*cmd_clear(t_cmd *cmd);
 t_vector			*cmd_fg(t_cmd *cmd);
 t_vector			*cmd_maintail(t_cmd *cmd);
-t_vector			*cmd_open(t_cmd *cmd);
 t_vector			*cmd_pid(t_cmd *cmd);
 t_vector			*cmd_reload(t_cmd *cmd);
 t_vector			*cmd_remove(t_cmd *cmd);
@@ -377,12 +376,5 @@ typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
 t_vector	*exec_action_args(char **arg, int ac, t_action to_do);
 t_vector	*exec_action_all(t_action to_do);
 t_vector	*get_msg(char *name, char *msg, uint8_t flag);
-
-
-t_vector	*action_status(t_instance *instance, t_program *program);
-t_vector	*action_restart(t_instance *instance, t_program *program);
-t_vector	*action_stop(t_instance *instance, t_program *program);
-t_vector	*action_start(t_instance *instance, t_program *program);
-t_vector	*action_signal(t_instance *instance, t_program *program);
 
 # endif

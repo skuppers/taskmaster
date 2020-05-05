@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/04 21:20:28 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/05 02:33:58 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -198,6 +198,25 @@ DAEMON_SRCS += instance_utils.c
 DAEMON_SRCS += instance_tools.c
 
 #builtin
+DAEMON_SRCS += cmd_signal.c
+DAEMON_SRCS += cmd_stop.c
+DAEMON_SRCS += cmd_start.c
+DAEMON_SRCS += cmd_restart.c
+DAEMON_SRCS += cmd_status.c
+DAEMON_SRCS += cmd_maintail.c
+DAEMON_SRCS += cmd_tail.c
+DAEMON_SRCS += cmd_add.c
+DAEMON_SRCS += cmd_avail.c
+DAEMON_SRCS += cmd_version.c
+DAEMON_SRCS += cmd_clear.c
+DAEMON_SRCS += cmd_fg.c
+DAEMON_SRCS += cmd_pid.c
+DAEMON_SRCS += cmd_reload.c
+DAEMON_SRCS += cmd_remove.c
+DAEMON_SRCS += cmd_reread.c
+DAEMON_SRCS += cmd_shutdown.c
+DAEMON_SRCS += cmd_update.c
+
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += getter.c
 

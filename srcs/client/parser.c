@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 15:50:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 02:47:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	parser(t_vector *line)
 		if (response == NULL)
 			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
 		else
-			dprintf(STDERR_FILENO, "%s", vct_getstr(response));
+			vct_print_fd(response, STDERR_FILENO);
 		vct_del(&response);
 	}
 	ft_free_tab_str(g_env->cmd->av);

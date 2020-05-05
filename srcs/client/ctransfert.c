@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 21:52:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 01:33:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ t_vector		*get_response(t_env *env)
 		{
 			vct = vct_new(DFL_VCT_SIZE);
 			if ((readbytes = vct_creadline(vct, fd, EOT)) <= 0)
-				dprintf(STDERR_FILENO, "Vctrealine failed: %s\n", strerror(errno));
+				dprintf(STDERR_FILENO, "Daemon cannot be reach...\n");
 			else
 				return (decode_feedback(vct));
 			vct_del(&vct);

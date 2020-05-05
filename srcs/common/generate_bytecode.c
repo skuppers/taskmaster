@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:47:07 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 20:30:20 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 02:05:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ static void	fill_cmd(t_vector *arg, t_cmd *cmd)
 	char					**tab;
 	int						i;
 
-	cmd->av = ft_strsplit_whitespaces(vct_getstr(arg));
-	cmd->ac = ft_tabsize(cmd->av);
+	if (arg != NULL)
+	{
+		cmd->av = ft_strsplit_whitespaces(vct_getstr(arg));
+		cmd->ac = ft_tabsize(cmd->av);
+	}
 	tab = ft_memalloc(sizeof(char **) * (cmd->ac + 3));
 	i = 0;
 	while (i < cmd->ac)
