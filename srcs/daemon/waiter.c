@@ -148,12 +148,11 @@ int8_t      waiter(t_env *env)
         while (instance != NULL)
         {
             status = 0;
-			update_instance_uptime(instance); //TODO: Protect
+			update_instance_uptime(instance);
 			if (instance->state != E_STOPPED && instance->state != E_FATAL
-				&& instance->state != E_EXITED) // Plus de protect
+				&& instance->state != E_EXITED && instance->state != E_BACKOFF)
            		if (waitpid(instance->pid, &status, WNOHANG | WUNTRACED | WCONTINUED))
                 	terminate_instance(prog, instance, status);
-			
 			check_instance(prog, instance);
 			instance = instance->next;
         }

@@ -32,8 +32,8 @@ int8_t		bind_socket(t_env *env)
 {
 	if (bind(env->unix_socket, (struct sockaddr*)&env->addr, sizeof(env->addr)) == -1)
 	{
-		taskmaster_fatal("bind", "Failed to bind socket");
-		print_log(env, E_LOGLVL_CRIT, "Bind failed - %s\n", strerror(errno));
+		taskmaster_fatal("bind", "Failed to bind socket. Is another daemon already running?");
+		print_log(env, E_LOGLVL_CRIT, "Bind failed - %s. Is another daemon already running?\n", strerror(errno));
         exit_routine();
 	}
   	if (listen(env->unix_socket, MAX_CLIENTS) == -1)

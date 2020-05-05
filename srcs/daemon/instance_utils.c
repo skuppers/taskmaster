@@ -50,7 +50,8 @@ void		update_instance_uptime(t_instance *instance)
 {
 	time_t	now;
 
-	if (instance->state != E_STOPPED)
+	if (instance->state == E_STARTING || instance->state == E_RUNNING 
+		|| instance->state != E_STOPPING)
 	{
 		now = time(NULL);
 		instance->uptime = (uint32_t)(now - instance->start_time);
