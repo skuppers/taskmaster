@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/05 20:59:13 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/05 21:21:05 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -225,7 +225,6 @@ DAEMON_SRCS += getter.c
 DAEMON_SRCS += defaults.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += iniparser_tools.c
-DAEMON_SRCS += set_grp.c
 
 DAEMON_SRCS += log.c
 DAEMON_SRCS += dtransfert.c

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 20:53:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:20:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,6 @@ typedef	struct			s_options
 	char				*environ;  //TODO
 }						t_options;
 
-typedef struct			s_group
-{
-	t_list				*prog_list;
-	uint16_t			priority;
-
-	char	pad[6];
-	
-	char				*name;
-	char				*programs;
-}						t_group;
-
 typedef struct			s_instance
 {
 	time_t				start_time;
@@ -90,7 +79,7 @@ typedef struct			s_program
 	char					*bin;					// /usr/bin/cat
 	char					**avs;					// [1] syslog
 	
-	char					*user;				
+	int16_t					userid;				
 	char					*directory;
 	char					*stdout_logfile;		// should be done
 	char					*stderr_logfile;		// should be done
@@ -119,7 +108,6 @@ typedef struct     			s_denv
 	
 	t_list					*environ;
 	t_list					*prgm_list;
-	t_list					*group_list;
 	dictionary				*dict;
 
 	t_options				opt;
@@ -282,7 +270,6 @@ void		strvalue_to_lst(t_list **lst, char *str);
 void		free_node(void *node, size_t content_size);
 int8_t		free_var(t_list **alst, char *name);
 void		free_env(void *node, size_t content_size);
-void		del_group(void *node, size_t content_size);
 void		del_prgm(void *node, size_t content_size);
 
 typedef struct					s_variable
@@ -296,11 +283,9 @@ typedef struct					s_variable
 */
 
 dictionary 	*load_ini_file(char *str);
-int32_t		get_secint(dictionary *dict, char *secname, char *key);
+int32_t		get_secint(dictionary *dict, char *secname, char *key, int dfl);
 int8_t		get_secbool(dictionary *dict, char *secname, char *key);
 char		*get_secstring(dictionary *dict, char *secname, char *key);
-
-void		set_grp_list(t_denv *env);
 
 /*
 ************************ BUILTIN

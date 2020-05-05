@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 20:51:42 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:21:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,11 @@ void	print_dbg(t_denv *env)
 		dprintf(STDERR_FILENO, " - umask:\t%u\n", ((t_program *)ptr->content)->umask);
 		dprintf(STDERR_FILENO, " - priority:\t%d\n", ((t_program *)ptr->content)->priority);
 		dprintf(STDERR_FILENO, " - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
-		dprintf(STDERR_FILENO, " - user:\t\t%s\n", ((t_program *)ptr->content)->user);
+		dprintf(STDERR_FILENO, " - user:\t\t%d\n", ((t_program *)ptr->content)->userid);
 		dprintf(STDERR_FILENO, " - redirect_stderr:\t%d\n", ((t_program *)ptr->content)->redirect_stderr);
 		dprintf(STDERR_FILENO, " - stdout_logfile:\t%s\n", ((t_program *)ptr->content)->stdout_logfile);
 		dprintf(STDERR_FILENO, " - stderr_logfile:\t%s\n", ((t_program *)ptr->content)->stderr_logfile);
 		dprintf(STDERR_FILENO, " - environment:\t%s\n\n", ((t_program *)ptr->content)->environ);
-	}
-	for (ptr = env->group_list ; ptr != NULL; ptr = ptr->next)
-	{
-/*		dprintf(STDERR_FILENO, "Group: %s\n", ((t_group *)ptr->content)->name);
-		dprintf(STDERR_FILENO, " - programs: %s\n", ((t_group *)ptr->content)->programs);
-		dprintf(STDERR_FILENO, " - priority: %d\n", ((t_group *)ptr->content)->priority);
-*/
 	}
 }
 

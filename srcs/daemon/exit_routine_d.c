@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:07:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 21:21:27 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,5 @@ void	exit_routine(void)
 	unlink(DFL_SOCKET);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
-	ft_lstdel(&g_denv->group_list, del_group);
 	exit(0);
 }
