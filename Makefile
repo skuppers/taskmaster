@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/05 02:33:58 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/05 12:49:29 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -154,7 +154,7 @@ CLIENT_SRCS += termmode.c
 CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c
 CLIENT_SRCS += actionkeys.c
-CLIENT_SRCS += parser.c
+CLIENT_SRCS += routine.c
 CLIENT_SRCS += exit_routine.c
 CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += client_signal.c

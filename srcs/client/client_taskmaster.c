@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:07:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 12:48:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static void read_cmd(t_env *env)
 		if (vct_apply(line, IS_SPACE) == FALSE)
 		{
 			history(line, ADD | RESET);
-			parser(line);
+			routine(line);
 		}
 		print_prompt();
 	}
@@ -78,21 +78,11 @@ void	print_help(void)
 
 void	get_status()
 {
-	t_vector			*bytecode;
-	t_vector			*response;
+	t_vector	*line;
 
-	g_env->cmd = get_cmd_struct(STATUS, NULL);
-	bytecode = blt_status(g_env->cmd);
-	send_bytecode(bytecode, vct_len(bytecode));
-	response = get_response(g_env);
-	if (response == NULL)
-		dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
-	else
-		vct_print_fd(response, STDERR_FILENO);
-	ft_free_tab_str(g_env->cmd->av);
-	g_env->cmd->av = NULL;
-	vct_del(&bytecode);
-	vct_del(&response);
+	line = vct_newstr("status");
+	routine(line);
+	vct_del(&line);
 }
 
 
@@ -110,7 +100,7 @@ int		main(int ac, char **av)
 	
 	init_readline(&environment);
 	if (environment.opt.mask & OPT_BATCHCMD)
-		parser(environment.opt.batch_cmd);
+		routine(environment.opt.batch_cmd);
 	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == FALSE)
 	{
 		ft_dprintf(STDERR_FILENO, "Not a tty\n");

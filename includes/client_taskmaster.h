@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 12:06:57 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 12:44:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,13 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
-t_vector			*get_response(t_env *env);
+t_vector			*get_feedback(t_env *env);
 int8_t     			check_connection(t_env *env);
 void				debug_print_bytecode(t_vector *bytecode);
 
 void				init_signals(void);
 
-int8_t      		send_bytecode(t_vector *code, uint16_t len);
+int8_t      		send_trame(t_vector *trame, uint16_t len);
 
 dictionary 			*parse_inifile(char *str);
 void 				free_inifile(dictionary *dict);
@@ -189,9 +189,9 @@ typedef	t_vector	*(*t_builtin)(t_cmd *);
 typedef	void		(*t_help)(void);
 
 
-/************************ Parser *****************/
+/************************ Exec Routine *****************/
 
-int			parser(t_vector *line);
+int			routine(t_vector *line);
 const char *get_keyword(const uint8_t i);
 
 /*
