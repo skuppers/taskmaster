@@ -14,6 +14,7 @@
 
 int daemonize(t_env *env)
 {
+	/*
 	int fd;
 
 	
@@ -37,6 +38,7 @@ int daemonize(t_env *env)
 		exit_routine();
 	}
 //	chdir("/");
+
 fd = open("/dev/null", 0);
 dup2(fd, STDIN_FILENO);
 dup2(fd, STDOUT_FILENO);
@@ -44,6 +46,9 @@ dup2(fd, STDERR_FILENO);
 close(STDIN_FILENO);
 close(STDOUT_FILENO);
 close(STDERR_FILENO);
+*/
+
+	daemon(1, 0);
 	if (make_socket(env, DFL_SOCKET) != 0)
 		exit_routine();
 	if (bind_socket(env) != 0)
