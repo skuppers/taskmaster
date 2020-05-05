@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:45:59 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 14:28:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,33 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	t_vector	*vct;
 	char		*str;
 	char		*state;
+	t_vector	*uptime;
 
 	vct = NULL;
 	(void)program;
+	
 	if (instance != NULL && program != NULL)
 	{
 		state = get_instance_state(instance);
-		str = ft_asprintf("%s\t\t%s\tpid %5d, uptime %d\n", instance->name,
-					state, instance->pid, instance->uptime); // A FORMATER EM FONCTION DES STATUTS
+		if (instance->state == E_RUNNING)
+		{
+			uptime = vct_newstr(ctime(&instance->uptime));
+			if (uptime != NULL && vct_len(uptime) > 6)
+			{
+				vct_cutfrom(uptime, vct_len(uptime) - 6);	
+				if (uptime != NULL && vct_len(uptime) > 8)
+					vct_popfrom(uptime, vct_len(uptime) - 8);
+			}
+			str = ft_asprintf("%s\t\t%s\tpid: %5d | uptime: %s\n", instance->name,
+						state, instance->pid, vct_getstr(uptime));
+			vct_del(&uptime);
+		}
+		else if (instance->state == E_STOPPED || instance->state == E_EXITED)
+			str = ft_asprintf("%s\t\t%s\tstoptime: %s", instance->name,
+						state, ctime(&instance->stop_time));
+		else
+			str = ft_asprintf("%s\t\t%s\n", instance->name, state);
+			
 		vct = vct_newstr(str);
 		ft_strdel(&str);
 	}
