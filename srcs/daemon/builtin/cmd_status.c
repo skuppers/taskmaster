@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 14:37:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 18:16:52 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	t_vector	*uptime;
 
 	vct = NULL;
+	str = NULL;
 	(void)program;
 	
 	if (instance != NULL && program != NULL)

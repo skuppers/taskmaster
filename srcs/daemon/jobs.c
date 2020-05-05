@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 21:56:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:38:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 	fclose(stderrfile);*/
 
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
-		ft_dprintf(2, "taskmasterd: Program %s instance %d execution error: %s\n",
+		tlog(g_env, E_LOGLVL_ERRO,
+			"taskmasterd: Program %s instance %d execution error: %s\n",
 				prog->name, instance->id, strerror(errno));
 	ft_free_tab_str(environ);
 	exit(1);

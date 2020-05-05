@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 12:44:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:29:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <termios.h>
 # include <unistd.h>
-# include <sys/socket.h>
 # include <sys/un.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -32,11 +31,6 @@
 /****************   General   ****************/
 
 # define DFL_PROMPT			"taskmaster> "
-
-/**************** Networking *****************/
-
-# define SEND_RETRYS				3
-# define SEND_PARTIAL_RETRYS		5
 
 
 /*****************	Readline **************/
@@ -163,8 +157,6 @@ int8_t     			check_connection(t_env *env);
 void				debug_print_bytecode(t_vector *bytecode);
 
 void				init_signals(void);
-
-int8_t      		send_trame(t_vector *trame, uint16_t len);
 
 dictionary 			*parse_inifile(char *str);
 void 				free_inifile(dictionary *dict);

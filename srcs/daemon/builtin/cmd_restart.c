@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:21:46 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:22:09 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:12:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
 			return (get_msg(instance->name, "restarted", INFO_MSG));
 	}
-	return (get_msg(instance->name, "start-up error", ERR_MSG));
+	return (get_msg(instance == NULL ? "???" : instance->name,
+			"start-up error", ERR_MSG));
 }
 
 t_vector			*cmd_restart(t_cmd *cmd)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:31:13 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:50:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:13:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ t_vector	*action_pid(t_instance *instance, t_program *program)
 		ft_strdel(&str);
 		return (vct);
 	}
-	return (get_msg(instance->name, "Unknow error", ERR_MSG));
+	return (get_msg(instance == NULL ? "???" : instance->name,
+			"unknow error", ERR_MSG));
 }
 
 t_vector			*cmd_pid(t_cmd *cmd)

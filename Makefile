@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/05 12:49:29 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/05 19:24:24 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -244,6 +244,7 @@ DAEMON_SRCS += env_var_tools.c
 COMMON_SRCS += decode_cmd.c
 COMMON_SRCS += generate_bytecode.c
 COMMON_SRCS += cmd.c
+COMMON_SRCS += transfert.c
 
 ################# ATTRIBUTION
 

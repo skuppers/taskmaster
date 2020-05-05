@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 17:38:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:32:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 # define COMMON_H
 
 # include "libft.h"
-# include "stdint.h"
+# include <stdint.h>
+# include <errno.h>
+# include <stdio.h>
+# include <sys/types.h>
 # include <sys/select.h>
+# include <sys/socket.h>
 
 #define DFL_FD_SETSIZE 16
 
@@ -35,6 +39,9 @@
 ** TRAME : SOH size (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ (+ EOT)
 **
 */
+
+# define SEND_RETRYS				3
+# define SEND_PARTIAL_RETRYS		5
 
 /*
 ******************* CMD
@@ -93,5 +100,8 @@ t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
 t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
 t_vector	*generate_feedback(t_vector *input);
 t_vector	*decode_feedback(t_vector *trame);
+
+int8_t      send_trame(int fd, t_vector *code, uint16_t len);
+int8_t		sendall(int sockfd, const char *buf, uint16_t buflen);
 
 #endif

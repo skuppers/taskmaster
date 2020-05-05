@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 12:49:15 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 12:51:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:30:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int	send_and_receive(t_vector *trame)
 {
 	t_vector		*feedback;
 	
-	feedback = NULL;
-	send_trame(trame, vct_len(trame));
+	send_trame(g_env->unix_socket, trame, vct_len(trame));
 	feedback = get_feedback(g_env);
 	if (feedback == NULL)
 	{

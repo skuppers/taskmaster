@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:14:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 14:23:34 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 19:13:05 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ t_vector	*action_signal(t_instance *instance, t_program *program)
 		ft_strdel(&str);
 	}
 	if (vct == NULL)
-		vct = get_msg(instance->name, "bad signal", ERR_MSG);
+		vct = get_msg(instance == NULL ? "???" : instance->name,
+			"bad signal", ERR_MSG);
 	return (vct);
 }
 
