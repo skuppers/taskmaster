@@ -60,76 +60,68 @@ typedef struct			s_group
 
 typedef struct			s_instance
 {
-	uint16_t			id;
-	uint8_t				state;
-	char				*name;
-	char	pad[1];
-	pid_t				pid;
-	uint8_t				backoff;
 	time_t				start_time;
 	time_t				stop_time;
 	int32_t				uptime;
 	int32_t				exitcode;
+	pid_t				pid;
+	uint16_t			id;
+	uint8_t				state;
+	uint8_t				backoff;
+	char				*name;
+	
 	struct s_instance	*next;
-	// uptime		
 }						t_instance;
 
 typedef struct			s_program
 {
-	char				*name;					// [program.name]
-	char				*command;				// command=/usr/bin/cat syslog
+	mode_t					umask;
+	uint16_t				priority;
+	uint8_t					startsecs;			// Done
+	uint8_t					stopwaitsecs;		// TODO: SIGCHLD
 
-	char				*bin;					// /usr/bin/cat
-	char				**avs;					// [1] syslog
-	t_instance			*instance;				// Simple list
-
-	char				*user;				
-	mode_t				umask;
-	char				*directory;
-	uint16_t			priority;
-
-	uint8_t			startsecs;			// Done
-	uint8_t				stopwaitsecs;		// TODO: SIGCHLD
-	uint8_t				numprocs;			// Done
-	uint8_t				stopsignal;			// Done
-	uint8_t				autostart;			// Done
-
-	uint8_t			startretries; // START-retries (not reached running state)
+	char					*name;					// [program.name]
+	char					*command;				// command=/usr/bin/cat syslog
+	char					*bin;					// /usr/bin/cat
+	char					**avs;					// [1] syslog
 	
-	uint8_t				autorestart; // auto-RE-start (IN running state) // false, true, unexpected
-	char				**exitcodes;
-	
-	uint8_t				redirect_stderr;
-	uint8_t	padding;
-	char				*stdout_logfile;		// should be done
-	char				*stderr_logfile;		// should be done
-	
-	char				*environ;			
-	t_list				*env;
-}						t_program;
+	char					*user;				
+	char					*directory;
+	char					*stdout_logfile;		// should be done
+	char					*stderr_logfile;		// should be done
 
-typedef struct     		s_env
+	uint8_t					numprocs;			// Done
+	uint8_t					stopsignal;			// Done
+	uint8_t					autostart;			// Done
+	uint8_t					startretries; // START-retries (not reached running state)
+	
+	uint8_t					redirect_stderr;
+	uint8_t					autorestart;
+	char					padding[2];
+
+	char					*environ;	
+	t_list					*env;
+	t_instance				*instance;				// Simple list
+	char					**exitcodes;
+}							t_program;
+
+typedef struct     			s_env
 {
-    int32_t				unix_socket;
-	int32_t				log_fd;
-	t_options			opt;
-	struct sockaddr_un	addr;
-
-uint16_t			padding;
-
-	t_list				*prgm_list;
-	t_list				*group_list;
-
-	uint8_t				client_connected;
-	int					sig_tmp;
-	char paddng[7];
-	dictionary			*dict;
+	int						sig_tmp;
 	volatile sig_atomic_t	sigint;
+    int32_t					unix_socket;
+	int32_t					log_fd;
 	
-	uint32_t			more_padding;
-	t_list				*environ;
+	t_list					*environ;
+	t_list					*prgm_list;
+	t_list					*group_list;
+	dictionary				*dict;
 
-}                  		t_env;
+	t_options				opt;
+	struct sockaddr_un		addr;
+	uint8_t					client_connected;
+	char					padding[1];
+}                  			t_env;
 
 /*************************************************/
 

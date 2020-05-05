@@ -58,7 +58,7 @@ uint8_t		get_autorestart(uint8_t *error, dictionary *dict, char *secname)
 		return (FALSE);
 	if (ft_strequ(str, "unexpected") || ft_strequ(str, "UNEXPECTED"))
 		return (UNEXPECTED);
-	dprintf(STDERR_FILENO, "[%s] - autorestart does not match known instructions:"
+	dprintf(STDERR_FILENO, "taskmasterd: [%s] - autorestart does not match known instructions:"
 							" TRUE / FALSE / UNEXPECTED\n", secname);
 	*error = 1;
 	return (FALSE);
@@ -80,7 +80,7 @@ uint8_t		get_numprocs(uint8_t *error, dictionary *d, char *name)
 		return (1);
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "[%s] - numprocs is not in range 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - numprocs is not in range 1-255\n", name);
 		*error = 1;
 		return (0);
 	}
@@ -110,7 +110,7 @@ uint8_t		get_startsecs(uint8_t *error, dictionary *d, char *name)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "[%s] - startsecs is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startsecs is not in range: 1-255\n", name);
 		*error = 1;
 		return (0);
 	}
@@ -126,7 +126,7 @@ uint8_t		get_startretries(uint8_t *err, dictionary *d, char *name)
 		get = 3;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "[%s] - startretries is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startretries is not in range: 1-255\n", name);
 		*err = 1;
 		return (0);
 	}
@@ -142,11 +142,130 @@ uint8_t		get_stopwaitsecs(uint8_t *err, dictionary *d, char *name)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "[%s] - stopwaitsecs is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stopwaitsecs is not in range: 1-255\n", name);
 		*err = 1;
 		return (0);
 	}
 	return ((uint8_t)get);
+}
+
+uint8_t		get_stopsig(uint8_t *err, dictionary *d, char *name)
+{
+	char		*get;
+	int			i;
+	static char	*sigs[] = {"TERM", "HUP","INT", "QUIT", "KILL", "USR1","USR2"};
+	static int	signo[] = {SIGTERM, SIGHUP, SIGINT, SIGQUIT, SIGKILL, SIGUSR1, SIGUSR2};
+
+	get = get_secstring(d, name, ":stopsignal");
+	if (get == NULL)
+		get = sigs[0];
+	i = 0;
+	while (i < 7)
+	{
+		if (ft_strequ(get, sigs[i]) == TRUE)
+			return (signo[i]);
+		++i;
+	}
+	dprintf(STDERR_FILENO, "taskmasterd: [%s] - stopsignal must be one of : "
+			"TERM, HUP, INT, QUIT, KILL, USR1, or USR2.\n", name);
+	*err = 1;
+	return (0);
+}
+
+char	*get_user(uint8_t *err, dictionary *d, char *name)
+{
+	char *get;
+
+	get = get_secstring(d, name, ":user");
+	if (get == NULL)
+		return (NULL);
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - user field cannot be blank.\n", name);
+		return (NULL);
+	}
+	return (get);
+}
+
+char	*get_directory(uint8_t *err, dictionary *d, char *name)
+{
+	char *get;
+
+	get = get_secstring(d, name, ":directory");
+	if (get == NULL)
+		return (NULL);
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - directory field cannot be blank.\n", name);
+		return (NULL);
+	}
+	return (get);
+}
+
+uint16_t		get_priority(uint8_t *err, dictionary *d, char *name)
+{
+	int32_t get;
+	
+	get = get_secint(d, name, ":priority");
+	if (get == 0)
+		get = 999;
+	if (!is_in_range(get, 1, 999))
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - priority is not in range: 1-999\n", name);
+		*err = 1;
+		return (0);
+	}
+	return ((uint16_t)get);
+}
+
+char	*get_stdoutlog(uint8_t *err, dictionary *d, char *name)
+{
+	char *get;
+
+	get = get_secstring(d, name, ":stdout_logfile");
+	if (get == NULL)
+		return (NULL);
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stdout_logfile field cannot be blank.\n", name);
+		return (NULL);
+	}
+	return (get);
+}
+
+char	*get_stderrlog(uint8_t *err, dictionary *d, char *name)
+{
+	char *get;
+
+	get = get_secstring(d, name, ":stderr_logfile");
+	if (get == NULL)
+		return (NULL);
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stderr_logfile field cannot be blank.\n", name);
+		return (NULL);
+	}
+	return (get);
+}
+
+char	*get_environement(uint8_t *err, dictionary *d, char *name)
+{
+	char *get;
+
+	get = get_secstring(d, name, ":environment");
+	if (get == NULL)
+		return (NULL);
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - environment field cannot be blank.\n", name);
+		return (NULL);
+	}
+	return (get);
 }
 
 static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
@@ -159,32 +278,29 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	
 	prog.command =  get_command(&error, dict, secname);
 	prog.numprocs = get_numprocs(&error, dict, secname);
-	prog.autostart = get_secbool(dict, secname, ":autostart");;
+	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");;
 	prog.autorestart = get_autorestart(&error, dict, secname);
 	prog.startsecs = get_startsecs(&error, dict, secname);
 	prog.startretries = get_startretries(&error, dict, secname);
 	prog.stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
 	get_exitcodes(&prog, dict, secname);
-
-
-	prog.stopsignal = (uint8_t)get_secint(dict, secname, ":stopsignal"); //TODO
-	
-	prog.user = get_secstring(dict, secname, ":user");
+	prog.stopsignal = get_stopsig(&error, dict, secname);
+	prog.user = get_user(&error, dict, secname);
+	prog.directory = get_directory(&error, dict, secname);
+	prog.priority = get_priority(&error, dict, secname);
 	prog.redirect_stderr = (uint8_t)get_secbool(dict, secname, ":redirect_stderr");
-	prog.stdout_logfile = get_secstring(dict, secname, ":stdout_logfile");
-	prog.stderr_logfile = get_secstring(dict, secname, ":stderr_logfile");
-	prog.directory = get_secstring(dict, secname, ":directory");
+	prog.stdout_logfile = get_stdoutlog(&error, dict, secname);
+	prog.stderr_logfile = get_stderrlog(&error, dict, secname);
+	prog.environ = get_environement(&error, dict, secname);
+	// TODO: a voir
 	prog.umask = (mode_t)get_secint(dict, secname, ":umask");
-	prog.priority = (uint16_t)get_secint(dict, secname, ":priority");
-
-	prog.environ = get_secstring(dict, secname, ":environment");
-	prog.env = NULL;
-	strvalue_to_lst(&prog.env, prog.environ);
 	if (error == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
 		exit_routine();
 	}
+	prog.env = NULL;
+	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
 	print_log(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
 }
