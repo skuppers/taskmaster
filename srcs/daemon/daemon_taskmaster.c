@@ -88,12 +88,15 @@ int main(int ac, char **av, char **environ)
 	if (bind_socket(&env) != 0)
 		return (-1);
 
-	//once all is ready, daemonize
-	// And listen for incoming connections
-	launch_jobs(&env);
-
-//	check childs notification => waitpid / startsec / startretries / autoretries etc..
-	listen_for_data(&env);
+	if (env.opt.optmask & OPT_NODAEMON)
+	{
+		launch_jobs(&env);
+		listen_for_data(&env);
+	}
+	else
+	{
+		
+	}
 
 	exit_routine();
 }

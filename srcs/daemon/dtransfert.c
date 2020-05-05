@@ -85,9 +85,9 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 void	realine_error(t_env *env, int32_t readstatus, int fd_nb, fd_set *master_set)
 {
 	if (readstatus == -1)
-	  	print_log(env, E_LOGLVL_ERRO, "Vct_readline() failed\n");
+	  	tlog(env, E_LOGLVL_ERRO, "Vct_readline() failed\n");
 	else if (readstatus == 0)
-	 	print_log(env, E_LOGLVL_DEBG, "=> Client disconnected\n");
+	 	tlog(env, E_LOGLVL_DEBG, "=> Client disconnected\n");
 	close(fd_nb);
 	FD_CLR(fd_nb, master_set);
 	env->client_connected = 0;
@@ -108,29 +108,27 @@ void	handle_client_requests(t_env *env, int fd_nb, fd_set *master_set)
 
 void	client_connected(t_env *env, fd_set *master_set, int connectionfd)
 {
-	print_log(env, E_LOGLVL_DEBG, "=> Client connecting...\n");
+	tlog(env, E_LOGLVL_DEBG, "=> Client connecting...\n");
 	if (env->client_connected == 1)
 	{
-		print_log(env, E_LOGLVL_DEBG, "=> Client trying to connect, but no slot is avaible\n");
+		tlog(env, E_LOGLVL_DEBG, "=> Client trying to connect, but no slot is avaible\n");
 		close(connectionfd);
 		return ;
 	}
 	FD_SET(connectionfd, master_set);
-	print_log(env, E_LOGLVL_DEBG, "=> Client connected\n");
+	tlog(env, E_LOGLVL_DEBG, "=> Client connected\n");
 	env->client_connected = 1;
 }
 
 void	select_error(t_env *env)
 {
-	taskmaster_fatal("select()", strerror(errno));
-	print_log(env, E_LOGLVL_CRIT, "Select syscall failed: %s\n", strerror(errno));
+	tlog(env, E_LOGLVL_CRIT, "Select syscall failed: %s\n", strerror(errno));
 	exit_routine();
 }
 
 void	accept_error(t_env *env)
 {
-	taskmaster_fatal("accept()", strerror(errno));
-	print_log(env, E_LOGLVL_CRIT, "Select accept failed: %s\n", strerror(errno));
+	tlog(env, E_LOGLVL_CRIT, "Select accept() failed: %s\n", strerror(errno));
 	exit_routine();
 }
 

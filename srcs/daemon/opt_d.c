@@ -22,8 +22,8 @@ static void		error_opt(char *msg)
 
 static int		parse_opt(char **av, int ac, int i)
 {
-	const char	*opt_str[] = {"-n", "--nodaemon",
-                                "-h", "--help",
+	const char	*opt_str[] = {"-h", "--help",
+								"-n", "--nodaemon",
 				                "-v", "--version",
 								"-k", "--nocleanup",
 								"-c", "--configuration",
@@ -84,5 +84,9 @@ void		get_opt(t_env *env, int ac, char **av)
 			return ;
 		}
 		--sections;
+	}
+	if (sections < 0)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: [taskmasterd] section is not defined.\n");
 	}
 }

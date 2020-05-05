@@ -23,15 +23,15 @@ void	check_dflt_directory(void)
 	{
 		if (mkdir(DFL_WORKDIR, 0744) == -1)
 		{
-			taskmaster_fatal("check_working_directory():"
-				" Could not create default working directory", strerror(errno));
+			dprintf(STDERR_FILENO, "Fatal error in: check_working_directory():"
+				" Could not create default working directory: %s\n", strerror(errno));
 			exit_routine();
 		}
 	}
 	else
 	{
-    	taskmaster_fatal("check_working_directory():"
-				" Could not open default working directory", strerror(errno));
+    	dprintf(STDERR_FILENO, "Fatal error in: check_working_directory():"
+				" Could not open default working directory: %s\n", strerror(errno));
 		exit_routine();
 	}
 }
@@ -74,29 +74,91 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 {
 	char	*tmp;
 
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL);
-	if ((env->opt.optmask & OPT_NODAEMON) == FALSE && tmp != NULL)
+	if ((env->opt.optmask & OPT_NODAEMON) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL)) != NULL)
+			env->opt.optmask |= get_nodaemon(tmp);
+	}
+
+	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nocleanup", NULL)) != NULL)
+			env->opt.optmask |= get_nodaemon(tmp);
+	}
+
+	if ((env->opt.optmask & OPT_USER) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL)) != NULL)
+		{
+			if (ft_strlen(tmp) <= 0)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - user cannot be blank\n");
+				exit_routine();
+			}
+			env->opt.str[USER] = tmp;
+		}
+	}
+	if ((env->opt.optmask & OPT_DIRECTORY) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:directory", NULL)) != NULL)
+		{
+			if (ft_strlen(tmp) <= 0)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - directory cannot be blank\n");
+				exit_routine();
+			}
+			env->opt.str[DIRECTORY] = tmp;
+		}
+	}
+	if ((env->opt.optmask & OPT_LOGFILE) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:logfile", NULL)) != NULL)
+		{
+			if (ft_strlen(tmp) <= 0)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - logfile cannot be blank\n");
+				exit_routine();
+			}
+			env->opt.str[LOGFILE] = tmp;
+		}
+	}
+	if ((env->opt.optmask & OPT_LOGLVL) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:loglevel", NULL)) != NULL)
+		{
+			if (ft_strlen(tmp) <= 0)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - loglevel cannot be blank\n");
+				exit_routine();
+			}
+			env->opt.str[LOGLEVEL] = tmp;
+		}
+	}
+	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE)
+	{
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL)) != NULL)
+		{
+			if (ft_strlen(tmp) <= 0)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - childlogdir cannot be blank\n");
+				exit_routine();
+			}
+			env->opt.str[CHILDLOGDIR] = tmp;
+		}
+	}
+
+/*	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL)) != NULL)
 		env->opt.optmask |= get_nodaemon(tmp);
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:nocleanup", NULL);
-	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE && tmp != NULL)
-		env->opt.optmask |= get_nodaemon(tmp);
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL);
-	if ((env->opt.optmask & OPT_USER) == FALSE && tmp != NULL)
-		env->opt.str[USER] = tmp;
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:directory", NULL);
-	if ((env->opt.optmask & OPT_DIRECTORY) == FALSE && tmp != NULL)
-		env->opt.str[DIRECTORY] = tmp;
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:logfile", NULL);
-	if ((env->opt.optmask & OPT_LOGFILE) == FALSE && tmp != NULL)
-		env->opt.str[LOGFILE] = tmp;
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:loglevel", NULL);
-	if ((env->opt.optmask & OPT_LOGLVL) == FALSE && tmp != NULL)
-		env->opt.str[LOGLEVEL] = tmp;
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:childlogdir", NULL);
-	if ((env->opt.optmask & OPT_CHLDLOGDIR) == FALSE && tmp != NULL)
-		env->opt.str[CHILDLOGDIR] = tmp;
+
+	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL)) != NULL)
+			env->opt.optmask |= get_nodaemon(tmp);
+*/
+
+
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL);
 	env->opt.umask = (mode_t)get_umask(tmp);
+
 	tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL);
 	env->opt.environ = tmp;
+
 }

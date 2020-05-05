@@ -321,7 +321,7 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.env = NULL;
 	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
-	print_log(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
+	tlog(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
 }
 
 static void	get_new_group(t_env *env, dictionary *dict, char *secname)
@@ -333,7 +333,7 @@ static void	get_new_group(t_env *env, dictionary *dict, char *secname)
 	group.programs = get_secstring(dict, secname, ":programs");
 	group.priority = (uint16_t)get_secint(dict, secname, ":priority");
 	append_to_grplist(env, &group);
-	print_log(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
+	tlog(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 }
 
 void			parse_ini_file(t_env *env, dictionary *dict)
@@ -344,12 +344,12 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 	sections = iniparser_getnsec(dict);
 	env->prgm_list = NULL;
 	env->group_list = NULL;
-	print_log(env, E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
+	tlog(env, E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
 	while (sections > 0)
 	{
 		--sections;
 		secname = (char*)iniparser_getsecname(env->dict, sections);
-		print_log(env, E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
+		tlog(env, E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
 
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
 			get_new_prog(env, dict, secname);
@@ -359,7 +359,7 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)
-			print_log(env, E_LOGLVL_ERRO,
+			tlog(env, E_LOGLVL_ERRO,
 				"Inifile: Unknown section: %s\n", secname);
 	}
 	set_grp_list(env);

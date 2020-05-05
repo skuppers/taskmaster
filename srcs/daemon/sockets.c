@@ -18,8 +18,7 @@ int8_t  make_socket(t_env *env, char *socketpath)
 	
     if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == -1)
 	{
-		taskmaster_fatal("socket", "Failed to create socket");
-		print_log(env, E_LOGLVL_CRIT, "Socket failed - %s\n", strerror(errno));
+		tlog(env, E_LOGLVL_CRIT, "Socket failed - %s\n", strerror(errno));
         exit_routine();
     }
 	env->unix_socket = fd;
@@ -32,14 +31,12 @@ int8_t		bind_socket(t_env *env)
 {
 	if (bind(env->unix_socket, (struct sockaddr*)&env->addr, sizeof(env->addr)) == -1)
 	{
-		taskmaster_fatal("bind", "Failed to bind socket. Is another daemon already running?");
-		print_log(env, E_LOGLVL_CRIT, "Bind failed - %s. Is another daemon already running?\n", strerror(errno));
+		tlog(env, E_LOGLVL_CRIT, "Bind() failed - %s. Is another daemon running?\n", strerror(errno));
         exit_routine();
 	}
   	if (listen(env->unix_socket, MAX_CLIENTS) == -1)
 	{
-    	taskmaster_fatal("listen", "Failed to mark socket as passive");
-		print_log(env, E_LOGLVL_CRIT, "Listen failed - %s\n", strerror(errno));
+		tlog(env, E_LOGLVL_CRIT, "Listen() failed - %s\n", strerror(errno));
         exit_routine();
 	}
 	return (0);

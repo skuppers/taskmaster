@@ -63,11 +63,13 @@ typedef struct			s_instance
 	time_t				start_time;
 	time_t				stop_time;
 	time_t				uptime;
+
 	int32_t				exitcode;
 	pid_t				pid;
 	uint16_t			id;
 	uint8_t				state;
 	uint8_t				backoff;
+	char pad[4];
 	char				*name;
 	
 	struct s_instance	*next;
@@ -222,8 +224,8 @@ void 					listen_for_data(t_env *env);
 /******************* OPTIONS & INI ****************/
 
 # define NO_OPT					0x000
-# define OPT_NODAEMON			0x001
-# define OPT_HELP				0x002
+# define OPT_HELP				0x001
+# define OPT_NODAEMON			0x002
 # define OPT_VERSION			0x004
 # define OPT_NOCLEAN			0x008
 
@@ -288,9 +290,8 @@ enum	e_loglvl
 
 
 int8_t					init_log(t_env *env);
-void					print_log(t_env *env, uint8_t loglvl,
+void					tlog(t_env *env, uint8_t loglvl,
 							const char *message, ...);
-void					taskmaster_fatal(char *failed_here, char *message);
 
 /*****************************************************/
 

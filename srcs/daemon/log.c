@@ -42,12 +42,6 @@ char	*loglvl_tostr(uint8_t loglvl)
 	return (LOG_DEBG_STR);
 }
 
-void		taskmaster_fatal(char *failed_here, char *message)
-{
-	dprintf(2, "A fatal error has happened in %s: %s\n", failed_here, message);
-	dprintf(2, "See logs for details\n");
-}
-
 static void		getstr_time(char *buffer)
 {
 	struct timeval	tv;
@@ -62,7 +56,7 @@ static void		getstr_time(char *buffer)
 	snprintf(buffer, TIMEBUFFERSZ, "%s.%06ld", tmbuf, tv.tv_usec);
 }
 
-void		print_log(t_env *env, uint8_t loglvl, const char *message, ...)
+void		tlog(t_env *env, uint8_t loglvl, const char *message, ...)
 {
 	
 	va_list			args;
@@ -83,14 +77,17 @@ int8_t      init_log(t_env *env)
 {
     int32_t     debug_fd;
 
-    debug_fd = open(env->opt.str[LOGFILE], O_RDWR | O_APPEND | O_CREAT, 0644);
+	if (env->opt.optmask & OPT_NODAEMON)
+		debug_fd = STDERR_FILENO;
+	else
+    	debug_fd = open(env->opt.str[LOGFILE], O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (debug_fd < 0)
 	{
 		printf("Error: Could not create log file: %s\n", strerror(errno));
 		return (-1);
 	}
 	env->log_fd = debug_fd;
-	print_log(env, E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
-	print_log(env, E_LOGLVL_INFO, "Taskmaster logger is up\n");
+	tlog(env, E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
+	tlog(env, E_LOGLVL_INFO, "Taskmaster logger is up\n");
 	return (0);
 }
