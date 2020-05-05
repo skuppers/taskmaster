@@ -81,22 +81,17 @@ int main(int ac, char **av, char **environ)
 		print_dbg(&env);
 
 	init_signals();
-
-	// make network things
-	if (make_socket(&env, DFL_SOCKET) != 0)
-		return (-1);
-	if (bind_socket(&env) != 0)
-		return (-1);
-
+	
 	if (env.opt.optmask & OPT_NODAEMON)
 	{
+		if (make_socket(&env, DFL_SOCKET) != 0)
+			return (-1);
+		if (bind_socket(&env) != 0)
+			return (-1);
 		launch_jobs(&env);
 		listen_for_data(&env);
 	}
 	else
-	{
-		
-	}
-
+		daemonize(&env);
 	exit_routine();
 }

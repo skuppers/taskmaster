@@ -29,7 +29,7 @@ t_vector			*execute_cmd(t_cmd *cmd)
 
 	if (is_invalid_cmd(cmd->type) == TRUE)	
 	{
-		ft_dprintf(STDERR_FILENO, "Cmd %#.2x is not recognized\n", cmd->type);
+		tlog(g_env, E_LOGLVL_INFO, "Cmd %#.2x is not recognized\n", cmd->type);
 		return (NULL);
 	}
 	return (generate_feedback(process_cmd[cmd->type](cmd)));

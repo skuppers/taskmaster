@@ -60,24 +60,24 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb)
 {
 	if (ls != 0)
-		dprintf(STDERR_FILENO, "Failed to %s instance %d of %s: ", cmd, nb, pg->name);
+		tlog(g_env, E_LOGLVL_ERRO, "Failed to %s instance %d of %s: ", cmd, nb, pg->name);
 	if (ls == ERR_STARTING)
-		dprintf(STDERR_FILENO, "instance is already starting.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "instance is already starting.\n");
 	else if (ls == ERR_RUNNING)
-		dprintf(STDERR_FILENO, "instance is already running.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "instance is already running.\n");
 	else if (ls == ERR_STOPPING)
-		dprintf(STDERR_FILENO, "instance is already stopping.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "instance is already stopping.\n");
 	else if (ls == ERR_STOPPED)
-		dprintf(STDERR_FILENO, "instance is already stopped.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "instance is already stopped.\n");
 	else if (ls == ERR_FORK)
-		dprintf(STDERR_FILENO, "fork() failed.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "fork() failed.\n");
 	else if (ls == ERR_EXEC)
-		dprintf(STDERR_FILENO, "execve() failed.\n");
+		tlog(g_env, E_LOGLVL_ERRO, "execve() failed.\n");
 	else if (ls == ERR_UNDEF_INST)
-		dprintf(STDERR_FILENO, "undefined instance\n");
+		tlog(g_env, E_LOGLVL_ERRO, "undefined instance\n");
 	else if (ls == 0)
 	{
-		dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+		tlog(g_env, E_LOGLVL_ERRO, "Instance %d of %s with pid %d entered %s state.\n",
 							nb, pg->name, get_instance(pg, nb)->pid,
 							get_instance_state(get_instance(pg, nb)));
 	}
@@ -101,7 +101,7 @@ void    launch_jobs(t_env *env)
 			inst = new_instance(inst_nb, prog->name);	// create instance meta
 			if (inst == NULL)
 			{
-				dprintf(STDERR_FILENO, "Failed to allocate instance\n");
+				tlog(g_env, E_LOGLVL_ERRO, "Failed to allocate instance\n");
 				break ;
 			}
 			add_instance(prog, inst);		//add instance to program_list

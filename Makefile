@@ -196,6 +196,7 @@ DAEMON_SRCS += jobs.c
 DAEMON_SRCS += waiter.c
 DAEMON_SRCS += instance_utils.c
 DAEMON_SRCS += instance_tools.c
+DAEMON_SRCS += daemonize.c
 
 #builtin
 DAEMON_SRCS += cmd_signal.c

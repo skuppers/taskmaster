@@ -205,6 +205,8 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 void						set_taskmasterd_defautls(t_env *env);
 void						check_dflt_directory(void);
 
+int							daemonize(t_env *env);
+
 /*************************************************/
 
 

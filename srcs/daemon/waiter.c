@@ -15,14 +15,14 @@
 void    instance_stopped(t_program *prog, t_instance *instance)
 {
     instance->state = E_STOPPED;
-    ft_dprintf(STDERR_FILENO, "Instance %d of %s entered %s state.\n",
+    tlog(g_env, E_LOGLVL_INFO, "Instance %d of %s entered %s state.\n",
                 instance->id, prog->name, STATE_STOPPED); // STATE_PAUSED ?
 }
 
 void    instance_continued(t_program *prog, t_instance *instance)
 {
     instance->state = E_RUNNING;
-    ft_dprintf(STDERR_FILENO, "Instance %d of %s entered %s state.\n",
+    tlog(g_env, E_LOGLVL_INFO, "Instance %d of %s entered %s state.\n",
                 instance->id, prog->name, STATE_RUNNING);
 }
 
@@ -31,7 +31,7 @@ void		check_instance(t_program *prog, t_instance *instance)
 	if (instance->state == E_STARTING && instance->uptime >= prog->startsecs)
 	{
 		instance->state = E_RUNNING;
-   		ft_dprintf(STDERR_FILENO,
+   		tlog(g_env, E_LOGLVL_INFO,
 				"Instance %d of %s entered %s state after %d secs\n",
                 instance->id, prog->name, STATE_RUNNING, instance->uptime);
 	}
@@ -43,14 +43,14 @@ void		check_instance(t_program *prog, t_instance *instance)
 		instance->pid = 0;
 		instance->start_time = 0;
 		instance->stop_time = time(NULL);
-		ft_dprintf(STDERR_FILENO, "Instance %d of %s %s by forced exit\n",
+		tlog(g_env, E_LOGLVL_INFO, "Instance %d of %s %s by forced exit\n",
                 instance->id, prog->name, get_instance_state(instance));
 	}
 	else if (instance->state == E_BACKOFF)
 	{
 		start_instance(prog, instance->id, g_env->environ);
 	//	print_cmd_success("(re)start", ret, prog, instance->id);
-		ft_dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+		tlog(g_env, E_LOGLVL_INFO, "Instance %d of %s with pid %d entered %s state.\n",
 							instance->id, prog->name,instance->pid,
 							get_instance_state(instance));
 	}
@@ -60,7 +60,7 @@ void		check_instance(t_program *prog, t_instance *instance)
 			|| (prog->autorestart == UNEXPECTED && !is_expected_exitcode(prog, instance))) // always
 		{
 			start_instance(prog, instance->id, g_env->environ);
-			ft_dprintf(STDERR_FILENO, "Instance %d of %s with pid %d entered %s state.\n",
+			tlog(g_env, E_LOGLVL_INFO, "Instance %d of %s with pid %d entered %s state.\n",
 							instance->id, prog->name,instance->pid,
 							get_instance_state(instance));
 			//print_cmd_success("(re)start", ret, prog, instance->id);
@@ -80,14 +80,14 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 		{
 			if (instance->backoff >= prog->startretries)
 			{
-				ft_dprintf(STDERR_FILENO, "=====> Instance %d of %s entered FATAL state.\n",
+				tlog(g_env, E_LOGLVL_INFO, "=====> Instance %d of %s entered FATAL state.\n",
 					instance->id, prog->name);
 				instance->state = E_FATAL;
 				instance->backoff = 0;
 			}
 			else
 			{
-				ft_dprintf(STDERR_FILENO, "===> Instance %d of %s backoff.\n",
+				tlog(g_env, E_LOGLVL_INFO, "===> Instance %d of %s backoff.\n",
 				instance->id, prog->name);
 				instance->state = E_BACKOFF;
 				instance->backoff++;
@@ -109,7 +109,7 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 				instance->uptime = 0;
 				instance->backoff = 0;
 				instance->exitcode = 0;
-				ft_dprintf(STDERR_FILENO, "=> Instance %d of %s stopped\n",
+				tlog(g_env, E_LOGLVL_INFO, "=> Instance %d of %s stopped\n",
 					instance->id, prog->name);
 			}
 			else if (instance->state == E_RUNNING) // Exited self
@@ -121,12 +121,12 @@ void        terminate_instance(t_program *prog, t_instance *instance, int status
 				instance->stop_time = time(NULL);
 				instance->uptime = 0;
 				instance->backoff = 0;
-				ft_dprintf(STDERR_FILENO, "==> Instance %d of %s exited with code %d\n",
+				tlog(g_env, E_LOGLVL_INFO, "==> Instance %d of %s exited with code %d\n",
 					instance->id, prog->name, instance->exitcode);
 			}
 			else
 			{
-				ft_dprintf(STDERR_FILENO, "|%s|\n", get_instance_state(instance));
+				tlog(g_env, E_LOGLVL_INFO, "|%s|\n", get_instance_state(instance));
 				assert(instance->state == E_STARTING); // Plus de protect
 			}
 			

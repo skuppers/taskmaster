@@ -39,5 +39,6 @@ int8_t		bind_socket(t_env *env)
 		tlog(env, E_LOGLVL_CRIT, "Listen() failed - %s\n", strerror(errno));
         exit_routine();
 	}
+	tlog(env, E_LOGLVL_INFO, "Socket up and running.\n");
 	return (0);
 }

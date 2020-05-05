@@ -99,11 +99,12 @@ t_vector		*get_feedback(t_env *env)
 		{
 			vct = vct_new(DFL_VCT_SIZE);
 			if ((readbytes = vct_creadline(vct, fd, EOT)) <= 0)
-				dprintf(STDERR_FILENO, "Daemon cannot be reach...\n");
+				dprintf(STDERR_FILENO, "Daemon cannot be reached...\n");
 			else
 				return (decode_feedback(vct));
 			vct_del(&vct);
 		}
 	}
+	dprintf(STDERR_FILENO, "passed while\n");
 	return (NULL);
 }
