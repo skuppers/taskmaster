@@ -55,7 +55,7 @@ t_program *find_program(const char *name)
 	t_program	*program;
 
 
-	prog_list = g_env->prgm_list;
+	prog_list = g_denv->prgm_list;
 	while (prog_list != NULL)
 	{
 		program = (t_program *)prog_list->content;
@@ -105,7 +105,7 @@ t_vector	*exec_action_all(t_action to_do)
 	t_vector	*output;
 	t_vector	*vct;
 
-	prog_list = g_env->prgm_list;
+	prog_list = g_denv->prgm_list;
 	output = vct_new(0);
 	while (prog_list != NULL)
 	{

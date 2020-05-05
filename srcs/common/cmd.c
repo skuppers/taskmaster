@@ -67,11 +67,11 @@ void		debug_cmd(t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	ft_printf("cmd [%#.2x] (%s) | ocp = %#.2x | ac = %d\n",
+	dprintf(STDERR_FILENO, "cmd [%#.2x] (%s) | ocp = %#.2x | ac = %d\n",
 				cmd->type + 128, get_keyword(cmd->type), cmd->ocp, cmd->ac);
 	while (i < cmd->ac)
 	{
-		ft_printf("ARG[%d] = `%s'\n", i, cmd->av[i]);
+		dprintf(STDERR_FILENO, "ARG[%d] = `%s'\n", i, cmd->av[i]);
 		i++;
 	}
 }

@@ -18,7 +18,7 @@ t_vector	*action_start(t_instance *instance, t_program *program)
 	{
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
 			return (get_msg(instance->name, "already started", ERR_MSG));
-		if (start_instance(program, instance->id, g_env->environ) == SUCCESS)
+		if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 			return (get_msg(instance->name, "started", INFO_MSG));
 	}
 	return (get_msg(instance->name, "start-up error", ERR_MSG));

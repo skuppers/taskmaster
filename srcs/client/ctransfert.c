@@ -39,6 +39,7 @@ int8_t      send_trame(t_vector *code, uint16_t len)
 {
 	int8_t		status;
 
+	dprintf(STDERR_FILENO, "Sending trame on fd: %d\n", g_env->unix_socket);
 	if ((status = sendall(g_env->unix_socket, vct_getstr(code), len)) != 0)
 	{
 		if (status == -1)
@@ -105,6 +106,5 @@ t_vector		*get_feedback(t_env *env)
 			vct_del(&vct);
 		}
 	}
-	dprintf(STDERR_FILENO, "passed while\n");
 	return (NULL);
 }

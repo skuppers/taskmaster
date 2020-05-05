@@ -55,7 +55,7 @@ dictionary *load_ini_file(char *str)
 	ini_dict = iniparser_load(str);
 	if (ini_dict == NULL)
 	{
-		printf("Could not read ini file: %s\n", strerror(errno));
+		dprintf(STDERR_FILENO, "Could not read ini file: %s\n", strerror(errno));
         exit_routine();
 	}
 //	iniparser_dump(ini_dict, stdout);

@@ -15,7 +15,7 @@
 void	sigint_handle(int signo)
 {
 	(void)signo;
-	g_env->sigint = 1;
+	g_denv->sigint = 1;
 }
 
 void					init_signals(void)

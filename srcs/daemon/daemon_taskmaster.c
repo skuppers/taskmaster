@@ -12,7 +12,7 @@
 
 # include "daemon_taskmaster.h"
 
-t_env	*g_env;
+t_env	*g_denv;
 
 void	print_dbg(t_env *env)
 {
@@ -20,34 +20,34 @@ void	print_dbg(t_env *env)
 	
 	for (ptr = env->prgm_list; ptr != NULL; ptr = ptr->next)
 	{
-		printf("Program: %s\n", ((t_program *)ptr->content)->name);
-		printf(" - command:\t%s\n", ((t_program *)ptr->content)->command);
-		printf(" - bin:\t%s\n", ((t_program *)ptr->content)->bin);
-	//	printf(" - bin:\t%s\n", ((t_program *)ptr->content)->avs);
-		printf(" - numprocs:\t%d\n", ((t_program *)ptr->content)->numprocs);
-		printf(" - autostart:\t%d\n", ((t_program *)ptr->content)->autostart);
-		printf(" - autorestart:\t%d\n", ((t_program *)ptr->content)->autorestart);
-		printf(" - startsecs:\t%d\n", ((t_program *)ptr->content)->startsecs);
-		printf(" - startretries:\t%d\n", ((t_program *)ptr->content)->startretries);
-		printf(" - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsecs);
-		printf(" - exitcodes:\n");
+		dprintf(STDERR_FILENO, "Program: %s\n", ((t_program *)ptr->content)->name);
+		dprintf(STDERR_FILENO, " - command:\t%s\n", ((t_program *)ptr->content)->command);
+		dprintf(STDERR_FILENO, " - bin:\t%s\n", ((t_program *)ptr->content)->bin);
+	//	dprintf(STDERR_FILENO, " - bin:\t%s\n", ((t_program *)ptr->content)->avs);
+		dprintf(STDERR_FILENO, " - numprocs:\t%d\n", ((t_program *)ptr->content)->numprocs);
+		dprintf(STDERR_FILENO, " - autostart:\t%d\n", ((t_program *)ptr->content)->autostart);
+		dprintf(STDERR_FILENO, " - autorestart:\t%d\n", ((t_program *)ptr->content)->autorestart);
+		dprintf(STDERR_FILENO, " - startsecs:\t%d\n", ((t_program *)ptr->content)->startsecs);
+		dprintf(STDERR_FILENO, " - startretries:\t%d\n", ((t_program *)ptr->content)->startretries);
+		dprintf(STDERR_FILENO, " - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsecs);
+		dprintf(STDERR_FILENO, " - exitcodes:\n");
 		ft_print_strtab(((t_program *)ptr->content)->exitcodes);
 
-		printf(" - directory:\t%s\n", ((t_program *)ptr->content)->directory);
-		printf(" - umask:\t%u\n", ((t_program *)ptr->content)->umask);
-		printf(" - priority:\t%d\n", ((t_program *)ptr->content)->priority);
-		printf(" - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
-		printf(" - user:\t\t%s\n", ((t_program *)ptr->content)->user);
-		printf(" - redirect_stderr:\t%d\n", ((t_program *)ptr->content)->redirect_stderr);
-		printf(" - stdout_logfile:\t%s\n", ((t_program *)ptr->content)->stdout_logfile);
-		printf(" - stderr_logfile:\t%s\n", ((t_program *)ptr->content)->stderr_logfile);
-		printf(" - environment:\t%s\n\n", ((t_program *)ptr->content)->environ);
+		dprintf(STDERR_FILENO, " - directory:\t%s\n", ((t_program *)ptr->content)->directory);
+		dprintf(STDERR_FILENO, " - umask:\t%u\n", ((t_program *)ptr->content)->umask);
+		dprintf(STDERR_FILENO, " - priority:\t%d\n", ((t_program *)ptr->content)->priority);
+		dprintf(STDERR_FILENO, " - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
+		dprintf(STDERR_FILENO, " - user:\t\t%s\n", ((t_program *)ptr->content)->user);
+		dprintf(STDERR_FILENO, " - redirect_stderr:\t%d\n", ((t_program *)ptr->content)->redirect_stderr);
+		dprintf(STDERR_FILENO, " - stdout_logfile:\t%s\n", ((t_program *)ptr->content)->stdout_logfile);
+		dprintf(STDERR_FILENO, " - stderr_logfile:\t%s\n", ((t_program *)ptr->content)->stderr_logfile);
+		dprintf(STDERR_FILENO, " - environment:\t%s\n\n", ((t_program *)ptr->content)->environ);
 	}
 	for (ptr = env->group_list ; ptr != NULL; ptr = ptr->next)
 	{
-/*		printf("Group: %s\n", ((t_group *)ptr->content)->name);
-		printf(" - programs: %s\n", ((t_group *)ptr->content)->programs);
-		printf(" - priority: %d\n", ((t_group *)ptr->content)->priority);
+/*		dprintf(STDERR_FILENO, "Group: %s\n", ((t_group *)ptr->content)->name);
+		dprintf(STDERR_FILENO, " - programs: %s\n", ((t_group *)ptr->content)->programs);
+		dprintf(STDERR_FILENO, " - priority: %d\n", ((t_group *)ptr->content)->priority);
 */
 	}
 }
@@ -67,7 +67,7 @@ int main(int ac, char **av, char **environ)
 
 	ft_memset(&env, 0, sizeof(t_env));
 	ft_memset(&env.opt, 0, sizeof(t_options));
-	g_env = &env;
+	g_denv = &env;
 	set_taskmasterd_defautls(&env); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
 	check_dflt_directory();
 	get_opt(&env, ac - 1, av + 1);
@@ -81,7 +81,7 @@ int main(int ac, char **av, char **environ)
 		print_dbg(&env);
 
 	init_signals();
-	
+
 	if (env.opt.optmask & OPT_NODAEMON)
 	{
 		if (make_socket(&env, DFL_SOCKET) != 0)

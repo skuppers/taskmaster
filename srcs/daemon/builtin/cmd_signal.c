@@ -33,18 +33,18 @@ t_vector	*action_signal(t_instance *instance, t_program *program)
 
 	vct = NULL;
 	if (instance != NULL && program != NULL
-		&& g_env->sig_tmp > 0 && g_env->sig_tmp < 32)
+		&& g_denv->sig_tmp > 0 && g_denv->sig_tmp < 32)
 	{
 		str = NULL;
 		if (instance->state != E_RUNNING && instance->state != E_STARTING)
 		{
 			str = ft_asprintf("attempting to send signal"
-					" `%s' but it wasn't running", get_sigstr(g_env->sig_tmp));
+					" `%s' but it wasn't running", get_sigstr(g_denv->sig_tmp));
 			vct = get_msg(instance->name, str, ERR_MSG);
 		}
-		else if (stop_instance(program, instance, g_env->sig_tmp) == SUCCESS)
+		else if (stop_instance(program, instance, g_denv->sig_tmp) == SUCCESS)
 		{
-			str = ft_asprintf("signaled by %s", get_sigstr(g_env->sig_tmp));
+			str = ft_asprintf("signaled by %s", get_sigstr(g_denv->sig_tmp));
 			vct = get_msg(instance->name, str, INFO_MSG);
 		}
 		ft_strdel(&str);
@@ -82,11 +82,11 @@ t_vector			*cmd_signal(t_cmd *cmd)
 	vct = NULL;
 	if (cmd->ac == 0)
 		return (NULL);
-	g_env->sig_tmp = get_signal_number(cmd->av[0]);
+	g_denv->sig_tmp = get_signal_number(cmd->av[0]);
 	if (cmd->ocp == 0x01)
 		vct = exec_action_all(action_signal);
 	else if (cmd->ocp == 0x02)
 		vct = exec_action_args(cmd->av + 1, cmd->ac - 1, action_signal);
-	g_env->sig_tmp = 0; 
+	g_denv->sig_tmp = 0; 
 	return (vct);
 }

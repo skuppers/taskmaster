@@ -41,14 +41,14 @@ static int		parse_opt(char **av, int ac, int i)
 	{
 		if (ft_strequ(av[i], opt_str[count]) == TRUE)
 		{
-			g_env->opt.optmask |= (1 << (count / 2));
+			g_denv->opt.optmask |= (1 << (count / 2));
 			if (count >= 8) // needs arguments
 			{
 				i++;
 				if (i == ac || av[i][0] == '-')
 					error_opt(ft_asprintf("option '%s' requires argument", opt_str[count]));
 				count -= 8;
-				g_env->opt.str[count / 2] = av[i];
+				g_denv->opt.str[count / 2] = av[i];
 				return (2);
 			}
 			return (1);

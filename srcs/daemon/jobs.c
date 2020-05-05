@@ -51,7 +51,7 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 	fclose(stderrfile);*/
 
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
-		ft_dprintf(2, "taskmasterd: Program %s instance %d execution error: %s\n",
+		ft_dprintf(STDERR_FILENO, "taskmasterd: Program %s instance %d execution error: %s\n",
 				prog->name, instance->id, strerror(errno));
 	ft_free_tab_str(environ);
 	exit(1);
@@ -60,24 +60,24 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb)
 {
 	if (ls != 0)
-		tlog(g_env, E_LOGLVL_ERRO, "Failed to %s instance %d of %s: ", cmd, nb, pg->name);
+		tlog(g_denv, E_LOGLVL_ERRO, "Failed to %s instance %d of %s: ", cmd, nb, pg->name);
 	if (ls == ERR_STARTING)
-		tlog(g_env, E_LOGLVL_ERRO, "instance is already starting.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "instance is already starting.\n");
 	else if (ls == ERR_RUNNING)
-		tlog(g_env, E_LOGLVL_ERRO, "instance is already running.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "instance is already running.\n");
 	else if (ls == ERR_STOPPING)
-		tlog(g_env, E_LOGLVL_ERRO, "instance is already stopping.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "instance is already stopping.\n");
 	else if (ls == ERR_STOPPED)
-		tlog(g_env, E_LOGLVL_ERRO, "instance is already stopped.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "instance is already stopped.\n");
 	else if (ls == ERR_FORK)
-		tlog(g_env, E_LOGLVL_ERRO, "fork() failed.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "fork() failed.\n");
 	else if (ls == ERR_EXEC)
-		tlog(g_env, E_LOGLVL_ERRO, "execve() failed.\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "execve() failed.\n");
 	else if (ls == ERR_UNDEF_INST)
-		tlog(g_env, E_LOGLVL_ERRO, "undefined instance\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "undefined instance\n");
 	else if (ls == 0)
 	{
-		tlog(g_env, E_LOGLVL_ERRO, "Instance %d of %s with pid %d entered %s state.\n",
+		tlog(g_denv, E_LOGLVL_ERRO, "Instance %d of %s with pid %d entered %s state.\n",
 							nb, pg->name, get_instance(pg, nb)->pid,
 							get_instance_state(get_instance(pg, nb)));
 	}
@@ -101,7 +101,7 @@ void    launch_jobs(t_env *env)
 			inst = new_instance(inst_nb, prog->name);	// create instance meta
 			if (inst == NULL)
 			{
-				tlog(g_env, E_LOGLVL_ERRO, "Failed to allocate instance\n");
+				tlog(g_denv, E_LOGLVL_ERRO, "Failed to allocate instance\n");
 				break ;
 			}
 			add_instance(prog, inst);		//add instance to program_list

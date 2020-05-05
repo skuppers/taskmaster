@@ -42,12 +42,12 @@ int8_t      send_bytecode(t_vector *code, uint16_t len, int fd)
 	if ((status = sendall(fd, vct_getstr(code), len)) != 0)
 	{
 		if (status == -1)
-			printf("Fatal error while sending bytecode: %s\n", strerror(errno));
+			dprintf(STDERR_FILENO, "Fatal error while sending bytecode: %s\n", strerror(errno));
 		else if (status == -2)
-			printf("Unable to send entire bytecode.\n");
+			dprintf(STDERR_FILENO, "Unable to send entire bytecode.\n");
 		return (-1);
 	}
-	tlog(g_env, E_LOGLVL_INFO, "Bytecode sent succesfully!\n");
+	tlog(g_denv, E_LOGLVL_INFO, "Bytecode sent succesfully!\n");
 	return (0);
 }
 
@@ -57,7 +57,7 @@ void		ddebug_print_bytecode(t_vector *bytecode)
 	char		c;
 
 	i = 0;
-	ft_putstr_fd("\033[31mBytecode: \033[32m", g_env->log_fd);
+	ft_putstr_fd("\033[31mBytecode: \033[32m", g_denv->log_fd);
 //	ft_putendl_fd("\n ----- Reminder Table ----- \033[35m", STDERR_FILENO);
 //	ft_putendl_fd("Start of Header (SOH) = 0x01", STDERR_FILENO);
 //	ft_putendl_fd("Start Of Text   (STX) = 0x02", STDERR_FILENO);
@@ -70,23 +70,23 @@ void		ddebug_print_bytecode(t_vector *bytecode)
 		c = vct_getcharat(bytecode, i);
 		if (i == 1)
 		{
-			ft_dprintf(g_env->log_fd, "\033[33m[size = %u]\033[32m",
+			ft_dprintf(g_denv->log_fd, "\033[33m[size = %u]\033[32m",
 					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
 			i += 3;
 		}
 		else if (ft_isprint(c) == TRUE)
-			ft_putchar_fd(c, g_env->log_fd);
+			ft_putchar_fd(c, g_denv->log_fd);
 		else if (c == '\t' || c == '\n')
-			ft_putstr_fd(c == '\t' ? "\\t" : "\\n", g_env->log_fd);
+			ft_putstr_fd(c == '\t' ? "\\t" : "\\n", g_denv->log_fd);
 		else if (c == US || c == STX || c == ETX)
-			ft_dprintf(g_env->log_fd, "\033[34m[0x%.2hhx]\033[32m", c);
+			ft_dprintf(g_denv->log_fd, "\033[34m[0x%.2hhx]\033[32m", c);
 		else if (c == SOH || c == ENQ)
-			ft_dprintf(g_env->log_fd, "\033[35m[0x%.2hhx]\033[32m", c);
+			ft_dprintf(g_denv->log_fd, "\033[35m[0x%.2hhx]\033[32m", c);
 		else
-			ft_dprintf(g_env->log_fd, "\033[36m[0x%.2hhx]\033[32m", c);
+			ft_dprintf(g_denv->log_fd, "\033[36m[0x%.2hhx]\033[32m", c);
 		i++;
 	}
-	ft_dprintf(g_env->log_fd, "\033[0m\n");
+	ft_dprintf(g_denv->log_fd, "\033[0m\n");
 }
 
 void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
@@ -94,8 +94,8 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 	t_cmd			*cmd;
 	t_vector		*resp;
 
-	ft_printf("------------------------------------------\n");
-	ft_printf("read %u bytes | trame len: %u bytes\n",
+	dprintf(STDERR_FILENO, "------------------------------------------\n");
+	dprintf(STDERR_FILENO, "read %u bytes | trame len: %zu bytes\n",
 				readstatus, vct_len(vct));
 	
 	if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
@@ -103,7 +103,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 	
 	cmd = decode_cmd(vct);
 	if (cmd == NULL)
-		tlog(g_env, E_LOGLVL_ERRO, "Error: Bad trame\n");
+		tlog(g_denv, E_LOGLVL_ERRO, "Error: Bad trame\n");
 	else
 	{
 		if (ft_strequ(env->opt.str[LOGLEVEL], "debug") == 1)
@@ -118,7 +118,7 @@ void	handle_client_data(t_env *env, t_vector *vct, int32_t readstatus, int fd)
 		vct_del(&resp);
 		ft_free_tab_str(cmd->av);
 	}
-	ft_printf("------------------------------------------\n");
+	dprintf(STDERR_FILENO, "------------------------------------------\n");
 }
 
 void	realine_error(t_env *env, int32_t readstatus, int fd_nb, fd_set *master_set)

@@ -14,6 +14,10 @@
 
 int daemonize(t_env *env)
 {
+	int fd;
+
+	
+	
 	pid_t process_id;
 
 	if ((process_id = fork()) < 0)
@@ -26,18 +30,20 @@ int daemonize(t_env *env)
 		dprintf(STDERR_FILENO, "Process_id of child process %d \n", process_id);
 		exit_routine();
 	}
-	umask(0);
+//	umask(0);
 	if(setsid() < 0)
 	{
 		dprintf(STDERR_FILENO, "Failed to set new session ID.\n");
 		exit_routine();
 	}
 //	chdir("/");
-
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	//close(STDERR_FILENO);
-
+fd = open("/dev/null", 0);
+dup2(fd, STDIN_FILENO);
+dup2(fd, STDOUT_FILENO);
+dup2(fd, STDERR_FILENO);
+close(STDIN_FILENO);
+close(STDOUT_FILENO);
+close(STDERR_FILENO);
 	if (make_socket(env, DFL_SOCKET) != 0)
 		exit_routine();
 	if (bind_socket(env) != 0)

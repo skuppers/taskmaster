@@ -130,7 +130,7 @@ typedef struct     			s_env
 
 /******************** GLOBALS ********************/
 
-extern	t_env			*g_env;
+extern	t_env			*g_denv;
 
 /*************************************************/
 

@@ -33,18 +33,17 @@ static int		pre_trame(t_vector *trame)
 	debug_print_bytecode(trame);
 	if (vct_getfirstchar(trame) != SOH || vct_getlastchar(trame) != ENQ)
 	{
-	//	printf("Bad encapsulation\n");
+		dprintf(STDERR_FILENO, "Bad encapsulation\n");
 		return (FAILURE);
 	}
 	vct_pop(trame);
 	size = (*((uint64_t *)vct_getstr(trame)) & 0xffffffff);
 	if (size - 1 != vct_len(trame))
 	{
-	//	ft_dprintf(STDERR_FILENO, "Error: Trame has bad size\n");
+		ft_dprintf(STDERR_FILENO, "Error: Trame has bad size\n");
 		return (FAILURE);
 	}
 	vct_popfrom(trame, 4);
-//	printf("Message valid: %s\n", vct_getstr(trame));
 	return (SUCCESS);
 }
 
