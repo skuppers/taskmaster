@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:14:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:25:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 14:23:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_vector	*action_signal(t_instance *instance, t_program *program)
 	char		*str;
 
 	vct = NULL;
-	if (instance != NULL && program != NULL)
+	if (instance != NULL && program != NULL
+		&& g_env->sig_tmp > 0 && g_env->sig_tmp < 32)
 	{
 		str = NULL;
 		if (instance->state != E_RUNNING && instance->state != E_STARTING)
@@ -49,7 +50,7 @@ t_vector	*action_signal(t_instance *instance, t_program *program)
 		ft_strdel(&str);
 	}
 	if (vct == NULL)
-		vct = get_msg(instance->name, "Unknow error", ERR_MSG);
+		vct = get_msg(instance->name, "bad signal", ERR_MSG);
 	return (vct);
 }
 
@@ -82,13 +83,6 @@ t_vector			*cmd_signal(t_cmd *cmd)
 	if (cmd->ac == 0)
 		return (NULL);
 	g_env->sig_tmp = get_signal_number(cmd->av[0]);
-	if (g_env->sig_tmp == 0)
-	{
-		vct = vct_newstr("Bad signal: ");
-		vct_addstr(vct, cmd->av[0]);
-		vct_add(vct, '\n');
-		return (vct);
-	}
 	if (cmd->ocp == 0x01)
 		vct = exec_action_all(action_signal);
 	else if (cmd->ocp == 0x02)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:22:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:23:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 14:21:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ t_vector	*action_stop(t_instance *instance, t_program *program)
 	if (instance != NULL && program != NULL)
 	{
 		if (instance->state != E_RUNNING && instance->state != E_STARTING)
-			return (get_msg(instance->name, "already stoped", ERR_MSG));
+			return (get_msg(instance->name, "already stopped", ERR_MSG));
 		if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
-			return (get_msg(instance->name, "stoped", INFO_MSG));
+			return (get_msg(instance->name, "stopped", INFO_MSG));
 	}
 	return (get_msg(instance->name, "unknow error", ERR_MSG));
 }

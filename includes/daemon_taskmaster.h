@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:34:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 14:18:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ typedef struct			s_instance
 {
 	time_t				start_time;
 	time_t				stop_time;
-	int32_t				uptime;
+	time_t				uptime;
 	int32_t				exitcode;
 	pid_t				pid;
 	uint16_t			id;
