@@ -87,7 +87,7 @@ typedef struct			s_program
 	char					*bin;					// /usr/bin/cat
 	char					**avs;					// [1] syslog
 	
-	char					*user;				
+	int16_t					userid;				
 	char					*directory;
 	char					*stdout_logfile;		// should be done
 	char					*stderr_logfile;		// should be done
@@ -330,7 +330,7 @@ typedef struct					s_variable
 */
 
 dictionary 	*load_ini_file(char *str);
-int32_t		get_secint(dictionary *dict, char *secname, char *key);
+int32_t		get_secint(dictionary *dict, char *secname, char *key, int dfl);
 int8_t		get_secbool(dictionary *dict, char *secname, char *key);
 char		*get_secstring(dictionary *dict, char *secname, char *key);
 

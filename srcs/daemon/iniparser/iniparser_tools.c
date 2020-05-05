@@ -36,14 +36,14 @@ int8_t	get_secbool(dictionary *dict, char *secname, char *key)
 	return (retval);
 }
 
-int32_t	get_secint(dictionary *dict, char *secname, char *key)
+int32_t	get_secint(dictionary *dict, char *secname, char *key, int dfl)
 {
 	t_vector	*buffer;
 	int32_t		retval;
 
 	buffer = vct_newstr(secname);
 	vct_addstr(buffer, key);
-	retval = (int32_t)iniparser_getint(dict, vct_getstr(buffer), 0);
+	retval = (int32_t)iniparser_getint(dict, vct_getstr(buffer), dfl);
 	vct_del(&buffer);
 	return (retval);
 }

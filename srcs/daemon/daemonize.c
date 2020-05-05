@@ -14,49 +14,29 @@
 
 int daemonize(t_env *env)
 {
-	/*
-	int fd;
+	int		success;
 
-	
-	
-	pid_t process_id;
-
-	if ((process_id = fork()) < 0)
+	success = 0;
+	if (setuid(ft_atoi(env->opt.str[USER])) != 0)
 	{
-		dprintf(STDERR_FILENO, "Fatal error: daemonization failed: fork(): %s\n", strerror(errno));
+		dprintf(STDERR_FILENO, "taskmasterd: cannot change user to UID: %s: %s\n",
+			env->opt.str[USER], strerror(errno));
 		exit_routine();
 	}
-	else if (process_id > 0)
+	if (chdir(env->opt.str[DIRECTORY]) != 0)
 	{
-		dprintf(STDERR_FILENO, "Process_id of child process %d \n", process_id);
+		dprintf(STDERR_FILENO, "taskmasterd: cannot chdir to %s: %s\n",
+			env->opt.str[DIRECTORY], strerror(errno));
 		exit_routine();
 	}
-//	umask(0);
-	if(setsid() < 0)
-	{
-		dprintf(STDERR_FILENO, "Failed to set new session ID.\n");
-		exit_routine();
-	}
-//	chdir("/");
-
-fd = open("/dev/null", 0);
-dup2(fd, STDIN_FILENO);
-dup2(fd, STDOUT_FILENO);
-dup2(fd, STDERR_FILENO);
-close(STDIN_FILENO);
-close(STDOUT_FILENO);
-close(STDERR_FILENO);
-*/
-
+	umask(env->opt.umask);
 	daemon(1, 0);
 	if (make_socket(env, DFL_SOCKET) != 0)
 		exit_routine();
 	if (bind_socket(env) != 0)
 		exit_routine();
-
 	launch_jobs(env);
 	listen_for_data(env);
-
 	exit_routine();
 	return (0);
 }

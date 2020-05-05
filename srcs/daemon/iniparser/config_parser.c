@@ -94,7 +94,7 @@ uint8_t		get_numprocs(uint8_t *error, dictionary *d, char *name)
 {
 	int32_t		get;
 
-	get = get_secint(d, name, ":numprocs");
+	get = get_secint(d, name, ":numprocs", 0);
 	if (get == 0)
 		return (1);
 	if (!is_in_range(get, 1, 255))
@@ -124,7 +124,7 @@ uint8_t		get_startsecs(uint8_t *error, dictionary *d, char *name)
 {
 	int32_t get;
 
-	get = get_secint(d, name, ":startsecs");
+	get = get_secint(d, name, ":startsecs", 0);
 	if (get == 0)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
@@ -140,7 +140,7 @@ uint8_t		get_startretries(uint8_t *err, dictionary *d, char *name)
 {
 	int32_t get;
 	
-	get = get_secint(d, name, ":startretries");
+	get = get_secint(d, name, ":startretries", 0);
 	if (get == 0)
 		get = 3;
 	if (!is_in_range(get, 1, 255))
@@ -156,7 +156,7 @@ uint8_t		get_stopwaitsecs(uint8_t *err, dictionary *d, char *name)
 {
 	int32_t get;
 	
-	get = get_secint(d, name, ":stopwaitsecs");
+	get = get_secint(d, name, ":stopwaitsecs", 0);
 	if (get == 0)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
@@ -191,19 +191,25 @@ uint8_t		get_stopsig(uint8_t *err, dictionary *d, char *name)
 	return (0);
 }
 
-char	*get_user(uint8_t *err, dictionary *d, char *name)
+int16_t		get_userid(uint8_t *err, dictionary *d, char *name)
 {
-	char *get;
+	int	get;
 
-	get = get_secstring(d, name, ":user");
-	if (get == NULL)
-		return (NULL);
-	if (ft_strlen(get) == 0)
+	get = get_secint(d, name, ":userid", -1);
+	if (get == -1)
+		return (-1);
+/*	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - user field cannot be blank.\n", name);
-		return (NULL);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field cannot be blank.\n", name);
+		return (0);
 	}
+	if (ft_strcheck(tmp, is_digit) != TRUE)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field must be numeric.\n", name);
+		return (0);
+	}*/
 	return (get);
 }
 
@@ -227,7 +233,7 @@ uint16_t		get_priority(uint8_t *err, dictionary *d, char *name)
 {
 	int32_t get;
 	
-	get = get_secint(d, name, ":priority");
+	get = get_secint(d, name, ":priority", 0);
 	if (get == 0)
 		get = 999;
 	if (!is_in_range(get, 1, 999))
@@ -304,7 +310,7 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
 	get_exitcodes(&error, &prog, dict, secname);
 	prog.stopsignal = get_stopsig(&error, dict, secname);
-	prog.user = get_user(&error, dict, secname);
+	prog.userid = get_userid(&error, dict, secname);
 	prog.directory = get_directory(&error, dict, secname);
 	prog.priority = get_priority(&error, dict, secname);
 	prog.redirect_stderr = (uint8_t)get_secbool(dict, secname, ":redirect_stderr");
@@ -312,7 +318,7 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	prog.stderr_logfile = get_stderrlog(&error, dict, secname);
 	prog.environ = get_environement(&error, dict, secname);
 	// TODO: a voir
-	prog.umask = (mode_t)get_secint(dict, secname, ":umask");
+	prog.umask = (mode_t)get_secint(dict, secname, ":umask", 0);
 	if (error == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
@@ -322,18 +328,6 @@ static void	get_new_prog(t_env *env, dictionary *dict, char *secname)
 	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
 	tlog(env, E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
-}
-
-static void	get_new_group(t_env *env, dictionary *dict, char *secname)
-{
-	t_group		group;
-
-	group.prog_list = NULL;
-	group.name = ft_strsub(secname, 6, ft_strlen(secname) - 6);
-	group.programs = get_secstring(dict, secname, ":programs");
-	group.priority = (uint16_t)get_secint(dict, secname, ":priority");
-	append_to_grplist(env, &group);
-	tlog(env, E_LOGLVL_DEBG, "Inifile: found group: %s\n", group.name);
 }
 
 void			parse_ini_file(t_env *env, dictionary *dict)
@@ -353,9 +347,6 @@ void			parse_ini_file(t_env *env, dictionary *dict)
 
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
 			get_new_prog(env, dict, secname);
-
-		else if (ft_strnequ(secname, "group.", 6) == TRUE)
-			get_new_group(env, dict, secname);
 			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)

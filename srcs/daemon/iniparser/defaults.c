@@ -43,15 +43,6 @@ uint8_t	get_nodaemon(char *str)
 	return (FALSE);
 }
 
-uint32_t	get_umask(char *str)
-{
-	if (str == NULL || ft_strlen(str) > 4)
-		return (22); // 22 ou 022
-	if (ft_strcheck(str, ft_isdigit) == FALSE)
-		return (22);
-	return (ft_atoi(str));
-}
-
 char	**get_environ(char *str)
 {
 	(void)str;
@@ -79,20 +70,23 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL)) != NULL)
 			env->opt.optmask |= get_nodaemon(tmp);
 	}
-
 	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE)
 	{
 		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nocleanup", NULL)) != NULL)
 			env->opt.optmask |= get_nodaemon(tmp);
 	}
-
 	if ((env->opt.optmask & OPT_USER) == FALSE)
 	{
-		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:user", NULL)) != NULL)
+		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:userid", NULL)) != NULL)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - user cannot be blank\n");
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid cannot be blank\n");
+				exit_routine();
+			}
+			else if (ft_strlen(tmp) >= 6 || ft_atoi(tmp) < 0 || ft_atoi(tmp) > 16535)
+			{
+				tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid is not in range 0-16535\n");
 				exit_routine();
 			}
 			env->opt.str[USER] = tmp;
@@ -146,19 +140,28 @@ void	taskmasterd_override(t_env *env, dictionary *dict)
 			env->opt.str[CHILDLOGDIR] = tmp;
 		}
 	}
-
-/*	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL)) != NULL)
-		env->opt.optmask |= get_nodaemon(tmp);
-
+	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL)) != NULL)
+	{
+		if (ft_strlen(tmp) <= 0)
+		{
+			tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - umask field cannot be blank.\n");
+			exit_routine();
+		}
+/*		if (ft_strcheck(tmp, ft_is_digit) != TRUE)
+		{
+			*err = 1;
+			dprintf(STDERR_FILENO, "taskmasterd: [%s] - umask field must be numeric.\n", name);
+			return (0);
+		}*/
+		env->opt.umask = strtol(tmp, NULL, 8);
+	}
 	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL)) != NULL)
-			env->opt.optmask |= get_nodaemon(tmp);
-*/
-
-
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:umask", NULL);
-	env->opt.umask = (mode_t)get_umask(tmp);
-
-	tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL);
+	{
+		if (ft_strlen(tmp) <= 0)
+		{
+			tlog(env, E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - environment field cannot be blank.\n");
+			exit_routine();
+		}
+	}
 	env->opt.environ = tmp;
-
 }
