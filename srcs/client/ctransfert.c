@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 01:33:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/05 12:35:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int8_t		sendall(int sockfd, const char *buf, uint16_t buflen)
     return (0);
 }
 
-int8_t      send_bytecode(t_vector *code, uint16_t len)
+int8_t      send_trame(t_vector *code, uint16_t len)
 {
 	int8_t		status;
 
@@ -57,21 +57,21 @@ int8_t      send_bytecode(t_vector *code, uint16_t len)
 
 int8_t		check_connection(t_env *env)
 {
-	t_vector *bytecode;
+	t_vector *trame;
 	
-	bytecode = generate_bytecode(get_cmd_struct(VERSION, NULL), 0);
-//	debug_print_bytecode(bytecode);
-	if (send_bytecode(bytecode, (uint16_t)vct_len(bytecode)) != 0)
+	trame = generate_bytecode(get_cmd_struct(VERSION, NULL), 0);
+//	debug_print_bytecode(trame);
+	if (send_trame(trame, (uint16_t)vct_len(trame)) != 0)
 	{
 		env->sigpipe = 0;
-		vct_del(&bytecode);
-		return (-1);
+		vct_del(&trame);
+		return (FAILURE);
 	}
-	vct_del(&bytecode);
-	return (0);
+	vct_del(&trame);
+	return (SUCCESS);
 }
 
-t_vector		*get_response(t_env *env)
+t_vector		*get_feedback(t_env *env)
 {
 	t_vector		*vct;
 	int				readbytes;
