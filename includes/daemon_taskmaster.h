@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:26:59 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 16:32:11 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,6 +237,7 @@ void 					listen_for_data(t_denv *env);
 # define OPT_MINPROCS			0x040	//TODO
 
 # define NB_OPT					22
+# define OPT_WITHOUT_ARG		6
 
 # define CONFIGURATION	0
 # define USER			1
