@@ -130,10 +130,6 @@ dprintf(STDERR_FILENO, "Launching : %s | %s\n", prog->bin, prog->command);
 		exit_routine();
 	}
 	
-	concat_env_to_daemon_env(prog, env);	
-	environ = envtotab(prog->env);
-
-	
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,
 			"taskmasterd: Program %s instance %d execution error: %s\n",
