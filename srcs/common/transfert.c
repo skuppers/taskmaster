@@ -53,9 +53,9 @@ int8_t	try_to_send_trame(int fd, t_vector *trame, uint8_t flag, t_print f)
 		print_msg(f, flag, E_LOGLVL_ERRO, str);
 		ft_strdel(&str);
 	}
-	else if (ret_send == UNCOMPLETE)
+/*	else if (ret_send == UNCOMPLETE)
 		print_msg(f, flag, E_LOGLVL_ERRO, "Unable to send entire bytecode");
 	else
-		print_msg(f, flag, E_LOGLVL_INFO, "Bytecode sent succesfully !");
+		print_msg(f, flag, E_LOGLVL_INFO, "Bytecode sent succesfully !");*/
 	return (ret_send);
 }

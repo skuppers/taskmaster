@@ -30,7 +30,7 @@ static int		pre_trame(t_vector *trame)
 {
 	uint32_t		size;
 
-	debug_print_bytecode(trame);
+//	debug_print_bytecode(trame);
 	if (vct_getfirstchar(trame) != SOH || vct_getlastchar(trame) != ENQ)
 	{
 		dprintf(STDERR_FILENO, "Bad encapsulation\n");
