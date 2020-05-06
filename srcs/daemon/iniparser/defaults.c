@@ -14,7 +14,8 @@
 
 void	check_dflt_directory(void)
 {
-	DIR* dir;
+	DIR		*dir;
+	int		lock;
 	
 	dir = opendir(DFL_WORKDIR);
 	if (dir)
@@ -23,17 +24,29 @@ void	check_dflt_directory(void)
 	{
 		if (mkdir(DFL_WORKDIR, 0744) == -1)
 		{
-			dprintf(STDERR_FILENO, "Fatal error in: check_working_directory():"
+			dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
 				" Could not create default working directory: %s\n", strerror(errno));
 			exit_routine();
 		}
 	}
 	else
 	{
-    	dprintf(STDERR_FILENO, "Fatal error in: check_working_directory():"
+    	dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
 				" Could not open default working directory: %s\n", strerror(errno));
 		exit_routine();
 	}
+	lock = open(DFL_LOCK, O_RDWR | O_CREAT, 0700);
+	if (lock < 0)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: could not create lockfile: %s\n", strerror(errno));
+		exit_routine();
+	}
+	if (flock(lock, LOCK_EX | LOCK_NB) != 0)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: could not lock lockfile. Is another daemon running?\n");
+		exit_routine();
+	}
+	g_denv->lock = lock;
 }
 
 uint8_t	get_nodaemon(char *str)
@@ -59,6 +72,7 @@ void    set_taskmasterd_defautls(t_denv *env)
 	env->opt.str[CHILDLOGDIR] = DFL_CHLDLOGDIR;
     env->opt.umask = DFL_UMASK;
 	env->opt.environ = NULL;
+
 }
 
 void	taskmasterd_override(t_denv *env, dictionary *dict)
