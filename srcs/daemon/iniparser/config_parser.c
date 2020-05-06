@@ -184,25 +184,30 @@ uint8_t		get_stopsig(uint8_t *err, dictionary *d, char *name)
 
 int16_t		get_userid(uint8_t *err, dictionary *d, char *name)
 {
-	int	get;
+	char	*get;
 
-	(void)err;
-	get = get_secint(d, name, ":userid", -1);
-	if (get == -1)
+	get = get_secstring(d, name, ":userid");
+	if (get == NULL)
 		return (-1);
-/*	if (ft_strlen(get) == 0)
+	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field cannot be blank.\n", name);
-		return (0);
+		return (-1);
 	}
-	if (ft_strcheck(tmp, is_digit) != TRUE)
+	if (ft_strcheck(get, ft_isdigit) != TRUE)
 	{
 		*err = 1;
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field must be numeric.\n", name);
-		return (0);
-	}*/
-	return (get);
+		return (-1);
+	}
+	if (ft_strlen(get) >= 6 || ft_atoi(get) < 0 || ft_atoi(get) > 16535)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] -  userid is not in range 0-16535\n", name);
+		return (-1);
+	}
+	return (ft_atoi(get));
 }
 
 char	*get_directory(uint8_t *err, dictionary *d, char *name)
@@ -285,6 +290,27 @@ char	*get_environement(uint8_t *err, dictionary *d, char *name)
 	return (get);
 }
 
+mode_t		get_umask(uint8_t *err, dictionary *d, char *name)
+{
+	char	*get;
+
+	get = get_secstring(d, name, ":umask");
+	if (get == NULL)
+		return ((mode_t)strtol("0", NULL, 8));
+	if (ft_strlen(get) == 0)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - umask field cannot be blank.\n", name);
+		return (0);
+	}
+	if (ft_strcheck(get, ft_isdigit) != TRUE)
+	{
+		*err = 1;
+		dprintf(STDERR_FILENO, "taskmasterd: [taskmasterd] - umask field must be numeric.\n");
+	}
+	return ((mode_t)strtol(get, NULL, 8));
+}
+
 static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 {
 	t_program	prog;
@@ -309,8 +335,7 @@ static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	prog.stdout_logfile = get_stdoutlog(&error, dict, secname);
 	prog.stderr_logfile = get_stderrlog(&error, dict, secname);
 	prog.environ = get_environement(&error, dict, secname);
-	// TODO: a voir
-	prog.umask = (mode_t)get_secint(dict, secname, ":umask", 0);
+	prog.umask = get_umask(&error, dict, secname);
 	if (error == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");

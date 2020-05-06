@@ -242,7 +242,6 @@ void					get_opt(t_denv *env, int ac, char **av);
 int8_t					check_opt(t_denv *env);
 
 uint8_t					get_nodaemon(char *str);
-uint32_t				get_umask(char *str);
 char					**get_environ(char *str);
 void					taskmasterd_override(t_denv *env, dictionary *dict);
 void					parse_ini_file(t_denv *env, dictionary *dict);

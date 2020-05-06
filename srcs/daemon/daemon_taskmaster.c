@@ -18,6 +18,15 @@ void	print_dbg(t_denv *env)
 {
 	t_list *ptr;
 	
+	dprintf(STDERR_FILENO, "Taskmasterd:\n");
+	dprintf(STDERR_FILENO, "- logfile: %s\n", env->opt.str[LOGFILE]);
+	dprintf(STDERR_FILENO, "- loglevel: %s\n", env->opt.str[LOGLEVEL]);
+	dprintf(STDERR_FILENO, "- umask: %o\n", env->opt.umask);
+	dprintf(STDERR_FILENO, "- userid: %s\n", env->opt.str[USER]);
+	dprintf(STDERR_FILENO, "- directory: %s\n", env->opt.str[DIRECTORY]);
+	dprintf(STDERR_FILENO, "- childlogdir: %s\n", env->opt.str[CHILDLOGDIR]);
+	dprintf(STDERR_FILENO, "- environment: %s\n\n", env->opt.environ);
+
 	for (ptr = env->prgm_list; ptr != NULL; ptr = ptr->next)
 	{
 		dprintf(STDERR_FILENO, "Program: %s\n", ((t_program *)ptr->content)->name);
@@ -32,7 +41,6 @@ void	print_dbg(t_denv *env)
 		dprintf(STDERR_FILENO, " - stopwaitsec:\t%d\n", ((t_program *)ptr->content)->stopwaitsecs);
 		dprintf(STDERR_FILENO, " - exitcodes:\n");
 		ft_print_strtab(((t_program *)ptr->content)->exitcodes);
-
 		dprintf(STDERR_FILENO, " - directory:\t%s\n", ((t_program *)ptr->content)->directory);
 		dprintf(STDERR_FILENO, " - umask:\t%u\n", ((t_program *)ptr->content)->umask);
 		dprintf(STDERR_FILENO, " - priority:\t%d\n", ((t_program *)ptr->content)->priority);

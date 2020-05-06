@@ -64,7 +64,9 @@ void    set_taskmasterd_defautls(t_denv *env)
 void	taskmasterd_override(t_denv *env, dictionary *dict)
 {
 	char	*tmp;
+	int		error;
 
+	error = 0;
 	if ((env->opt.optmask & OPT_NODAEMON) == FALSE)
 	{
 		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL)) != NULL)
@@ -81,13 +83,18 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 		{
 			if (ft_strlen(tmp) <= 0)
 			{
-				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid cannot be blank\n");
-				exit_routine();
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid cannot be blank.\n");
+				error = 1;
+			}
+			else if (ft_strcheck(tmp, ft_isdigit) != TRUE)
+			{
+				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid has te be numeric.\n");
+				error = 1;
 			}
 			else if (ft_strlen(tmp) >= 6 || ft_atoi(tmp) < 0 || ft_atoi(tmp) > 16535)
 			{
 				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - userid is not in range 0-16535\n");
-				exit_routine();
+				error = 1;
 			}
 			env->opt.str[USER] = tmp;
 		}
@@ -99,7 +106,7 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 			if (ft_strlen(tmp) <= 0)
 			{
 				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - directory cannot be blank\n");
-				exit_routine();
+				error = 1;
 			}
 			env->opt.str[DIRECTORY] = tmp;
 		}
@@ -111,7 +118,7 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 			if (ft_strlen(tmp) <= 0)
 			{
 				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - logfile cannot be blank\n");
-				exit_routine();
+				error = 1;
 			}
 			env->opt.str[LOGFILE] = tmp;
 		}
@@ -123,7 +130,7 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 			if (ft_strlen(tmp) <= 0)
 			{
 				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - loglevel cannot be blank\n");
-				exit_routine();
+				error = 1;
 			}
 			env->opt.str[LOGLEVEL] = tmp;
 		}
@@ -135,7 +142,7 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 			if (ft_strlen(tmp) <= 0)
 			{
 				tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - childlogdir cannot be blank\n");
-				exit_routine();
+				error = 1;
 			}
 			env->opt.str[CHILDLOGDIR] = tmp;
 		}
@@ -145,14 +152,13 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 		if (ft_strlen(tmp) <= 0)
 		{
 			tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - umask field cannot be blank.\n");
-			exit_routine();
+			error = 1;
 		}
-/*		if (ft_strcheck(tmp, ft_is_digit) != TRUE)
+		if (ft_strcheck(tmp, ft_isdigit) != TRUE)
 		{
-			*err = 1;
-			dprintf(STDERR_FILENO, "taskmasterd: [%s] - umask field must be numeric.\n", name);
-			return (0);
-		}*/
+			error = 1;
+			dprintf(STDERR_FILENO, "taskmasterd: [taskmasterd] - umask field must be numeric.\n");
+		}
 		env->opt.umask = strtol(tmp, NULL, 8);
 	}
 	if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:environment", NULL)) != NULL)
@@ -160,8 +166,10 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 		if (ft_strlen(tmp) <= 0)
 		{
 			tlog(E_LOGLVL_CRIT, "taskmasterd: [taskmasterd] - environment field cannot be blank.\n");
-			exit_routine();
+			error = 1;
 		}
 	}
 	env->opt.environ = tmp;
+	if (error == 1)
+		exit_routine();
 }
