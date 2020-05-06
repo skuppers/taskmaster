@@ -92,6 +92,8 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 		child_process(prog, inst, environ);
 	else
 	{
+		if (prog->pgid == 0)
+			prog->pgid = inst->pid;
 		inst->state = E_STARTING;
 		inst->start_time = time(NULL);
 		return (SUCCESS);

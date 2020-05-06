@@ -62,6 +62,25 @@ void	set_daemon_environment(t_denv *env, char **environ)
 //	print_lst(env->environ); // DEBUG LIST ENV
 }
 
+void	set_uid(t_denv *env)
+{
+	if (env->opt.str[USER] != NULL && setuid(ft_atoi(env->opt.str[USER])) != 0)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: cannot change user to UID: %s: %s\n",
+			env->opt.str[USER], strerror(errno));
+		exit_routine();
+	}
+}
+void	do_chdir(t_denv *env)
+{
+	if (env->opt.str[DIRECTORY] != NULL && chdir(env->opt.str[DIRECTORY]) != 0)
+	{
+		dprintf(STDERR_FILENO, "taskmasterd: cannot chdir to %s: %s\n",
+			env->opt.str[DIRECTORY], strerror(errno));
+		exit_routine();
+	}
+}
+
 int main(int ac, char **av, char **environ)
 {
 	t_denv   env;
@@ -85,6 +104,9 @@ int main(int ac, char **av, char **environ)
 
 	if (env.opt.optmask & OPT_NODAEMON)
 	{
+		set_uid(&env);
+		do_chdir(&env);
+		umask(env.opt.umask);
 		if (make_socket(&env, DFL_SOCKET) != 0)
 			return (EXIT_FAILURE);
 		if (bind_socket(&env) != 0)

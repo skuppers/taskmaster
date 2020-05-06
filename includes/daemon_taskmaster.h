@@ -91,7 +91,7 @@ typedef struct			s_program
 	
 	uint8_t					redirect_stderr;
 	uint8_t					autorestart;
-	char					padding[2];
+	uint16_t				pgid;
 
 	char					*environ;	
 	t_list					*env;

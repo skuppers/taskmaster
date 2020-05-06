@@ -85,10 +85,20 @@ int8_t      init_log()
 	if (debug_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Could not create log file: %s\n", strerror(errno));
-		return (-1);
+		exit_routine();
 	}
 	g_denv->log_fd = debug_fd;
 	tlog(E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
 	tlog(E_LOGLVL_INFO, "Taskmaster logger is up\n");
+
+	if (mkdir(g_denv->opt.str[CHILDLOGDIR], 0744) == -1)
+	{
+		if (errno != EEXIST)
+		{
+			dprintf(STDERR_FILENO, "Fatal error in: init_log():"
+					" Could create childlog directory: %s\n", strerror(errno));
+			exit_routine();
+		}
+	}
 	return (0);
 }

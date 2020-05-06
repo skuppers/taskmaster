@@ -31,6 +31,10 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 {
 	char	**environ;
 	
+	if (prog->pgid == 0)
+		prog->pgid = getpid();
+	setpgid(getpid(), prog->pgid);
+
 	concat_env_to_daemon_env(prog, env);	
 	environ = envtotab(prog->env);
 //	FILE *stderrfile;
@@ -97,6 +101,7 @@ void    launch_jobs(t_denv *env)
     {
 		inst_nb = 0;
         prog = ptr->content;
+		prog->pgid = 0;
 		while (inst_nb < prog->numprocs)
 		{
 			inst = new_instance(inst_nb, prog->name);	// create instance meta
