@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:32:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 16:51:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct     			s_denv
 	struct sockaddr_un		addr;
 	uint8_t					client_connected;
 	int8_t					lock;
+	uint8_t					shutdown;
 }                  			t_denv;
 
 

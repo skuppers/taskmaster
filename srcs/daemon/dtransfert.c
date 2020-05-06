@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:07:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 16:52:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	handle_client_data(t_denv *env, t_vector *vct, int32_t readstatus, int fd)
 		ft_free_tab_str(cmd->av);
 	}
 	dprintf(STDERR_FILENO, "------------------------------------------\n");
+	if (env->shutdown == TRUE)
+		exit_routine();
 }
 
 void	realine_error(t_denv *env, int32_t readstatus, int fd_nb, fd_set *master_set)
