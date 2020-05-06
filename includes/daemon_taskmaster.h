@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:20:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 15:08:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ int     				child_process(t_program *prog, t_instance *instance, t_list *env);
 int8_t					waiter(t_denv *env);
 void					update_instance_uptime(t_instance *instance);
 
+int8_t			get_new_bin_path(t_program *prog, t_list *env);
 
 int8_t		is_expected_exitcode(t_program *prg, t_instance *inst);
 
