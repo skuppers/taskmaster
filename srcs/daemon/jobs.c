@@ -113,6 +113,8 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 
 	environ = envtotab(prog->env);
 
+dprintf(STDERR_FILENO, "Launching : %s | %s\n", prog->bin, prog->command);
+
 	close(STDIN_FILENO);
 	aggregate_stdout(prog, instance);
 	aggregate_stderr(prog, instance);
