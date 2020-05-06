@@ -28,12 +28,16 @@
 # include <time.h>
 # include <dirent.h>
 # include <sys/types.h>
+# include <sys/file.h>
 # include <sys/stat.h>
 # include <signal.h>
 # include "dictionary.h"
 # include "iniparser.h"
 # include "common.h"
 # include <assert.h>
+# ifndef _GNU_SOURCE
+#	define _GNU_SOURCE 1
+# endif
 
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
@@ -79,7 +83,8 @@ typedef struct			s_program
 	char					*bin;					// /usr/bin/cat
 	char					**avs;					// [1] syslog
 	
-	int16_t					userid;				
+	int16_t					userid;	
+	char	padd[6];			
 	char					*directory;
 	char					*stdout_logfile;		// should be done
 	char					*stderr_logfile;		// should be done
@@ -89,8 +94,9 @@ typedef struct			s_program
 	uint8_t					autostart;			// Done
 	uint8_t					startretries; // START-retries (not reached running state)
 	
-	uint8_t					autorestart;
 	uint16_t				pgid;
+	uint8_t					autorestart;
+	
 	char	pad[1];
 
 	char					*environ;	
@@ -113,7 +119,7 @@ typedef struct     			s_denv
 	t_options				opt;
 	struct sockaddr_un		addr;
 	uint8_t					client_connected;
-	char					padding[1];
+	int8_t					lock;
 }                  			t_denv;
 
 
@@ -187,6 +193,7 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 # define DFL_LOGFILE		"/tmp/taskmaster.d/taskmaster.log"
 # define DFL_SOCKET 		"/tmp/taskmaster.d/taskmasterd.sock"
+# define DFL_LOCK			"/tmp/taskmaster.d/taskmasterd.lock"
 # define DFL_LOGLVL			"info"
 # define DFL_UMASK			022
 

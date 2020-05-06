@@ -27,27 +27,29 @@ void	concat_env_to_daemon_env(t_program *prog, t_list *env)
 	env_prog->next = env;
 }
 
-void	aggregate_logs(t_program *pg, t_instance *in)
+FILE	*open_file(char *path, char *mode)
+{
+	FILE	*file;
+	file = fopen(path, mode);
+	if (file == NULL)
+	{
+		tlog(E_LOGLVL_ERRO, "taskmasterd: could not open %s: %s\n", path, strerror(errno));
+		exit_routine();
+	}
+	return (file);
+}
+
+void	aggregate_stdout(t_program *pg, t_instance *in)
 {
 	FILE 		*stdoutfile;
-	FILE 		*stderrfile;
-	t_vector	*tmp;
-	char		*id;
-	
-	
+	char		*asp;
+
+	asp = NULL;
 	if (ft_strequ(pg->stdout_logfile, "AUTO") == TRUE)
 	{
-		tmp = vct_newstr(g_denv->opt.str[CHILDLOGDIR]);
-		vct_addnstr(tmp, "/", 1);
-		vct_addnstr(tmp, pg->name, ft_strlen(pg->name));
-		id = ft_itoa(in->id);
-		vct_addnstr(tmp, "_", 1);	
-		vct_addnstr(tmp, id, ft_strlen(id));
-		vct_addnstr(tmp, "_out", 4);
-		vct_addnstr(tmp, ".log", 4);
-		stdoutfile = fopen(vct_getstr(tmp), "a+" );
-		ft_strdel(&id);
-		vct_del(&tmp);
+		asprintf(&asp, "%s/%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
+		dprintf(STDERR_FILENO, "Creating %s\n", asp);
+		stdoutfile = open_file(asp, "a+");
 		dup2(fileno(stdoutfile), STDOUT_FILENO);
 		fclose(stdoutfile);
 	}
@@ -55,30 +57,26 @@ void	aggregate_logs(t_program *pg, t_instance *in)
 		close(STDOUT_FILENO);
 	else
 	{
-		tmp = vct_newstr(pg->stdout_logfile);
-		id = ft_itoa(in->id);
-		vct_addnstr(tmp, id, ft_strlen(id));
-		ft_strdel(&id);
-		stdoutfile = fopen(vct_getstr(tmp), "a+" );
-		vct_del(&tmp);
+		asprintf(&asp, "%s%d", pg->stdout_logfile, in->id);
+		dprintf(STDERR_FILENO, "Creating %s\n", asp);
+		stdoutfile = open_file(asp, "a+");
 		dup2(fileno(stdoutfile), STDOUT_FILENO);
 		fclose(stdoutfile);
 	}
-	
-	
+}
+
+void	aggregate_stderr(t_program *pg, t_instance *in)
+{
+	FILE 		*stderrfile;
+	char		*asp;
+
+	asp = NULL;
+
 	if (ft_strequ(pg->stderr_logfile, "AUTO") == TRUE)
 	{
-		tmp = vct_newstr(g_denv->opt.str[CHILDLOGDIR]);
-		vct_addnstr(tmp, "/", 1);
-		vct_addnstr(tmp, pg->name, ft_strlen(pg->name));
-		id = ft_itoa(in->id);
-		vct_addnstr(tmp, "_", 1);	
-		vct_addnstr(tmp, id, ft_strlen(id));
-		vct_addnstr(tmp, "_err", 4);
-		vct_addnstr(tmp, ".log", 4);
-		stderrfile = fopen(vct_getstr(tmp), "a+" );
-		ft_strdel(&id);
-		vct_del(&tmp);
+		asprintf(&asp, "%s/%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
+		dprintf(STDERR_FILENO, "Creating %s\n", asp);
+		stderrfile = open_file(asp, "a+");
 		dup2(fileno(stderrfile), STDERR_FILENO);
 		fclose(stderrfile);
 	}
@@ -86,12 +84,9 @@ void	aggregate_logs(t_program *pg, t_instance *in)
 		close(STDERR_FILENO);
 	else
 	{
-		tmp = vct_newstr(pg->stderr_logfile);
-		id = ft_itoa(in->id);
-		vct_addnstr(tmp, id, ft_strlen(id));
-		ft_strdel(&id);
-		stderrfile = fopen(vct_getstr(tmp), "a+" );
-		vct_del(&tmp);
+		asprintf(&asp, "%s%d", pg->stderr_logfile, in->id);
+		dprintf(STDERR_FILENO, "Creating %s\n", asp);
+		stderrfile = open_file(asp, "a+");
 		dup2(fileno(stderrfile), STDERR_FILENO);
 		fclose(stderrfile);
 	}
@@ -115,8 +110,8 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 	environ = envtotab(prog->env);
 
 	close(STDIN_FILENO);
-
-	aggregate_logs(prog, instance);
+	aggregate_stdout(prog, instance);
+	aggregate_stderr(prog, instance);
 
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,

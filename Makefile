@@ -32,6 +32,7 @@ LIBFT = $(PATH_LIBFT)libft.a
 # Compiler Flags
 CFLAGS += -Wall
 CFLAGS += -Wextra
+CFLAGS += -D _GNU_SOURCE
 
 # Compiler Debug Flags
 ifeq ($(d), 0)

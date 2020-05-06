@@ -20,5 +20,6 @@ void	exit_routine(void)
 	unlink(DFL_SOCKET);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
+	flock(g_denv->lock, LOCK_UN);
 	exit(0);
 }
