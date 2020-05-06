@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 20:46:27 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 15:14:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,18 @@ void	aggregate_logs(t_program *pg, t_instance *in)
 int     child_process(t_program *prog, t_instance *instance, t_list *env)
 {
 	char	**environ;
-	
+
 	if (prog->pgid == 0)
 		prog->pgid = getpid();
 	setpgid(getpid(), prog->pgid);
 
+	if (get_new_bin_path(prog, env) == FAILURE)
+		tlog(E_LOGLVL_ERRO,
+			"taskmasterd: Program %s instance %d pre-execution error: %s\n",
+				prog->name, instance->id, "unvalid path or no right");
+
 	concat_env_to_daemon_env(prog, env);	
+
 	environ = envtotab(prog->env);
 
 	close(STDIN_FILENO);
