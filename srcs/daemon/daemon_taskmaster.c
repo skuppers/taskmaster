@@ -46,7 +46,6 @@ void	print_dbg(t_denv *env)
 		dprintf(STDERR_FILENO, " - priority:\t%d\n", ((t_program *)ptr->content)->priority);
 		dprintf(STDERR_FILENO, " - stopsignals:\t%d\n", ((t_program *)ptr->content)->stopsignal);
 		dprintf(STDERR_FILENO, " - user:\t\t%d\n", ((t_program *)ptr->content)->userid);
-		dprintf(STDERR_FILENO, " - redirect_stderr:\t%d\n", ((t_program *)ptr->content)->redirect_stderr);
 		dprintf(STDERR_FILENO, " - stdout_logfile:\t%s\n", ((t_program *)ptr->content)->stdout_logfile);
 		dprintf(STDERR_FILENO, " - stderr_logfile:\t%s\n", ((t_program *)ptr->content)->stderr_logfile);
 		dprintf(STDERR_FILENO, " - environment:\t%s\n\n", ((t_program *)ptr->content)->environ);

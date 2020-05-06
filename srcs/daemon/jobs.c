@@ -27,6 +27,76 @@ void	concat_env_to_daemon_env(t_program *prog, t_list *env)
 	env_prog->next = env;
 }
 
+void	aggregate_logs(t_program *pg, t_instance *in)
+{
+	FILE 		*stdoutfile;
+	FILE 		*stderrfile;
+	t_vector	*tmp;
+	char		*id;
+	
+	
+	if (ft_strequ(pg->stdout_logfile, "AUTO") == TRUE)
+	{
+		tmp = vct_newstr(g_denv->opt.str[CHILDLOGDIR]);
+		vct_addnstr(tmp, "/", 1);
+		vct_addnstr(tmp, pg->name, ft_strlen(pg->name));
+		id = ft_itoa(in->id);
+		vct_addnstr(tmp, "_", 1);	
+		vct_addnstr(tmp, id, ft_strlen(id));
+		vct_addnstr(tmp, "_out", 4);
+		vct_addnstr(tmp, ".log", 4);
+		stdoutfile = fopen(vct_getstr(tmp), "a+" );
+		ft_strdel(&id);
+		vct_del(&tmp);
+		dup2(fileno(stdoutfile), STDOUT_FILENO);
+		fclose(stdoutfile);
+	}
+	else if (ft_strequ(pg->stdout_logfile, "NONE") == TRUE)
+		close(STDOUT_FILENO);
+	else
+	{
+		tmp = vct_newstr(pg->stdout_logfile);
+		id = ft_itoa(in->id);
+		vct_addnstr(tmp, id, ft_strlen(id));
+		ft_strdel(&id);
+		stdoutfile = fopen(vct_getstr(tmp), "a+" );
+		vct_del(&tmp);
+		dup2(fileno(stdoutfile), STDOUT_FILENO);
+		fclose(stdoutfile);
+	}
+	
+	
+	if (ft_strequ(pg->stderr_logfile, "AUTO") == TRUE)
+	{
+		tmp = vct_newstr(g_denv->opt.str[CHILDLOGDIR]);
+		vct_addnstr(tmp, "/", 1);
+		vct_addnstr(tmp, pg->name, ft_strlen(pg->name));
+		id = ft_itoa(in->id);
+		vct_addnstr(tmp, "_", 1);	
+		vct_addnstr(tmp, id, ft_strlen(id));
+		vct_addnstr(tmp, "_err", 4);
+		vct_addnstr(tmp, ".log", 4);
+		stderrfile = fopen(vct_getstr(tmp), "a+" );
+		ft_strdel(&id);
+		vct_del(&tmp);
+		dup2(fileno(stderrfile), STDERR_FILENO);
+		fclose(stderrfile);
+	}
+	else if (ft_strequ(pg->stderr_logfile, "NONE") == TRUE)
+		close(STDERR_FILENO);
+	else
+	{
+		tmp = vct_newstr(pg->stderr_logfile);
+		id = ft_itoa(in->id);
+		vct_addnstr(tmp, id, ft_strlen(id));
+		ft_strdel(&id);
+		stderrfile = fopen(vct_getstr(tmp), "a+" );
+		vct_del(&tmp);
+		dup2(fileno(stderrfile), STDERR_FILENO);
+		fclose(stderrfile);
+	}
+}
+
 int     child_process(t_program *prog, t_instance *instance, t_list *env)
 {
 	char	**environ;
@@ -37,22 +107,10 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 
 	concat_env_to_daemon_env(prog, env);	
 	environ = envtotab(prog->env);
-//	FILE *stderrfile;
-//	FILE *stdoutfile;
 
-//	dprintf(STDERR_FILENO, "Prog %s pid %d pgid %d\n", prog->process_name, prog->pid, prog->pgid);
+	close(STDIN_FILENO);
 
-/*	stdoutfile = fopen( prog->stdout_logfile, "a+" );
-	stderrfile = fopen( prog->stderr_logfile, "a+" );
-    if (stdoutfile == NULL || stderrfile == NULL)
-	{
-        fputs( "Could not open file", stderr );
-        exit (1);
-    }
-    dup2(fileno(stdoutfile), STDOUT_FILENO);
-	dup2(fileno(stderrfile), STDERR_FILENO);
-	fclose(stdoutfile);
-	fclose(stderrfile);*/
+	aggregate_logs(prog, instance);
 
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,

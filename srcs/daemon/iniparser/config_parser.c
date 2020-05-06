@@ -248,7 +248,7 @@ char	*get_stdoutlog(uint8_t *err, dictionary *d, char *name)
 
 	get = get_secstring(d, name, ":stdout_logfile");
 	if (get == NULL)
-		return (NULL);
+		return ("AUTO");
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
@@ -264,7 +264,7 @@ char	*get_stderrlog(uint8_t *err, dictionary *d, char *name)
 
 	get = get_secstring(d, name, ":stderr_logfile");
 	if (get == NULL)
-		return (NULL);
+		return ("AUTO");
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
@@ -331,7 +331,6 @@ static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	prog.userid = get_userid(&error, dict, secname);
 	prog.directory = get_directory(&error, dict, secname);
 	prog.priority = get_priority(&error, dict, secname);
-	prog.redirect_stderr = (uint8_t)get_secbool(dict, secname, ":redirect_stderr");
 	prog.stdout_logfile = get_stdoutlog(&error, dict, secname);
 	prog.stderr_logfile = get_stderrlog(&error, dict, secname);
 	prog.environ = get_environement(&error, dict, secname);

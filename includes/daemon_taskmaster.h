@@ -89,9 +89,9 @@ typedef struct			s_program
 	uint8_t					autostart;			// Done
 	uint8_t					startretries; // START-retries (not reached running state)
 	
-	uint8_t					redirect_stderr;
 	uint8_t					autorestart;
 	uint16_t				pgid;
+	char	pad[1];
 
 	char					*environ;	
 	t_list					*env;
