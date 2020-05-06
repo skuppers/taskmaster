@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 15:02:12 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 15:11:59 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 15:34:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static uint8_t	is_rel_or_abs_path(char *cmd)
 {
-	return (cmd != NULL && (cmd[0] == '/'
+	return ((cmd[0] == '/'
 			|| ft_strnequ("./", cmd, 2) || ft_strnequ("../", cmd, 3)));
 }
 
@@ -34,10 +34,9 @@ static int8_t	bin_validation(char *bin)
 
 static void		rename_prog(t_program *prog, char *new_name)
 {
-	ft_strdel(&prog->name);
 	ft_strdel(&prog->avs[0]);
-	prog->name = ft_strdup(new_name);
 	prog->avs[0] = ft_strdup(new_name);
+	prog->bin = prog->avs[0];
 }
 
 int8_t			get_new_bin_path(t_program *prog, t_list *env)
@@ -48,9 +47,9 @@ int8_t			get_new_bin_path(t_program *prog, t_list *env)
 
 	ret = SUCCESS;
 	path_vct = NULL;
-	if (prog != NULL && is_rel_or_abs_path(prog->name) == FALSE &&
-		(path_vct = vct_newstr(get_var(env, "PATH"))) != NULL
-		 && bin_validation(prog->name) == FALSE)
+	if (prog != NULL && is_rel_or_abs_path(prog->bin) == FALSE
+		 && bin_validation(prog->bin) == FAILURE
+		&& (path_vct = vct_newstr(get_var(env, "PATH"))) != NULL)
 	{
 		ret = FAILURE;
 		while (ret == FAILURE
@@ -58,7 +57,7 @@ int8_t			get_new_bin_path(t_program *prog, t_list *env)
 		{
 			if (vct_getlastchar(path_split) != '/')
 				vct_add(path_split, '/');
-			vct_addstr(path_split, prog->name);
+			vct_addstr(path_split, prog->bin);
 			if ((ret = bin_validation(vct_getstr(path_split))) == SUCCESS)
 				rename_prog(prog, vct_getstr(path_split));
 			vct_del(&path_split);
