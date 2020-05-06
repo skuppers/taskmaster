@@ -226,7 +226,6 @@ void 					listen_for_data(t_denv *env);
 # define OPT_HELP				0x001
 # define OPT_NODAEMON			0x002
 # define OPT_VERSION			0x004
-# define OPT_NOCLEAN			0x008
 
 # define OPT_CONFIG				0x010 // Omit
 # define OPT_USER				0x020

@@ -86,11 +86,6 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nodaemon", NULL)) != NULL)
 			env->opt.optmask |= get_nodaemon(tmp);
 	}
-	if ((env->opt.optmask & OPT_NOCLEAN) == FALSE)
-	{
-		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:nocleanup", NULL)) != NULL)
-			env->opt.optmask |= get_nodaemon(tmp);
-	}
 	if ((env->opt.optmask & OPT_USER) == FALSE)
 	{
 		if ((tmp = (char *)iniparser_getstring(dict, "taskmasterd:userid", NULL)) != NULL)

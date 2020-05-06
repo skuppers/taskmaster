@@ -96,6 +96,24 @@ void	aggregate_stderr(t_program *pg, t_instance *in)
 	}
 }
 
+static void	change_uid(t_program *prog, t_instance *instance)
+{
+	if (prog->userid != -1 && setuid(prog->userid) != 0)
+	{
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid: %s\n", instance->id, prog->name, strerror(errno));
+		exit_routine();	
+	}
+}
+
+static void	change_dir(t_program *prog, t_instance *instance)
+{
+	if (prog->directory != NULL && chdir(prog->directory) != 0)
+	{
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory: %s\n", instance->id, prog->name, strerror(errno));
+		exit_routine();
+	}
+}
+
 int     child_process(t_program *prog, t_instance *instance, t_list *env)
 {
 	char	**environ;
@@ -109,26 +127,15 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 			"taskmasterd: Program %s instance %d pre-execution error: %s\n",
 				prog->name, instance->id, "unvalid path or no right");
 
-	concat_env_to_daemon_env(prog, env);	
-
+	concat_env_to_daemon_env(prog, env);
 	environ = envtotab(prog->env);
-
-dprintf(STDERR_FILENO, "Launching : %s | %s\n", prog->bin, prog->command);
 
 	close(STDIN_FILENO);
 	aggregate_stdout(prog, instance);
 	aggregate_stderr(prog, instance);
 
-	if (prog->userid != -1 && setuid(prog->userid) != 0)
-	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid: %s\n", instance->id, prog->name, strerror(errno));
-		exit_routine();	
-	}
-	if (prog->directory != NULL && chdir(prog->directory) != 0)
-	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory: %s\n", instance->id, prog->name, strerror(errno));
-		exit_routine();
-	}
+	change_uid(prog, instance);
+	change_dir(prog, instance);
 	
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,

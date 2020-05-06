@@ -34,9 +34,6 @@ void	print_help(void)
         "-l/--logfile FILENAME -- use FILENAME as logfile path\n"
         "-e/--loglevel LEVEL -- use LEVEL as log level (debug,info,warn,error,critical)\n"
         "-q/--childlogdir DIRECTORY -- the log directory for child process logs\n"
-        "-k/--nocleanup --  prevent the process from performing cleanup (removal of\n"
-        "                   old automatic child log files) at startup.\n"
-        "-a/--minfds NUM -- the minimum number of file descriptors for start success\n"
-        "--minprocs NUM  -- the minimum number of processes available for start success\n");
+        "                   old automatic child log files) at startup.\n");
 	exit_routine();
 }
