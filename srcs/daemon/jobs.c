@@ -50,6 +50,7 @@ void	aggregate_stdout(t_program *pg, t_instance *in)
 		asprintf(&asp, "%s/%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stdoutfile = open_file(asp, "a+");
+		ft_strdel(&asp);
 		dup2(fileno(stdoutfile), STDOUT_FILENO);
 		fclose(stdoutfile);
 	}
@@ -60,6 +61,7 @@ void	aggregate_stdout(t_program *pg, t_instance *in)
 		asprintf(&asp, "%s%d", pg->stdout_logfile, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stdoutfile = open_file(asp, "a+");
+		ft_strdel(&asp);
 		dup2(fileno(stdoutfile), STDOUT_FILENO);
 		fclose(stdoutfile);
 	}
@@ -77,6 +79,7 @@ void	aggregate_stderr(t_program *pg, t_instance *in)
 		asprintf(&asp, "%s/%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stderrfile = open_file(asp, "a+");
+		ft_strdel(&asp);
 		dup2(fileno(stderrfile), STDERR_FILENO);
 		fclose(stderrfile);
 	}
@@ -87,6 +90,7 @@ void	aggregate_stderr(t_program *pg, t_instance *in)
 		asprintf(&asp, "%s%d", pg->stderr_logfile, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stderrfile = open_file(asp, "a+");
+		ft_strdel(&asp);
 		dup2(fileno(stderrfile), STDERR_FILENO);
 		fclose(stderrfile);
 	}
@@ -113,6 +117,21 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 	aggregate_stdout(prog, instance);
 	aggregate_stderr(prog, instance);
 
+	if (prog->userid != -1 && setuid(prog->userid) != 0)
+	{
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid: %s\n", instance->id, prog->name, strerror(errno));
+		exit_routine();	
+	}
+	if (prog->directory != NULL && chdir(prog->directory) != 0)
+	{
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory: %s\n", instance->id, prog->name, strerror(errno));
+		exit_routine();
+	}
+	
+	concat_env_to_daemon_env(prog, env);	
+	environ = envtotab(prog->env);
+
+	
     if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,
 			"taskmasterd: Program %s instance %d execution error: %s\n",

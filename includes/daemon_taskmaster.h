@@ -201,6 +201,8 @@ void						set_taskmasterd_defautls(t_denv *env);
 void						check_dflt_directory(void);
 
 int							daemonize(t_denv *env);
+void	set_uid(t_denv *env);
+void	do_chdir(t_denv *env);
 
 /*************************************************/
 

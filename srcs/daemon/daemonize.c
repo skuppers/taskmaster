@@ -14,18 +14,8 @@
 
 int daemonize(t_denv *env)
 {
-	if (env->opt.str[USER] != NULL && setuid(ft_atoi(env->opt.str[USER])) != 0)
-	{
-		dprintf(STDERR_FILENO, "taskmasterd: cannot change user to UID: %s: %s\n",
-			env->opt.str[USER], strerror(errno));
-		exit_routine();
-	}
-	if (env->opt.str[DIRECTORY] != NULL && chdir(env->opt.str[DIRECTORY]) != 0)
-	{
-		dprintf(STDERR_FILENO, "taskmasterd: cannot chdir to %s: %s\n",
-			env->opt.str[DIRECTORY], strerror(errno));
-		exit_routine();
-	}
+	set_uid(env);
+	do_chdir(env);
 	umask(env->opt.umask);
 	daemon(1, 0);
 	if (make_socket(env, DFL_SOCKET) != 0)
