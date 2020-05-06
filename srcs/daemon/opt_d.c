@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:31:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 16:44:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,21 @@ void		get_opt(t_denv *env, int ac, char **av)
 	int			sections;
 
 	i = 0;
-	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
-		i += parse_opt(av, ac, i);
-
+	while (i < ac)
+	{
+		if (av[i][0] == '-')
+		{
+			if (ft_strequ(av[i], "--") == TRUE)
+			{
+				if (++i != ac)
+					error_opt(ft_asprintf("option '%s' not recognized", av[i]));
+			}
+			else
+				i += parse_opt(av, ac, i);
+			continue ;
+		}
+		error_opt(ft_asprintf("option '%s' not recognized", av[i]));
+	}
 	if (env->opt.optmask & OPT_HELP)
 		print_help();
 	if (env->opt.optmask & OPT_VERSION)
