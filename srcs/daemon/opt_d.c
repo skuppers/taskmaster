@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 20:16:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/06 16:27:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static int		parse_opt(char **av, int ac, int i)
 	const char	*opt_str[] = {"-h", "--help",
 								"-n", "--nodaemon",
 				                "-v", "--version",
-								"-k", "--nocleanup",
 								"-c", "--configuration",
                                 "-u", "--user",
                                 "-d", "--directory",
@@ -37,7 +36,7 @@ static int		parse_opt(char **av, int ac, int i)
 	int			count;
 
 	count = 0;
-	while (count < 24)
+	while (count < NB_OPT)
 	{
 		if (ft_strequ(av[i], opt_str[count]) == TRUE)
 		{
