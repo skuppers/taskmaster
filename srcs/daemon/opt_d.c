@@ -25,6 +25,7 @@ static int		parse_opt(char **av, int ac, int i)
 	const char	*opt_str[] = {"-h", "--help",
 								"-n", "--nodaemon",
 				                "-v", "--version",
+								"-k", "--nocleanup",
 								"-c", "--configuration",
                                 "-u", "--user",
                                 "-d", "--directory",
@@ -36,7 +37,7 @@ static int		parse_opt(char **av, int ac, int i)
 	int			count;
 
 	count = 0;
-	while (count < 22)
+	while (count < 24)
 	{
 		if (ft_strequ(av[i], opt_str[count]) == TRUE)
 		{
