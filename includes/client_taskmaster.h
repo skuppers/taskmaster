@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 21:05:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 22:26:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ enum	e_action_keys
 */
 
 # define NB_OPT				10
+# define NB_NOCONF_OPT		6
 
 # define NO_OPT				0x0000
 # define OPT_HELP			0x0001
@@ -103,6 +104,9 @@ enum	e_action_keys
 
 # define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
+
+# define SERVERURL_SEC		"taskmasterctl:serverurl"
+# define PROMPT_SEC			"taskmasterctl:prompt"
 
 typedef	struct		s_opt
 {
@@ -167,7 +171,6 @@ void				exit_routine(int flag, ...);
 */
 
 void				get_opt(int ac, char **av);
-void				check_opt(void);
 
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 uint64_t			assign_keycodes(t_env *env);

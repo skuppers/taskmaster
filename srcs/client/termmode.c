@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 21:05:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 22:30:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	apply_termmode(uint8_t flag)
 	if (g_env->orig != NULL && g_env->taskmst != NULL)
 	{
     	if (tcsetattr(STDIN_FILENO, TCSADRAIN,
-				flag & NEW ? g_env->taskmst : g_env->orig) == FAILURE)
+				(flag & NEW) ? g_env->taskmst : g_env->orig) == FAILURE)
 			exit_routine(ERR, "Failed to apply termmode");
 	}
 	else

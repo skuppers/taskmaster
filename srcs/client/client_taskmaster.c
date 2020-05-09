@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 21:04:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 22:26:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ int		main(int ac, char **av)
 	g_env = &environment;
 
 	get_opt(ac - 1, av + 1);
-	check_opt();
 	init_signals();
 	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
 	
