@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 20:13:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 21:05:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,37 @@ extern t_env		*g_env;
 
 typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
-void				create_termmode(t_env *environment);
-uint8_t    			set_termmode(t_env *environment);
-void    			release_termmode(t_env *environment);
+/*
+*** termmode.c
+*/
+
+# define NEW		0x01
+# define RELEASE	0x02
+
+void				create_termmode(void);
+void    			apply_termmode(uint8_t flag);
+
+/*
+*** exit_routine.c
+*/
+
+# define NO_MSG	0x00
+# define ERR	0x01
+# define EXIT	0x02
+
+void				exit_routine(int flag, ...);
+
+/*
+*** opt.c
+*/
+
+void				get_opt(int ac, char **av);
+void				check_opt(void);
+
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 uint64_t			assign_keycodes(t_env *env);
 uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
-void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
 t_vector			*get_feedback(t_env *env);
@@ -159,8 +182,9 @@ void				init_signals(void);
 
 dictionary 			*parse_inifile(char *str);
 void 				free_inifile(dictionary *dict);
-int8_t				check_opt(t_env *env);
 void	print_help(void);
+
+
 /*********************** ACTION KEYS ********************/
 
 int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
@@ -184,12 +208,6 @@ typedef	void		(*t_help)(void);
 
 int			routine(t_vector *line);
 const char *get_keyword(const uint8_t i);
-
-/*
-**** Get opt
-*/
-
-void	get_opt(t_env *env, int ac, char **av);
 
 /*
 **** History

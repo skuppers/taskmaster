@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   opt.c                                              :+:      :+:    :+:   */
+/*   parse_ini.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 16:56:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 20:49:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ dictionary *parse_inifile(char *str)
 	ini_dict = iniparser_load(str);
 	if (ini_dict == NULL)
 	{
-		printf("Could not read ini file: %s\n", strerror(errno));
-		exit_routine();
+		dprintf(STDERR_FILENO, "ERROR: Could not read ini file\n");
+		exit_routine(ERR, strerror(errno));
 	}
 	//iniparser_dump(ini_dict, stdout);
 	return (ini_dict);

@@ -6,48 +6,42 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 13:03:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 21:05:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-void        create_termmode(t_env *environment)
+void	create_termmode(void)
 {
     struct termios  term;
     
-    environment->orig = malloc(sizeof(struct termios));
-    if (tcgetattr(STDIN_FILENO, &term) != 0)
-		return ;
-    ft_memcpy(environment->orig, &term, sizeof(struct termios));
-
-    term.c_lflag &= ~TOSTOP;
-	term.c_lflag &= ~(ICANON);
-	term.c_lflag &= ~(ECHO);
-	term.c_lflag |= ISIG;
-	term.c_cc[VMIN] = 1;
-	term.c_cc[VTIME] = 0;
-
-    environment->taskmst = malloc(sizeof(struct termios));
-    if (environment->taskmst != NULL)
-		ft_memcpy(environment->taskmst, &term, sizeof(struct termios));
+    g_env->orig = (struct termios *)malloc(sizeof(struct termios));
+    if (tcgetattr(STDIN_FILENO, &term) == SUCCESS)
+	{
+    	memcpy(g_env->orig, &term, sizeof(struct termios));
+    	term.c_lflag &= ~TOSTOP;
+		term.c_lflag &= ~(ICANON);
+		term.c_lflag &= ~(ECHO);
+		term.c_lflag |= ISIG;
+		term.c_cc[VMIN] = 1;
+		term.c_cc[VTIME] = 0;
+		g_env->taskmst = (struct termios *)malloc(sizeof(struct termios));
+		if (g_env->taskmst != NULL)
+			memcpy(g_env->taskmst, &term, sizeof(struct termios));
+	}	
+	if (g_env->taskmst == NULL || g_env->orig == NULL)
+		exit_routine(ERR, "Failed to set termmode");
 }
 
-uint8_t    set_termmode(t_env *environment)
+void	apply_termmode(uint8_t flag)
 {
-	if (environment->taskmst != NULL)
+	if (g_env->orig != NULL && g_env->taskmst != NULL)
 	{
-    	if (tcsetattr(STDIN_FILENO, TCSADRAIN, environment->taskmst) != 0)
-			return (-1);
+    	if (tcsetattr(STDIN_FILENO, TCSADRAIN,
+				flag & NEW ? g_env->taskmst : g_env->orig) == FAILURE)
+			exit_routine(ERR, "Failed to apply termmode");
 	}
-    return (0);
-}
-
-void    release_termmode(t_env *environment)
-{
-	if (environment->orig != NULL)
-	{
-    	if (tcsetattr(STDIN_FILENO, TCSADRAIN, environment->orig) != 0)
-			return ;
-	}
+	else
+		exit_routine(ERR, "termmode: unexpected error");
 }

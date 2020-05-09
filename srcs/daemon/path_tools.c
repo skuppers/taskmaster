@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 15:02:12 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 15:34:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 19:45:20 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int8_t	bin_validation(char *bin)
 static void		rename_prog(t_program *prog, char *new_name)
 {
 	ft_strdel(&prog->avs[0]);
-	prog->avs[0] = ft_strdup(new_name);
+	prog->avs[0] = ft_strdup(new_name); // Laisser argv[0] et changer seulement bin ?
 	prog->bin = prog->avs[0];
 }
 

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:24:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 20:23:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void		error_opt(char *msg)
 	ft_dprintf(STDERR_FILENO,
 			"Error: %s\nFor help, use ./taskmasterctl -h\n", msg);
 	ft_strdel(&msg);
-	exit_routine();
+	exit_routine(NO_MSG);
 }
 
 static void		set_shell_mode(int ac, char **av, int i)
@@ -81,50 +81,49 @@ static int		parse_opt(char **av, int ac, int i)
 	return (0);
 }
 
-void		get_opt(t_env *env, int ac, char **av)
+void		get_opt(int ac, char **av)
 {
 	int			i;
 	int			sections;
 	char		*tmp;
 
 	i = 0;
-	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
-	env->opt.str[PROMPT] = DFL_PROMPT;
-	env->opt.str[SERVERURL] = DFL_URL;
+	g_env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
+	g_env->opt.str[PROMPT] = DFL_PROMPT;
+	g_env->opt.str[SERVERURL] = DFL_URL;
 	while (i < ac && av[i][0] == '-' && ft_strequ(av[i], "--") == FALSE)
 		i += parse_opt(av, ac, i);
 	set_shell_mode(ac, av, i);
-	if (env->opt.mask & OPT_HELP)
+	if (g_env->opt.mask & OPT_HELP)
 		print_help();
-	env->dict = parse_inifile(env->opt.str[CONFIGURATION]);
-	sections = iniparser_getnsec(env->dict);
+	g_env->dict = parse_inifile(g_env->opt.str[CONFIGURATION]);
+	sections = iniparser_getnsec(g_env->dict);
 	while (sections >= 0)
 	{
-		if (ft_strequ(iniparser_getsecname(env->dict, sections),
+		if (ft_strequ(iniparser_getsecname(g_env->dict, sections),
 					"taskmasterctl") == 1)
 		{
-			tmp = (char *)iniparser_getstring(env->dict,
+			tmp = (char *)iniparser_getstring(g_env->dict,
 						"taskmasterctl:serverurl", NULL);
-			if ((env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
-				env->opt.str[SERVERURL] = tmp;
-			tmp = (char *)iniparser_getstring(env->dict,
+			if ((g_env->opt.mask & OPT_SERVERURL) == FALSE && tmp != NULL)
+				g_env->opt.str[SERVERURL] = tmp;
+			tmp = (char *)iniparser_getstring(g_env->dict,
 						"taskmasterctl:prompt", NULL);
 			if (tmp != NULL && ft_strlen(tmp) != 0)
-				env->opt.str[PROMPT] = tmp;
-			return ;
+				g_env->opt.str[PROMPT] = tmp;
+			break ;
 		}
 		--sections;
 	}
 	
 }
 
-int8_t	check_opt(t_env *env)
+void	check_opt(void)
 {
-	if (env->opt.str[SERVERURL] == NULL)
+	if (g_env->opt.str[SERVERURL] == NULL)
 	{
 		dprintf(2, "taskmasterctl:serverurl is undefined! "
 					"Check your taskmaster.conf file.\n\n");
-		exit_routine();
+		exit_routine(NO_MSG);
 	}
-	return (0);
 }

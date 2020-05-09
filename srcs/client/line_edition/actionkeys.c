@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/01 14:47:48 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 21:01:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,13 +155,11 @@ int8_t		ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
-	(void)env;(void)c;
+	(void)env;
+	(void)c;
 	if (vct_len(vct) == 0)
-	{
-		ft_putstr("\nexit\n");
-		exit_routine();
-	}
-	return (0);
+		exit_routine(EXIT);
+	return (SUCCESS);
 }
 
 int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])

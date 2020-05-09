@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 12:48:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 21:04:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,13 @@ static void read_cmd(t_env *env)
 	}
 	vct_del(&line);
 	if (ret == FAILURE)
-	{
-		perror("ERROR: read: ");
-		exit_routine();
-	}
+		exit_routine(ERR, strerror(errno));
 }
 
 static void	init_readline(t_env	*environment)
 {
-	create_termmode(environment);
-	set_termmode(environment);
+	create_termmode();
+	apply_termmode(NEW);
 	assign_keycodes(environment);
 	link_keys_functions(environment->actionkeys);
 }
@@ -72,9 +69,8 @@ void	print_help(void)
 		" interpreting actions typed\n"
 		"interactively is started.  Use the action "
 		"\"help\" to find out about available\nactions.\n", DFL_URL);
-	exit_routine();
+	exit_routine(NO_MSG);
 }
-
 
 void	get_status()
 {
@@ -85,7 +81,6 @@ void	get_status()
 	vct_del(&line);
 }
 
-
 int		main(int ac, char **av)
 {
 	t_env	environment;
@@ -93,25 +88,21 @@ int		main(int ac, char **av)
 	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
 
-	get_opt(&environment, ac - 1, av + 1);
-	check_opt(&environment);
+	get_opt(ac - 1, av + 1);
+	check_opt();
 	init_signals();
 	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
 	
 	init_readline(&environment);
 	if (environment.opt.mask & OPT_BATCHCMD)
 		routine(environment.opt.batch_cmd);
-	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == FALSE)
-	{
-		ft_dprintf(STDERR_FILENO, "Not a tty\n");
-		exit_routine();
-	}
+	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == false)
+		exit_routine(ERR, "Not a tty");
 	if (environment.opt.mask & OPT_INTERACTIVE)
 	{	
-		
 		get_status();
 		read_cmd(&environment);
 	}
-	exit_routine();
+	exit_routine(NO_MSG);
 	return (EXIT_SUCCESS);
 }

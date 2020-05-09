@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:10:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/09 20:47:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <stdint.h>
+# include <stdbool.h>
 # include <errno.h>
 # include <stdio.h>
 # include <sys/types.h>
