@@ -30,11 +30,17 @@ void	sigpipe_handle(int signo)
 	g_env->sigpipe = 1;
 }
 
+void	sigcont_handle(int signo)
+{
+	apply_termmode(NEW);
+}
+
 void	init_signals(void)
 {
 	struct sigaction	sig_int;
 	struct sigaction	sig_win;
 	struct sigaction	sig_pipe;
+	struct sigaction	sig_cont;
 
 	sig_int.sa_handler = sigint_handle;
 	sig_int.sa_flags = 0;
@@ -48,4 +54,8 @@ void	init_signals(void)
 	sig_pipe.sa_flags = 0;
 	sigemptyset(&sig_pipe.sa_mask);
 	sigaction(SIGPIPE, &sig_pipe, NULL);
+	sig_cont.sa_handler = sigcont_handle;
+	sig_cont.sa_flags = 0;
+	sigemptyset(&sig_cont.sa_mask);
+	sigaction(SIGPIPE, &sig_cont, NULL);
 }
