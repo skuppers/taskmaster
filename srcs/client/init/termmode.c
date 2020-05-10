@@ -20,7 +20,6 @@ void	create_termmode(void)
 	if (tcgetattr(STDIN_FILENO, &term) == SUCCESS)
 	{
 		memcpy(g_env->orig, &term, sizeof(struct termios));
-		term.c_lflag &= ~TOSTOP;
 		term.c_lflag &= ~(ICANON);
 		term.c_lflag &= ~(ECHO);
 		term.c_lflag |= ISIG;

@@ -33,7 +33,7 @@ static int		send_and_receive(t_vector *trame)
 	t_vector		*feedback;
 
 	if (try_to_send_trame(g_env->unix_socket, trame,
-							TO_PRINT, dprintf) == SUCCESS)
+							TO_PRINT, ft_dprintf) == SUCCESS)
 	{
 		feedback = get_feedback();
 		if (feedback == NULL)
@@ -67,11 +67,6 @@ int				routine(t_vector *line)
 	return (ret_value);
 }
 
-static int		print_prompt(void)
-{
-	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
-}
-
 void			read_cmd(void)
 {
 	t_vector	*line;
@@ -79,7 +74,6 @@ void			read_cmd(void)
 
 	line = vct_new(DFL_VCT_SIZE);
 	get_status();
-	print_prompt();
 	while ((ret = tsk_readline(line, STDIN_FILENO, g_env)) >= 0)
 	{
 		if (vct_apply(line, IS_SPACE) == false)
@@ -87,7 +81,6 @@ void			read_cmd(void)
 			history(line, ADD | RESET);
 			routine(line);
 		}
-		print_prompt();
 	}
 	vct_del(&line);
 	if (ret == FAILURE)

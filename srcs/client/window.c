@@ -12,3 +12,11 @@
 
 # include "client_taskmaster.h"
 
+void        update_winsize(t_env *env)
+{
+    struct winsize w;
+
+    ioctl(STDERR_FILENO, TIOCGWINSZ, &w);
+    env->winhei = w.ws_row;
+    env->winwid = w.ws_col;
+}

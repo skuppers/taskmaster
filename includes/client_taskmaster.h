@@ -56,14 +56,19 @@ struct						s_env
 	dictionary				*dict;
 	uint64_t				ak_masks[AK_AMOUNT];
 	t_actionkeys			actionkeys[AK_AMOUNT];
+
 	uint32_t				cursoridx;
 	uint16_t				cursorx;
 	uint16_t				cursory;
-	uint16_t				winwid;
-	uint16_t				winhei;
+
+	unsigned short int 	winwid;
+	unsigned short int	winhei;
+
 	volatile sig_atomic_t	sigint;
 	volatile sig_atomic_t	sigpipe;
 	volatile sig_atomic_t	sigwinch;
+	uint8_t					szchanged;
+
 	int32_t					unix_socket;
 	char					pad[4];
 };
@@ -87,7 +92,6 @@ void						init(int ac, char **av);
 # define NEW				0x01
 # define RELEASE			0x02
 
-void						create_termmode(void);
 void						apply_termmode(const uint8_t flag);
 
 /*
@@ -177,11 +181,17 @@ enum						e_action_keys
 	AK_TABULATION
 };
 
-int							tsk_readline(t_vector *vct,
-								const int fd, t_env *env);
-void						assign_keycodes(void);
-void						link_keys_functions(
-								t_actionkeys actionkeys[AK_AMOUNT]);
+void				create_termmode(void);
+int					tsk_readline(t_vector *vct, const int fd, t_env *env);
+void				assign_keycodes(void);
+void				link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+void				update_winsize(t_env *env);
+void				dec_x(t_env *env, int goup);
+void				inc_x(t_env *env, int godown);
+void				calc_after_totalprint(t_env *env, t_vector *vct);
+int					print_prompt(t_env *env);
+int					tsk_readline(t_vector *vct,
+							const int fd, t_env *env);
 
 /*
 *** Action Key

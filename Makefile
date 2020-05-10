@@ -172,6 +172,7 @@ CLIENT_SRCS += print_completion.c
 CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c
 CLIENT_SRCS += actionkeys.c
+CLIENT_SRCS += window.c
 #Routine
 CLIENT_SRCS += get_cmd.c
 CLIENT_SRCS += exec_routine.c
@@ -179,6 +180,7 @@ CLIENT_SRCS += exit_routine.c
 #Transfert
 CLIENT_SRCS += ctransfert.c
 #Builtin
+
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
 CLIENT_SRCS += clear.c
