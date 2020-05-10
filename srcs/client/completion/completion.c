@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:10:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:18:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char		*get_last_word(t_vector *vct)
 	return (ft_strcdup(vct_getstr(vct) + i + 1, ' '));
 }
 
-size_t			get_max_len(size_t len, uint8_t flag)
+size_t			get_max_len(const size_t len, const uint8_t flag)
 {
 	static size_t	max_len;
 
