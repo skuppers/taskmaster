@@ -14,11 +14,6 @@
 
 t_env		*g_env;
 
-static int	print_prompt(void)
-{
-	return (ft_dprintf(STDERR_FILENO, "%s", g_env->opt.str[PROMPT]));
-}
-
 static void read_cmd(t_env *env)
 {
 	t_vector	*line;

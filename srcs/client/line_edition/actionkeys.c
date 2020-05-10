@@ -174,15 +174,19 @@ int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)c;
 	uint32_t     tmpidx;
 
+	tmpidx = env->cursoridx;
 	ft_putstr_fd("\33[2J", STDERR_FILENO);
 	ft_putstr_fd("\33[0;0f", STDERR_FILENO);
-	ft_putstr_fd(env->opt.str[PROMPT], STDERR_FILENO);
+	print_prompt(env);
 	vct_print_fd(vct, STDERR_FILENO);
-	tmpidx = vct_len(vct);
-	while (tmpidx-- > 0)
-		ft_putstr_fd("\33[D", STDERR_FILENO);
-	while (tmpidx++ != env->cursoridx - 1)
-			ft_putstr_fd("\33[C", STDERR_FILENO);
+	calc_after_totalprint(env, vct);
+	ak_home(env, vct, NULL);
+	while (tmpidx--)
+	{
+		ft_putstr_fd("\33[C", STDERR_FILENO);
+		inc_x(env, 1);
+		env->cursoridx++;
+	}
 	return (0);
 }
 

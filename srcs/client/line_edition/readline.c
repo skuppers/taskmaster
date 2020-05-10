@@ -209,7 +209,7 @@ int8_t		signal_catched(t_env *env)
 	return (0);
 }
 
-static int	print_prompt(t_env *env)
+int	print_prompt(t_env *env)
 {
 	env->cursorx = ft_strlen(env->opt.str[PROMPT]);
 	if (env->winwid > 0)
@@ -217,7 +217,7 @@ static int	print_prompt(t_env *env)
 	return (ft_dprintf(STDERR_FILENO, "%s", env->opt.str[PROMPT]));
 }
 
-int8_t		handle_signal(t_env *env)
+int8_t		handle_signal(t_env *env, t_vector *vct)
 {
 	if (env->sigint == 1)
 	{
@@ -230,7 +230,8 @@ int8_t		handle_signal(t_env *env)
 		env->sigwinch = 0;
 		env->szchanged = 1;
 		update_winsize(env);
-		return (0);
+		ak_ctrl_l(env, vct, NULL);
+		return (1);
 	}
 	return (0);
 }
@@ -242,10 +243,8 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 	ssize_t		ret;
 
 	ret = LINE_OK;
-	env->cursoridx = 0;
 	if (vct_chr(rest, '\n') == FAILURE)
 	{
-		env->cursoridx = 0;
 		ft_bzero(buf, BUFF_SIZE);
 		while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 		{
@@ -263,7 +262,7 @@ static int	read_next(t_vector *vct, t_vector *rest, const int fd, t_env *env)
 		}
 
 		if (signal_catched(env) != 0)
-			return (handle_signal(env));
+			return (handle_signal(env, rest));
 
 		if (ret == FAILURE)
 			return (FAILURE);
@@ -281,18 +280,15 @@ int			tsk_readline(t_vector *vct, const int fd, t_env *env)
 {
 	static t_vector		*rest = NULL;
 	int					ret;
-
-/*	if (env->szchanged == 1 && env->winwid <= ft_strlen(env->opt.str[PROMPT]) + 2)
+	
+	if (env->szchanged == 0)
 	{
-		ft_putstr_fd("\33[2J");
-		ft_putstr_fd("\33[0;0f");
-		dprintf(STDERR_FILENO, "\n%s", env->opt.str[PROMPT]);
-		env->szchanged = 0;
+		update_winsize(env);
+		print_prompt(env);
+		env->cursoridx = 0;
 	}
-	else if (env->szchanged != 1)
-*/	
-	update_winsize(env);
-	print_prompt(env);
+	else
+		env->szchanged = 0;
 
 		
 	if (env->szchanged == 1)
@@ -312,7 +308,9 @@ int			tsk_readline(t_vector *vct, const int fd, t_env *env)
 		{
 			ret = read_next(vct, rest, fd, env);
 			if (ret <= 0)
+			{
 				vct_del(&rest);
+			}
 		}
 	}
 	return (ret);

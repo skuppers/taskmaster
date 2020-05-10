@@ -157,7 +157,7 @@ void					update_winsize(t_env *env);
 void		dec_x(t_env *env, int goup);
 void		inc_x(t_env *env, int godown);
 void		calc_after_totalprint(t_env *env, t_vector *vct);
-
+int			print_prompt(t_env *env);
 void				exit_routine(void);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
