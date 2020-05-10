@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/10 11:41:05 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/10 12:23:05 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,8 +130,9 @@ HEADER += daemon_taskmaster.h
 ################################################################################
 
 PATH_CLIENT_SRCS += srcs/client/
-PATH_CLIENT_SRCS += srcs/client/routine
-PATH_CLIENT_SRCS += srcs/client/init
+PATH_CLIENT_SRCS += srcs/client/routine/
+PATH_CLIENT_SRCS += srcs/client/transfert/
+PATH_CLIENT_SRCS += srcs/client/init/
 PATH_CLIENT_SRCS += srcs/client/builtin/
 PATH_CLIENT_SRCS += srcs/client/builtin/help_function/
 PATH_CLIENT_SRCS += srcs/client/completion/
@@ -155,6 +156,8 @@ PATH_COMMON_SRCS += srcs/common/
 
 CLIENT_SRCS += client_taskmaster.c
 #Init
+CLIENT_SRCS += init.c
+CLIENT_SRCS += print_help.c
 CLIENT_SRCS += opt.c
 CLIENT_SRCS += load_config.c
 CLIENT_SRCS += client_signal.c
@@ -172,8 +175,7 @@ CLIENT_SRCS += actionkeys.c
 CLIENT_SRCS += get_cmd.c
 CLIENT_SRCS += exec_routine.c
 CLIENT_SRCS += exit_routine.c
-#Connect
-CLIENT_SRCS += client_connect.c
+#Transfert
 CLIENT_SRCS += ctransfert.c
 #Builtin
 CLIENT_SRCS += add.c

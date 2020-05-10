@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:14:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:36:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,12 @@ extern t_env		*g_env;
 */
 
 /*
+*** init.c
+*/
+
+void				init(int ac, char **av);
+
+/*
 *** termmode.c
 */
 
@@ -120,6 +126,11 @@ void    			apply_termmode(const uint8_t flag);
 # define PROMPT_SEC			"taskmasterctl:prompt"
 
 void				get_opt(const int ac, char **av);
+
+/*
+*** print_help.c
+*/
+
 void	print_help(void);
 
 /*
@@ -172,8 +183,8 @@ enum	e_action_keys
 };
 
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
-uint64_t			assign_keycodes(t_env *env);
-uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+void				assign_keycodes(void);
+void				link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
 /*
 *** Action Key
@@ -197,8 +208,8 @@ int8_t				ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 *************************** CONNECT
 */
 
-int8_t				connect_to_daemon(t_env *env, char *socketname);
-t_vector			*get_feedback(t_env *env);
+int8_t				connect_to_daemon(void);
+t_vector			*get_feedback(void);
 
 /*
 *************************** ROUTINE
@@ -209,6 +220,7 @@ t_vector			*get_feedback(t_env *env);
 */
 
 int			routine(t_vector *line);
+void		read_cmd(void);
 
 /*
 *** get_cmd.c

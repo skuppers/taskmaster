@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:45:47 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:31:36 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int		send_and_receive(t_vector *trame)
 	if (try_to_send_trame(g_env->unix_socket, trame,
 							TO_PRINT, dprintf) == SUCCESS)
 	{
-		feedback = get_feedback(g_env);
+		feedback = get_feedback();
 		if (feedback == NULL)
 		{
 			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
@@ -65,4 +65,31 @@ int				routine(t_vector *line)
 	vct_del(&trame);
 	reset_cmd();
 	return (ret_value);
+}
+
+static int	print_prompt(void)
+{
+	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
+}
+
+void read_cmd(void)
+{
+	t_vector	*line;
+	int			ret;
+
+	line = vct_new(DFL_VCT_SIZE);
+	get_status();
+	print_prompt();
+	while ((ret = tsk_readline(line, STDIN_FILENO, g_env)) >= 0)
+	{
+		if (vct_apply(line, IS_SPACE) == FALSE)
+		{
+			history(line, ADD | RESET);
+			routine(line);
+		}
+		print_prompt();
+	}
+	vct_del(&line);
+	if (ret == FAILURE)
+		exit_routine(ERR, strerror(errno));
 }

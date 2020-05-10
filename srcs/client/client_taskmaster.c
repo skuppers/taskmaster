@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:33:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:31:42 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,85 +14,18 @@
 
 t_env		*g_env;
 
-static int	print_prompt(void)
-{
-	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
-}
-
-static void read_cmd(t_env *env)
-{
-	t_vector	*line;
-	int			ret;
-
-	line = vct_new(DFL_VCT_SIZE);
-	print_prompt();
-	while ((ret = tsk_readline(line, STDIN_FILENO, env)) >= 0)
-	{
-		if (vct_apply(line, IS_SPACE) == FALSE)
-		{
-			history(line, ADD | RESET);
-			routine(line);
-		}
-		print_prompt();
-	}
-	vct_del(&line);
-	if (ret == FAILURE)
-		exit_routine(ERR, strerror(errno));
-}
-
-static void	init_readline(t_env	*environment)
-{
-	create_termmode();
-	apply_termmode(NEW);
-	assign_keycodes(environment);
-	link_keys_functions(environment->actionkeys);
-}
-
-void	print_help(void)
-{
-	ft_dprintf(STDERR_FILENO, 
-		"taskmasterctl -- control applications run"
-		" by taskmasterd from the cmd line.\n\n"
-		"Usage: ./taskmasterctl [options] [action [arguments]]\n\n"
-		"Options:\n"
-		"-c/--configuration FILENAME -- configuration file path"
-		" (default ./taskmasterd.conf)\n"
-		"-h/--help -- print usage message and exit\n"
-		"-i/--interactive"
-		" -- start an interactive shell after executing commands\n"
-		"-s/--serverurl URL -- URL on which taskmaster server is listening\n"
-		"     (default \"unix://%s\").\n"
-		"action [arguments] -- see below\n\n"
-		"Actions are commands like \"tail\" or \"stop\"."
-		"  If -i is specified or no action is\n"
-		"specified on the command line, a \"shell\""
-		" interpreting actions typed\n"
-		"interactively is started.  Use the action "
-		"\"help\" to find out about available\nactions.\n", DFL_URL);
-	exit_routine(NO_MSG);
-}
-
 int		main(int ac, char **av)
 {
 	t_env	environment;
 
-	ft_bzero(&environment, sizeof(environment));
 	g_env = &environment;
-
-	get_opt(ac - 1, av + 1);
-	init_signals();
-	connect_to_daemon(&environment, environment.opt.str[SERVERURL]);
-	
-	init_readline(&environment);
+	init(ac, av);
 	if (environment.opt.mask & OPT_BATCHCMD)
 		routine(environment.opt.batch_cmd);
 	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == false)
 		exit_routine(ERR, "Not a tty");
 	if (environment.opt.mask & OPT_INTERACTIVE)
-	{	
-		get_status();
-		read_cmd(&environment);
-	}
+		read_cmd();
 	exit_routine(NO_MSG);
 	return (EXIT_SUCCESS);
 }
