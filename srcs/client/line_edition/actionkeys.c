@@ -200,17 +200,16 @@ int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)env;(void)c;
 	if (completion(vct) == 0)
 	{
-		while (env->cursoridx-- > 0)
-			ft_putstr_fd("\33[D", STDERR_FILENO);
-		ft_putstr_fd("\33[K", STDERR_FILENO);
+		ak_home(env, vct, NULL);
+		ft_putstr_fd("\33[J", STDERR_FILENO);
 		vct_print_fd(vct, STDERR_FILENO);
-		env->cursoridx = vct_len(vct);
+		calc_after_totalprint(env, vct);
 	}
 	else
 	{
-		ft_putstr_fd(env->opt.str[PROMPT], STDERR_FILENO);
+		print_prompt(env);
 		vct_print_fd(vct, STDERR_FILENO);
-		env->cursoridx = vct_len(vct);
+		calc_after_totalprint(env, vct);
 	}
 	return (0);
 }
