@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/29 18:44:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 22:16:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,7 +299,10 @@ int			tsk_readline(t_vector *vct, const int fd, t_env *env)
 	{
 		vct_reset(vct, 0);
 		if (rest == NULL)
+		{
 			rest = vct_new(DFL_VCT_SIZE);
+			g_env->cur_line = rest;
+		}
 		if (rest != NULL)
 		{
 			ret = read_next(vct, rest, fd, env);

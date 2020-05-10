@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:16:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 22:08:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ struct						s_env
 	t_cmd					*cmd;
 	t_opt					opt;
 	dictionary				*dict;
+	t_vector				*cur_line;
 	uint64_t				ak_masks[AK_AMOUNT];
 	t_actionkeys			actionkeys[AK_AMOUNT];
 
