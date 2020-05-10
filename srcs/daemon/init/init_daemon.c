@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:27:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:32:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:36:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	set_daemon_environment(char **environ)
 	}
 }
 
-void	check_dflt_directory(void)
+static void	check_dflt_directory(void)
 {
 	DIR		*dir;
 	int		lock;
@@ -51,7 +51,7 @@ void	check_dflt_directory(void)
 	g_denv->lock = lock;
 }
 
-static void    set_taskmasterd_defautls(void)
+static void	set_taskmasterd_defautls(void)
 {
 	g_denv->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
     g_denv->opt.str[LOGFILE] = DFL_LOGFILE;

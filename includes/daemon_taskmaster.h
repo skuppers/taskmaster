@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:28:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:36:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,8 +197,6 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 # define DFL_LOCK			"/tmp/taskmaster.d/taskmasterd.lock"
 # define DFL_LOGLVL			"info"
 # define DFL_UMASK			022
-
-void						check_dflt_directory(void);
 
 void						daemonize(void);
 

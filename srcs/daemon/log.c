@@ -6,40 +6,32 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:47:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:50:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "daemon_taskmaster.h"
+#include "daemon_taskmaster.h"
 
-uint8_t	get_loglevel(char *str)
+char			*loglvl_tostr(uint8_t loglvl)
 {
-	if (ft_strequ(str, LOGLVL_DEBG) == 1)
-		return (E_LOGLVL_DEBG);
-	if (ft_strequ(str, LOGLVL_INFO) == 1)
-		return (E_LOGLVL_INFO);
-	if (ft_strequ(str, LOGLVL_WARN) == 1)
-		return (E_LOGLVL_WARN);
-	if (ft_strequ(str, LOGLVL_ERRO) == 1)
-		return (E_LOGLVL_ERRO);
-	if (ft_strequ(str, LOGLVL_CRIT) == 1)
-		return (E_LOGLVL_CRIT);
-	return (E_LOGLVL_DEBG);
+	static char	*str_log[] = {LOG_DEBG_STR, LOG_INFO_STR, LOG_WARN_STR,
+									LOG_ERRO_STR, LOG_CRIT_STR};
+
+	return ((loglvl < 5) ? LOG_DEBG_STR : str_log[loglvl]);
 }
 
-char	*loglvl_tostr(uint8_t loglvl)
+uint8_t			get_loglevel(char *str)
 {
-	if (loglvl == E_LOGLVL_DEBG)
-		return (LOG_DEBG_STR);
-	if (loglvl == E_LOGLVL_INFO)
-		return (LOG_INFO_STR);
-	if (loglvl == E_LOGLVL_WARN)
-		return (LOG_WARN_STR);
-	if (loglvl == E_LOGLVL_ERRO)
-		return (LOG_ERRO_STR);
-	if (loglvl == E_LOGLVL_CRIT)
-		return (LOG_CRIT_STR);
-	return (LOG_DEBG_STR);
+	uint8_t		loglvl;
+
+	loglvl = 0;
+	while (loglvl < 5)
+	{
+		if (ft_strequ(str, loglvl_tostr(loglvl)) == true)
+			return (loglvl);
+		loglvl++;
+	}
+	return (E_LOGLVL_DEBG);
 }
 
 static void		getstr_time(char *buffer)
@@ -56,7 +48,7 @@ static void		getstr_time(char *buffer)
 	snprintf(buffer, TIMEBUFFERSZ, "%s.%06ld", tmbuf, tv.tv_usec);
 }
 
-int			tlog(int loglvl, const char *message, ...)
+int				tlog(int loglvl, const char *message, ...)
 {
 	
 	va_list			args;
@@ -64,9 +56,10 @@ int			tlog(int loglvl, const char *message, ...)
 
 	if (loglvl >= get_loglevel(g_denv->opt.str[LOGLEVEL]))
 	{
-		ft_bzero(&time_buffer, TIMEBUFFERSZ);
+		bzero(&time_buffer, TIMEBUFFERSZ);
 		getstr_time(time_buffer);
-		ft_dprintf(g_denv->log_fd, "[%s] %s- ", time_buffer, loglvl_tostr(loglvl));
+		dprintf(g_denv->log_fd, "[%s] %s- ", time_buffer,
+							loglvl_tostr(loglvl));
 		va_start(args, message);
 		vdprintf(g_denv->log_fd, message, args);
 		va_end(args);
@@ -74,30 +67,27 @@ int			tlog(int loglvl, const char *message, ...)
 	return (SUCCESS);
 }
 
-void      init_log()
+void 		     init_log()
 {
-    int32_t     debug_fd;
-
-	if (g_denv->opt.optmask & OPT_NODAEMON)
-		debug_fd = STDERR_FILENO;
-	else
-    	debug_fd = open(g_denv->opt.str[LOGFILE], O_RDWR | O_APPEND | O_CREAT, 0644);
-	if (debug_fd < 0)
+	g_denv->log_fd = STDERR_FILENO;
+	if ((g_denv->opt.optmask & OPT_NODAEMON) == false)
+    	g_denv->log_fd = open(g_denv->opt.str[LOGFILE],
+						O_RDWR | O_APPEND | O_CREAT, 0644);
+	if (g_denv->log_fd == FAILURE)
 	{
-		dprintf(STDERR_FILENO, "Error: Could not create log file: %s\n", strerror(errno));
+		dprintf(STDERR_FILENO, "Error: Could not create log file: %s\n",
+				strerror(errno));
 		exit_routine(ERR, NULL);
 	}
-	g_denv->log_fd = debug_fd;
 	tlog(E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
 	tlog(E_LOGLVL_INFO, "Taskmaster logger is up\n");
-
-	if (mkdir(g_denv->opt.str[CHILDLOGDIR], 0744) == -1)
+	if (mkdir(g_denv->opt.str[CHILDLOGDIR], 0744) == FAILURE)
 	{
 		if (errno != EEXIST)
 		{
-			dprintf(STDERR_FILENO, "Fatal error in: init_log():" // tlog ?
-					" Could create childlog directory: %s\n", strerror(errno));
-			exit_routine(ERR, NULL);
+			tlog(E_LOGLVL_CRIT, "Fatal error in: init_log():"
+					" Could create childlog directory\n");
+			exit_routine(ERR, strerror(errno));
 		}
 	}
 }
