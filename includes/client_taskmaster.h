@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:53:19 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:14:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ typedef	struct	s_hist
 	char		*cmd;
 }				t_hist;
 
-char	*history(t_vector *line, uint8_t flag);
+char	*history(t_vector *line, const uint8_t flag);
 
 /*
 **** COMPLETION
