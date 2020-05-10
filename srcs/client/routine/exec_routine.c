@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:31:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:51:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ int				routine(t_vector *line)
 	return (ret_value);
 }
 
-static int	print_prompt(void)
+static int		print_prompt(void)
 {
 	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
 }
 
-void read_cmd(void)
+void			read_cmd(void)
 {
 	t_vector	*line;
 	int			ret;

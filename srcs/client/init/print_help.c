@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 12:22:45 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:22:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:45:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	print_help(void)
 {
-	ft_dprintf(STDERR_FILENO, 
+	dprintf(STDERR_FILENO,
 		"taskmasterctl -- control applications run"
 		" by taskmasterd from the cmd line.\n\n"
 		"Usage: ./taskmasterctl [options] [action [arguments]]\n\n"
@@ -33,6 +33,4 @@ void	print_help(void)
 		" interpreting actions typed\n"
 		"interactively is started.  Use the action "
 		"\"help\" to find out about available\nactions.\n", DFL_URL);
-	exit_routine(NO_MSG);
 }
-

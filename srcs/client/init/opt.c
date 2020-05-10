@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:27:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:44:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ void			get_opt(const int ac, char **av)
 		i += parse_opt(av, i);
 	set_shell_mode(av, i);
 	if (g_env->opt.mask & OPT_HELP)
+	{
 		print_help();
+		exit_routine(NO_MSG);
+	}
 	load_config();
 }

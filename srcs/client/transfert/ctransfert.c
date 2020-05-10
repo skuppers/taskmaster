@@ -6,43 +6,50 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:34:04 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:59:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "client_taskmaster.h"
+#include "client_taskmaster.h"
 
-int8_t		connect_to_daemon(void)
+void			connect_to_daemon(const char *socketpath)
 {
-	struct sockaddr_un addr;
-	const char *socketpath = g_env->opt.str[SERVERURL];
+	struct sockaddr_un	addr;
 
 	if ((g_env->unix_socket = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 	{
-   		perror("socket error");
-    	return (FAILURE);
-  	}
+		dprintf(STDERR_FILENO, "Error: %s\n", strerror(errno));
+		return ;
+	}
 	ft_bzero(&addr, sizeof(addr));
 	addr.sun_family = AF_UNIX;
-	ft_strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path)-1);
+	ft_strncpy(addr.sun_path, socketpath, sizeof(addr.sun_path) - 1);
 	if (connect(g_env->unix_socket,
 			(struct sockaddr*)&addr, sizeof(addr)) == FAILURE
 			|| g_env->sigpipe == true)
 	{
 		g_env->sigpipe = false;
-   		ft_dprintf(STDERR_FILENO,
-				"Error: Can't connect to `%s' : %s\n",
-				g_env->opt.str[SERVERURL], strerror(errno));
-    	return (FAILURE);
-  	}
-	dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
-	return (SUCCESS);
+		dprintf(STDERR_FILENO, "Error: Can't connect to `%s': %s\n",
+				socketpath, strerror(errno));
+	}
+	else
+		dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
+}
+
+static t_vector	*read_feedback(const int fd)
+{
+	t_vector		*trame;
+
+	trame = vct_new(DFL_VCT_SIZE);
+	if (vct_creadline(trame, fd, EOT) > 0)
+		return (decode_feedback(trame));
+	dprintf(STDERR_FILENO, "Daemon cannot be reached...\n");
+	vct_del(&trame);
+	return (NULL);
 }
 
 t_vector		*get_feedback(void)
 {
-	t_vector		*vct;
-	int				readbytes;
 	fd_set			recv_set;
 	struct timeval	tv;
 	int				fd;
@@ -50,26 +57,18 @@ t_vector		*get_feedback(void)
 	fd = -1;
 	tv.tv_sec = 2;
 	tv.tv_usec = 0;
-	FD_ZERO (&recv_set);
-	FD_SET (g_env->unix_socket, &recv_set);
-	
+	FD_ZERO(&recv_set);
+	FD_SET(g_env->unix_socket, &recv_set);
 	if (select(DFL_FD_SETSIZE, &recv_set, NULL, NULL, &tv) < 0)
-	{
 		dprintf(STDERR_FILENO, "select failed.\n");
-		return (NULL);
-	}
-	while (++fd < DFL_FD_SETSIZE)
+	else
 	{
-		if (FD_ISSET(fd, &recv_set) == 0)
-			continue ;
-		if (fd == g_env->unix_socket)
+		while (++fd < DFL_FD_SETSIZE)
 		{
-			vct = vct_new(DFL_VCT_SIZE);
-			if ((readbytes = vct_creadline(vct, fd, EOT)) <= 0)
-				dprintf(STDERR_FILENO, "Daemon cannot be reached...\n");
-			else
-				return (decode_feedback(vct));
-			vct_del(&vct);
+			if (FD_ISSET(fd, &recv_set) == 0)
+				continue ;
+			if (fd == g_env->unix_socket)
+				return (read_feedback(fd));
 		}
 	}
 	return (NULL);

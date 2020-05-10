@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:36:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:55:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ int8_t				ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 *************************** CONNECT
 */
 
-int8_t				connect_to_daemon(void);
+void				connect_to_daemon(const char *socketpath);
 t_vector			*get_feedback(void);
 
 /*
