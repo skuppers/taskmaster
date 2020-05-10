@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:41:57 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 19:21:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	exit_routine(const int flag, ...)
 		va_start(arg, flag);
 		err_str = va_arg(arg, char *);
 		if (err_str != NULL)
-			tlog(flag, "ERROR: %s: %s\n", err_str);
+			tlog(flag, "%s\n", err_str);
 		va_end(arg);
 		exit(EXIT_FAILURE);
 	}
