@@ -12,7 +12,7 @@
 
 # include "client_taskmaster.h"
 
-void    update_winsize(int signo)
+void    sigwinch_handle(int signo)
 {
     (void)signo;
     g_env->sigwinch = 1;
@@ -40,7 +40,7 @@ void					init_signals(void)
 	sig_int.sa_flags = 0;
 	sigemptyset(&sig_int.sa_mask);
 	sigaction(SIGINT, &sig_int, NULL);
-	sig_win.sa_handler = update_winsize;
+	sig_win.sa_handler = sigwinch_handle;
 	sig_win.sa_flags = 0;
 	sigemptyset(&sig_win.sa_mask);
 	sigaction(SIGWINCH, &sig_win, NULL);

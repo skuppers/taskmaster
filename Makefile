@@ -161,6 +161,7 @@ CLIENT_SRCS += client_connect.c
 CLIENT_SRCS += client_signal.c
 CLIENT_SRCS += ctransfert.c
 CLIENT_SRCS += parse_ini.c
+CLIENT_SRCS += window.c
 
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c

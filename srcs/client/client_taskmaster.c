@@ -16,7 +16,7 @@ t_env		*g_env;
 
 static int	print_prompt(void)
 {
-	return (ft_dprintf(STDERR_FILENO, g_env->opt.str[PROMPT]));
+	return (ft_dprintf(STDERR_FILENO, "%s", g_env->opt.str[PROMPT]));
 }
 
 static void read_cmd(t_env *env)
@@ -25,7 +25,7 @@ static void read_cmd(t_env *env)
 	int			ret;
 
 	line = vct_new(DFL_VCT_SIZE);
-	print_prompt();
+//	print_prompt();
 	while ((ret = tsk_readline(line, STDIN_FILENO, env)) >= 0)
 	{
 		if (vct_apply(line, IS_SPACE) == FALSE)
@@ -33,7 +33,8 @@ static void read_cmd(t_env *env)
 			history(line, ADD | RESET);
 			routine(line);
 		}
-		print_prompt();
+		//ft_dprintf(STDERR_FILENO, "ret is %d\n", ret);
+//		print_prompt();
 	}
 	vct_del(&line);
 	if (ret == FAILURE)

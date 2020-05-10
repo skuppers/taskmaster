@@ -51,11 +51,100 @@ int8_t				put_newline(t_vector *dest, char *src, size_t size)
 {
 	if (ft_strequ(src, "\n") == 1)
 	{
-		ft_putchar('\n');
+		ft_putchar_fd('\n', STDERR_FILENO);
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
 	}
 	return (0);
+}
+
+
+
+void		dec_x(t_env *env, int goup)
+{
+	int i;
+
+	i = env->winwid - 1;
+	if (env->cursorx == 0)
+	{
+		env->cursorx = env->winwid - 1;
+		env->cursory -= 1;
+		if (goup == 1)
+		{
+			ft_putstr_fd("\33[A", STDERR_FILENO);
+			while (i-- > 0)
+				ft_putstr_fd("\33[C", STDERR_FILENO);
+		}
+	}
+	else
+	{
+		env->cursorx -= 1;
+	}
+}
+
+void		inc_x(t_env *env, int godown)
+{
+	int i;
+
+	i = env->winwid - 1;
+	if (env->cursorx >= env->winwid - 1)
+	{
+		env->cursorx = 0;
+		env->cursory += 1;
+		if (godown == 1)
+		{
+			ft_putstr_fd("\33[B", STDERR_FILENO);
+			while (i-- > 0)
+				ft_putstr_fd("\33[D", STDERR_FILENO);
+		}
+	}
+	else
+	{
+		env->cursorx += 1;
+	}
+}
+void		pinc_x(t_env *env)
+{
+	int i;
+
+	i = env->winwid - 1;
+	if (env->cursorx >= env->winwid - 1)
+	{
+		env->cursorx = 0;
+		env->cursory += 1;
+		ft_putstr_fd("\33[B", STDERR_FILENO);
+		while (i-- > 0)
+			ft_putstr_fd("\33[D", STDERR_FILENO);
+	}
+	else
+	{
+		env->cursorx += 1;
+	}
+}
+void	calc_after_totalprint(t_env *env, t_vector *vct)
+{
+	size_t	len;
+	int		i;
+
+	len = vct_len(vct);
+	len += ft_strlen(env->opt.str[PROMPT]);
+	if (len < env->winwid)
+	{
+		env->cursorx = len;
+	}
+	else
+	{
+		env->cursory = (len / env->winwid);
+		env->cursorx = (len % env->winwid);
+		if (env->cursorx == 0)
+		{
+			i = env->winwid - 1;
+			ft_putstr_fd("\33[B", STDERR_FILENO);
+			while (i-- > 0)
+				ft_putstr_fd("\33[D", STDERR_FILENO);
+		}
+	}
+	env->cursoridx = vct_len(vct);
 }
 
 static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t size)
@@ -64,7 +153,7 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 
 	if (ft_strequ(src, "\n") == 1)
 	{
-		ft_putchar('\n');
+		ft_putchar_fd('\n', STDERR_FILENO);
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
 	}
@@ -72,17 +161,19 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 	{
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
-		ft_putstr(src);
+		ft_putstr_fd(src, STDERR_FILENO);
 		env->cursoridx += ft_strlen(src);
+		pinc_x(env);
 	}
 	else if (env->cursoridx == 0)
 	{
 		vct_pushstr(dest, src);
 		tmpidx = vct_len(dest);
-		vct_print(dest);
+		vct_print_fd(dest, STDERR_FILENO);
 		while (tmpidx-- > 1)
-			ft_putstr("\33[D");
+			ft_putstr_fd("\33[D", STDERR_FILENO);
 		env->cursoridx = 1;
+		pinc_x(env);
 	}
 	else
 	{
@@ -90,15 +181,16 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 		tmpidx = env->cursoridx;
 		while (env->cursoridx-- > 0)
 		{
-			ft_putstr("\33[D");
+			ft_putstr_fd("\33[D", STDERR_FILENO);
 		}
-		vct_print(dest);
+		vct_print_fd(dest, STDERR_FILENO);
 		env->cursoridx = vct_len(dest);	
 		while (env->cursoridx != tmpidx + 1)
 		{
-			ft_putstr("\33[D");
+			ft_putstr_fd("\33[D", STDERR_FILENO);
 			env->cursoridx--;
 		}
+		pinc_x(env);
 	}
 	return (0);
 }
@@ -117,15 +209,12 @@ int8_t		signal_catched(t_env *env)
 	return (0);
 }
 
-void		handle_resize(t_env *env)
+static int	print_prompt(t_env *env)
 {
-	struct winsize w;
-
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    env->winhei = w.ws_row;
-    env->winwid = w.ws_col;
-	// TODO: handle resize
-//	write(1, "\33[6n", 4);
+	env->cursorx = ft_strlen(env->opt.str[PROMPT]);
+	if (env->winwid > 0)
+		env->cursory = ft_strlen(env->opt.str[PROMPT]) / env->winwid;
+	return (ft_dprintf(STDERR_FILENO, "%s", env->opt.str[PROMPT]));
 }
 
 int8_t		handle_signal(t_env *env)
@@ -134,11 +223,14 @@ int8_t		handle_signal(t_env *env)
 	{
 		env->sigint = 0;
 		ft_dprintf(STDERR_FILENO, "\n");
+		return (0);
 	}
 	else if (env->sigwinch == 1)
 	{
 		env->sigwinch = 0;
-		handle_resize(env);
+		env->szchanged = 1;
+		update_winsize(env);
+		return (0);
 	}
 	return (0);
 }
@@ -190,6 +282,21 @@ int			tsk_readline(t_vector *vct, const int fd, t_env *env)
 	static t_vector		*rest = NULL;
 	int					ret;
 
+/*	if (env->szchanged == 1 && env->winwid <= ft_strlen(env->opt.str[PROMPT]) + 2)
+	{
+		ft_putstr_fd("\33[2J");
+		ft_putstr_fd("\33[0;0f");
+		dprintf(STDERR_FILENO, "\n%s", env->opt.str[PROMPT]);
+		env->szchanged = 0;
+	}
+	else if (env->szchanged != 1)
+*/	
+	update_winsize(env);
+	print_prompt(env);
+
+		
+	if (env->szchanged == 1)
+		env->szchanged = 0;	
 	ret = FAILURE;
 	if (fd == CLEANUP)
 	{

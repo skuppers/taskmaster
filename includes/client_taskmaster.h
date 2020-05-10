@@ -69,6 +69,8 @@ enum	e_action_keys
 	AK_TABULATION,
 };
 
+
+
 /***********************************************************/
 
 /*
@@ -123,12 +125,15 @@ typedef struct		s_env
 	uint32_t				cursoridx;
 	uint16_t				cursorx;
 	uint16_t				cursory;
-	uint16_t				winwid;
-	uint16_t				winhei;
+
+	unsigned short int 	winwid;
+	unsigned short int	winhei;
 
 	volatile sig_atomic_t	sigint;
 	volatile sig_atomic_t	sigpipe;
 	volatile sig_atomic_t	sigwinch;
+	uint8_t					szchanged;
+
 
 	int32_t					unix_socket;
 	char	padding[4];
@@ -148,6 +153,10 @@ void    			release_termmode(t_env *environment);
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 uint64_t			assign_keycodes(t_env *env);
 uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+void					update_winsize(t_env *env);
+void		dec_x(t_env *env, int goup);
+void		inc_x(t_env *env, int godown);
+void		calc_after_totalprint(t_env *env, t_vector *vct);
 
 void				exit_routine(void);
 

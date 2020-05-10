@@ -21,7 +21,6 @@ void        create_termmode(t_env *environment)
 		return ;
     ft_memcpy(environment->orig, &term, sizeof(struct termios));
 
-    term.c_lflag &= ~TOSTOP;
 	term.c_lflag &= ~(ICANON);
 	term.c_lflag &= ~(ECHO);
 	term.c_lflag |= ISIG;
