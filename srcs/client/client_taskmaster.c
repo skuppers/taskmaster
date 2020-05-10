@@ -41,6 +41,18 @@ static void read_cmd(t_env *env)
 
 static void	init_readline(t_env	*environment)
 {
+	char	*value;
+
+	if ((value = getenv("TERM")) == NULL)
+	{
+		dprintf(STDERR_FILENO, "Please specify the TERM variable in your shell.\n");
+		exit_routine();
+	}
+	else if (ft_strequ(value, "xterm") == FALSE && ft_strequ(value, "xterm-256color") == FALSE)
+	{
+		dprintf(STDERR_FILENO, "Please set yout TERM variable to 'xterm' or 'xterm-256color'\n");
+		exit_routine();
+	}
 	create_termmode(environment);
 	set_termmode(environment);
 	assign_keycodes(environment);
@@ -103,8 +115,7 @@ int		main(int ac, char **av)
 		exit_routine();
 	}
 	if (environment.opt.mask & OPT_INTERACTIVE)
-	{	
-		
+	{
 		get_status();
 		read_cmd(&environment);
 	}
