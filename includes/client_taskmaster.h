@@ -190,9 +190,17 @@ void				update_winsize(t_env *env);
 void				dec_x(t_env *env, int goup);
 void				inc_x(t_env *env, int godown);
 void				calc_after_totalprint(t_env *env, t_vector *vct);
+void				handle_actionkey(t_env *env, char c[BUFF_SIZE],
+						t_vector *vct);
+uint64_t			compute_mask(char c[BUFF_SIZE]);
 int					print_prompt(t_env *env);
 int					tsk_readline(t_vector *vct,
 							const int fd, t_env *env);
+void				pinc_x(t_env *env);
+int8_t				handle_signal(t_env *env, t_vector *vct);
+int8_t				signal_catched(t_env *env);
+int8_t  			putchar_in_vct(t_env *env, t_vector *dest, char *src,
+						size_t size);
 
 /*
 *** Action Key

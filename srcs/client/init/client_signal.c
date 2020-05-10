@@ -12,34 +12,34 @@
 
 #include "client_taskmaster.h"
 
-void    sigwinch_handle(int signo)
+void					sigwinch_handle(int signo)
 {
 	(void)signo;
 	g_env->sigwinch = 1;
 }
 
-void	sigint_handle(int signo)
+void					sigint_handle(int signo)
 {
 	(void)signo;
 	g_env->sigint = 1;
 }
 
-void	sigpipe_handle(int signo)
+void					sigpipe_handle(int signo)
 {
 	(void)signo;
 	g_env->sigpipe = 1;
 }
 
-void	sigcont_handle(int signo)
+void					sigcont_handle(int signo)
 {
 	(void)signo;
 	apply_termmode(NEW);
 	print_prompt(g_env);
-	vct_print_fd(g_env->cur_line, STDERR_FILENO);
+	vct_print_fd(g_env->cur_line, STDIN_FILENO);
 	calc_after_totalprint(g_env, g_env->cur_line);
 }
 
-void	init_signals(void)
+void					init_signals(void)
 {
 	struct sigaction	sig_int;
 	struct sigaction	sig_win;

@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "client_taskmaster.h"
+#include "client_taskmaster.h"
 
 void	assign_keycodes(void)
 {
 	g_env->ak_masks[AK_ARROW_RIGHT] = AK_ARROW_RIGHT_MASK;
 	g_env->ak_masks[AK_ARROW_LEFT] = AK_ARROW_LEFT_MASK;
-    g_env->ak_masks[AK_ARROW_UP] = AK_ARROW_UP_MASK;
+	g_env->ak_masks[AK_ARROW_UP] = AK_ARROW_UP_MASK;
 	g_env->ak_masks[AK_ARROW_DOWN] = AK_ARROW_DOWN_MASK;
 	g_env->ak_masks[AK_HOME] = AK_HOME_MASK;
 	g_env->ak_masks[AK_END] = AK_END_MASK;
@@ -34,7 +34,7 @@ void	link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT])
 {
 	actionkeys[AK_ARROW_LEFT] = &ak_arrow_left;
 	actionkeys[AK_ARROW_RIGHT] = &ak_arrow_right;
-    actionkeys[AK_ARROW_UP] = &ak_arrow_up;
+	actionkeys[AK_ARROW_UP] = &ak_arrow_up;
 	actionkeys[AK_ARROW_DOWN] = &ak_arrow_down;
 	actionkeys[AK_HOME] = &ak_home;
 	actionkeys[AK_END] = &ak_end;

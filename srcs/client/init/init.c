@@ -18,8 +18,10 @@ static void	init_readline(void)
 
 	if ((value = getenv("TERM")) == NULL)
 		exit_routine(ERR, "Please specify the TERM variable in your shell.");
-	else if (ft_strequ(value, "xterm") == FALSE && ft_strequ(value, "xterm-256color") == FALSE)
-		exit_routine(ERR, "Please set yout TERM variable to 'xterm' or 'xterm-256color.");
+	else if (ft_strequ(value, "xterm") == FALSE
+			&& ft_strequ(value, "xterm-256color") == FALSE)
+		exit_routine(ERR, "Please set yout TERM variable to 'xterm'"
+			" or 'xterm-256color.");
 	create_termmode();
 	apply_termmode(NEW);
 	assign_keycodes();

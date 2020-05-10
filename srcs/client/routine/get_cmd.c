@@ -61,6 +61,5 @@ t_cmd					*get_cmd(t_vector *line)
 		cmd = get_cmd_struct(cmd_type, line);
 	}
 	vct_del(&cmd_string);
-//	debug_cmd(cmd); // DEBUG
 	return (cmd);
 }

@@ -173,6 +173,12 @@ CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c
 CLIENT_SRCS += actionkeys.c
 CLIENT_SRCS += window.c
+CLIENT_SRCS += dlrkeys.c
+CLIENT_SRCS += specialkeys.c
+CLIENT_SRCS += readline_tools.c
+CLIENT_SRCS += readline_utils.c
+CLIENT_SRCS += sigcatcher.c
+CLIENT_SRCS += addchar.c
 #Routine
 CLIENT_SRCS += get_cmd.c
 CLIENT_SRCS += exec_routine.c

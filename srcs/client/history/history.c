@@ -26,7 +26,7 @@ static char		*get_next_entry(t_list **cur, const uint8_t flag, char **keep)
 		return (NULL);
 	}
 	if (*cur == NULL)
-		return (NULL);	
+		return (NULL);
 	if ((*cur)->next == NULL)
 		return (*keep);
 	*cur = (*cur)->next;

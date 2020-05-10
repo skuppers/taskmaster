@@ -23,7 +23,6 @@ static dictionary	*parse_inifile(char *str)
 		dprintf(STDERR_FILENO, "ERROR: Could not read ini file\n");
 		exit_routine(ERR, strerror(errno));
 	}
-	//iniparser_dump(ini_dict, stdout);
 	return (ini_dict);
 }
 
