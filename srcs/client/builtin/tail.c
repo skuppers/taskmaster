@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 19:05:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:09:10 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static t_vector	*tail_option_f(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: tail requires process name\n");
 	else if (cmd->ac > 3)
 		ft_dprintf(STDERR_FILENO, "Error: too many arguments\n");
-	else if (cmd->ac == 3 && ft_strequ(cmd->av[2], "stderr") == FALSE
-			&& ft_strequ(cmd->av[2], "stdout") == FALSE)
+	else if (cmd->ac == 3 && ft_strequ(cmd->av[2], "stderr") == false
+			&& ft_strequ(cmd->av[2], "stdout") == false)
 		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
@@ -61,8 +61,8 @@ static t_vector	*tail_option_number(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: too many arguments\n");
 	else if (cmd->ac == 1)
 		ft_dprintf(STDERR_FILENO, "Error: too few arguments\n");
-	else if (cmd->ac >= 3 && ft_strequ(cmd->av[2], "stderr") == FALSE
-			&& ft_strequ(cmd->av[2], "stdout") == FALSE)
+	else if (cmd->ac >= 3 && ft_strequ(cmd->av[2], "stderr") == false
+			&& ft_strequ(cmd->av[2], "stdout") == false)
 		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
@@ -88,11 +88,11 @@ t_vector		*blt_tail(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: too few arguments\n");
 		return (NULL);
 	}
-	if (ft_strequ(cmd->av[0], "-f") == TRUE)
+	if (ft_strequ(cmd->av[0], "-f") == true)
 		return (tail_option_f(cmd));
 	if (cmd->av[0][0] != '-')
 		tail_get_dflt_nb(cmd);
-	else if (ft_strcheck(cmd->av[0] + 1, ft_isdigit) == FALSE
+	else if (ft_strcheck(cmd->av[0] + 1, ft_isdigit) == false
 			|| ft_strlen(cmd->av[0]) > 11 || ft_atol(cmd->av[0]) > INT_MAX)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);

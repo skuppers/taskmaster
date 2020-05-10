@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:35:52 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:49:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:08:29 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_vector	*blt_shutdown(t_cmd *cmd)
 	if (tsk_readline(line, STDIN_FILENO, g_env) > 0)
 	{
 		vct_apply(line, LOWCASE);
-		if (ft_strequ("y", vct_getstr(line)) == TRUE)
+		if (ft_strequ("y", vct_getstr(line)) == true)
 		{
 			vct_del(&line);
 			return (generate_bytecode(cmd, NO_OCP));

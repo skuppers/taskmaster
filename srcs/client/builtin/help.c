@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:10:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/02 18:38:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:09:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	ask_help(t_cmd *cmd)
 	tmp = ft_strtrim(cmd->av[0]);
 	while (i < NB_CMD)
 	{
-		if (ft_strequ(tmp, get_keyword(i)) == TRUE)
+		if (ft_strequ(tmp, get_keyword(i)) == true)
 		{
 			ft_help[i]();
 			break ;

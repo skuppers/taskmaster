@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:13:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:06:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,37 +20,37 @@ static void		del_hist(void *mem, size_t size)
 
 static char		*get_next_entry(t_list **cur, const uint8_t flag)
 {
-	static uint8_t	end = TRUE;
+	static bool	end = true;
 
 	if (flag & RESET)
 	{
-		end = TRUE;
+		end = true;
 		return (NULL);
 	}
 	if (*cur != NULL && (*cur)->next != NULL)
 	{
-		end = FALSE;
+		end = false;
 		*cur = (*cur)->next;
 	}
-	if (*cur != NULL && end == FALSE)
+	if (*cur != NULL && end == false)
 		return (((t_hist *)((*cur)->content))->cmd);
 	return (NULL);
 }
 
 static char		*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
 {
-	static uint8_t	end = TRUE;
+	static bool	end = true;
 
 	if (flag & RESET)
 	{
-		end = TRUE;
+		end = true;
 		return (NULL);
 	}
 	if (*cur != NULL && ((t_hist *)((*cur)->content))->prev != NULL)
 	{
-		if (*cur == queue && end == TRUE)
+		if (*cur == queue && end == true)
 		{
-			end = FALSE;
+			end = false;
 			return (((t_hist *)((*cur)->content))->cmd);
 		}
 		*cur = ((t_hist *)((*cur)->content))->prev;

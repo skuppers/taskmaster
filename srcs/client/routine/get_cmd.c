@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:32:32 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:52:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:07:10 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static enum e_cmd_type	get_cmd_type(t_vector *word)
 	i = 0;
 	while (i < NB_CMD)
 	{
-		if (ft_strequ(vct_getstr(word), get_keyword(i)) == TRUE)
+		if (ft_strequ(vct_getstr(word), get_keyword(i)) == true)
 			return ((enum e_cmd_type)i);
 		i++;
 	}

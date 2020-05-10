@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 12:51:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:06:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void			read_cmd(void)
 	print_prompt();
 	while ((ret = tsk_readline(line, STDIN_FILENO, g_env)) >= 0)
 	{
-		if (vct_apply(line, IS_SPACE) == FALSE)
+		if (vct_apply(line, IS_SPACE) == false)
 		{
 			history(line, ADD | RESET);
 			routine(line);
