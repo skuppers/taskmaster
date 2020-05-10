@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:48:53 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:23:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int8_t  make_socket(t_denv *env, char *socketpath)
     int32_t 			fd;
 	
     if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
-        exit_routine(E_LOGLVL_CRIT, strerror(errno));
+		exit_routine(E_LOGLVL_CRIT, strerror(errno));
 	env->unix_socket = fd;
   	env->addr.sun_family = AF_UNIX;
 	strncpy(env->addr.sun_path, socketpath, sizeof(env->addr.sun_path) - 1);

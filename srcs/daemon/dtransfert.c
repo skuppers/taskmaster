@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:51:00 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:29:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	client_connected(t_denv *env, fd_set *master_set, int connectionfd)
 	env->client_connected = 1;
 }
 
-void	my_select(t_denv *env, fd_set *recv_set)
+void	my_select(fd_set *recv_set)
 {
 	struct timeval	tv;
 
@@ -108,7 +108,7 @@ void listen_for_data(t_denv *env)
 	while (1)
 	{
 		recv_set = master_set;
-		my_select(env, &recv_set);
+		my_select(&recv_set);
 		fd_nb = -1;
 		while (++fd_nb < DFL_FD_SETSIZE)
 		{

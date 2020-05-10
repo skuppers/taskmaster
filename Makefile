@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/10 15:59:15 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/10 18:27:55 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -208,10 +208,11 @@ CLIENT_SRCS += help_function_r.c
 CLIENT_SRCS += help_function_s.c
 CLIENT_SRCS += help_function_t_v.c
 
-
-
 ### DAEMON
+
 DAEMON_SRCS += daemon_taskmaster.c
+DAEMON_SRCS += print_starting_debug.c
+DAEMON_SRCS += init_daemon.c
 DAEMON_SRCS += sockets.c
 DAEMON_SRCS += jobs.c
 DAEMON_SRCS += path_tools.c

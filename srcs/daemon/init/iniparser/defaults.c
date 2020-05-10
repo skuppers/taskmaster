@@ -6,73 +6,17 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 17:05:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:02:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-void	check_dflt_directory(void)
-{
-	DIR		*dir;
-	int		lock;
-	
-	dir = opendir(DFL_WORKDIR);
-	if (dir)
-		closedir(dir);
-	else if (ENOENT == errno)
-	{
-		if (mkdir(DFL_WORKDIR, 0744) == -1)
-		{
-			dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
-				" Could not create default working directory: %s\n", strerror(errno));
-			exit_routine(ERR, NULL);
-		}
-	}
-	else
-	{
-    	dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
-				" Could not open default working directory: %s\n", strerror(errno));
-		exit_routine(ERR, NULL);
-	}
-	lock = open(DFL_LOCK, O_RDWR | O_CREAT, 0700);
-	if (lock < 0)
-	{
-		dprintf(STDERR_FILENO, "taskmasterd: could not create lockfile: %s\n", strerror(errno));
-		exit_routine(ERR, NULL);
-	}
-	if (flock(lock, LOCK_EX | LOCK_NB) != 0)
-	{
-		dprintf(STDERR_FILENO, "taskmasterd: could not lock lockfile. Is another daemon running?\n");
-		exit_routine(ERR, NULL);
-	}
-	g_denv->lock = lock;
-}
-
-uint8_t	get_nodaemon(char *str)
+bool	get_nodaemon(char *str)
 {
 	if (ft_strequ(str, "1") == TRUE || ft_strequ(str, "true") == TRUE)
-		return (TRUE);
-	return (FALSE);
-}
-
-char	**get_environ(char *str)
-{
-	(void)str;
-	return (NULL);
-}
-
-void    set_taskmasterd_defautls(void)
-{
-	g_denv->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
-    g_denv->opt.str[LOGFILE] = DFL_LOGFILE;
-	g_denv->opt.str[LOGLEVEL] = DFL_LOGLVL;
-	g_denv->opt.str[USER] = NULL;
-	g_denv->opt.str[DIRECTORY] = NULL;
-	g_denv->opt.str[CHILDLOGDIR] = DFL_CHLDLOGDIR;
-    g_denv->opt.umask = DFL_UMASK;
-	g_denv->opt.environ = NULL;
-
+		return (true);
+	return (false);
 }
 
 void	taskmasterd_override(t_denv *env, dictionary *dict)

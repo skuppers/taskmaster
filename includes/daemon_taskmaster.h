@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 17:03:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 18:28:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,7 +198,6 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 # define DFL_LOGLVL			"info"
 # define DFL_UMASK			022
 
-void						set_taskmasterd_defautls(void);
 void						check_dflt_directory(void);
 
 void						daemonize(void);
@@ -249,10 +248,14 @@ void 					listen_for_data(t_denv *env);
 
 void					print_help(void);
 void					print_version(void);
-void					get_opt(int ac, char **av);
-int8_t					check_opt(t_denv *env);
 
-uint8_t					get_nodaemon(char *str);
+void					init(int ac, char **av, char **environ);
+
+void					print_starting_debug(void);
+
+void					get_opt(int ac, char **av);
+
+bool					get_nodaemon(char *str);
 char					**get_environ(char *str);
 void					taskmasterd_override(t_denv *env, dictionary *dict);
 void					parse_ini_file(void);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 15:43:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 17:59:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 void	sigint_handle(int signo)
 {
 	(void)signo;
-	g_denv->sigint = 1;
+	g_denv->sigint = true;
 }
 
-void					init_signals(void)
+void	init_signals(void)
 {
 	struct sigaction	sig_int;
 
