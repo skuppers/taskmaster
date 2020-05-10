@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:21:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:55:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,21 @@ struct						s_env
 {
 	struct termios			*orig;
 	struct termios			*taskmst;
-
+	t_cmd					*cmd;
+	t_opt					opt;
+	dictionary				*dict;
 	uint64_t				ak_masks[AK_AMOUNT];
 	t_actionkeys			actionkeys[AK_AMOUNT];
-
 	uint32_t				cursoridx;
 	uint16_t				cursorx;
 	uint16_t				cursory;
 	uint16_t				winwid;
 	uint16_t				winhei;
-
 	volatile sig_atomic_t	sigint;
 	volatile sig_atomic_t	sigpipe;
 	volatile sig_atomic_t	sigwinch;
-
 	int32_t					unix_socket;
-	char					padding[4];
-	t_cmd					*cmd;
-
-	t_opt					opt;
-	dictionary				*dict;
+	char					pad[4];
 };
 
 extern t_env				*g_env;

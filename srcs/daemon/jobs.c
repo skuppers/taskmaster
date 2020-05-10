@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 15:14:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:16:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	aggregate_stdout(t_program *pg, t_instance *in)
 	asp = NULL;
 	if (ft_strequ(pg->stdout_logfile, "AUTO") == TRUE)
 	{
-		asprintf(&asp, "%s/%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
+		asp = ft_asprintf("%s/%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stdoutfile = open_file(asp, "a+");
 		ft_strdel(&asp);
@@ -58,7 +58,7 @@ void	aggregate_stdout(t_program *pg, t_instance *in)
 		close(STDOUT_FILENO);
 	else
 	{
-		asprintf(&asp, "%s%d", pg->stdout_logfile, in->id);
+		asp = ft_asprintf("%s%d", pg->stdout_logfile, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stdoutfile = open_file(asp, "a+");
 		ft_strdel(&asp);
@@ -76,7 +76,7 @@ void	aggregate_stderr(t_program *pg, t_instance *in)
 
 	if (ft_strequ(pg->stderr_logfile, "AUTO") == TRUE)
 	{
-		asprintf(&asp, "%s/%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
+		asp = ft_asprintf("%s/%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR], pg->name, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stderrfile = open_file(asp, "a+");
 		ft_strdel(&asp);
@@ -87,7 +87,7 @@ void	aggregate_stderr(t_program *pg, t_instance *in)
 		close(STDERR_FILENO);
 	else
 	{
-		asprintf(&asp, "%s%d", pg->stderr_logfile, in->id);
+		asp = ft_asprintf("%s%d", pg->stderr_logfile, in->id);
 		dprintf(STDERR_FILENO, "Creating %s\n", asp);
 		stderrfile = open_file(asp, "a+");
 		ft_strdel(&asp);

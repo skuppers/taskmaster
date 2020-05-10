@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 21:19:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 22:53:34 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 15:53:10 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,31 +67,66 @@ t_program *find_program(const char *name)
 	return (NULL);
 }
 
-t_vector	*exec_action_args(char **arg, int ac, t_action to_do)
+
+t_vector	*exec_wildcard(t_program *prog, char *arg, t_action to_do)
 {
-	char		*name;
 	t_vector	*output;
 	t_vector	*vct;
-	char		*str_nb;
-	uint8_t		i;
+	int			i;
+
+	i = 0;
+	output = vct_new(0);
+	while (i < prog->numprocs)
+	{
+		vct = process_instance(prog, i, arg, to_do);
+		vct_cat(output, vct);
+		vct_del(&vct);
+		i++;
+	}
+	return (output);
+}
+
+t_vector	*exec_one_arg(char *arg, t_action to_do)
+{
+	char		*name;
+	t_program	*prog;
+	char		*nb;
+	t_vector	*vct;
+
+	name = ft_strchr(arg, ':') != NULL ? ft_strcdup(arg, ':') : NULL;
+	vct = NULL;
+	if (name != NULL)
+	{
+		prog = find_program(name);
+		nb = arg + ft_strlen(name) + 1;
+		if (nb != NULL && prog != NULL)
+		{
+			if (ft_strequ(nb, "*") == true)
+				vct = exec_wildcard(prog, arg, to_do);
+			else if (nb[0] != '\0' && ft_strcheck(nb, ft_isdigit) == true
+					&& ft_strlen(nb) < 4 && ft_atoi(nb) < 256) // LIMIT INSTANCE ?
+				vct = process_instance(prog, ft_atoi(nb), arg, to_do);
+		}
+	}
+	if (vct == NULL)
+		vct = get_msg(arg, "no such process", ERR_MSG);
+	ft_strdel(&name);
+	return (vct);
+}
+
+t_vector	*exec_action_args(char **arg, int ac, t_action to_do)
+{
+	t_vector	*output;
+	t_vector	*vct;
+	int			i;
 
 	i = 0;
 	output = vct_new(0);
 	while (i < ac && arg[i] != NULL)
 	{
-		name = ft_strchr(arg[i], ':') != NULL ? ft_strcdup(arg[i], ':') : NULL;
-		str_nb = name == NULL ? NULL : ft_strdup(arg[i] + ft_strlen(name) + 1);
-		if (name != NULL && str_nb != NULL
-			&& ft_strcheck(str_nb, ft_isdigit) == TRUE
-			&& ft_strlen(str_nb) < 4 && ft_atoi(str_nb) < 256) // LIMIT INSTANCE
-			vct = process_instance(find_program(name),
-					(uint8_t)ft_atoi(str_nb), arg[i], to_do); 
-		else
-			vct = get_msg(arg[i], "no such process", ERR_MSG);
+		vct = exec_one_arg(arg[i], to_do);
 		vct_cat(output, vct);
 		vct_del(&vct);
-		ft_strdel(&str_nb);
-		ft_strdel(&name);
 		i++;
 	}
 	return (output);
