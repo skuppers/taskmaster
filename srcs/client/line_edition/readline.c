@@ -217,6 +217,7 @@ int8_t		handle_signal(t_env *env, t_vector *vct)
 	if (env->sigint == 1)
 	{
 		env->sigint = 0;
+		ak_end(env, vct, NULL);
 		ft_dprintf(STDERR_FILENO, "\n");
 		return (0);
 	}
