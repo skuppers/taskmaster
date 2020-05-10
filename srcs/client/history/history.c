@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:06:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 23:06:05 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,22 @@ static void		del_hist(void *mem, size_t size)
 	ft_strdel(&((t_hist *)mem)->cmd);
 }
 
-static char		*get_next_entry(t_list **cur, const uint8_t flag)
+static char		*get_next_entry(t_list **cur, const uint8_t flag, char **keep)
 {
-	static bool	end = true;
-
 	if (flag & RESET)
 	{
-		end = true;
+		ft_strdel(keep);
 		return (NULL);
 	}
-	if (*cur != NULL && (*cur)->next != NULL)
-	{
-		end = false;
-		*cur = (*cur)->next;
-	}
-	if (*cur != NULL && end == false)
-		return (((t_hist *)((*cur)->content))->cmd);
-	return (NULL);
+	if (*cur == NULL)
+		return (NULL);	
+	if ((*cur)->next == NULL)
+		return (*keep);
+	*cur = (*cur)->next;
+	return (((t_hist *)((*cur)->content))->cmd);
 }
 
-static char		*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
+static char		*get_prev_entry(t_list **cur, const uint8_t flag)
 {
 	static bool	end = true;
 
@@ -46,18 +42,20 @@ static char		*get_prev_entry(t_list *queue, t_list **cur, const uint8_t flag)
 		end = true;
 		return (NULL);
 	}
-	if (*cur != NULL && ((t_hist *)((*cur)->content))->prev != NULL)
+	if (*cur == NULL)
+		return (NULL);
+	if ((*cur)->next == NULL)
 	{
-		if (*cur == queue && end == true)
+		if (end == true)
 		{
 			end = false;
 			return (((t_hist *)((*cur)->content))->cmd);
 		}
-		*cur = ((t_hist *)((*cur)->content))->prev;
+		end = true;
 	}
-	if (*cur != NULL)
-		return (((t_hist *)((*cur)->content))->cmd);
-	return (NULL);
+	if (((t_hist *)((*cur)->content))->prev != NULL)
+		*cur = ((t_hist *)((*cur)->content))->prev;
+	return (((t_hist *)((*cur)->content))->cmd);
 }
 
 static t_list	*add_entry(t_list **queue, t_list **head, t_vector *line)
@@ -80,18 +78,26 @@ char			*history(t_vector *line, const uint8_t flag)
 	static	t_list	*cur = NULL;
 	static	t_list	*queue = NULL;
 	static	t_list	*head = NULL;
+	static char		*keep = NULL;
 
-	if (flag & ADD)
+	if ((flag & ADD) || (flag & RESET))
 	{
-		cur = add_entry(&queue, &head, line);
-		get_prev_entry(NULL, NULL, RESET);
-		get_next_entry(NULL, RESET);
+		cur = (flag & ADD) ? add_entry(&queue, &head, line) : queue;
+		get_prev_entry(NULL, RESET);
+		get_next_entry(NULL, RESET, &keep);
 	}
 	else if (flag & NEXT)
-		return (get_next_entry(&cur, NOFLAG));
+		return (get_next_entry(&cur, NOFLAG, &keep));
 	else if (flag & PREV)
-		return (get_prev_entry(queue, &cur, NOFLAG));
+	{
+		if (keep == NULL)
+			keep = vct_dupstr(line);
+		return (get_prev_entry(&cur, NOFLAG));
+	}
 	else if (flag & FLUSH)
+	{
 		ft_lstdel(&head, del_hist);
+		get_next_entry(NULL, RESET, &keep);
+	}
 	return (NULL);
 }

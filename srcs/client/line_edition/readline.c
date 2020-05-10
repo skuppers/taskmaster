@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 22:16:04 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 23:04:27 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 {
 	uint32_t	tmpidx;
 
+	history(NULL, RESET);
 	if (ft_strequ(src, "\n") == 1)
 	{
 		ft_putchar_fd('\n', STDERR_FILENO);
@@ -218,6 +219,7 @@ int8_t		handle_signal(t_env *env, t_vector *vct)
 	{
 		env->sigint = 0;
 		ak_end(env, vct, NULL);
+		history(NULL, RESET);
 		ft_dprintf(STDERR_FILENO, "\n");
 		return (0);
 	}

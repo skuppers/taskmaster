@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:57:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 22:31:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	char	*cmd;
 
 	cmd = history(vct, NEXT);
-	if (cmd != NULL)
+//	dprintf(2, "%p\n%p\n", vct_getstr(vct), cmd);
+	if (cmd != NULL && cmd != vct_getstr(vct))
 	{
 		vct_clear(vct);
 		vct_addstr(vct, cmd);
