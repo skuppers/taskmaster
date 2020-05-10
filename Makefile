@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/10 12:23:05 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/10 15:59:15 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -142,7 +142,8 @@ PATH_CLIENT_SRCS += srcs/client/line_edition/
 PATH_DAEMON_SRCS += srcs/daemon/
 PATH_DAEMON_SRCS += srcs/daemon/builtin/
 PATH_DAEMON_SRCS += srcs/daemon/env_var/
-PATH_DAEMON_SRCS += srcs/daemon/iniparser/
+PATH_DAEMON_SRCS += srcs/daemon/init/
+PATH_DAEMON_SRCS += srcs/daemon/init/iniparser/
 
 PATH_COMMON_SRCS += srcs/common/
 

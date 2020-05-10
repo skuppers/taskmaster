@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:34:24 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:34:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:54:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ dictionary *load_ini_file(char *str)
 	if (ini_dict == NULL)
 	{
 		dprintf(STDERR_FILENO, "Could not read ini file: %s\n", strerror(errno));
-        exit_routine();
+        exit_routine(ERR, NULL);
 	}
 //	iniparser_dump(ini_dict, stdout);
 	return (ini_dict);

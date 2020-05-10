@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:24:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 17:06:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,7 +338,7 @@ static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	if (error == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
-		exit_routine();
+		exit_routine(ERR, NULL);
 	}
 	prog.env = NULL;
 	strvalue_to_lst(&prog.env, prog.environ);
@@ -346,22 +346,22 @@ static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	tlog(E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);
 }
 
-void			parse_ini_file(t_denv *env, dictionary *dict)
+void			parse_ini_file(void)
 {
 	int32_t		sections;
 	char		*secname;
 
-	sections = iniparser_getnsec(dict);
-	env->prgm_list = NULL;
+	sections = iniparser_getnsec(g_denv->dict);
+	g_denv->prgm_list = NULL;
 	tlog(E_LOGLVL_DEBG, "Inifile: found %d sections\n", sections);
 	while (sections > 0)
 	{
 		--sections;
-		secname = (char*)iniparser_getsecname(env->dict, sections);
+		secname = (char*)iniparser_getsecname(g_denv->dict, sections);
 		tlog(E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
 
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
-			get_new_prog(env, dict, secname);
+			get_new_prog(g_denv, g_denv->dict, secname);
 			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)

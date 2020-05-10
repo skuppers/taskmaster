@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:52:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:51:00 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	handle_client_data(t_denv *env, t_vector *vct, int32_t readstatus, int fd)
 	}
 	dprintf(STDERR_FILENO, "------------------------------------------\n");
 	if (env->shutdown == TRUE)
-		exit_routine();
+		exit_routine(NO_MSG);
 }
 
 void	realine_error(t_denv *env, int32_t readstatus, int fd_nb, fd_set *master_set)
@@ -85,20 +85,6 @@ void	client_connected(t_denv *env, fd_set *master_set, int connectionfd)
 	env->client_connected = 1;
 }
 
-void	select_error(t_denv *env)
-{
-	(void)env;
-	tlog(E_LOGLVL_CRIT, "Select syscall failed: %s\n", strerror(errno));
-	exit_routine();
-}
-
-void	accept_error(t_denv *env)
-{
-	(void)env;
-	tlog(E_LOGLVL_CRIT, "Select accept() failed: %s\n", strerror(errno));
-	exit_routine();
-}
-
 void	my_select(t_denv *env, fd_set *recv_set)
 {
 	struct timeval	tv;
@@ -106,7 +92,7 @@ void	my_select(t_denv *env, fd_set *recv_set)
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
 	if (select(DFL_FD_SETSIZE, recv_set, NULL, NULL, &tv) < 0)
-		select_error(env);
+		exit_routine(E_LOGLVL_CRIT, strerror(errno));
 }
 
 void listen_for_data(t_denv *env)
@@ -131,7 +117,7 @@ void listen_for_data(t_denv *env)
 			if (fd_nb == env->unix_socket)
 			{
 				if ((connectionfd = accept(env->unix_socket, NULL, NULL)) == -1)
-		 				accept_error(env);
+					exit_routine(E_LOGLVL_CRIT, strerror(errno));
 				else
 					client_connected(env, &master_set, connectionfd);
 			}

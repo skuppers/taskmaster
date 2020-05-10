@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:02:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:47:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int			tlog(int loglvl, const char *message, ...)
 	return (SUCCESS);
 }
 
-int8_t      init_log()
+void      init_log()
 {
     int32_t     debug_fd;
 
@@ -85,7 +85,7 @@ int8_t      init_log()
 	if (debug_fd < 0)
 	{
 		dprintf(STDERR_FILENO, "Error: Could not create log file: %s\n", strerror(errno));
-		exit_routine();
+		exit_routine(ERR, NULL);
 	}
 	g_denv->log_fd = debug_fd;
 	tlog(E_LOGLVL_INFO, "[ Taskmaster startup ]\n");
@@ -95,10 +95,9 @@ int8_t      init_log()
 	{
 		if (errno != EEXIST)
 		{
-			dprintf(STDERR_FILENO, "Fatal error in: init_log():"
+			dprintf(STDERR_FILENO, "Fatal error in: init_log():" // tlog ?
 					" Could create childlog directory: %s\n", strerror(errno));
-			exit_routine();
+			exit_routine(ERR, NULL);
 		}
 	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 21:23:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 17:05:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,25 @@ void	check_dflt_directory(void)
 		{
 			dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
 				" Could not create default working directory: %s\n", strerror(errno));
-			exit_routine();
+			exit_routine(ERR, NULL);
 		}
 	}
 	else
 	{
     	dprintf(STDERR_FILENO, "taskmasterd: Fatal error in: check_working_directory():"
 				" Could not open default working directory: %s\n", strerror(errno));
-		exit_routine();
+		exit_routine(ERR, NULL);
 	}
 	lock = open(DFL_LOCK, O_RDWR | O_CREAT, 0700);
 	if (lock < 0)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: could not create lockfile: %s\n", strerror(errno));
-		exit_routine();
+		exit_routine(ERR, NULL);
 	}
 	if (flock(lock, LOCK_EX | LOCK_NB) != 0)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: could not lock lockfile. Is another daemon running?\n");
-		exit_routine();
+		exit_routine(ERR, NULL);
 	}
 	g_denv->lock = lock;
 }
@@ -62,16 +62,16 @@ char	**get_environ(char *str)
 	return (NULL);
 }
 
-void    set_taskmasterd_defautls(t_denv *env)
+void    set_taskmasterd_defautls(void)
 {
-	env->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
-    env->opt.str[LOGFILE] = DFL_LOGFILE;
-	env->opt.str[LOGLEVEL] = DFL_LOGLVL;
-	env->opt.str[USER] = NULL;
-	env->opt.str[DIRECTORY] = NULL;
-	env->opt.str[CHILDLOGDIR] = DFL_CHLDLOGDIR;
-    env->opt.umask = DFL_UMASK;
-	env->opt.environ = NULL;
+	g_denv->opt.str[CONFIGURATION] = DFL_CONFIGURATION;
+    g_denv->opt.str[LOGFILE] = DFL_LOGFILE;
+	g_denv->opt.str[LOGLEVEL] = DFL_LOGLVL;
+	g_denv->opt.str[USER] = NULL;
+	g_denv->opt.str[DIRECTORY] = NULL;
+	g_denv->opt.str[CHILDLOGDIR] = DFL_CHLDLOGDIR;
+    g_denv->opt.umask = DFL_UMASK;
+	g_denv->opt.environ = NULL;
 
 }
 
@@ -180,5 +180,5 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 	}
 	env->opt.environ = tmp;
 	if (error == 1)
-		exit_routine();
+		exit_routine(ERR, NULL);
 }

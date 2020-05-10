@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 15:55:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:16:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,10 +240,6 @@ void						get_status(void);
 /*
 *** exit_routine.c
 */
-
-# define NO_MSG				0x00
-# define ERR				0x01
-# define EXIT				0x02
 
 void						reset_cmd(void);
 void						exit_routine(const int flag, ...);

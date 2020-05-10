@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:51:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 17:03:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,12 +198,10 @@ void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 # define DFL_LOGLVL			"info"
 # define DFL_UMASK			022
 
-void						set_taskmasterd_defautls(t_denv *env);
+void						set_taskmasterd_defautls(void);
 void						check_dflt_directory(void);
 
-int							daemonize(t_denv *env);
-void	set_uid(t_denv *env);
-void	do_chdir(t_denv *env);
+void						daemonize(void);
 
 /*************************************************/
 
@@ -251,20 +249,20 @@ void 					listen_for_data(t_denv *env);
 
 void					print_help(void);
 void					print_version(void);
-void					get_opt(t_denv *env, int ac, char **av);
+void					get_opt(int ac, char **av);
 int8_t					check_opt(t_denv *env);
 
 uint8_t					get_nodaemon(char *str);
 char					**get_environ(char *str);
 void					taskmasterd_override(t_denv *env, dictionary *dict);
-void					parse_ini_file(t_denv *env, dictionary *dict);
+void					parse_ini_file(void);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
 
 /*****************************************************/
 
 void					init_signals(void);
-void					exit_routine(void);
+void					exit_routine(const int flag, ...);
 
 
 /*

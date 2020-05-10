@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 16:44:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:59:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		error_opt(char *msg)
 	ft_dprintf(STDERR_FILENO,
 			"Error: %s\nFor help, use ./taskmasterd -h\n", msg);
 	ft_strdel(&msg);
-	exit_routine();
+	exit_routine(ERR, NULL);
 }
 
 static int		parse_opt(char **av, int ac, int i)
@@ -58,7 +58,7 @@ static int		parse_opt(char **av, int ac, int i)
 	return (0);
 }
 
-void		get_opt(t_denv *env, int ac, char **av)
+void		get_opt(int ac, char **av)
 {
 	int			i;
 	int			sections;
@@ -79,19 +79,25 @@ void		get_opt(t_denv *env, int ac, char **av)
 		}
 		error_opt(ft_asprintf("option '%s' not recognized", av[i]));
 	}
-	if (env->opt.optmask & OPT_HELP)
+	if (g_denv->opt.optmask & OPT_HELP)
+	{
 		print_help();
-	if (env->opt.optmask & OPT_VERSION)
+		exit_routine(NO_MSG);
+	}
+	if (g_denv->opt.optmask & OPT_VERSION)
+	{
 		print_version();
+		exit_routine(NO_MSG);
+	}
 
-	env->dict = load_ini_file(env->opt.str[CONFIGURATION]);
+	g_denv->dict = load_ini_file(g_denv->opt.str[CONFIGURATION]);
 
-	sections = iniparser_getnsec(env->dict);
+	sections = iniparser_getnsec(g_denv->dict);
 	while (sections >= 0)
 	{
-		if (ft_strequ(iniparser_getsecname(env->dict, sections), "taskmasterd") == 1)
+		if (ft_strequ(iniparser_getsecname(g_denv->dict, sections), "taskmasterd") == 1)
 		{
-			taskmasterd_override(env, env->dict);
+			taskmasterd_override(g_denv, g_denv->dict);
 			return ;
 		}
 		--sections;

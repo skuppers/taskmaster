@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 15:16:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:46:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ void	concat_env_to_daemon_env(t_program *prog, t_list *env)
 FILE	*open_file(char *path, char *mode)
 {
 	FILE	*file;
+
 	file = fopen(path, mode);
 	if (file == NULL)
-	{
-		tlog(E_LOGLVL_ERRO, "taskmasterd: could not open %s: %s\n", path, strerror(errno));
-		exit_routine();
-	}
+		exit_routine(E_LOGLVL_ERRO, strerror(errno));
 	return (file);
 }
 
@@ -100,8 +98,9 @@ static void	change_uid(t_program *prog, t_instance *instance)
 {
 	if (prog->userid != -1 && setuid(prog->userid) != 0)
 	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid: %s\n", instance->id, prog->name, strerror(errno));
-		exit_routine();	
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid\n",
+				instance->id, prog->name);
+		exit_routine(E_LOGLVL_ERRO, strerror(errno));
 	}
 }
 
@@ -109,8 +108,9 @@ static void	change_dir(t_program *prog, t_instance *instance)
 {
 	if (prog->directory != NULL && chdir(prog->directory) != 0)
 	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory: %s\n", instance->id, prog->name, strerror(errno));
-		exit_routine();
+		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory\n",
+				instance->id, prog->name);
+		exit_routine(E_LOGLVL_ERRO, strerror(errno));
 	}
 }
 

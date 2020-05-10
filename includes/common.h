@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:47:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 16:57:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,16 @@
 **
 */
 
-#define DFL_FD_SETSIZE	16
+
+/*
+*** exit_routine define
+*/
+
+# define NO_MSG				0x00
+# define EXIT_EOF			0x01
+# define ERR				0x80
+
+# define DFL_FD_SETSIZE		16
 
 /*
 ******************* Encode
@@ -133,7 +142,7 @@ enum	e_loglvl
 	E_LOGLVL_CRIT
 };
 
-int8_t		init_log(void);
+void		init_log(void);
 int			tlog(int loglvl, const char *message, ...);
 
 # define TIMEBUFFERSZ			64
