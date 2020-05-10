@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 22:26:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:22:23 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,85 +28,11 @@
 # include "iniparser.h"
 # include "common.h"
 
-/****************   General   ****************/
-
-# define DFL_PROMPT			"taskmaster> "
-
-
-/*****************	Readline **************/
-
-# define AK_AMOUNT					14
-# define AK_ARROW_UP_MASK			0x1b5b410000000000
-# define AK_ARROW_DOWN_MASK 		0x1b5b420000000000
-# define AK_ARROW_RIGHT_MASK		0x1b5b430000000000
-# define AK_ARROW_LEFT_MASK 		0x1b5b440000000000
-# define AK_HOME_MASK 				0x1b5b480000000000
-# define AK_END_MASK 				0x1b5b460000000000
-# define AK_CTRL_A_MASK 			0x0100000000000000
-# define AK_CTRL_E_MASK		   		0x0500000000000000
-# define AK_DELETE_MASK		   		0x1b5b337e00000000
-# define AK_BACKSPACE_MASK		 	0x7f00000000000000
-# define AK_CTRL_D_MASK 			0x0400000000000000
-# define AK_CTRL_L_MASK				0x0c00000000000000
-# define AK_CTRL_R_MASK				0x1200000000000000
-# define AK_TAB_MASK				0x0900000000000000
-
-enum	e_action_keys
-{
-	AK_ARROW_UP,
-	AK_ARROW_DOWN,
-	AK_ARROW_RIGHT,
-	AK_ARROW_LEFT,
-	AK_HOME,
-	AK_END,
-	AK_BACKSPACE,
-	AK_DELETE,
-	AK_CTRL_A,
-	AK_CTRL_E,
-	AK_CTRL_D,
-	AK_CTRL_L,
-	AK_CTRL_R,
-	AK_TABULATION,
-};
-
-/***********************************************************/
-
-/*
-********* ERROR MANAGEMENT
-*/
-
-# define ERR_BAD_CMD	"Bad Cmd"
-
 /*
 ********* ENV
 */
 
-# define NB_OPT				10
-# define NB_NOCONF_OPT		6
-
-# define NO_OPT				0x0000
-# define OPT_HELP			0x0001
-# define OPT_INTERACTIVE	0x0002
-# define OPT_DEBUG			0x0004
-# define OPT_SERVERURL		0x0008
-# define OPT_CONFIGURATION	0x0010
-# define OPT_BATCHCMD		0x0020
-# define OPT_PROMPT			0x0040
-
-# define SERVERURL			0
-# define CONFIGURATION		1
-# define PROMPT				2
-
 # define NB_STR_CONF		3
-
-# define UNIX_URI			"unix://"
-# define UNIX_URI_SIZE		7
-
-# define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
-# define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
-
-# define SERVERURL_SEC		"taskmasterctl:serverurl"
-# define PROMPT_SEC			"taskmasterctl:prompt"
 
 typedef	struct		s_opt
 {
@@ -144,7 +70,11 @@ typedef struct		s_env
 
 extern t_env		*g_env;
 
-typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+
+
+/*
+*************************** INIT
+*/
 
 /*
 *** termmode.c
@@ -154,7 +84,108 @@ typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 # define RELEASE	0x02
 
 void				create_termmode(void);
-void    			apply_termmode(uint8_t flag);
+void    			apply_termmode(const uint8_t flag);
+
+/*
+*** opt.c
+*/
+
+# define NB_OPT				10
+# define NB_NOCONF_OPT		6
+
+# define NO_OPT				0x0000
+# define OPT_HELP			0x0001
+# define OPT_INTERACTIVE	0x0002
+# define OPT_DEBUG			0x0004
+# define OPT_SERVERURL		0x0008
+# define OPT_CONFIGURATION	0x0010
+# define OPT_BATCHCMD		0x0020
+# define OPT_PROMPT			0x0040
+
+# define SERVERURL			0
+# define CONFIGURATION		1
+# define PROMPT				2
+
+# define UNIX_URI			"unix://"
+# define UNIX_URI_SIZE		7
+
+# define DFL_PROMPT			"taskmaster> "
+# define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
+# define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
+
+# define SERVERURL_SEC		"taskmasterctl:serverurl"
+# define PROMPT_SEC			"taskmasterctl:prompt"
+
+void				get_opt(const int ac, char **av);
+
+/*
+*** load_config.c
+*/
+
+void		load_config(void);
+
+/*
+*** client_signal.c
+*/
+
+void				init_signals(void);
+
+/*
+*************************** LINE EDITION
+*/
+
+# define AK_AMOUNT					14
+# define AK_ARROW_UP_MASK			0x1b5b410000000000
+# define AK_ARROW_DOWN_MASK 		0x1b5b420000000000
+# define AK_ARROW_RIGHT_MASK		0x1b5b430000000000
+# define AK_ARROW_LEFT_MASK 		0x1b5b440000000000
+# define AK_HOME_MASK 				0x1b5b480000000000
+# define AK_END_MASK 				0x1b5b460000000000
+# define AK_CTRL_A_MASK 			0x0100000000000000
+# define AK_CTRL_E_MASK		   		0x0500000000000000
+# define AK_DELETE_MASK		   		0x1b5b337e00000000
+# define AK_BACKSPACE_MASK		 	0x7f00000000000000
+# define AK_CTRL_D_MASK 			0x0400000000000000
+# define AK_CTRL_L_MASK				0x0c00000000000000
+# define AK_CTRL_R_MASK				0x1200000000000000
+# define AK_TAB_MASK				0x0900000000000000
+
+enum	e_action_keys
+{
+	AK_ARROW_UP,
+	AK_ARROW_DOWN,
+	AK_ARROW_RIGHT,
+	AK_ARROW_LEFT,
+	AK_HOME,
+	AK_END,
+	AK_BACKSPACE,
+	AK_DELETE,
+	AK_CTRL_A,
+	AK_CTRL_E,
+	AK_CTRL_D,
+	AK_CTRL_L,
+	AK_CTRL_R,
+	AK_TABULATION,
+};
+
+typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct,
+							char c[BUFF_SIZE]);
+
+int					tsk_readline(t_vector *vct, const int fd, t_env *env);
+uint64_t			assign_keycodes(t_env *env);
+uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+
+/*
+*************************** CONNECT
+*/
+
+int8_t				connect_to_daemon(t_env *env, char *socketname);
+t_vector			*get_feedback(t_env *env);
+void				debug_print_bytecode(t_vector *bytecode);
+
+
+void	print_help(void);
+
 
 /*
 *** exit_routine.c
@@ -165,28 +196,6 @@ void    			apply_termmode(uint8_t flag);
 # define EXIT	0x02
 
 void				exit_routine(int flag, ...);
-
-/*
-*** opt.c
-*/
-
-void				get_opt(int ac, char **av);
-
-int					tsk_readline(t_vector *vct, const int fd, t_env *env);
-uint64_t			assign_keycodes(t_env *env);
-uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
-
-
-int8_t				connect_to_daemon(t_env *env, char *socketname);
-t_vector			*get_feedback(t_env *env);
-void				debug_print_bytecode(t_vector *bytecode);
-
-void				init_signals(void);
-
-dictionary 			*parse_inifile(char *str);
-void 				free_inifile(dictionary *dict);
-void	print_help(void);
-
 
 /*********************** ACTION KEYS ********************/
 

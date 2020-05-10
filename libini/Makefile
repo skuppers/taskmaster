@@ -68,19 +68,22 @@ $(SO_TARGET):	$(OBJS)
 
 clean:
 	$(RM) $(OBJS)
-	@(cd test ; $(MAKE) clean)
+	#@(cd test ; $(MAKE) clean)
 
 veryclean:
-	$(RM) $(OBJS) libiniparser.a $(SO_TARGET)
+	$(RM) $(OBJS)
+	$(RM) libiniparser.a $(SO_TARGET)
 	rm -rf ./html ; mkdir html
 	cd example ; $(MAKE) veryclean
-	cd test ; $(MAKE) veryclean
+#	cd test ; $(MAKE) veryclean
 
 docs:
 	@(cd doc ; $(MAKE))
 	
 check: $(SO_TARGET)
-	@(cd test ; $(MAKE))
+#	@(cd test ; $(MAKE))
+
+.SILENT:
 
 example: libiniparser.a
 	@(cd example ; $(MAKE))	

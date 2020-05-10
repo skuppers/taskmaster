@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 22:31:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 10:59:44 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	exit_routine(int flag, ...)
 
 	if (g_env->cmd != NULL)
 		ft_free_tab_str(g_env->cmd->av);
-	free_inifile(g_env->dict);
+	iniparser_freedict(g_env->dict);
+	vct_del(&g_env->opt.batch_cmd);
 	if (g_env->orig != NULL && g_env->taskmst != NULL)
 		apply_termmode(RELEASE);
-	vct_del(&g_env->opt.batch_cmd);
 	free(g_env->orig);
 	free(g_env->taskmst);
 	if (flag & EXIT)

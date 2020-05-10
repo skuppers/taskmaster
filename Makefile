@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/06 15:07:30 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/10 11:15:22 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@
 ################################ MAIN VARIABLES ################################
 ################################                ################################
 ################################################################################
+
+SHELL = /bin/sh
+.SUFFIXES:
 
 # Name client
 CLIENT = taskmasterctl
@@ -33,6 +36,7 @@ LIBFT = $(PATH_LIBFT)libft.a
 CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -D _GNU_SOURCE
+#CFLAGS += -D _POSIX_C_SOURCE=200809L
 
 # Compiler Debug Flags
 ifeq ($(d), 0)
@@ -126,6 +130,7 @@ HEADER += daemon_taskmaster.h
 ################################################################################
 
 PATH_CLIENT_SRCS += srcs/client/
+PATH_CLIENT_SRCS += srcs/client/init
 PATH_CLIENT_SRCS += srcs/client/builtin/
 PATH_CLIENT_SRCS += srcs/client/builtin/help_function/
 PATH_CLIENT_SRCS += srcs/client/completion/
@@ -146,22 +151,29 @@ PATH_COMMON_SRCS += srcs/common/
 ################################################################################
 
 ### CLIENT
+
 CLIENT_SRCS += client_taskmaster.c
+#Init
 CLIENT_SRCS += opt.c
+CLIENT_SRCS += load_config.c
+CLIENT_SRCS += client_signal.c
+CLIENT_SRCS += termmode.c
+#History
 CLIENT_SRCS += history.c
+#Completion
 CLIENT_SRCS += completion.c
 CLIENT_SRCS += print_completion.c
-CLIENT_SRCS += termmode.c
+#Line Edition
 CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c
 CLIENT_SRCS += actionkeys.c
+#Routine
 CLIENT_SRCS += routine.c
 CLIENT_SRCS += exit_routine.c
+#Connect
 CLIENT_SRCS += client_connect.c
-CLIENT_SRCS += client_signal.c
 CLIENT_SRCS += ctransfert.c
-CLIENT_SRCS += parse_ini.c
-
+#Builtin
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
 CLIENT_SRCS += clear.c
@@ -184,11 +196,14 @@ CLIENT_SRCS += stop.c
 CLIENT_SRCS += tail.c
 CLIENT_SRCS += update.c
 CLIENT_SRCS += version.c
+#Builtin/help
 CLIENT_SRCS += help_function_a_f.c
 CLIENT_SRCS += help_function_h_q.c
 CLIENT_SRCS += help_function_r.c
 CLIENT_SRCS += help_function_s.c
 CLIENT_SRCS += help_function_t_v.c
+
+
 
 ### DAEMON
 DAEMON_SRCS += daemon_taskmaster.c
@@ -275,7 +290,8 @@ COMMON_OBJS = $(patsubst %.c, $(PATH_OBJS)%.o, $(COMMON_SRCS))
 all: $(CLIENT) $(DAEMON)
 
 $(CLIENT): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(CLIENT_OBJS) $(COMMON_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(CLIENT_OBJS) $(COMMON_OBJS) $(LIBFT) $(LIBINI) -o $@
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(CLIENT_OBJS) $(COMMON_OBJS) \
+		$(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterctl is ready.\n$(NC)"
 
 $(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -284,7 +300,8 @@ $(CLIENT_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 	printf "                                                            \n$(NC)"
 
 $(DAEMON): $(LIBINI) $(LIBFT) $(PATH_OBJS) $(DAEMON_OBJS) $(COMMON_OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(DAEMON_OBJS) $(COMMON_OBJS) $(LIBFT) $(LIBINI) -o $@
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(I_LIBINIINC) $(DAEMON_OBJS) $(COMMON_OBJS) \
+		$(LIBFT) $(LIBINI) -o $@
 	printf "$(GREEN)taskmasterd is ready.\n$(NC)"
 
 $(DAEMON_OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -312,7 +329,7 @@ clean:
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DSYM)
 	$(MAKE) -C $(PATH_LIBFT) clean
-	$(MAKE) -C $(PATH_LIBINI) clean
+#	$(MAKE) -C $(PATH_LIBINI) clean
 	printf "$(RED)Objs from taskmasterctl removed\n$(NC)"
 	printf "$(RED)Objs from taskmasterd removed\n$(NC)"
 

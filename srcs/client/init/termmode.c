@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 22:30:59 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:24:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	create_termmode(void)
 {
-    struct termios  term;
-    
-    g_env->orig = (struct termios *)malloc(sizeof(struct termios));
-    if (tcgetattr(STDIN_FILENO, &term) == SUCCESS)
+	struct termios	term;
+
+	g_env->orig = (struct termios *)malloc(sizeof(struct termios));
+	if (tcgetattr(STDIN_FILENO, &term) == SUCCESS)
 	{
-    	memcpy(g_env->orig, &term, sizeof(struct termios));
-    	term.c_lflag &= ~TOSTOP;
+		memcpy(g_env->orig, &term, sizeof(struct termios));
+		term.c_lflag &= ~TOSTOP;
 		term.c_lflag &= ~(ICANON);
 		term.c_lflag &= ~(ECHO);
 		term.c_lflag |= ISIG;
@@ -29,16 +29,16 @@ void	create_termmode(void)
 		g_env->taskmst = (struct termios *)malloc(sizeof(struct termios));
 		if (g_env->taskmst != NULL)
 			memcpy(g_env->taskmst, &term, sizeof(struct termios));
-	}	
+	}
 	if (g_env->taskmst == NULL || g_env->orig == NULL)
 		exit_routine(ERR, "Failed to set termmode");
 }
 
-void	apply_termmode(uint8_t flag)
+void	apply_termmode(const uint8_t flag)
 {
 	if (g_env->orig != NULL && g_env->taskmst != NULL)
 	{
-    	if (tcsetattr(STDIN_FILENO, TCSADRAIN,
+		if (tcsetattr(STDIN_FILENO, TCSADRAIN,
 				(flag & NEW) ? g_env->taskmst : g_env->orig) == FAILURE)
 			exit_routine(ERR, "Failed to apply termmode");
 	}
