@@ -157,7 +157,7 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
 	}
-	else if (env->cursoridx == vct_len(dest)) // are we at the end ? matches very first character too
+	else if (env->cursoridx == vct_len(dest))
 	{
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
@@ -168,29 +168,24 @@ static int8_t   putchar_in_vct(t_env *env, t_vector *dest, char *src, size_t siz
 	else if (env->cursoridx == 0)
 	{
 		vct_pushstr(dest, src);
-		tmpidx = vct_len(dest);
 		vct_print_fd(dest, STDERR_FILENO);
-		while (tmpidx-- > 1)
-			ft_putstr_fd("\33[D", STDERR_FILENO);
-		env->cursoridx = 1;
-		pinc_x(env);
+		calc_after_totalprint(env, dest);
+		ak_home(env, dest, NULL);
+		ak_arrow_right(env, dest, "\33[C");
 	}
 	else
 	{
 		vct_addcharat(dest, src[0], env->cursoridx);
 		tmpidx = env->cursoridx;
-		while (env->cursoridx-- > 0)
-		{
-			ft_putstr_fd("\33[D", STDERR_FILENO);
-		}
+		ak_home(env, dest, NULL);
 		vct_print_fd(dest, STDERR_FILENO);
-		env->cursoridx = vct_len(dest);	
-		while (env->cursoridx != tmpidx + 1)
+		calc_after_totalprint(env, dest);
+		ak_home(env, dest, NULL);
+		while (tmpidx-- > 0)
 		{
-			ft_putstr_fd("\33[D", STDERR_FILENO);
-			env->cursoridx--;
+			ak_arrow_right(env, dest, "\33[C");
 		}
-		pinc_x(env);
+		ak_arrow_right(env, dest, "\33[C");
 	}
 	return (0);
 }
