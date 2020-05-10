@@ -6,11 +6,31 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:42:22 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 21:16:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:44:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
+
+static void	print_other_char(const char c)
+{
+	if (c == '\t' || c == '\n')
+		ft_putstr_fd(c == '\t' ? "\\t" : "\\n", STDERR_FILENO);
+	else if (c == US)
+		ft_putstr_fd("\033[34m[US]\033[32m", STDERR_FILENO);
+	else if (c == STX)
+		ft_putstr_fd("\033[34m[STX]\033[32m", STDERR_FILENO);
+	else if (c == ETX)
+		ft_putstr_fd("\033[34m[ETX]\033[32m", STDERR_FILENO);
+	else if (c == SOH)
+		ft_putstr_fd("\033[35m[SOH]\033[32m", STDERR_FILENO);
+	else if (c == ENQ)
+		ft_putstr_fd("\033[35m[ENQ]\033[32m", STDERR_FILENO);
+	else if (c == EOT)
+		ft_putstr_fd("\033[36m[EOT]\033[32m", STDERR_FILENO);
+	else
+		ft_dprintf(STDERR_FILENO, "\033[30m[0x%.2hhx]\033[32m", c);
+}
 
 void		debug_print_bytecode(t_vector *bytecode)
 {
@@ -18,14 +38,7 @@ void		debug_print_bytecode(t_vector *bytecode)
 	char		c;
 
 	i = 0;
-	ft_putstr_fd("\033[31mBytecode: \033[32m", STDERR_FILENO);
-//	ft_putendl_fd("\n ----- Reminder Table ----- \033[35m", STDERR_FILENO);
-//	ft_putendl_fd("Start of Header (SOH) = 0x01", STDERR_FILENO);
-//	ft_putendl_fd("Start Of Text   (STX) = 0x02", STDERR_FILENO);
-//	ft_putendl_fd("End Of Text     (ETX) = 0x03", STDERR_FILENO);
-//	ft_putendl_fd("End Of Line     (ENQ) = 0x05", STDERR_FILENO);
-//	ft_putendl_fd("Unit Separator  (US)  = 0x1f", STDERR_FILENO);
-//	ft_putendl_fd("\033[0m -------------------------- ", STDERR_FILENO);
+	ft_putstr_fd("\033[31;1mBytecode: \033[32m", STDERR_FILENO);
 	while (i < vct_len(bytecode))
 	{
 		c = vct_getcharat(bytecode, i);
@@ -37,17 +50,11 @@ void		debug_print_bytecode(t_vector *bytecode)
 		}
 		else if (ft_isprint(c) == TRUE)
 			ft_putchar_fd(c, STDERR_FILENO);
-		else if (c == '\t' || c == '\n')
-			ft_putstr_fd(c == '\t' ? "\\t" : "\\n", STDERR_FILENO);
-		else if (c == US || c == STX || c == ETX)
-			ft_dprintf(STDERR_FILENO, "\033[34m[0x%.2hhx]\033[32m", c);
-		else if (c == SOH || c == ENQ)
-			ft_dprintf(STDERR_FILENO, "\033[35m[0x%.2hhx]\033[32m", c);
 		else
-			ft_dprintf(STDERR_FILENO, "\033[36m[0x%.2hhx]\033[32m", c);
+			print_other_char(c);
 		i++;
 	}
-	ft_dprintf(STDERR_FILENO, "\033[0m\n");
+	ft_dprintf(STDERR_FILENO, "\033[0;0m\n");
 }
 
 

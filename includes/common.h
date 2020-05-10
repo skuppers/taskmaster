@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 20:47:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 13:47:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,39 @@
 # include <sys/select.h>
 # include <sys/socket.h>
 
+/*
+**
+**					---	---	TRAME SEQUENCE --- ---
+** SOH size (cmd + 128) [(ocp + 128)] [STX arg [US] [...]] ETX] ENQ (+ EOT)
+** ``` ```` ```````````                                         ``` ```````
+**
+** SOH  -> Start Of Header
+** STX  -> Start Of Text
+** ETX  -> End Of Text
+** EOT  -> End of Transmission
+** ENQ  -> End of Line
+** US   -> Unit Separator
+** size -> size of trame without EOT
+**
+*/
+
 #define DFL_FD_SETSIZE	16
 
 /*
 ******************* Encode
 */
 
-# define SOH	0x01	// Start Of Header
-# define STX	0x02	// Start Of Text
-# define ETX	0x03	// End Of Text
-# define EOT	0x04	// End of Transmission
-# define ENQ	0x05	// End of Line
-# define US		0x1f	// Unit Separator
-
-/*
-**
-** TRAME : SOH size (cmd + 128) [(ocp + 128)] [STX] [...] [US] [...] [ETX] ENQ (+ EOT)
-**
-*/
+# define SOH	0x01
+# define STX	0x02
+# define ETX	0x03
+# define EOT	0x04
+# define ENQ	0x05
+# define US		0x1f
 
 # define SEND_RETRYS				3
 # define SEND_PARTIAL_RETRYS		5
 # define UNCOMPLETE					-2
-# define TO_LOG						0
-# define TO_PRINT					1
 
-typedef	int	(*t_print)(int, const char *, ...);
 /*
 ******************* CMD
 */
@@ -106,12 +113,16 @@ t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
 t_vector	*generate_feedback(t_vector *input);
 t_vector	*decode_feedback(t_vector *trame);
 
-int8_t      send_trame(int fd, t_vector *code, uint16_t len);
-int8_t		try_to_send_trame(int fd, t_vector *trame, uint8_t flag, t_print f);
-
-void		log_sending_msg(uint8_t level, const char *msg);
 
 /********************** LOGGER ********************/
+
+# define TO_LOG						0
+# define TO_PRINT					1
+
+typedef	int	(*t_print)(int, const char *, ...);
+
+int8_t		try_to_send_trame(const int fd, t_vector *trame, const uint8_t flag,
+				t_print f);
 
 enum	e_loglvl
 {
@@ -121,6 +132,9 @@ enum	e_loglvl
 	E_LOGLVL_ERRO,
 	E_LOGLVL_CRIT
 };
+
+int8_t		init_log(void);
+int			tlog(int loglvl, const char *message, ...);
 
 # define TIMEBUFFERSZ			64
 
@@ -135,9 +149,5 @@ enum	e_loglvl
 # define LOGLVL_WARN		"warning"
 # define LOGLVL_ERRO		"error"
 # define LOGLVL_CRIT		"critical"
-
-int8_t		init_log(void);
-int			tlog(int loglvl, const char *message, ...);
-
 
 #endif
