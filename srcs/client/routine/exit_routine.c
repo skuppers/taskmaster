@@ -6,18 +6,27 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 10:59:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:37:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-void	exit_routine(int flag, ...)
+void	reset_cmd(void)
+{
+	if (g_env->cmd != NULL)
+	{
+		ft_free_tab_str(g_env->cmd->av);
+		g_env->cmd->av = NULL;
+	}
+	g_env->cmd = NULL;
+}
+
+void	exit_routine(const int flag, ...)
 {
 	va_list	arg;
 
-	if (g_env->cmd != NULL)
-		ft_free_tab_str(g_env->cmd->av);
+	reset_cmd();
 	iniparser_freedict(g_env->dict);
 	vct_del(&g_env->opt.batch_cmd);
 	if (g_env->orig != NULL && g_env->taskmst != NULL)

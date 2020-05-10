@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/10 11:15:22 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/10 11:41:05 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,6 +130,7 @@ HEADER += daemon_taskmaster.h
 ################################################################################
 
 PATH_CLIENT_SRCS += srcs/client/
+PATH_CLIENT_SRCS += srcs/client/routine
 PATH_CLIENT_SRCS += srcs/client/init
 PATH_CLIENT_SRCS += srcs/client/builtin/
 PATH_CLIENT_SRCS += srcs/client/builtin/help_function/
@@ -168,7 +169,8 @@ CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c
 CLIENT_SRCS += actionkeys.c
 #Routine
-CLIENT_SRCS += routine.c
+CLIENT_SRCS += get_cmd.c
+CLIENT_SRCS += exec_routine.c
 CLIENT_SRCS += exit_routine.c
 #Connect
 CLIENT_SRCS += client_connect.c

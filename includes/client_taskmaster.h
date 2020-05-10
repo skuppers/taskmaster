@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 11:22:23 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:53:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@
 */
 
 # define NB_STR_CONF		3
+# define AK_AMOUNT			14
+
+typedef struct s_env t_env;
+
+typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct,
+							char c[BUFF_SIZE]);
 
 typedef	struct		s_opt
 {
@@ -41,14 +47,13 @@ typedef	struct		s_opt
 	uint64_t		mask;
 }					t_opt;
 
-typedef struct		s_env
+struct				s_env
 {
 	struct termios			*orig;
 	struct termios			*taskmst;
 
 	uint64_t				ak_masks[AK_AMOUNT];
-	int8_t					(*actionkeys[AK_AMOUNT])
-						(struct s_env *env, t_vector *vct, char c[BUFF_SIZE]);
+	t_actionkeys			actionkeys[AK_AMOUNT];
 
 	uint32_t				cursoridx;
 	uint16_t				cursorx;
@@ -66,11 +71,9 @@ typedef struct		s_env
 
 	t_opt					opt;
 	dictionary				*dict;
-}					t_env;
+};
 
 extern t_env		*g_env;
-
-
 
 /*
 *************************** INIT
@@ -117,6 +120,7 @@ void    			apply_termmode(const uint8_t flag);
 # define PROMPT_SEC			"taskmasterctl:prompt"
 
 void				get_opt(const int ac, char **av);
+void	print_help(void);
 
 /*
 *** load_config.c
@@ -134,7 +138,6 @@ void				init_signals(void);
 *************************** LINE EDITION
 */
 
-# define AK_AMOUNT					14
 # define AK_ARROW_UP_MASK			0x1b5b410000000000
 # define AK_ARROW_DOWN_MASK 		0x1b5b420000000000
 # define AK_ARROW_RIGHT_MASK		0x1b5b430000000000
@@ -168,12 +171,27 @@ enum	e_action_keys
 	AK_TABULATION,
 };
 
-typedef int8_t		(*t_actionkeys)(t_env *env, t_vector *vct,
-							char c[BUFF_SIZE]);
-
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 uint64_t			assign_keycodes(t_env *env);
 uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
+
+/*
+*** Action Key
+*/
+
+
+int8_t				ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_arrow_left(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_arrow_right(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_home(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_end(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
+int8_t				ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
 
 /*
 *************************** CONNECT
@@ -181,11 +199,23 @@ uint64_t			link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
 
 int8_t				connect_to_daemon(t_env *env, char *socketname);
 t_vector			*get_feedback(t_env *env);
-void				debug_print_bytecode(t_vector *bytecode);
 
+/*
+*************************** ROUTINE
+*/
 
-void	print_help(void);
+/*
+*** exec_routine.c
+*/
 
+int			routine(t_vector *line);
+
+/*
+*** get_cmd.c
+*/
+
+t_cmd	*get_cmd(t_vector *line);
+void	get_status(void);
 
 /*
 *** exit_routine.c
@@ -195,31 +225,8 @@ void	print_help(void);
 # define ERR	0x01
 # define EXIT	0x02
 
-void				exit_routine(int flag, ...);
-
-/*********************** ACTION KEYS ********************/
-
-int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_arrow_left(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_arrow_right(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_home(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_end(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_ctrl_d(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_ctrl_r(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-int8_t		ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE]);
-
-typedef	t_vector	*(*t_builtin)(t_cmd *);
-typedef	void		(*t_help)(void);
-
-
-/************************ Exec Routine *****************/
-
-int			routine(t_vector *line);
-const char *get_keyword(const uint8_t i);
+void		reset_cmd(void);
+void		exit_routine(const int flag, ...);
 
 /*
 **** History
@@ -254,8 +261,19 @@ size_t	get_max_len(size_t len, uint8_t flag);
 void		del_completion_list(void *mem, size_t content_size);
 
 /*
+************************** ROUTINE
+*/
+
+/*
+**** get_cmd.c
+*/
+
+/*
 **** BUILT_IN
 */
+
+typedef	t_vector	*(*t_builtin)(t_cmd *);
+typedef	void		(*t_help)(void);
 
 t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
 t_vector	*generate_bytecode(t_cmd *cmd, int ocp);

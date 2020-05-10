@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/09 22:26:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 11:33:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,6 @@ void	print_help(void)
 		"interactively is started.  Use the action "
 		"\"help\" to find out about available\nactions.\n", DFL_URL);
 	exit_routine(NO_MSG);
-}
-
-void	get_status()
-{
-	t_vector	*line;
-
-	line = vct_newstr("status");
-	routine(line);
-	vct_del(&line);
 }
 
 int		main(int ac, char **av)
