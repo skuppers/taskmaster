@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:30:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:10:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,40 +41,45 @@ size_t			get_max_len(size_t len, uint8_t flag)
 	return (max_len);
 }
 
-static int8_t	fill_word(t_vector *vct, t_list *possible_cmd, size_t len)
+static int8_t	process_completion(t_vector *vct, t_list *possible_cmd,
+					size_t len)
 {
-	vct_cutfrom(vct, vct_len(vct) - len);
-	vct_addstr(vct, (char *)(possible_cmd->content));
-	vct_add(vct, ' ');
-	ft_lstdel(&possible_cmd, del_completion_list);
-	return (0);
+	if (ft_lstsize(possible_cmd) == 1)
+	{
+		vct_cutfrom(vct, vct_len(vct) - len);
+		vct_addstr(vct, (char *)(possible_cmd->content));
+		vct_add(vct, ' ');
+		ft_lstdel(&possible_cmd, del_completion_list);
+		return (0);
+	}
+	return (print_completion(possible_cmd));
 }
 
 int8_t			completion(t_vector *vct)
 {
+	t_list		*possible_cmd;
 	char		*last_word;
+	t_list		*node;
 	size_t		len;
 	uint8_t		i;
-	t_list		*possible_cmd;
-	t_list		*node;
 
+	i = 0;
 	possible_cmd = NULL;
 	get_max_len(0, REINIT);
-	last_word = get_last_word(vct); // MALLOC PROTECT
+	if ((last_word = get_last_word(vct)) == NULL)
+		return (0);
 	len = ft_strlen(last_word);
-	i = 0;
 	while (i < NB_CMD)
 	{
-		if (len == 0 || ft_strnequ(last_word, get_keyword(i), len) == TRUE)
+		if (len == 0 || ft_strnequ(last_word, get_keyword(i), len) == true)
 		{
 			node = ft_lstnew(get_keyword(i), ft_strlen(get_keyword(i)) + 1);
-			ft_lstadd_back(&possible_cmd, node);
+			if (node != NULL)
+				ft_lstadd_back(&possible_cmd, node);
 			get_max_len(ft_strlen(get_keyword(i)), SET);
 		}
 		i++;
 	}
 	ft_strdel(&last_word);
-	if (possible_cmd != NULL && possible_cmd->next == NULL)
-		return (fill_word(vct, possible_cmd, len));
-	return (print_completion(possible_cmd));
+	return (process_completion(vct, possible_cmd, len));
 }

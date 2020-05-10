@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 15:22:32 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/04/30 18:29:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/10 12:11:48 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ static void			post_process(t_list *lst)
 		new_data = NULL;
 		data = (char *)lst->content;
 		new_data = ft_asprintf("%-*s", get_max_len(0, GET) + 1, data);
-		ft_strdel(&data);
 		lst->content = (void *)new_data;
+		ft_strdel(&data);
 		lst = lst->next;
 	}
 }
 
-static size_t		get_elem_by_line(int col)
+static size_t		get_elem_by_line(const int col)
 {
 	size_t	elem_by_line;
 
@@ -61,7 +61,7 @@ static size_t		get_elem_by_col(t_list *lst)
 	return (elem_by_col);
 }
 
-static void			process_print(t_list *lst, size_t elem_by_col)
+static void			process_print(t_list *lst, const size_t elem_by_col)
 {
 	size_t			i;
 	size_t			j;
