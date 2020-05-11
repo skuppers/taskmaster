@@ -18,6 +18,7 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	char		*str;
 	char		*state;
 	struct tm	*timer;
+	char 		*tmp;
 
 	vct = NULL;
 	str = NULL;
@@ -38,8 +39,13 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 			}
 		}
 		else if (instance->state == E_STOPPED || instance->state == E_EXITED)
-			str = ft_asprintf("%-20s%-18s | [stoptime] %s", instance->name,
-						state, ctime(&instance->stop_time));
+		{
+			tmp = ft_asprintf("%-20s%-18s |", instance->name, state);
+			if (instance->stop_time == 0)
+				str = ft_asprintf("%s not started.\n", tmp, ctime(&instance->stop_time));
+			else
+				str = ft_asprintf("%s [stoptime] %s", tmp, ctime(&instance->stop_time));
+		}
 		else
 			str = ft_asprintf("%-20s%s\n", instance->name, state);
 			
