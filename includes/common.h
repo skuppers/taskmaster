@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:57:04 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:46:53 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@
 # define ONE_ARG		1
 # define TAB_ARG		2
 
-# define NB_CMD			24
+# define NB_CMD			22
 # define NO_OCP			0
 
 enum	e_cmd_type

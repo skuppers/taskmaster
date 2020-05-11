@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 16:07:53 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 18:42:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,43 +28,46 @@ static t_vector	*get_trame(t_cmd *cmd)
 	return (trame);
 }
 
-static int		send_and_receive(t_vector *trame)
+static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 {
 	t_vector		*feedback;
 
+	feedback = NULL;
 	if (try_to_send_trame(g_env->unix_socket, trame,
 							TO_PRINT, ft_dprintf) == SUCCESS)
 	{
 		feedback = get_feedback();
-		if (feedback == NULL)
+		if (feedback == NULL && flag == DEL_FEEDBACK)
 		{
 			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
-			return (FAILURE);
+			return (NULL);
 		}
-		vct_print_fd(feedback, STDERR_FILENO);
-		vct_del(&feedback);
-		return (SUCCESS);
+		if (flag == DEL_FEEDBACK)
+			vct_print_fd(feedback, STDERR_FILENO);
 	}
-	return (FAILURE);
+//	else error ? 
+	return (feedback);
 }
 
-int				routine(t_vector *line)
+t_vector	*routine(t_vector *line, const uint8_t flag)
 {
 	t_vector		*trame;
-	int				ret_value;
+	t_vector		*feedback;
 
 	g_env->cmd = get_cmd(line);
 	trame = NULL;
-	ret_value = FAILURE;
+	feedback = NULL;
 	if (g_env->cmd != NULL)
 	{
 		trame = get_trame(g_env->cmd);
 		if (trame != NULL)
-			ret_value = send_and_receive(trame);
+			feedback = send_and_receive(trame, flag);
 	}
 	vct_del(&trame);
 	reset_cmd();
-	return (ret_value);
+	if (flag == DEL_FEEDBACK)
+		vct_del(&feedback);
+	return (feedback);
 }
 
 void			read_cmd(void)
@@ -74,15 +77,15 @@ void			read_cmd(void)
 	int			ret;
 
 	line = vct_new(DFL_VCT_SIZE);
-	get_status();
+	get_status(DEL_FEEDBACK);
 	while ((ret = tsk_readline(line, STDIN_FILENO, g_env)) >= 0)
 	{
 		if (vct_apply(line, IS_SPACE) == false)
 		{
-			history(line, ADD | RESET);
+			history(line, ADD_ENTRY | RESET);
 			while ((split = vct_split(line, ";", NO_SEP)) != NULL)
 			{
-				routine(split);
+				routine(split, DEL_FEEDBACK);
 				vct_del(&split);
 			}
 			vct_split(NULL, NULL, INIT);

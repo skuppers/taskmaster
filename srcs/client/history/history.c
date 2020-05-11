@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 17:59:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 23:06:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 18:42:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ char			*history(t_vector *line, const uint8_t flag)
 	static	t_list	*head = NULL;
 	static char		*keep = NULL;
 
-	if ((flag & ADD) || (flag & RESET))
+	if ((flag & ADD_ENTRY) || (flag & RESET))
 	{
-		cur = (flag & ADD) ? add_entry(&queue, &head, line) : queue;
+		cur = (flag & ADD_ENTRY) ? add_entry(&queue, &head, line) : queue;
 		get_prev_entry(NULL, RESET);
 		get_next_entry(NULL, RESET, &keep);
 	}
