@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/10 18:27:55 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/11 19:13:51 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,6 +168,9 @@ CLIENT_SRCS += history.c
 #Completion
 CLIENT_SRCS += completion.c
 CLIENT_SRCS += print_completion.c
+CLIENT_SRCS += completion_tools.c
+CLIENT_SRCS += completion_prog.c
+CLIENT_SRCS += get_completion_type.c
 #Line Edition
 CLIENT_SRCS += readline.c
 CLIENT_SRCS += keycodes.c

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 18:42:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 19:12:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,11 @@ int8_t						completion(t_vector *vct);
 int8_t						print_completion(t_list *list);
 size_t						get_max_len(const size_t len, const uint8_t flag);
 void						del_completion_list(void *mem, size_t content_size);
+char						*get_last_word(t_vector *vct);
+enum e_comp_type			get_type_of_completion(t_vector	*vct);
+t_list						*prog_comp(char *last_word);
+t_list						*instance_comp(char *last_word);
+void						lst_add_node(t_list **list, const char *str);
 
 typedef t_list				*(*t_comp_type)(char *);
 typedef void				(*t_fill_list)(t_list **, char *, t_vector *);
