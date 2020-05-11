@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:06:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:07:53 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int				routine(t_vector *line)
 void			read_cmd(void)
 {
 	t_vector	*line;
+	t_vector	*split;
 	int			ret;
 
 	line = vct_new(DFL_VCT_SIZE);
@@ -79,7 +80,12 @@ void			read_cmd(void)
 		if (vct_apply(line, IS_SPACE) == false)
 		{
 			history(line, ADD | RESET);
-			routine(line);
+			while ((split = vct_split(line, ";", NO_SEP)) != NULL)
+			{
+				routine(split);
+				vct_del(&split);
+			}
+			vct_split(NULL, NULL, INIT);
 		}
 	}
 	vct_del(&line);
