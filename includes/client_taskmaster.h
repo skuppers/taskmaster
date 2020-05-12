@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 20:38:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:47:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,6 +260,7 @@ t_vector					*get_feedback(void);
 
 t_vector					*routine(t_vector *line, const uint8_t flag);
 void						read_cmd(void);
+void						exec_tail(uint64_t flag, t_vector *feedback);
 
 /*
 *** get_cmd.c

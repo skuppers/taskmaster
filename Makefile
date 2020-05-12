@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/12 21:09:31 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/12 22:48:21 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -185,6 +185,7 @@ CLIENT_SRCS += addchar.c
 #Routine
 CLIENT_SRCS += get_cmd.c
 CLIENT_SRCS += exec_routine.c
+CLIENT_SRCS += exec_tail.c
 CLIENT_SRCS += exit_routine.c
 #Transfert
 CLIENT_SRCS += ctransfert.c
