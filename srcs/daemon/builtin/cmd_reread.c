@@ -16,6 +16,8 @@ t_denv				*g_newenv;
 
 static int8_t		check_daemon_opts(dictionary *d, int sec)
 {
+	(void)sec;
+	
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:logfile", NULL),
 									g_denv->opt.str[LOGFILE]) == FALSE)
 		return (FAILURE);
@@ -69,6 +71,7 @@ void			reparse_ini_file(dictionary *d)
 
 t_vector		*reread_file(t_instance *in, t_program *prg)
 {
+	(void)in;(void)prg;
 	dictionary	*dict;
 	int			sections;
 
@@ -84,6 +87,7 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 			if (check_daemon_opts(dict, sections) == FAILURE)
 				return (vct_newstr("reread: You cannot change the"
 							" taskmasterd section at runtime.\n")); // Can not change taskmasterd config without restart
+			break ;
 		}
 		--sections;
 	}
@@ -101,6 +105,6 @@ t_vector			*cmd_reread(t_cmd *cmd)
 
 	vct = NULL;
 	if (cmd->ocp == 0x00)
-		vct = exec_action_all(reread_file);
+		vct = reread_file(NULL, NULL);
 	return (vct);
 }

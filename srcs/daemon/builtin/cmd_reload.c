@@ -14,7 +14,9 @@
 
 t_vector			*cmd_reload(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	return (vct);
 }
 

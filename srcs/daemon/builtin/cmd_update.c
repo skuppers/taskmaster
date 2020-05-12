@@ -12,8 +12,26 @@
 
 #include "daemon_taskmaster.h"
 
+t_denv				*g_newenv;
+
+t_vector		*update_file(t_instance *in, t_program *prg)
+{
+	(void)in;(void)prg;
+	t_list	*ptr;
+
+
+	ptr = g_newenv->prgm_list;
+	if (ptr == NULL)
+		return (vct_newstr("Nothing to update.\n"));
+	return (vct_newstr("Updated config file.\n"));
+}
+
 t_vector			*cmd_update(t_cmd *cmd)
 {
-	(void)cmd;
-	return (NULL);
+	t_vector	*vct;
+
+	vct = NULL;
+	if (cmd->ocp == 0x01 || cmd->ocp == 0x02)
+		vct = update_file(NULL, NULL);
+	return (vct);
 }
