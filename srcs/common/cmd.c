@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:42:22 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:44:59 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 16:46:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ const char *get_keyword(const uint8_t i)
 								"help", "maintail", "open", "pid", "quit",
 								"reload", "remove", "reread", "restart",
 								"shutdown", "signal", "start", "status", "stop",
-								"tail", "update", "version", "syn", "ack"};
+								"tail", "update", "version"};
 
 	return (grammar[i]);
 }

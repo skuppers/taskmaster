@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:32:32 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:07:10 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 17:47:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ static t_vector			*clean_line(t_vector *line)
 	return (line);
 }
 
-void					get_status(void)
+t_vector				*get_status(const uint8_t flag)
 {
 	t_vector	*line;
+	t_vector	*feedback;
 
-	line = vct_newstr("status");
-	routine(line);
+	line = vct_newstr(flag == KEEP_FEEDBACK ? "status [[progs]]" : "status");
+	feedback = routine(line, flag);
 	vct_del(&line);
+	return (feedback);
 }
 
 t_cmd					*get_cmd(t_vector *line)

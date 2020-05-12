@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/06 17:15:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/11 18:18:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,43 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	return (vct);
 }
 
+static t_vector			*progs_info(void)
+{
+	t_list		*prog_list;
+	t_program	*program;
+	t_instance	*instance;
+	t_vector	*output;
+
+	prog_list = g_denv->prgm_list;
+	output = vct_new(0);
+	while (prog_list != NULL)
+	{
+		program = (t_program *)prog_list->content;
+		if (program != NULL)
+		{
+			if (program->numprocs > 0)
+			{
+				if (prog_list != g_denv->prgm_list)
+					vct_add(output, '/');
+				vct_addstr(output, program->name);
+				vct_add(output, '/');
+				vct_addstr(output, program->name);
+				vct_addstr(output, ":*;");
+			}
+			instance = program->instance;
+			while (instance != NULL)
+			{
+				vct_addstr(output, instance->name);
+				instance = instance->next;
+				if (instance != NULL)
+					vct_add(output, ';');
+			}
+		}
+		prog_list = prog_list->next;
+	}
+	return (output);
+}
+
 t_vector			*cmd_status(t_cmd *cmd)
 {
 	t_vector	*vct;
@@ -64,6 +101,8 @@ t_vector			*cmd_status(t_cmd *cmd)
 		vct = exec_action_all(action_status);
 	else if (cmd->ocp == 0x02)
 		vct = exec_action_args(cmd->av, cmd->ac, action_status);
+	else if (cmd->ocp == 0x03)
+		vct = progs_info();
 	return (vct);
 }
 
