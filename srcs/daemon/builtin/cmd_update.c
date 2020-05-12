@@ -23,6 +23,9 @@ t_vector		*update_file(t_instance *in, t_program *prg)
 	ptr = g_newenv->prgm_list;
 	if (ptr == NULL)
 		return (vct_newstr("Nothing to update.\n"));
+
+	// program count
+//	g_newenv = NULL;
 	return (vct_newstr("Updated config file.\n"));
 }
 
