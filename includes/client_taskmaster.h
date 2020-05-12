@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:50:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 20:38:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <sys/stat.h>
 # include <signal.h>
 # include <sys/ioctl.h>
@@ -39,6 +40,9 @@
 # define KEEP_FEEDBACK		1
 
 # define RESTART_TIME		3
+
+# define TAIL_FIFO			0x01
+# define TAIL_NB			0x02
 
 typedef struct s_env		t_env;
 
@@ -77,6 +81,7 @@ struct						s_env
 
 	int32_t					unix_socket;
 	char					pad[4];
+	uint64_t				flag_exec;
 };
 
 extern t_env				*g_env;

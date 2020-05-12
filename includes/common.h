@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 16:46:53 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 21:03:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,5 +158,13 @@ int			tlog(int loglvl, const char *message, ...);
 # define LOGLVL_WARN		"warning"
 # define LOGLVL_ERRO		"error"
 # define LOGLVL_CRIT		"critical"
+
+/*
+**
+*********** PATH TOOLS
+**
+*/
+
+int8_t			get_new_bin_path(char **bin, t_vector *path);
 
 #endif

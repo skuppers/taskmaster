@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:23:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:08:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 20:06:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static t_vector	*maintail_option_number(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);
 		return (NULL);
 	}
+	g_env->flag_exec |= TAIL_NB;
+	g_env->flag_exec |= (ft_atoi(cmd->av[0] + 1) << 8);
 	ft_memmove(cmd->av[0], cmd->av[0] + 1, ft_strlen(cmd->av[0]));
 	return (generate_bytecode(cmd, 0x02));
 }
@@ -42,9 +44,10 @@ t_vector		*blt_maintail(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: too many arguments\n");
 		return (NULL);
 	}
-	else if (ft_strequ(cmd->av[0], "-f") == true)
+	if (ft_strequ(cmd->av[0], "-f") == true)
 	{
 		cmd->ac = 0;
+		g_env->flag_exec |= TAIL_FIFO;
 		return (generate_bytecode(cmd, 0x01));
 	}
 	return (maintail_option_number(cmd));

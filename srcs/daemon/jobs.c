@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:46:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 21:02:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,11 +122,11 @@ int     child_process(t_program *prog, t_instance *instance, t_list *env)
 		prog->pgid = getpid();
 	setpgid(getpid(), prog->pgid);
 
-	if (get_new_bin_path(prog, env) == FAILURE)
+	if (get_new_bin_path(&prog->bin, vct_newstr(get_var(env, "PATH"))) == FAILURE)
 		tlog(E_LOGLVL_ERRO,
 			"taskmasterd: Program %s instance %d pre-execution error: %s\n",
 				prog->name, instance->id, "unvalid path or no right");
-
+	prog->avs[0] = prog->bin;
 	concat_env_to_daemon_env(prog, env);
 	environ = envtotab(prog->env);
 

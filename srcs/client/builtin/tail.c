@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:09:10 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 21:12:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static t_vector	*tail_option_f(t_cmd *cmd)
 			cmd->av[1] = ft_strdup("stdout");
 		else
 			cmd->ac--;
+		g_env->flag_exec |= TAIL_FIFO;
 		return (generate_bytecode(cmd, 0x01));
 	}
 	return (NULL);
@@ -71,6 +72,8 @@ static t_vector	*tail_option_number(t_cmd *cmd)
 			cmd->av[2] = ft_strdup("stdout");
 			cmd->ac++;
 		}
+		g_env->flag_exec |= TAIL_NB;
+		g_env->flag_exec |= (ft_atoi(cmd->av[0]) << 8);
 		return (generate_bytecode(cmd, 0x02));
 	}
 	return (NULL);

@@ -6,11 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 19:10:22 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 21:20:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+pid_t		pid;
 
 static t_vector	*get_trame(t_cmd *cmd)
 {
@@ -28,6 +30,48 @@ static t_vector	*get_trame(t_cmd *cmd)
 	return (trame);
 }
 
+
+void	sig_int_hand(int signo)
+{
+	(void)signo;
+	kill(pid, SIGINT);
+}
+
+void	exec_tail(uint64_t flag, t_vector *feedback)
+{
+	char		**arg;
+	int			status;
+	char		*bin;
+	t_vector	*vct;
+
+	pid = 0;
+	(void)flag;
+	arg = (char **)malloc(sizeof(char *) * 4);
+	bin = ft_strdup("tail");
+	arg[0] = ft_strdup("tail");
+	if (flag & TAIL_FIFO)
+		arg[1] = ft_strdup("-f");
+	else
+		arg[1] = ft_itoa((int)(-((uint32_t)(flag >> 8))));
+	arg[2] = vct_dupstr(feedback);
+	arg[3] = NULL;
+	if (flag & TAIL_FIFO)
+		ft_dprintf(STDERR_FILENO, "==> Press CTRL+C to exit <==\n");
+	signal(SIGINT, &sig_int_hand);
+	if ((pid = fork()) == 0)
+	{
+		vct = vct_newstr(getenv("PATH"));
+		if (get_new_bin_path(&bin, vct) == SUCCESS)
+			execve(bin, arg, NULL);
+		exit(EXIT_FAILURE);
+	}
+	else if (pid > 0)
+		waitpid(pid, &status, 0);
+	init_signals();
+	ft_free_tab_str(arg);
+	ft_strdel(&bin);
+}
+
 static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 {
 	t_vector		*feedback;
@@ -42,7 +86,9 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
 			return (NULL);
 		}
-		if (flag == DEL_FEEDBACK)
+		if (g_env->flag_exec != 0 && vct_getlastchar(feedback) == 'g')
+			exec_tail(g_env->flag_exec, feedback);	
+		else if (flag == DEL_FEEDBACK)
 			vct_print_fd(feedback, STDERR_FILENO);
 	}
 //	else error ? 
@@ -72,6 +118,7 @@ t_vector	*routine(t_vector *line, const uint8_t flag)
 	t_vector		*trame;
 	t_vector		*feedback;
 
+	g_env->flag_exec = 0;
 	g_env->cmd = get_cmd(line);
 	trame = NULL;
 	feedback = NULL;

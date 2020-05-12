@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/11 19:13:51 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/12 21:09:31 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -226,7 +226,6 @@ DAEMON_SRCS += print_starting_debug.c
 DAEMON_SRCS += init_daemon.c
 DAEMON_SRCS += sockets.c
 DAEMON_SRCS += jobs.c
-DAEMON_SRCS += path_tools.c
 DAEMON_SRCS += waiter.c
 DAEMON_SRCS += instance_utils.c
 DAEMON_SRCS += instance_tools.c
@@ -278,6 +277,7 @@ COMMON_SRCS += decode_cmd.c
 COMMON_SRCS += generate_bytecode.c
 COMMON_SRCS += cmd.c
 COMMON_SRCS += transfert.c
+COMMON_SRCS += path_tools.c
 
 ################# ATTRIBUTION
 
