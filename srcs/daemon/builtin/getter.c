@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 21:19:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 15:53:10 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 15:03:48 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,52 @@ t_vector	*exec_action_all(t_action to_do)
 			}
 		}
 		prog_list = prog_list->next;
+	}
+	return (output);
+}
+
+t_vector	*exec_action_all_group(t_action to_do)
+{
+	t_list		*prog_list;
+	t_program	*program;
+	t_vector	*output;
+	t_vector	*vct;
+
+	prog_list = g_denv->prgm_list;
+	output = vct_new(0);
+	while (prog_list != NULL)
+	{
+		program = (t_program *)prog_list->content;
+		if (program != NULL)
+		{
+			vct = to_do(NULL, program);
+			vct_cat(output, vct);
+			vct_del(&vct);
+		}
+		prog_list = prog_list->next;
+	}
+	return (output);
+}
+
+t_vector	*exec_action_args_group(char **arg, int ac, t_action to_do)
+{
+	t_program	*program;
+	t_vector	*output;
+	t_vector	*vct;
+	int			i;
+
+	i = 0;
+	output = vct_new(0);
+	while (i < ac)
+	{
+		program = find_program(arg[i]);
+		if (program != NULL)
+			vct = to_do(NULL, program);
+		else
+			vct = get_msg(arg[i], "no such group", ERR_MSG);
+		vct_cat(output, vct);
+		vct_del(&vct);
+		i++;
 	}
 	return (output);
 }

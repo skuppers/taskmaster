@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:36:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 15:00:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,6 +335,8 @@ typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
 
 t_vector	*exec_action_args(char **arg, int ac, t_action to_do);
 t_vector	*exec_action_all(t_action to_do);
+t_vector	*exec_action_args_group(char **arg, int ac, t_action to_do);
+t_vector	*exec_action_all_group(t_action to_do);
 t_vector	*get_msg(char *name, char *msg, uint8_t flag);
 
 # endif
