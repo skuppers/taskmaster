@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 22:45:25 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 22:49:22 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 23:30:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,20 @@ void	exec_tail(uint64_t flag, t_vector *feedback)
 	char		**arg;
 	int			status;
 	char		*bin;
+	int			fd;
 
 	bin = ft_strdup("tail");
 	arg = get_argtab(flag, feedback);
 	if (flag & TAIL_FIFO)
-		ft_dprintf(STDERR_FILENO, "==> Press CTRL+C to exit <==\n");
+		dprintf(STDERR_FILENO, "==> Press CTRL+C to exit <==\n");
 	signal(SIGINT, &sig_int_hand);
 	if ((g_pid = fork()) == 0)
 	{
-		if (get_new_bin_path(&bin, vct_newstr(getenv("PATH"))) == SUCCESS)
-			execve(bin, arg, NULL);
+		if (arg != NULL && (fd = open(arg[2], 0)) != FAILURE
+				&& close(fd) == SUCCESS)
+			if (get_new_bin_path(&bin, vct_newstr(getenv("PATH"))) == SUCCESS)
+				execve(bin, arg, NULL);
+		dprintf(STDERR_FILENO, "No log file: %s\n", arg != NULL ? arg[2] : "?");
 		exit(EXIT_FAILURE);
 	}
 	else if (g_pid > 0)

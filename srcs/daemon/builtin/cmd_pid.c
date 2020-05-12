@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:31:13 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:13:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 23:29:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_vector			*cmd_pid(t_cmd *cmd)
 	vct = NULL;
 	if (cmd->ocp == 0x01)
 	{
-		str = ft_asprintf("Taskmasterd    \t%d\n", getpid());
+		str = ft_asprintf("taskmasterd    \t%d\n", getpid());
 		vct = vct_newstr(str);
 		ft_strdel(&str);
 	}
