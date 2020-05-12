@@ -14,8 +14,29 @@
 
 t_vector	*action_add(t_instance *instance, t_program *program)
 {
-	(void)instance;
-	return (get_msg(program->name, "process group already active", ERR_MSG));
+	(void)instance;(void)program;
+	dprintf(STDERR_FILENO, "adding %s\n", program->name);
+	program->availmode = E_LOCKED;
+	uint8_t	inst_nb = 0;
+	t_instance	*inst;
+
+	while (inst_nb < program->numprocs)
+	{
+		inst = new_instance(inst_nb, program->name);	// create instance meta
+		if (inst == NULL)
+		{
+			tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
+			break ;
+		}
+		add_instance(program, inst);		//add instance to program_list
+		if (program->autostart == TRUE)
+		{
+			int launch_success = start_instance(program, inst_nb, g_denv->environ);
+			print_cmd_success("start", launch_success, program, inst_nb);
+		}
+		++inst_nb;
+	}
+	return (get_msg(program->name, "added", INFO_MSG));
 }
 
 t_vector	*cmd_add(t_cmd *cmd)

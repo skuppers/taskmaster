@@ -221,6 +221,7 @@ static t_vector	*register_changes(t_denv *env)
 		{
 			vct_addstr(resp, tmp->name);
 			vct_addstr(resp, " added\n");
+			append_to_pgrmlist(g_denv, tmp);
 		}
 	}
 	return (resp);
