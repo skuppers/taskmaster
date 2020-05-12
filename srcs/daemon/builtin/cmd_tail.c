@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:26:58 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 20:51:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:34:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_vector	*action_tail_err(t_instance *instance, t_program *program)
 					program->name, instance->id);
 	vct = vct_newstr(asp);
 	ft_strdel(&asp);
+	vct_add(vct, ETX);
 	return (vct);
 }
 
@@ -33,6 +34,7 @@ t_vector	*action_tail_out(t_instance *instance, t_program *program)
 					program->name, instance->id);
 	vct = vct_newstr(asp);
 	ft_strdel(&asp);
+	vct_add(vct, ETX);
 	return (vct);
 }
 
