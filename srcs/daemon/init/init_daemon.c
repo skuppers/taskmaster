@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:27:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:44:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:56:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,7 @@ void		init(int ac, char **av, char **environ)
 {
 	int i;
 
-
 	bzero(g_denv, sizeof(t_denv));
-	bzero(g_newenv, sizeof(t_denv));
 	g_denv->environ_tab = environ;
 	g_denv->av = (t_vector **)malloc(sizeof(t_vector *) * (ac + 1)); // PROTECT_MALLOC
 	g_denv->av[ac] = NULL;

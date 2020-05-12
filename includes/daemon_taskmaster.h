@@ -87,7 +87,8 @@ typedef struct			s_program
 	char					**avs;					// [1] syslog
 	
 	int16_t					userid;	
-	char	padd[6];			
+	uint8_t					availmode;
+	char	padd[5];			
 	char					*directory;
 	char					*stdout_logfile;		// should be done
 	char					*stderr_logfile;		// should be done
@@ -133,7 +134,7 @@ typedef struct     			s_denv
 /******************** GLOBALS ********************/
 
 extern	t_denv			*g_denv;
-extern	t_denv			*g_newenv;
+extern	t_denv			*g_tmpenv;
 
 
 /*********************  JOBS  ********************/
@@ -172,12 +173,20 @@ enum e_prg_state
 	E_UNKNOWN
 };
 
+enum e_avail_state
+{
+	E_LOCKED,
+	E_ADDED,
+	E_REMOVED,
+	E_CHANGED
+};
+
 t_instance				*new_instance(uint8_t id, char *prog_name);
 int8_t					del_instance(t_program *prg, uint8_t id);
 int8_t					add_instance(t_program *prg, t_instance *inst);
 int8_t					start_instance(t_program *prog, uint8_t id, t_list *environ);
 int8_t					stop_instance(t_program *prog, t_instance *instance, int signo);
-
+int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm);
 t_instance				*get_instance(t_program *prg, uint8_t id);
 char					*get_instance_state(t_instance *instance);
 void    				launch_jobs(t_denv *env);

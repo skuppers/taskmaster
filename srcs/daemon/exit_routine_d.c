@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:45:20 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:56:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ static int	reload_daemon(void)
 	}
 	free_arg_vct();
 	bzero(g_denv, sizeof(t_denv));
-	bzero(g_newenv, sizeof(t_denv));
 	execve(av[0], av, g_denv->environ_tab);
 	ft_free_tab_str(av);
 	tlog(E_LOGLVL_CRIT, "Failed to reload: %s: %s\n", av[0], strerror(errno));
@@ -61,7 +60,13 @@ void		exit_routine(const int flag, ...)
 	unlink(DFL_SOCKET);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
-	ft_lstdel(&g_newenv->prgm_list, del_prgm);
+	if (g_tmpenv != NULL)
+	{
+		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
+		if (g_tmpenv->dict != NULL)
+		    free_inifile(g_tmpenv->dict);
+		free(g_tmpenv);
+	}
 	flock(g_denv->lock, LOCK_UN);
 	// free vector tab arg
 	if (flag != NO_MSG)
