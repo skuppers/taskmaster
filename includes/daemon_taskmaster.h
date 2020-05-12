@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:34:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:23:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef struct     			s_denv
 {
 	int						sig_tmp;
 	volatile sig_atomic_t	sigint;
+    char					*dfl_socket;
     int32_t					unix_socket;
 	int32_t					log_fd;
 	

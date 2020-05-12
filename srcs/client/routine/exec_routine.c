@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:54:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:10:22 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void		restart_connection()
 
 	i = RESTART_TIME;
 	close(g_env->unix_socket);
+	canonic_mode(true);
 	dprintf(2, "Reconnection in %d ", RESTART_TIME);
 	while (i > 0)
 	{
@@ -63,6 +64,7 @@ void		restart_connection()
 		dprintf(2, "%d%c", i, (i == 0) ? '\n' : ' ');
 	}
 	connect_to_daemon(g_env->opt.str[SERVERURL]);
+	canonic_mode(false);
 }
 
 t_vector	*routine(t_vector *line, const uint8_t flag)

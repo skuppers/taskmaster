@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:56:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:28:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,10 @@ void		exit_routine(const int flag, ...)
     if (g_denv->dict != NULL)
 	    free_inifile(g_denv->dict);
 	close(g_denv->unix_socket);
-	unlink(DFL_SOCKET);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
+	if (g_denv->dfl_socket != NULL)
+		unlink(g_denv->dfl_socket);
 	if (g_tmpenv != NULL)
 	{
 		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);

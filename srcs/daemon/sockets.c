@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:23:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:25:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int8_t		bind_socket(t_denv *env)
         	exit_routine(E_LOGLVL_CRIT, strerror(errno));
 		}
 		tlog(E_LOGLVL_WARN, "Unlinking existing socket: %s\n", env->addr.sun_path);
-		unlink(DFL_SOCKET);
+		unlink(g_denv->dfl_socket);
 		if (bind(env->unix_socket, (struct sockaddr*)&env->addr, sizeof(env->addr)) == FAILURE)
 		{
 			tlog(E_LOGLVL_CRIT, "Bind() failed . Is another daemon running?\n");
