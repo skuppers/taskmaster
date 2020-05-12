@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:31:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:05:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 19:04:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_vector	*blt_open(t_cmd *cmd)
 	else
 	{
 		close(g_env->unix_socket);
-		connect_to_daemon(cmd->av[0]);
+		connect_to_daemon(cmd->av[0] + UNIX_URI_SIZE);
 	}
 	return (NULL);
 }
