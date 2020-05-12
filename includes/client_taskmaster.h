@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 19:12:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 14:36:05 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ void						init(int ac, char **av);
 # define NEW				0x01
 # define RELEASE			0x02
 
+void						create_termmode(void);
 void						apply_termmode(const uint8_t flag);
+void						canonic_mode(const bool flag);
 
 /*
 *** opt.c
@@ -147,6 +149,7 @@ void						load_config(void);
 */
 
 void						init_signals(void);
+void						sigwinch_handle(int signo);
 
 /*
 *************************** LINE EDITION
@@ -185,7 +188,6 @@ enum						e_action_keys
 	AK_TABULATION
 };
 
-void				create_termmode(void);
 int					tsk_readline(t_vector *vct, const int fd, t_env *env);
 void				assign_keycodes(void);
 void				link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);

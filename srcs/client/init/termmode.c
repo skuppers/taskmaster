@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 22:00:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 14:36:47 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,4 +43,26 @@ void	apply_termmode(const uint8_t flag)
 	}
 	else
 		exit_routine(ERR, "termmode: unexpected error");
+}
+
+void		canonic_mode(const bool flag)
+{
+	struct sigaction	sig_win;
+
+	sig_win.sa_flags = 0;
+	sigemptyset(&sig_win.sa_mask);
+	if (flag == true)
+	{
+		g_env->taskmst->c_lflag |= ICANON;
+		g_env->taskmst->c_lflag |= ECHO;
+		sig_win.sa_handler = SIG_DFL;
+	}
+	else
+	{
+		g_env->taskmst->c_lflag &= ~ICANON;
+		g_env->taskmst->c_lflag &= ~ECHO;
+		sig_win.sa_handler = sigwinch_handle;
+	}
+	sigaction(SIGWINCH, &sig_win, NULL);
+	apply_termmode(NEW);
 }
