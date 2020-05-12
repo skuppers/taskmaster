@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 16:16:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 16:42:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	exit_routine(const int flag, ...)
 		apply_termmode(RELEASE);
 	free(g_env->orig);
 	free(g_env->taskmst);
+	close(g_env->unix_socket);
 	if (flag & EXIT)
 		dprintf(STDERR_FILENO, "\nexit\n");
 	else if (flag & ERR)

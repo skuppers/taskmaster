@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:27:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:36:09 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:44:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,41 @@ static void	set_taskmasterd_defautls(void)
 
 }
 
+void		get_abs_pathname(t_vector *name)
+{
+	char		cwd[PATH_MAX];
+	char		*pathname;
+
+	if (vct_getfirstchar(name) != '/')
+	{
+		vct_push(name, '/');
+		vct_pushstr(name, getcwd(cwd, PATH_MAX));
+		pathname = canonicalize_file_name(vct_getstr(name));
+		vct_clear(name);
+		vct_addstr(name, pathname);
+		free(pathname);
+	}
+}
+
 void		init(int ac, char **av, char **environ)
 {
+	int i;
+
+
 	bzero(g_denv, sizeof(t_denv));
 	bzero(g_newenv, sizeof(t_denv));
+	g_denv->environ_tab = environ;
+	g_denv->av = (t_vector **)malloc(sizeof(t_vector *) * (ac + 1)); // PROTECT_MALLOC
+	g_denv->av[ac] = NULL;
+	i = 0;
+	while (i < ac)
+	{
+		g_denv->av[i] = vct_newstr(av[i]);
+		i++;
+	}
+	g_denv->av[i] = NULL;
+	g_denv->ac = ac;
+	get_abs_pathname(g_denv->av[0]);
 	g_denv->unix_socket = -1;
 	set_taskmasterd_defautls(); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
 	check_dflt_directory();

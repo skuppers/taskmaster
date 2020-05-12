@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 14:36:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:50:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 
 # define DEL_FEEDBACK		0
 # define KEEP_FEEDBACK		1
+
+# define RESTART_TIME		3
 
 typedef struct s_env		t_env;
 

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 18:42:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:54:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,22 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 	return (feedback);
 }
 
+void		restart_connection()
+{
+	int		i;
+
+	i = RESTART_TIME;
+	close(g_env->unix_socket);
+	dprintf(2, "Reconnection in %d ", RESTART_TIME);
+	while (i > 0)
+	{
+		sleep(1);
+		i--;
+		dprintf(2, "%d%c", i, (i == 0) ? '\n' : ' ');
+	}
+	connect_to_daemon(g_env->opt.str[SERVERURL]);
+}
+
 t_vector	*routine(t_vector *line, const uint8_t flag)
 {
 	t_vector		*trame;
@@ -62,6 +78,8 @@ t_vector	*routine(t_vector *line, const uint8_t flag)
 		trame = get_trame(g_env->cmd);
 		if (trame != NULL)
 			feedback = send_and_receive(trame, flag);
+		if (feedback != NULL && g_env->cmd->type == RELOAD)
+			restart_connection();
 	}
 	vct_del(&trame);
 	reset_cmd();

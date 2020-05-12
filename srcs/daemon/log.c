@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:50:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 16:14:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char			*loglvl_tostr(uint8_t loglvl)
 	static char	*str_log[] = {LOG_DEBG_STR, LOG_INFO_STR, LOG_WARN_STR,
 									LOG_ERRO_STR, LOG_CRIT_STR};
 
-	return ((loglvl < 5) ? LOG_DEBG_STR : str_log[loglvl]);
+	return ((loglvl < 5) ? str_log[loglvl] : LOG_DEBG_STR);
 }
 
 uint8_t			get_loglevel(char *str)

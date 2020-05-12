@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:35:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:33:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,16 @@ static void		error_opt(char *msg)
 	exit_routine(ERR, NULL);
 }
 
-static void		get_arg_opt(char *arg, const int count, const char *opt_str[])
+static void		get_arg_opt(char *arg, const int count, const char *opt_str[],
+							int index)
 {
 	if (arg == NULL || arg[0] == '-')
 		error_opt(ft_asprintf("option '%s' requires argument", opt_str[count]));
 	g_denv->opt.str[count] = arg;
+	if (count == DIRECTORY || count == LOGFILE || count == CHILDLOGDIR
+				|| count == CONFIGURATION)
+		get_abs_pathname(g_denv->av[index + 1]);
+	
 }
 
 static int		get_one_opt(char **av, int i)
@@ -45,7 +50,8 @@ static int		get_one_opt(char **av, int i)
 			g_denv->opt.optmask |= (1 << (count / 2));
 			if (count < OPT_WITHOUT_ARG)
 				return (1);
-			get_arg_opt(av[i + 1], (count - OPT_WITHOUT_ARG) / 2, opt_str);
+			get_arg_opt(av[i + 1], (count - OPT_WITHOUT_ARG) / 2, opt_str,
+					i + 1);
 			return (2);
 		}
 		count++;

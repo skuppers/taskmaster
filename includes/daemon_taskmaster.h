@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 15:00:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 17:34:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
 
+
+# define S_SHUTDOWN		1
+# define S_RELOAD		2
 
 /******************* STRUCTURES *****************/
 
@@ -121,6 +124,9 @@ typedef struct     			s_denv
 	uint8_t					client_connected;
 	int8_t					lock;
 	uint8_t					shutdown;
+	char					**environ_tab;
+	t_vector				**av;
+	int						ac;
 }                  			t_denv;
 
 
@@ -251,6 +257,7 @@ void					print_help(void);
 void					print_version(void);
 
 void					init(int ac, char **av, char **environ);
+void					get_abs_pathname(t_vector *name);
 
 void					print_starting_debug(t_denv *env);
 
