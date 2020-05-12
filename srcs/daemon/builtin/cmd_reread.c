@@ -17,6 +17,7 @@ t_denv				*g_newenv;
 static int8_t		check_daemon_opts(dictionary *d, int sec)
 {
 	(void)sec;
+	char	*tmp;
 
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:logfile", NULL),
 									g_denv->opt.str[LOGFILE]) == FALSE)
@@ -36,9 +37,14 @@ static int8_t		check_daemon_opts(dictionary *d, int sec)
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:environment", NULL),
 									g_denv->opt.environ) == FALSE)
 		return (FAILURE);
-	if (strtol(iniparser_getstring(d, "taskmasterd:umask", NULL), NULL, 8)
-									!= g_denv->opt.umask)
-		return (FAILURE);
+
+	tmp = iniparser_getstring(d, "taskmasterd:umask", NULL);
+	if (tmp != NULL)
+	{
+		if (strtol(tmp, NULL, 8) != g_denv->opt.umask)
+			return (FAILURE);
+	}
+	
 //	if (get_nodaemon(iniparser_getstring(d, "taskmasterd:nodaemon", NULL))
 //		!= )
 	return (SUCCESS);
@@ -69,6 +75,52 @@ void			reparse_ini_file(dictionary *d)
 	}
 }
 
+int		_strcmp(const char *s1, const char *s2)
+{
+	size_t		i;
+
+	i = 0;
+	if (s1 == NULL && s2 != NULL)
+		return (1);
+	if (s1 != NULL && s2 == NULL)
+		return (1);
+	if (s1 == NULL && s2 == NULL)
+		return (0);
+	while (s1[i] && s1[i] == s2[i])
+		i++;
+	return ((int)((unsigned char)s1[i] - (unsigned char)s2[i]));
+}
+
+static uint8_t	comp_int(int a, int b)
+{
+	
+}
+
+static int32_t	compare_prog(t_program *op, t_program *np)
+{
+	int diff;
+
+	diff = 0;
+	diff += _strcmp(op->command, np->command);
+	diff += _strcmp(op->directory, np->directory);
+	diff += _strcmp(op->stdout_logfile, np->stdout_logfile);
+	diff += _strcmp(op->stderr_logfile, np->stderr_logfile);
+	diff += _strcmp(op->environ, np->environ);
+	
+	diff += (op->umask != np->umask) ? 1 : 0;
+	diff += (op->priority != np->priority) ? 1 : 0;
+	diff += (op->startsecs != np->startsecs) ? 1 : 0;
+	diff += (op->stopwaitsecs != np->stopwaitsecs) ? 1 : 0;
+
+	diff += (op->numprocs != np->numprocs) ? 1 : 0;
+	diff += (op->stopsignal != np->stopsignal) ? 1 : 0;
+	diff += (op->autostart != np->autostart) ? 1 : 0;
+	diff += (op->startretries != np->startretries) ? 1 : 0;
+	diff += (op->autorestart != np->autorestart) ? 1 : 0;
+	//EXITCODES
+	return (diff);
+}
+
 static t_vector	*register_changes(void)
 {
 	t_list		*orig_ptr;
@@ -97,7 +149,12 @@ static t_vector	*register_changes(void)
 			if (ft_strequ(orig_prg->name, new_prg->name) == TRUE)
 			{
 				// Compare data
-				tmp = ft_asprintf("%s no change.\n", orig_prg->name);
+				if (compare_prog(orig_prg, new_prg) == 0)
+					tmp = ft_asprintf("%s no change.\n", orig_prg->name);
+				else
+				{
+					tmp = ft_asprintf("%s modified.\n", orig_prg->name);
+				}
 				vct_addstr(resp, tmp);
 				ft_strdel(&tmp);
 				found = 1;
