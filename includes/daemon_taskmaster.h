@@ -84,7 +84,8 @@ typedef struct			s_program
 	char					**avs;					// [1] syslog
 	
 	int16_t					userid;	
-	char	padd[6];			
+	uint8_t					availmode;
+	char	padd[5];			
 	char					*directory;
 	char					*stdout_logfile;		// should be done
 	char					*stderr_logfile;		// should be done
@@ -127,7 +128,7 @@ typedef struct     			s_denv
 /******************** GLOBALS ********************/
 
 extern	t_denv			*g_denv;
-extern	t_denv			*g_newenv;
+extern	t_denv			*g_tmpenv;
 
 
 /*********************  JOBS  ********************/
@@ -164,6 +165,14 @@ enum e_prg_state
 	E_EXITED,
 	E_FATAL,
 	E_UNKNOWN
+};
+
+enum e_avail_state
+{
+	E_LOCKED,
+	E_ADDED,
+	E_REMOVED,
+	E_CHANGED
 };
 
 t_instance				*new_instance(uint8_t id, char *prog_name);

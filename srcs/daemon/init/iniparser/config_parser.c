@@ -341,6 +341,7 @@ void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 		exit_routine(ERR, NULL);
 	}
 	prog.env = NULL;
+	prog.availmode = E_LOCKED;
 	strvalue_to_lst(&prog.env, prog.environ);
 	append_to_pgrmlist(env, &prog);
 	tlog(E_LOGLVL_DEBG, "Inifile: parsed program: %s\n", prog.name);

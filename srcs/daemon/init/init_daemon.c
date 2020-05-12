@@ -67,7 +67,6 @@ static void	set_taskmasterd_defautls(void)
 void		init(int ac, char **av, char **environ)
 {
 	bzero(g_denv, sizeof(t_denv));
-	bzero(g_newenv, sizeof(t_denv));
 	g_denv->unix_socket = -1;
 	set_taskmasterd_defautls(); // DOIT ABSOLUMENT ETRE FAIT EN PREMIER
 	check_dflt_directory();

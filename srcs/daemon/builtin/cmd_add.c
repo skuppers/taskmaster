@@ -14,7 +14,7 @@
 
 t_vector	*action_add(t_instance *instance, t_program *program)
 {
-	(void)instance;	
+	(void)instance;
 	return (get_msg(program->name, "process group already active", ERR_MSG));
 }
 

@@ -13,15 +13,14 @@
 #include "daemon_taskmaster.h"
 
 t_denv	*g_denv;
-t_denv	*g_newenv;
+t_denv	*g_tmpenv;
 
 int main(int ac, char **av, char **environ)
 {
 	t_denv   env;
-	t_denv   newenv;
 
 	g_denv = &env;
-	g_newenv = &newenv;
+	g_tmpenv = NULL;
 	init(ac, av, environ);
 	if (ft_strequ(env.opt.str[LOGLEVEL], LOGLVL_DEBG) == true)
 		print_starting_debug(&env);
