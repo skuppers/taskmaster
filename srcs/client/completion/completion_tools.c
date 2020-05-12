@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 19:10:12 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 19:12:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 02:44:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ size_t			get_max_len(const size_t len, const uint8_t flag)
 void			lst_add_node(t_list **list, const char *str)
 {
 	t_list	*node;
-	
+
 	node = ft_lstnew(str, ft_strlen(str) + 1);
 	if (node != NULL)
 		ft_lstadd_back(list, node);

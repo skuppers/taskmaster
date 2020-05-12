@@ -6,12 +6,11 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 20:20:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 19:11:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 02:44:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
-
 
 static int8_t	process_completion(t_vector *vct, t_list *possible_cmd,
 					size_t len)
@@ -54,7 +53,8 @@ t_list			*no_comp(char *last_word)
 int8_t			completion(t_vector *vct)
 {
 	t_list				*possible_cmd;
-	static t_comp_type	comp_type[] = {no_comp, cmd_comp, instance_comp, prog_comp};
+	static t_comp_type	comp_type[] = {no_comp, cmd_comp,
+										instance_comp, prog_comp};
 	char				*last_word;
 	size_t				len;
 

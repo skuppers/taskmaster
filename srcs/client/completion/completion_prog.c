@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 19:04:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 19:14:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 02:45:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static void			fill_prog_name(t_list **list, char *last_word,
+static void		fill_prog_name(t_list **list, char *last_word,
 						t_vector *vct)
 {
 	if (ft_strlen(last_word) == 0 || ft_strnequ(last_word, vct_getstr(vct),
@@ -20,7 +20,7 @@ static void			fill_prog_name(t_list **list, char *last_word,
 		lst_add_node(list, vct_getstr(vct));
 }
 
-static void			fill_instance_name(t_list **list, char *last_word,
+static void		fill_instance_name(t_list **list, char *last_word,
 						t_vector *vct)
 {
 	char	**tab;

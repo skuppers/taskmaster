@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 19:05:41 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 19:09:22 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 02:45:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static enum e_comp_type		get_comp(t_vector *cmd)
 	return (type);
 }
 
-enum e_comp_type			get_type_of_completion(t_vector	*vct)
+enum e_comp_type			get_type_of_completion(t_vector *vct)
 {
 	t_vector			*cpy;
-	enum e_comp_type	type_of_completion;	
+	enum e_comp_type	type_of_completion;
 	ssize_t				cur_cmd_index;
 
 	cpy = vct_dup(vct);
