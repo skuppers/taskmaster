@@ -311,7 +311,7 @@ mode_t		get_umask(uint8_t *err, dictionary *d, char *name)
 	return ((mode_t)strtol(get, NULL, 8));
 }
 
-static void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
+void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 {
 	t_program	prog;
 	uint8_t		error;

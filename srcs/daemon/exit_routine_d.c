@@ -23,6 +23,7 @@ void	exit_routine(const int flag, ...)
 	unlink(DFL_SOCKET);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
+	ft_lstdel(&g_newenv->prgm_list, del_prgm);
 	flock(g_denv->lock, LOCK_UN);
 	if (flag != NO_MSG)
 	{

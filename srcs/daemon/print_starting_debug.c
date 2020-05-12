@@ -35,19 +35,19 @@ static void	print_prog_debug(t_program *prog)
 	dprintf(STDERR_FILENO, " - environment:\t%s\n\n", prog->environ);
 }
 
-void	print_starting_debug(void)
+void	print_starting_debug(t_denv *env)
 {
 	t_list *ptr;
 	
 	dprintf(STDERR_FILENO, "Taskmasterd:\n");
-	dprintf(STDERR_FILENO, "- logfile: %s\n", g_denv->opt.str[LOGFILE]);
-	dprintf(STDERR_FILENO, "- loglevel: %s\n", g_denv->opt.str[LOGLEVEL]);
-	dprintf(STDERR_FILENO, "- umask: %o\n", g_denv->opt.umask);
-	dprintf(STDERR_FILENO, "- userid: %s\n", g_denv->opt.str[USER]);
-	dprintf(STDERR_FILENO, "- directory: %s\n", g_denv->opt.str[DIRECTORY]);
-	dprintf(STDERR_FILENO, "- childlogdir: %s\n", g_denv->opt.str[CHILDLOGDIR]);
-	dprintf(STDERR_FILENO, "- environment: %s\n\n", g_denv->opt.environ);
-	ptr = g_denv->prgm_list;
+	dprintf(STDERR_FILENO, "- logfile: %s\n", env->opt.str[LOGFILE]);
+	dprintf(STDERR_FILENO, "- loglevel: %s\n", env->opt.str[LOGLEVEL]);
+	dprintf(STDERR_FILENO, "- umask: %o\n", env->opt.umask);
+	dprintf(STDERR_FILENO, "- userid: %s\n", env->opt.str[USER]);
+	dprintf(STDERR_FILENO, "- directory: %s\n", env->opt.str[DIRECTORY]);
+	dprintf(STDERR_FILENO, "- childlogdir: %s\n", env->opt.str[CHILDLOGDIR]);
+	dprintf(STDERR_FILENO, "- environment: %s\n\n", env->opt.environ);
+	ptr = env->prgm_list;
 	while (ptr != NULL)
 	{
 		print_prog_debug((t_program *)ptr->content);

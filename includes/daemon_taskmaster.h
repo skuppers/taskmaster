@@ -51,7 +51,7 @@ typedef	struct			s_options
 	mode_t				umask;
 	uint32_t			padding;
 	char				*str[8];
-	char				*environ;  //TODO
+	char				*environ;
 }						t_options;
 
 typedef struct			s_instance
@@ -127,6 +127,7 @@ typedef struct     			s_denv
 /******************** GLOBALS ********************/
 
 extern	t_denv			*g_denv;
+extern	t_denv			*g_newenv;
 
 
 /*********************  JOBS  ********************/
@@ -180,10 +181,12 @@ void					update_instance_uptime(t_instance *instance);
 
 int8_t			get_new_bin_path(t_program *prog, t_list *env);
 
-int8_t		is_expected_exitcode(t_program *prg, t_instance *inst);
+int8_t			is_expected_exitcode(t_program *prg, t_instance *inst);
 
-void	print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
+void			print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb);
 
+bool			get_nodaemon(char *str);
+void			get_new_prog(t_denv *env, dictionary *dict, char *secname);
 /*************************************************/
 
 
@@ -249,7 +252,7 @@ void					print_version(void);
 
 void					init(int ac, char **av, char **environ);
 
-void					print_starting_debug(void);
+void					print_starting_debug(t_denv *env);
 
 void					get_opt(int ac, char **av);
 
