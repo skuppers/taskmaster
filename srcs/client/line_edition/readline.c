@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 14:17:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:28:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ int						print_prompt(t_env *env)
 	env->cursorx = ft_strlen(env->opt.str[PROMPT]);
 	if (env->winwid > 0)
 		env->cursory = ft_strlen(env->opt.str[PROMPT]) / env->winwid;
-	return (ft_dprintf(STDIN_FILENO, "%s", env->opt.str[PROMPT]));
+	if (ft_strcheck(env->opt.str[PROMPT], ft_isalnum) == false)
+		return (ft_dprintf(STDIN_FILENO, "'%s'> ", env->opt.str[PROMPT]));
+	return (ft_dprintf(STDIN_FILENO, "%s> ", env->opt.str[PROMPT]));
 }
 
 static void				split_line(ssize_t *ret, t_vector *rest, t_vector *vct)

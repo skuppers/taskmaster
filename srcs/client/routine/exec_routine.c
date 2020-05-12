@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 21:20:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 22:24:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	sig_int_hand(int signo)
 {
 	(void)signo;
 	kill(pid, SIGINT);
+	dprintf(STDERR_FILENO, "^C\n");
 }
 
 void	exec_tail(uint64_t flag, t_vector *feedback)
