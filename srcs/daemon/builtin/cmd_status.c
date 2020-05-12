@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 18:18:18 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/12 15:17:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 				str = ft_asprintf("%s not started.\n", tmp, ctime(&instance->stop_time));
 			else
 				str = ft_asprintf("%s [stoptime] %s", tmp, ctime(&instance->stop_time));
+			ft_strdel(&tmp);
 		}
 		else
 			str = ft_asprintf("%-20s%s\n", instance->name, state);
