@@ -25,19 +25,11 @@ t_vector	*action_add(t_instance *instance, t_program *program)
 
 	if (program->availmode != E_ADDED)
 		return (get_msg(program->name, "already active", ERR_MSG));
-	program->instance = NULL;
 	program->availmode = E_LOCKED;
 	inst_nb = 0;
 	program->pgid = 0;
 	while (inst_nb < program->numprocs)
 	{
-		inst = new_instance(inst_nb, program->name);	// create instance meta
-		if (inst == NULL)
-		{
-			tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
-			break ;
-		}
-		add_instance(program, inst);		//add instance to program_list
 		if (program->autostart == TRUE)
 		{
 			int launch_success = start_instance(program, inst_nb, g_denv->environ);
@@ -47,7 +39,7 @@ t_vector	*action_add(t_instance *instance, t_program *program)
 	}
 	append_to_pgrmlist(g_denv, program);
 	ft_lstdelnode(&g_tmpenv->prgm_list, program, clean_node);
-	return (get_msg(program->name, "added", INFO_MSG));
+	return (get_msg(program->name, "available", INFO_MSG));
 }
 
 t_vector	*cmd_add(t_cmd *cmd)

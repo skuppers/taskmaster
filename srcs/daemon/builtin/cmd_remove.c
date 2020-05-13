@@ -31,7 +31,7 @@ t_vector	*action_remove(t_instance *instance, t_program *program)
 	(void)instance;
 	stop_prog(program);
 	ft_lstdelnode(&g_denv->prgm_list, program, del_prog);
-	return (get_msg("program", "removed", INFO_MSG));
+	return (get_msg("program", "disappeared", INFO_MSG));
 }
 
 t_vector			*cmd_remove(t_cmd *cmd)

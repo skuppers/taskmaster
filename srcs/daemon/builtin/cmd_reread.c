@@ -188,6 +188,25 @@ static void		check_modified(t_denv *nenv)
 	}
 }
 
+static void		activate_instances(t_program *prg)
+{
+	t_instance *inst;
+	uint8_t		inst_nb;
+
+	inst_nb = 0;
+	while (inst_nb < prg->numprocs)
+	{
+		inst = new_instance(inst_nb, prg->name);	// create instance meta
+		if (inst == NULL)
+		{
+			tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
+			break ;
+		}
+		add_instance(prg, inst);		//add instance to program_list
+		++inst_nb;
+	}
+}
+
 static void		register_added(t_denv *env, t_vector *v)
 {
 	t_list		*ptr;
@@ -199,8 +218,9 @@ static void		register_added(t_denv *env, t_vector *v)
 		prg = ptr->content;
 		if (prg->availmode == E_ADDED)
 		{
+			activate_instances(prg);
 			vct_addstr(v, prg->name);
-			vct_addstr(v, " added\n");
+			vct_addstr(v, " available\n");
 		}
 		ptr = ptr->next;
 	}
@@ -218,12 +238,12 @@ static void		register_modified(t_denv *env, t_vector *v)
 		if (prg->availmode == E_REMOVED)
 		{
 			vct_addstr(v, prg->name);
-			vct_addstr(v, " removed\n");
+			vct_addstr(v, " disappeared\n");
 		}
 		else if (prg->availmode == E_CHANGED)
 		{
 			vct_addstr(v, prg->name);
-			vct_addstr(v, " modified\n");
+			vct_addstr(v, " changed\n");
 		}
 		ptr = ptr->next;
 	}
