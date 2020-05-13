@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 13:15:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 16:31:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ static t_vector	*read_feedback(const int fd)
 	return (NULL);
 }
 
+static int		get_waittime(void)
+{
+	if (g_env->cmd != NULL
+			&& (g_env->cmd->type == START || g_env->cmd->type == STOP
+				|| g_env->cmd->type == RESTART || g_env->cmd->type == UPDATE))
+		return (60);
+	return (2);
+}
+
 t_vector		*get_feedback(void)
 {
 	fd_set			recv_set;
@@ -59,7 +68,7 @@ t_vector		*get_feedback(void)
 	int				fd;
 
 	fd = -1;
-	tv.tv_sec = 2;
+	tv.tv_sec = get_waittime();
 	tv.tv_usec = 0;
 	FD_ZERO(&recv_set);
 	FD_SET(g_env->unix_socket, &recv_set);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:21:46 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:12:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 16:51:52 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,29 @@
 
 t_vector	*action_restart(t_instance *instance, t_program *program)
 {
+	enum	e_prg_state old_state;
+
 	if (instance != NULL && program != NULL)
 	{
+		old_state = instance->state;
 		if (instance->state == E_RUNNING || instance->state == E_STARTING)
-			stop_instance(program, instance, program->stopsignal);
+		{
+			if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
+			{
+				while (instance->state == old_state
+						|| instance->state == E_STOPPING)
+					waiter(g_denv);
+			}
+		}
+		old_state = instance->state;
 		if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
-			return (get_msg(instance->name, "restarted", INFO_MSG));
+		{
+			dprintf(2, "old_state = %d | state = %d\n", old_state, instance->state); 
+			while (instance->state == old_state
+					|| instance->state == E_STARTING)
+				waiter(g_denv);
+		}
+		return (get_msg(instance->name, "restarted", INFO_MSG));
 	}
 	return (get_msg(instance == NULL ? "???" : instance->name,
 			"start-up error", ERR_MSG));
