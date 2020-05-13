@@ -238,22 +238,8 @@ static t_vector	*register_changes(t_denv *env)
 	check_added(env);
 	check_modified(env);
 	register_added(env, resp);
-	register_modified(env, resp);
+	register_modified(g_denv, resp);
 	return (resp);
-}
-
-static void		define_buffer_env(t_denv	*tmpenv)
-{
-	if (g_tmpenv != NULL)
-	{
-		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
-		if (g_tmpenv->dict != NULL)
-	    	free_inifile(g_tmpenv->dict);
-		free(g_tmpenv);
-	}
-	tmpenv = malloc(sizeof(t_denv));
-	ft_bzero(tmpenv, sizeof(t_denv));
-	g_tmpenv = tmpenv;
 }
 
 static dictionary	*load_dict(void)
@@ -274,8 +260,17 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	int			sections;
 	t_denv		*tmpenv;
 
-	tmpenv = NULL;
-	define_buffer_env(tmpenv);
+	if (g_tmpenv != NULL)
+	{
+		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
+	//	if (g_tmpenv->dict != NULL)
+	 //   	free_inifile(g_tmpenv->dict);
+		free(g_tmpenv);
+	}
+	tmpenv = malloc(sizeof(t_denv));
+	ft_bzero(tmpenv, sizeof(t_denv));
+	g_tmpenv = tmpenv;
+
 	if ((dict = load_dict()) == NULL)
 		return (vct_newstr("reread: could not open file to read.\n"));
 	sections = iniparser_getnsec(dict);

@@ -24,7 +24,7 @@ t_vector	*action_add(t_instance *instance, t_program *program)
 	t_instance	*inst;
 
 	if (program->availmode != E_ADDED)
-		return (get_msg(program->name, "Not a new program", ERR_MSG));
+		return (get_msg(program->name, "already active", ERR_MSG));
 	program->instance = NULL;
 	program->availmode = E_LOCKED;
 	inst_nb = 0;

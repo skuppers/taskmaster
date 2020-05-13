@@ -187,14 +187,16 @@ int8_t					del_instance(t_program *prg, uint8_t id);
 int8_t					add_instance(t_program *prg, t_instance *inst);
 int8_t					start_instance(t_program *prog, uint8_t id, t_list *environ);
 int8_t					stop_instance(t_program *prog, t_instance *instance, int signo);
-int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm);
+int8_t					append_to_pgrmlist(t_denv *env, t_program *pgrm);
 t_instance				*get_instance(t_program *prg, uint8_t id);
 char					*get_instance_state(t_instance *instance);
 void    				launch_jobs(t_denv *env);
 int     				child_process(t_program *prog, t_instance *instance, t_list *env);
 int8_t					waiter(t_denv *env);
 void					update_instance_uptime(t_instance *instance);
-void	stop_prog(t_program *program);
+void			stop_prog(t_program *program);
+t_vector		*action_add(t_instance *instance, t_program *program);
+t_vector		*action_remove(t_instance *instance, t_program *program);
 
 int8_t			is_expected_exitcode(t_program *prg, t_instance *inst);
 
