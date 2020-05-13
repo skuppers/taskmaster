@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 19:28:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 17:29:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ static void	free_arg_vct(void)
 
 	i = 0;
 	while (i < g_denv->ac)
-	{
-		vct_del(&g_denv->av[i]);
-		i++;
-	}
+		vct_del(g_denv->av + i++);
 	free(g_denv->av);
 }
 
@@ -31,30 +28,31 @@ static int	reload_daemon(void)
 	int		i;
 	char	**av;
 
+	free_inifile(g_denv->dict);
 	fd_log = g_denv->log_fd;
 	av = (char **)malloc(sizeof(char *) * (g_denv->ac + 1));
-	av[g_denv->ac] = NULL; // PROTECT MALLOC
-	i = 0;
-	while (i < g_denv->ac)
+	if (av != NULL)
 	{
-		av[i] = vct_dupstr(g_denv->av[i]);
-		i++;
+		av[g_denv->ac] = NULL; // PROTECT MALLOC
+		i = 0;
+		while (i < g_denv->ac)
+		{
+			av[i] = vct_dupstr(g_denv->av[i]);
+			i++;
+		}
+		bzero(g_denv, sizeof(t_denv));
 	}
 	free_arg_vct();
-	bzero(g_denv, sizeof(t_denv));
-	execve(av[0], av, g_denv->environ_tab);
+	if (av != NULL)
+		execve(av[0], av, g_denv->environ_tab);
 	ft_free_tab_str(av);
 	tlog(E_LOGLVL_CRIT, "Failed to reload: %s: %s\n", av[0], strerror(errno));
 	close(fd_log);
 	exit(EXIT_FAILURE);
 }
 
-void		exit_routine(const int flag, ...)
+void		general_stuff_exit(void)
 {
-	va_list	arg;
-	char	*err_str;
-
-   
 	close(g_denv->unix_socket);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
@@ -68,7 +66,16 @@ void		exit_routine(const int flag, ...)
 		free(g_tmpenv);
 	}
 	flock(g_denv->lock, LOCK_UN);
-	// free vector tab arg
+}
+
+void		exit_routine(const int flag, ...)
+{
+	va_list	arg;
+	char	*err_str;
+	int		ret;
+
+	general_stuff_exit();
+	ret = EXIT_SUCCESS;
 	if (flag != NO_MSG)
 	{
 		va_start(arg, flag);
@@ -76,17 +83,15 @@ void		exit_routine(const int flag, ...)
 		if (err_str != NULL)
 			tlog(flag, "%s\n", err_str);
 		va_end(arg);
-		if (g_denv->dict != NULL)
-	    	free_inifile(g_denv->dict);
-		close(g_denv->log_fd);
-		free_arg_vct();
-		exit(EXIT_FAILURE);
+		ret = EXIT_FAILURE;
 	}
-	if (g_denv->dict != NULL)
-	    free_inifile(g_denv->dict);
-	if (g_denv->shutdown == S_RELOAD)
-		reload_daemon();
+	else
+	{
+		if (g_denv->shutdown == S_RELOAD)
+			reload_daemon();
+	}
+	free_inifile(g_denv->dict);
 	free_arg_vct();
 	close(g_denv->log_fd);
-	exit(EXIT_SUCCESS);
+	exit(ret);
 }

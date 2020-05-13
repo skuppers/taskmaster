@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 18:02:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 17:13:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,5 @@ void	taskmasterd_override(t_denv *env, dictionary *dict)
 	}
 	env->opt.environ = tmp;
 	if (error == 1)
-		exit_routine(ERR, NULL);
+		exit_routine(E_LOGLVL_ERRO, NULL);
 }

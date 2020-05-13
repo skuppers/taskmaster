@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 17:06:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 17:15:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,7 +339,7 @@ void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	if (error == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
-		exit_routine(ERR, NULL);
+		exit_routine(E_LOGLVL_ERRO, NULL);
 	}
 	prog.env = NULL;
 	prog.availmode = E_LOCKED;
