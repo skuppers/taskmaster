@@ -56,7 +56,8 @@ static int		get_waittime(void)
 {
 	if (g_env->cmd != NULL
 			&& (g_env->cmd->type == START || g_env->cmd->type == STOP
-				|| g_env->cmd->type == RESTART || g_env->cmd->type == UPDATE))
+				|| g_env->cmd->type == RESTART || g_env->cmd->type == UPDATE
+				|| g_env->cmd->type == REMOVE))
 		return (60);
 	return (2);
 }

@@ -117,7 +117,7 @@ t_vector		*action_update(char **av, int ac)
 	if (prg == NULL)
 		prg = find_program(av[0], g_tmpenv);
 	if (prg == NULL)
-		return (get_msg(av[1], "not found", ERR_MSG));
+		return (get_msg(av[0], "not found", ERR_MSG));
 	if (prg->availmode == E_ADDED)
 	{
 		return (action_add(NULL, prg));
