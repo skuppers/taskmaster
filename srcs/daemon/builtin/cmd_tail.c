@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:26:58 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 23:28:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 12:44:52 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,12 @@
 
 t_vector	*action_tail_err(t_instance *instance, t_program *program)
 {
-	char		*asp;	
-	t_vector	*vct;
-	size_t		len;
-
-	if (g_denv->opt.str[CHILDLOGDIR] == NULL)
-		return (get_msg(instance->name, "no log file", ERR_MSG));
-	len = ft_strlen(g_denv->opt.str[CHILDLOGDIR]);
-	if (g_denv->opt.str[CHILDLOGDIR][len - 1] == '/')
-		asp = ft_asprintf("%s%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR],
-						program->name, instance->id);
-	else
-		asp = ft_asprintf("%s/%s_%d_err.log", g_denv->opt.str[CHILDLOGDIR],
-						program->name, instance->id);
-	vct = vct_newstr(asp);
-	ft_strdel(&asp);
-	vct_add(vct, ETX);
-	return (vct);
+	return (get_logfile_name(program, instance, STDERR_FILENO, ETX));
 }
 
 t_vector	*action_tail_out(t_instance *instance, t_program *program)
 {
-	char		*asp;	
-	t_vector	*vct;
-	size_t		len;
-
-	if (g_denv->opt.str[CHILDLOGDIR] == NULL)
-		return (get_msg(instance->name, "no log file", ERR_MSG));
-	len = ft_strlen(g_denv->opt.str[CHILDLOGDIR]);
-	if (g_denv->opt.str[CHILDLOGDIR][len - 1] == '/')
-		asp = ft_asprintf("%s%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR],
-						program->name, instance->id);
-	else
-		asp = ft_asprintf("%s/%s_%d_out.log", g_denv->opt.str[CHILDLOGDIR],
-						program->name, instance->id);
-	vct = vct_newstr(asp);
-	ft_strdel(&asp);
-	vct_add(vct, ETX);
-	return (vct);
+	return (get_logfile_name(program, instance, STDOUT_FILENO, ETX));
 }
 
 t_vector			*cmd_tail(t_cmd *cmd)
