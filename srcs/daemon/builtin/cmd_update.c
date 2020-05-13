@@ -94,6 +94,8 @@ t_vector	*action_update_all(t_instance *i, t_program *p)
 	(void)i;(void)p;
 	t_vector	*resp;
 
+	if (g_tmpenv == NULL)
+		return (get_msg("update", "no changes", INFO_MSG));
 	resp = vct_newstr("");
 	remove_progs(g_denv, resp);
 	add_progs(g_tmpenv, resp);
