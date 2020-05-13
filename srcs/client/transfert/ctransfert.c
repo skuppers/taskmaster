@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 19:02:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 13:15:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,11 @@ static t_vector	*read_feedback(const int fd)
 
 	trame = vct_new(DFL_VCT_SIZE);
 	if (vct_creadline(trame, fd, EOT) > 0)
-		return (decode_feedback(trame));
+	{
+		if (decode_feedback(trame) == NULL)
+			vct_del(&trame);
+		return (trame);
+	}
 	dprintf(STDERR_FILENO, "Daemon cannot be reached...\n");
 	vct_del(&trame);
 	return (NULL);
