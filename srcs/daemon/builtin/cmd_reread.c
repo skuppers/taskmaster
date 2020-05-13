@@ -221,7 +221,7 @@ static t_vector	*register_changes(t_denv *env)
 		{
 			vct_addstr(resp, tmp->name);
 			vct_addstr(resp, " added\n");
-			append_to_pgrmlist(g_denv, tmp);
+	//		append_to_pgrmlist(g_denv, tmp);
 		}
 	}
 	return (resp);
@@ -244,6 +244,8 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	tmpenv = malloc(sizeof(t_denv));
 	ft_bzero(tmpenv, sizeof(t_denv));
 	g_tmpenv = tmpenv;
+
+
 	dict = iniparser_load(g_denv->opt.str[CONFIGURATION]);
 	if (dict == NULL)
 		return (vct_newstr("reread: could not open file to read.\n"));

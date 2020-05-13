@@ -14,12 +14,16 @@
 
 t_vector	*action_add(t_instance *instance, t_program *program)
 {
-	(void)instance;(void)program;
+	(void)instance;
+	
 	dprintf(STDERR_FILENO, "adding %s\n", program->name);
+	append_to_pgrmlist(g_denv, program);
 	program->availmode = E_LOCKED;
-	uint8_t	inst_nb = 0;
+
+	uint8_t		inst_nb;
 	t_instance	*inst;
 
+	inst_nb = 0;
 	while (inst_nb < program->numprocs)
 	{
 		inst = new_instance(inst_nb, program->name);	// create instance meta

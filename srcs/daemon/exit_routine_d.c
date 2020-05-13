@@ -54,8 +54,7 @@ void		exit_routine(const int flag, ...)
 	va_list	arg;
 	char	*err_str;
 
-    if (g_denv->dict != NULL)
-	    free_inifile(g_denv->dict);
+   
 	close(g_denv->unix_socket);
 	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
@@ -77,10 +76,14 @@ void		exit_routine(const int flag, ...)
 		if (err_str != NULL)
 			tlog(flag, "%s\n", err_str);
 		va_end(arg);
+		if (g_denv->dict != NULL)
+	    	free_inifile(g_denv->dict);
 		close(g_denv->log_fd);
 		free_arg_vct();
 		exit(EXIT_FAILURE);
 	}
+	if (g_denv->dict != NULL)
+	    free_inifile(g_denv->dict);
 	if (g_denv->shutdown == S_RELOAD)
 		reload_daemon();
 	free_arg_vct();
