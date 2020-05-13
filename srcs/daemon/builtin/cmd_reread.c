@@ -28,6 +28,20 @@ int		do_strcmp(const char *s1, const char *s2)
 	return ((int)((unsigned char)s1[i] - (unsigned char)s2[i]));
 }
 
+static uint8_t	exitcode_changed(t_program *op, t_program *np)
+{
+	int	i;
+
+	i = 0;
+	while (op->exitcodes[i] != NULL)
+	{
+		if (ft_strequ(op->exitcodes[i], np->exitcodes[i]) == FALSE)
+			return (1);
+		++i;
+	}
+	return (0);
+}
+
 static int32_t	compare_prog(t_program *op, t_program *np)
 {
 	int diff;
@@ -38,6 +52,7 @@ static int32_t	compare_prog(t_program *op, t_program *np)
 	diff += do_strcmp(op->stdout_logfile, np->stdout_logfile);
 	diff += do_strcmp(op->stderr_logfile, np->stderr_logfile);
 	diff += do_strcmp(op->environ, np->environ);
+	diff += (op->userid != np->userid) ? 1 : 0;
 	diff += (op->umask != np->umask) ? 1 : 0;
 	diff += (op->priority != np->priority) ? 1 : 0;
 	diff += (op->startsecs != np->startsecs) ? 1 : 0;
@@ -47,7 +62,7 @@ static int32_t	compare_prog(t_program *op, t_program *np)
 	diff += (op->autostart != np->autostart) ? 1 : 0;
 	diff += (op->startretries != np->startretries) ? 1 : 0;
 	diff += (op->autorestart != np->autorestart) ? 1 : 0;
-	//EXITCODES
+	diff += (exitcode_changed(op, np)) ? 1 : 0;
 	return (diff);
 }
 
@@ -55,13 +70,15 @@ static int8_t		check_daemon_opts(dictionary *d, int sec)
 {
 	(void)sec;
 	char	*tmp;
+	bool	yn;
+	bool	is_nodea;
 
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:logfile", NULL),
 									g_denv->opt.str[LOGFILE]) == FALSE)
 		return (FAILURE);
-/*	if (ft_strequ(iniparser_getstring(d, "taskmasterd:loglevel", NULL),
+	if (ft_strequ(iniparser_getstring(d, "taskmasterd:loglevel", NULL),
 									g_denv->opt.str[LOGLEVEL]) == FALSE)
-		return (FAILURE);*/
+		return (FAILURE);
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:userid", NULL),
 									g_denv->opt.str[USER]) == FALSE)
 		return (FAILURE);
@@ -74,16 +91,17 @@ static int8_t		check_daemon_opts(dictionary *d, int sec)
 	if (ft_strequ(iniparser_getstring(d, "taskmasterd:environment", NULL),
 									g_denv->opt.environ) == FALSE)
 		return (FAILURE);
-
 	tmp = (char *)iniparser_getstring(d, "taskmasterd:umask", NULL);
 	if (tmp != NULL)
 	{
 		if (strtol(tmp, NULL, 8) != g_denv->opt.umask)
 			return (FAILURE);
 	}
-	
-//	if (get_nodaemon(iniparser_getstring(d, "taskmasterd:nodaemon", NULL))
-//		!= )
+	is_nodea = (bool)(g_denv->opt.optmask & OPT_NODAEMON);
+	yn = get_nodaemon(iniparser_getstring(d, "taskmasterd:nodaemon", NULL));
+	dprintf(2, "old=%d new=%d\n", is_nodea, yn);
+	if (yn != is_nodea)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -196,13 +214,13 @@ static void		activate_instances(t_program *prg)
 	inst_nb = 0;
 	while (inst_nb < prg->numprocs)
 	{
-		inst = new_instance(inst_nb, prg->name);	// create instance meta
+		inst = new_instance(inst_nb, prg->name);
 		if (inst == NULL)
 		{
 			tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
 			break ;
 		}
-		add_instance(prg, inst);		//add instance to program_list
+		add_instance(prg, inst);
 		++inst_nb;
 	}
 }
@@ -283,8 +301,6 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	if (g_tmpenv != NULL)
 	{
 		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
-	//	if (g_tmpenv->dict != NULL)
-	//   	free_inifile(g_tmpenv->dict);
 		free(g_tmpenv);
 	}
 	tmpenv = malloc(sizeof(t_denv));
