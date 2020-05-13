@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 22:45:25 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 23:30:17 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 10:53:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static char	**get_argtab(uint64_t flag, t_vector *feedback)
 	if (arg != NULL)
 	{
 		arg[0] = ft_strdup("tail");
-		arg[1] = (flag & TAIL_FIFO) ? ft_strdup("-f") :
-									ft_itoa((int)(-((uint32_t)(flag >> 8))));
+		arg[1] = ft_asprintf(((flag & TAIL_FIFO) ? "-f" : "-c%d"),
+						(int)(-((uint32_t)(flag >> 8))));
 		vct_cut(feedback);
 		arg[2] = vct_dupstr(feedback);
 		arg[3] = NULL;
