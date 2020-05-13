@@ -12,18 +12,23 @@
 
 #include "daemon_taskmaster.h"
 
+void		clean_node(void *d)
+{
+	((t_list *)d)->content = NULL;
+}
+
 t_vector	*action_add(t_instance *instance, t_program *program)
 {
 	(void)instance;
-	
-	dprintf(STDERR_FILENO, "adding %s\n", program->name);
-	append_to_pgrmlist(g_denv, program);
-	program->availmode = E_LOCKED;
-
 	uint8_t		inst_nb;
 	t_instance	*inst;
 
+	if (program->availmode != E_ADDED)
+		return (get_msg(program->name, "Not a new program", ERR_MSG));
+	program->instance = NULL;
+	program->availmode = E_LOCKED;
 	inst_nb = 0;
+	program->pgid = 0;
 	while (inst_nb < program->numprocs)
 	{
 		inst = new_instance(inst_nb, program->name);	// create instance meta
@@ -40,10 +45,12 @@ t_vector	*action_add(t_instance *instance, t_program *program)
 		}
 		++inst_nb;
 	}
+	append_to_pgrmlist(g_denv, program);
+	ft_lstdelnode(&g_tmpenv->prgm_list, program, clean_node);
 	return (get_msg(program->name, "added", INFO_MSG));
 }
 
 t_vector	*cmd_add(t_cmd *cmd)
 {
-	return (exec_action_args_group(cmd->av, cmd->ac, action_add));
+	return (exec_action_args_group(cmd->av, cmd->ac, action_add, g_tmpenv));
 }

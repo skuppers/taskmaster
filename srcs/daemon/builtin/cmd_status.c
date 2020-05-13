@@ -23,6 +23,7 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	vct = NULL;
 	str = NULL;
 	(void)program;
+	
 	if (instance != NULL && program != NULL)
 	{
 		state = get_instance_state(instance);
@@ -56,14 +57,12 @@ t_vector	*action_status(t_instance *instance, t_program *program)
 	return (vct);
 }
 
-static t_vector			*progs_info(void)
+static t_vector			*progs_info(t_list *prog_list)
 {
-	t_list		*prog_list;
 	t_program	*program;
 	t_instance	*instance;
 	t_vector	*output;
 
-	prog_list = g_denv->prgm_list;
 	output = vct_new(0);
 	while (prog_list != NULL)
 	{
@@ -98,12 +97,18 @@ t_vector			*cmd_status(t_cmd *cmd)
 	t_vector	*vct;
 
 	vct = NULL;
+	for (t_list *op = g_denv->prgm_list; op != NULL; op = op->next)
+	{
+		t_program *tmp = op->content;
+		dprintf(STDERR_FILENO, "\nPrg: %s Inst: %d Avail: %d\n",
+								tmp->name, tmp->numprocs, tmp->availmode);
+	}
 	if (cmd->ocp == 0x01)
 		vct = exec_action_all(action_status);
 	else if (cmd->ocp == 0x02)
 		vct = exec_action_args(cmd->av, cmd->ac, action_status);
 	else if (cmd->ocp == 0x03)
-		vct = progs_info();
+		vct = progs_info(g_tmpenv == NULL ? g_denv->prgm_list : g_tmpenv->prgm_list);
 	return (vct);
 }
 

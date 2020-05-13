@@ -12,9 +12,7 @@
 
 #include "daemon_taskmaster.h"
 
-//t_denv	*g_tmpenv;
-
-int		_strcmp(const char *s1, const char *s2)
+int		do_strcmp(const char *s1, const char *s2)
 {
 	size_t		i;
 
@@ -35,11 +33,11 @@ static int32_t	compare_prog(t_program *op, t_program *np)
 	int diff;
 
 	diff = 0;
-	diff += _strcmp(op->command, np->command);
-	diff += _strcmp(op->directory, np->directory);
-	diff += _strcmp(op->stdout_logfile, np->stdout_logfile);
-	diff += _strcmp(op->stderr_logfile, np->stderr_logfile);
-	diff += _strcmp(op->environ, np->environ);
+	diff += do_strcmp(op->command, np->command);
+	diff += do_strcmp(op->directory, np->directory);
+	diff += do_strcmp(op->stdout_logfile, np->stdout_logfile);
+	diff += do_strcmp(op->stderr_logfile, np->stderr_logfile);
+	diff += do_strcmp(op->environ, np->environ);
 	diff += (op->umask != np->umask) ? 1 : 0;
 	diff += (op->priority != np->priority) ? 1 : 0;
 	diff += (op->startsecs != np->startsecs) ? 1 : 0;
@@ -190,50 +188,62 @@ static void		check_modified(t_denv *nenv)
 	}
 }
 
+static void		register_added(t_denv *env, t_vector *v)
+{
+	t_list		*ptr;
+	t_program	*prg;
+
+	ptr = env->prgm_list;
+	while (ptr != NULL)
+	{
+		prg = ptr->content;
+		if (prg->availmode == E_ADDED)
+		{
+			vct_addstr(v, prg->name);
+			vct_addstr(v, " added\n");
+		}
+		ptr = ptr->next;
+	}
+}
+
+static void		register_modified(t_denv *env, t_vector *v)
+{
+	t_list		*ptr;
+	t_program	*prg;
+
+	ptr = env->prgm_list;
+	while (ptr != NULL)
+	{
+		prg = ptr->content;
+		if (prg->availmode == E_REMOVED)
+		{
+			vct_addstr(v, prg->name);
+			vct_addstr(v, " removed\n");
+		}
+		else if (prg->availmode == E_CHANGED)
+		{
+			vct_addstr(v, prg->name);
+			vct_addstr(v, " modified\n");
+		}
+		ptr = ptr->next;
+	}
+}
+
 static t_vector	*register_changes(t_denv *env)
 {
 	t_vector	*resp;
 
 	resp = vct_newstr("");
-
 	check_removed(env);
 	check_added(env);
 	check_modified(env);
-
-	for (t_list *op = g_denv->prgm_list; op != NULL; op = op->next)
-	{
-		t_program *tmp = op->content;
-		if (tmp->availmode == E_REMOVED)
-		{
-			vct_addstr(resp, tmp->name);
-			vct_addstr(resp, " removed\n");
-		}
-		else if (tmp->availmode == E_CHANGED)
-		{
-			vct_addstr(resp, tmp->name);
-			vct_addstr(resp, " modified\n");
-		}
-	}
-	for (t_list *op = env->prgm_list; op != NULL; op = op->next)
-	{
-		t_program *tmp = op->content;
-		if (tmp->availmode == E_ADDED)
-		{
-			vct_addstr(resp, tmp->name);
-			vct_addstr(resp, " added\n");
-	//		append_to_pgrmlist(g_denv, tmp);
-		}
-	}
+	register_added(env, resp);
+	register_modified(env, resp);
 	return (resp);
 }
 
-t_vector		*reread_file(t_instance *in, t_program *prg)
+static void		define_buffer_env(t_denv	*tmpenv)
 {
-	(void)in;(void)prg;
-	dictionary	*dict;
-	int			sections;
-	t_denv		*tmpenv;
-
 	if (g_tmpenv != NULL)
 	{
 		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
@@ -244,12 +254,30 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	tmpenv = malloc(sizeof(t_denv));
 	ft_bzero(tmpenv, sizeof(t_denv));
 	g_tmpenv = tmpenv;
+}
 
+static dictionary	*load_dict(void)
+{
+	dictionary	*dict;
 
 	dict = iniparser_load(g_denv->opt.str[CONFIGURATION]);
 	if (dict == NULL)
-		return (vct_newstr("reread: could not open file to read.\n"));
+		return (NULL);
 	g_tmpenv->dict = dict;
+	return (dict);
+}
+
+t_vector		*reread_file(t_instance *in, t_program *prg)
+{
+	(void)in;(void)prg;
+	dictionary	*dict;
+	int			sections;
+	t_denv		*tmpenv;
+
+	tmpenv = NULL;
+	define_buffer_env(tmpenv);
+	if ((dict = load_dict()) == NULL)
+		return (vct_newstr("reread: could not open file to read.\n"));
 	sections = iniparser_getnsec(dict);
 	while (sections >= 0)
 	{
@@ -257,7 +285,7 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 		{
 			if (check_daemon_opts(dict, sections) == FAILURE)
 				return (vct_newstr("reread: You cannot change the"
-							" taskmasterd section at runtime.\n")); // Can not change taskmasterd config without restart
+							" taskmasterd section at runtime.\n"));
 			break ;
 		}
 		--sections;

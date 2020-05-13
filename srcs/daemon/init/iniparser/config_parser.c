@@ -17,7 +17,6 @@ int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm)
 	t_list		*list;
 	char		**avs;
 
-	pgrm->instance = NULL;
 	avs = ft_strsplit(pgrm->command, ' ');
 	pgrm->bin = avs[0];
 	pgrm->avs = avs;
@@ -317,6 +316,8 @@ void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	uint8_t		error;
 
 	error = 0;
+	ft_memset(&prog, 0, sizeof(t_program));
+
 	prog.name = ft_strsub(secname, 8, ft_strlen(secname) - 8);
 	
 	prog.command =  get_command(&error, dict, secname);
