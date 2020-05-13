@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 15:17:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 13:23:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,6 @@ t_vector			*cmd_status(t_cmd *cmd)
 	t_vector	*vct;
 
 	vct = NULL;
-	for (t_list *op = g_denv->prgm_list; op != NULL; op = op->next)
-	{
-		t_program *tmp = op->content;
-		dprintf(STDERR_FILENO, "\nPrg: %s Inst: %d Avail: %d\n",
-								tmp->name, tmp->numprocs, tmp->availmode);
-	}
 	if (cmd->ocp == 0x01)
 		vct = exec_action_all(action_status);
 	else if (cmd->ocp == 0x02)
