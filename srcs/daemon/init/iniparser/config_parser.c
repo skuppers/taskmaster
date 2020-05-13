@@ -12,7 +12,7 @@
 
 #include "daemon_taskmaster.h"
 
-int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm)
+int8_t			append_to_pgrmlist(t_denv *env, t_program *pgrm)
 {
 	t_list		*list;
 	char		**avs;
@@ -25,10 +25,11 @@ int8_t	append_to_pgrmlist(t_denv *env, t_program *pgrm)
 	return (0);
 }
 
-void		get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict, char *secname)
+void			get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict,
+					char *secname)
 {
-	int 	i;
-	char	*to_split;
+	int 		i;
+	char		*to_split;
 
 	to_split = get_secstring(dict, secname, ":exitcodes");
 	if (to_split == NULL)
@@ -40,14 +41,16 @@ void		get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict, char *secna
 		if (ft_strlen(prog->exitcodes[i]) > 3)
 		{
 			*err = 1;
-			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not in range 0-255\n", secname);
+			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not"
+				" in range 0-255\n", secname);
 			return ;
 		}
 		else if (ft_atoi(prog->exitcodes[i]) > 255
 				|| ft_atoi(prog->exitcodes[i]) < 0)
 		{
 			*err = 1;
-			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not in range 0-255\n", secname);
+			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not"
+				" in range 0-255\n", secname);
 			return ;
 		}
 		++i;
@@ -63,12 +66,13 @@ uint8_t		get_autorestart(uint8_t *error, dictionary *dict, char *secname)
 		return (UNEXPECTED);
 	if (ft_strequ(str, "true") || ft_strequ(str, "TRUE") || ft_strequ(str, "1"))
 		return (TRUE);
-	if (ft_strequ(str, "false") || ft_strequ(str, "FALSE") || ft_strequ(str, "0"))
+	if (ft_strequ(str, "false") || ft_strequ(str, "FALSE")
+		|| ft_strequ(str, "0"))
 		return (FALSE);
 	if (ft_strequ(str, "unexpected") || ft_strequ(str, "UNEXPECTED"))
 		return (UNEXPECTED);
-	dprintf(STDERR_FILENO, "taskmasterd: [%s] - autorestart does not match known instructions:"
-							" TRUE / FALSE / UNEXPECTED\n", secname);
+	dprintf(STDERR_FILENO, "taskmasterd: [%s] - autorestart does not match "
+			"known instructions: TRUE / FALSE / UNEXPECTED\n", secname);
 	*error = 1;
 	return (FALSE);
 }
@@ -89,7 +93,8 @@ uint8_t		get_numprocs(uint8_t *error, dictionary *d, char *name)
 		return (1);
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - numprocs is not in range 1-255: %d\n", name, get);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - numprocs is not in range"
+			" 1-255: %d\n", name, get);
 		*error = 1;
 		return (0);
 	}
@@ -119,7 +124,8 @@ uint8_t		get_startsecs(uint8_t *error, dictionary *d, char *name)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startsecs is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startsecs is not in range:"
+			" 1-255\n", name);
 		*error = 1;
 		return (0);
 	}
@@ -129,13 +135,14 @@ uint8_t		get_startsecs(uint8_t *error, dictionary *d, char *name)
 uint8_t		get_startretries(uint8_t *err, dictionary *d, char *name)
 {
 	int32_t get;
-	
+
 	get = get_secint(d, name, ":startretries", 0);
 	if (get == 0)
 		get = 3;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startretries is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startretries is not in"
+			" range: 1-255\n", name);
 		*err = 1;
 		return (0);
 	}
@@ -145,13 +152,14 @@ uint8_t		get_startretries(uint8_t *err, dictionary *d, char *name)
 uint8_t		get_stopwaitsecs(uint8_t *err, dictionary *d, char *name)
 {
 	int32_t get;
-	
+
 	get = get_secint(d, name, ":stopwaitsecs", 0);
 	if (get == 0)
 		get = 1;
 	if (!is_in_range(get, 1, 255))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stopwaitsecs is not in range: 1-255\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stopwaitsecs is not in "
+			" range: 1-255\n", name);
 		*err = 1;
 		return (0);
 	}
@@ -163,7 +171,8 @@ uint8_t		get_stopsig(uint8_t *err, dictionary *d, char *name)
 	char		*get;
 	int			i;
 	static char	*sigs[] = {"TERM", "HUP","INT", "QUIT", "KILL", "USR1","USR2"};
-	static int	signo[] = {SIGTERM, SIGHUP, SIGINT, SIGQUIT, SIGKILL, SIGUSR1, SIGUSR2};
+	static int	signo[] = {SIGTERM, SIGHUP, SIGINT, SIGQUIT, SIGKILL,
+							SIGUSR1, SIGUSR2};
 
 	get = get_secstring(d, name, ":stopsignal");
 	if (get == NULL)
@@ -191,19 +200,22 @@ int16_t		get_userid(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field cannot"
+			" be blank.\n", name);
 		return (-1);
 	}
 	if (ft_strcheck(get, ft_isdigit) != TRUE)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field must be numeric.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field must be"
+			" numeric.\n", name);
 		return (-1);
 	}
 	if (ft_strlen(get) >= 6 || ft_atoi(get) < 0 || ft_atoi(get) > 16535)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] -  userid is not in range 0-16535\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] -  userid is not in "
+			"range 0-16535\n", name);
 		return (-1);
 	}
 	return (ft_atoi(get));
@@ -219,7 +231,8 @@ char	*get_directory(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - directory field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - directory field "
+			"cannot be blank.\n", name);
 		return (NULL);
 	}
 	return (get);
@@ -234,7 +247,8 @@ uint16_t		get_priority(uint8_t *err, dictionary *d, char *name)
 		get = 999;
 	if (!is_in_range(get, 1, 999))
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - priority is not in range: 1-999\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - priority is not in"
+			" range: 1-999\n", name);
 		*err = 1;
 		return (0);
 	}
@@ -251,7 +265,8 @@ char	*get_stdoutlog(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stdout_logfile field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stdout_logfile field "
+			"cannot be blank.\n", name);
 		return (NULL);
 	}
 	return (get);
@@ -267,7 +282,8 @@ char	*get_stderrlog(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stderr_logfile field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stderr_logfile field "
+			"cannot be blank.\n", name);
 		return (NULL);
 	}
 	return (get);
@@ -283,7 +299,8 @@ char	*get_environement(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - environment field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - environment field cannot "
+			"be blank.\n", name);
 		return (NULL);
 	}
 	return (get);
@@ -299,13 +316,15 @@ mode_t		get_umask(uint8_t *err, dictionary *d, char *name)
 	if (ft_strlen(get) == 0)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [%s] - umask field cannot be blank.\n", name);
+		dprintf(STDERR_FILENO, "taskmasterd: [%s] - umask field cannot "
+			"be blank.\n", name);
 		return (0);
 	}
 	if (ft_strcheck(get, ft_isdigit) != TRUE)
 	{
 		*err = 1;
-		dprintf(STDERR_FILENO, "taskmasterd: [taskmasterd] - umask field must be numeric.\n");
+		dprintf(STDERR_FILENO, "taskmasterd: [taskmasterd] - umask field "
+			"must be numeric.\n");
 	}
 	return ((mode_t)strtol(get, NULL, 8));
 }
@@ -317,12 +336,10 @@ void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 
 	error = 0;
 	ft_memset(&prog, 0, sizeof(t_program));
-
 	prog.name = ft_strsub(secname, 8, ft_strlen(secname) - 8);
-	
 	prog.command =  get_command(&error, dict, secname);
 	prog.numprocs = get_numprocs(&error, dict, secname);
-	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");;
+	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
 	prog.autorestart = get_autorestart(&error, dict, secname);
 	prog.startsecs = get_startsecs(&error, dict, secname);
 	prog.startretries = get_startretries(&error, dict, secname);
@@ -338,7 +355,8 @@ void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
 	prog.umask = get_umask(&error, dict, secname);
 	if (error == 1)
 	{
-		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened while parsing the configuration file.\n");
+		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened "
+			"while parsing the configuration file.\n");
 		exit_routine(E_LOGLVL_ERRO, NULL);
 	}
 	prog.env = NULL;

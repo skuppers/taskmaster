@@ -12,7 +12,7 @@
 
 #include "daemon_taskmaster.h"
 
-char	*get_secstring(dictionary *dict, char *secname, char *key)
+char			*get_secstring(dictionary *dict, char *secname, char *key)
 {
 	t_vector	*buffer;
 	char		*retval;
@@ -24,7 +24,7 @@ char	*get_secstring(dictionary *dict, char *secname, char *key)
 	return (retval);
 }
 
-int8_t	get_secbool(dictionary *dict, char *secname, char *key)
+int8_t			get_secbool(dictionary *dict, char *secname, char *key)
 {
 	t_vector	*buffer;
 	int8_t		retval;
@@ -36,7 +36,8 @@ int8_t	get_secbool(dictionary *dict, char *secname, char *key)
 	return (retval);
 }
 
-int32_t	get_secint(dictionary *dict, char *secname, char *key, int dfl)
+int32_t			get_secint(dictionary *dict, char *secname, char *key,
+					int dfl)
 {
 	t_vector	*buffer;
 	int32_t		retval;
@@ -48,16 +49,16 @@ int32_t	get_secint(dictionary *dict, char *secname, char *key, int dfl)
 	return (retval);
 }
 
-dictionary *load_ini_file(char *str)
+dictionary		*load_ini_file(char *str)
 {
     dictionary	*ini_dict;
 
 	ini_dict = iniparser_load(str);
 	if (ini_dict == NULL)
 	{
-		dprintf(STDERR_FILENO, "Could not read ini file: %s\n", strerror(errno));
+		dprintf(STDERR_FILENO, "Could not read ini file: %s\n",
+				strerror(errno));
 		exit_routine(E_LOGLVL_ERRO, NULL);
 	}
-//	iniparser_dump(ini_dict, stdout);
 	return (ini_dict);
 }

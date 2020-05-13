@@ -45,7 +45,7 @@ int8_t			get_new_bin_path(char **bin, t_vector *path)
 
 	ret = SUCCESS;
 	if (is_rel_or_abs_path(*bin) == FALSE
-		 && bin_validation(*bin) == FAILURE && path != NULL)
+		&& bin_validation(*bin) == FAILURE && path != NULL)
 	{
 		ret = FAILURE;
 		while (ret == FAILURE

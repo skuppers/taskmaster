@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "common.h"
+#include "common.h"
 
-static t_cmd	*fill_arg(t_cmd *cmd, t_vector *trame)
+static t_cmd		*fill_arg(t_cmd *cmd, t_vector *trame)
 {
 	if ((vct_getfirstchar(trame) == STX && vct_getlastchar(trame) != ETX)
 		|| (vct_getfirstchar(trame) != STX && vct_getlastchar(trame) == ETX))
@@ -22,15 +22,14 @@ static t_cmd	*fill_arg(t_cmd *cmd, t_vector *trame)
 	vct_pop(trame);
 	vct_cut(trame);
 	cmd->av = ft_strsplit(vct_getstr(trame), US);
-	cmd->ac = ft_tabsize(cmd->av); 
+	cmd->ac = ft_tabsize(cmd->av);
 	return (cmd);
 }
 
-static int		pre_trame(t_vector *trame)
+static int			pre_trame(t_vector *trame)
 {
 	uint32_t		size;
 
-//	debug_print_bytecode(trame);
 	if (vct_getfirstchar(trame) != SOH || vct_getlastchar(trame) != ENQ)
 	{
 		dprintf(STDERR_FILENO, "Bad encapsulation\n");
@@ -47,7 +46,7 @@ static int		pre_trame(t_vector *trame)
 	return (SUCCESS);
 }
 
-t_vector		*decode_feedback(t_vector *trame)
+t_vector			*decode_feedback(t_vector *trame)
 {
 	if (pre_trame(trame) == FAILURE)
 		return (NULL);
@@ -55,7 +54,7 @@ t_vector		*decode_feedback(t_vector *trame)
 	return (trame);
 }
 
-t_cmd			*decode_cmd(t_vector *trame)
+t_cmd				*decode_cmd(t_vector *trame)
 {
 	static t_cmd	cmd;
 

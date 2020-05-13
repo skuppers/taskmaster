@@ -12,7 +12,7 @@
 
 #include "common.h"
 
-static void	print_other_char(const char c)
+static void		print_other_char(const char c)
 {
 	if (c == '\t' || c == '\n')
 		ft_putstr_fd(c == '\t' ? "\\t" : "\\n", STDERR_FILENO);
@@ -32,7 +32,7 @@ static void	print_other_char(const char c)
 		ft_dprintf(STDERR_FILENO, "\033[30m[0x%.2hhx]\033[32m", c);
 }
 
-void		debug_print_bytecode(t_vector *bytecode)
+void			debug_print_bytecode(t_vector *bytecode)
 {
 	size_t		i;
 	char		c;
@@ -57,8 +57,7 @@ void		debug_print_bytecode(t_vector *bytecode)
 	ft_dprintf(STDERR_FILENO, "\033[0;0m\n");
 }
 
-
-const char *get_keyword(const uint8_t i)
+const char		*get_keyword(const uint8_t i)
 {
 	static const char	*grammar[] = {"add", "avail", "clear", "exit", "fg",
 								"help", "maintail", "open", "pid", "quit",
@@ -69,9 +68,9 @@ const char *get_keyword(const uint8_t i)
 	return (grammar[i]);
 }
 
-void		debug_cmd(t_cmd *cmd)
+void			debug_cmd(t_cmd *cmd)
 {
-	int		i;
+	int			i;
 
 	i = 0;
 	dprintf(STDERR_FILENO, "cmd [%#.2x] (%s) | ocp = %#.2x | ac = %d\n",
