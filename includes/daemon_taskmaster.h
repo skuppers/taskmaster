@@ -197,6 +197,7 @@ void					update_instance_uptime(t_instance *instance);
 void			stop_prog(t_program *program);
 t_vector		*action_add(t_instance *instance, t_program *program);
 t_vector		*action_remove(t_instance *instance, t_program *program);
+t_program		*find_program(const char *name, t_denv *e);
 
 int8_t			is_expected_exitcode(t_program *prg, t_instance *inst);
 

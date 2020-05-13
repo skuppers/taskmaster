@@ -12,15 +12,6 @@
 
 #include "daemon_taskmaster.h"
 
-t_denv				*g_newenv;
-
-t_vector		*action_update(t_instance *in, t_program *prg)
-{
-	(void)in;(void)prg;
-	
-	return (vct_newstr("Updated config file.\n"));
-}
-
 static t_program *get_modified_prog(t_program *old)
 {
 	t_list		*ptr;
@@ -107,22 +98,47 @@ t_vector	*action_update_all(t_instance *i, t_program *p)
 	remove_progs(g_denv, resp);
 	add_progs(g_tmpenv, resp);
 	apply_changes(resp);
-
-	int in = 0;
-	for (t_list *ptr = g_denv->prgm_list; ptr != NULL; ptr = ptr->next)
-	{
-		dprintf(2, "t_list %d : ", in++);
-		t_program *prog = ptr->content;
-		if (prog != NULL)
-			dprintf(2, "prog: %s inst: %d \n", prog->name, prog->numprocs);
-	}
 	return (resp);
+}
+
+t_vector		*action_update(char **av, int ac)
+{
+	t_program	*prg;
+	t_vector	*vct;
+	t_program	*new;
+
+	(void)ac;
+	prg = NULL;
+	vct = vct_newstr("");
+	dprintf(2, "Prog is :%s\n", av[0]);
+	prg = find_program(av[0], g_denv);
+	if (prg == NULL)
+		prg = find_program(av[0], g_tmpenv);
+	if (prg == NULL)
+		return (get_msg(av[1], "not found", ERR_MSG));
+	if (prg->availmode == E_ADDED)
+	{
+		return (action_add(NULL, prg));
+	}
+	else if (prg->availmode == E_REMOVED)
+		return (action_remove(NULL, prg));
+	else if (prg->availmode == E_CHANGED)
+	{
+		new = get_modified_prog(prg);
+		if (new == NULL)
+			vct_addstr(vct, "Could not update prog.\n");
+		new->availmode = E_ADDED;
+		vct_cat(vct, action_remove(NULL, prg));
+		vct_cat(vct, action_add(NULL, new));
+		return (vct);
+	}
+	else
+		return (get_msg(av[0], "no changes", ERR_MSG));
 }
 
 t_vector			*cmd_update(t_cmd *cmd)
 {
 	if (cmd->ocp == 0x01 || cmd->ocp == 0x02)
 		return (action_update_all(NULL, NULL));//exec_action_all_groups(action_update));
-	return (NULL);
-	//return (action_update(cmd->av, cmd->ac));//exec_action_args_group(cmd->av, cmd->ac, action_update, g_denv));
+	return (action_update(cmd->av, cmd->ac));//exec_action_args_group(cmd->av, cmd->ac, action_update, g_denv));
 }

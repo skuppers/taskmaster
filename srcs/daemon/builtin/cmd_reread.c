@@ -264,7 +264,7 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	{
 		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
 	//	if (g_tmpenv->dict != NULL)
-	 //   	free_inifile(g_tmpenv->dict);
+	//   	free_inifile(g_tmpenv->dict);
 		free(g_tmpenv);
 	}
 	tmpenv = malloc(sizeof(t_denv));
