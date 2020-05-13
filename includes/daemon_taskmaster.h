@@ -353,7 +353,8 @@ typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
 
 t_vector	*exec_action_args(char **arg, int ac, t_action to_do);
 t_vector	*exec_action_all(t_action to_do);
-t_vector	*exec_action_args_group(char **arg, int ac, t_action to_do);
+t_vector	*exec_action_args_group(char **arg, int ac,
+				t_action to_do, t_denv *env);
 t_vector	*exec_action_all_group(t_action to_do);
 t_vector	*get_msg(char *name, char *msg, uint8_t flag);
 

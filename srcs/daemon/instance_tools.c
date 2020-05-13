@@ -40,6 +40,7 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 	if (id == 0)
 	{
 		prg->instance = after;
+//		prg->instance->id--;
 		if (to_del != NULL)
 			free(to_del->name);
 		free(to_del);
@@ -108,6 +109,10 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 		return (ERR_STOPPING);
 	if (instance->state == E_STOPPED)
 		return (ERR_STOPPED);
+	if (instance->state == E_EXITED)
+		return (ERR_EXITED);
+	if (instance->state == E_FATAL)
+		return (ERR_FATAL);
 	kill(instance->pid, signo);
 	instance->stop_time = time(NULL);
 	instance->state = E_STOPPING;

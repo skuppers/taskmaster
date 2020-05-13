@@ -49,13 +49,16 @@ t_vector	 *process_instance(t_program *program, uint8_t nb_instance,
 	return (get_msg(arg, "no such process", ERR_MSG));
 } 
 
-t_program *find_program(const char *name)
+t_program *find_program(const char *name, t_denv *e)
 {
 	t_list		*prog_list;
 	t_program	*program;
+	t_denv		*env;
 
-
-	prog_list = g_denv->prgm_list;
+	env = g_denv;
+	if (e != NULL)
+		env = e;
+	prog_list = env->prgm_list;
 	while (prog_list != NULL)
 	{
 		program = (t_program *)prog_list->content;
@@ -97,7 +100,7 @@ t_vector	*exec_one_arg(char *arg, t_action to_do)
 	vct = NULL;
 	if (name != NULL)
 	{
-		prog = find_program(name);
+		prog = find_program(name, NULL);
 		nb = arg + ft_strlen(name) + 1;
 		if (nb != NULL && prog != NULL)
 		{
@@ -147,6 +150,7 @@ t_vector	*exec_action_all(t_action to_do)
 		program = (t_program *)prog_list->content;
 		if (program != NULL)
 		{
+			
 			instance = program->instance;
 			while (instance != NULL)
 			{
@@ -184,7 +188,8 @@ t_vector	*exec_action_all_group(t_action to_do)
 	return (output);
 }
 
-t_vector	*exec_action_args_group(char **arg, int ac, t_action to_do)
+t_vector	*exec_action_args_group(char **arg, int ac,
+				t_action to_do, t_denv *env)
 {
 	t_program	*program;
 	t_vector	*output;
@@ -195,7 +200,7 @@ t_vector	*exec_action_args_group(char **arg, int ac, t_action to_do)
 	output = vct_new(0);
 	while (i < ac)
 	{
-		program = find_program(arg[i]);
+		program = find_program(arg[i], env);
 		if (program != NULL)
 			vct = to_do(NULL, program);
 		else
