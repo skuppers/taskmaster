@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 12:44:03 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 18:18:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,4 +361,5 @@ t_vector	*exec_action_args_group(char **arg, int ac,
 t_vector	*exec_action_all_group(t_action to_do);
 t_vector	*get_msg(char *name, char *msg, uint8_t flag);
 
+t_vector	*reread_file(t_instance *in, t_program *prg);
 # endif

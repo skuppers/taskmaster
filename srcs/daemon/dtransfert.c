@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 15:40:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/13 18:27:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,10 @@ void	my_select(fd_set *recv_set)
 	tv.tv_sec = 1;
 	tv.tv_usec = 0;
 	if (select(DFL_FD_SETSIZE, recv_set, NULL, NULL, &tv) < 0)
-		exit_routine(E_LOGLVL_CRIT, strerror(errno));
+	{
+		if (errno != EINTR)
+			exit_routine(E_LOGLVL_CRIT, strerror(errno));
+	}
 }
 
 void listen_for_data(t_denv *env)
