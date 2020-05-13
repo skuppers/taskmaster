@@ -38,8 +38,7 @@ void			del_prgm(void *node, size_t content_size)
 	{
 		ft_lstdel(&((t_program *)node)->env, free_env);
 		ft_strdel(&((t_program *)node)->name);
-		if (((t_program *)node)->instance != NULL)
-			clear_instances(((t_program *)node)->instance);
+		stop_prog((t_program *)node);
 		ft_free_tab_str(((t_program *)node)->avs);
 		ft_free_tab_str(((t_program *)node)->exitcodes	);
 	}

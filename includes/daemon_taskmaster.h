@@ -194,7 +194,7 @@ void    				launch_jobs(t_denv *env);
 int     				child_process(t_program *prog, t_instance *instance, t_list *env);
 int8_t					waiter(t_denv *env);
 void					update_instance_uptime(t_instance *instance);
-
+void	stop_prog(t_program *program);
 
 int8_t			is_expected_exitcode(t_program *prg, t_instance *inst);
 

@@ -118,3 +118,18 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 	instance->state = E_STOPPING;
 	return (SUCCESS);
 }
+
+void	stop_prog(t_program *program)
+{
+	t_instance	*ptr;
+	t_instance	*next;
+
+	ptr = program->instance;
+	while (ptr != NULL)
+	{
+		next = ptr->next;
+		stop_instance(program, ptr, SIGTERM);
+		del_instance(program, 0);
+		ptr = next;
+	}
+}

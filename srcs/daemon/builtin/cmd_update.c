@@ -39,6 +39,6 @@ t_vector	*action_update(t_instance *instance, t_program *program)
 t_vector			*cmd_update(t_cmd *cmd)
 {
 	//if (cmd->ocp == 0x01 || cmd->ocp == 0x02)
-		//return (exec_action_all_groups(action_update));
-	return (NULL);//exec_action_args_group(cmd->av, cmd->ac, action_update));
+	//	return (exec_action_all_groups(action_update));
+	return (exec_action_args_group(cmd->av, cmd->ac, action_update, g_denv));
 }

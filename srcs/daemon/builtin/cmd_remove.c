@@ -12,20 +12,7 @@
 
 #include "daemon_taskmaster.h"
 
-static void	stop_prog(t_program *program)
-{
-	t_instance	*ptr;
-	t_instance	*next;
 
-	ptr = program->instance;
-	while (ptr != NULL)
-	{
-		next = ptr->next;
-		stop_instance(program, ptr, SIGTERM);
-		del_instance(program, 0);
-		ptr = next;
-	}
-}
 
 static void	del_prog(void *d)
 {
