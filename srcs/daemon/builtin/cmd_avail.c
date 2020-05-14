@@ -23,8 +23,8 @@ static void			print_instance_avail(t_vector *msg, t_program *p,
 	{
 		tmp = ft_asprintf("%s:%d\t\t\t%s\t%s\t%d\n",
 							p->name, in->id, state,
-							(p->autostart == 1) ? "auto" : "prout",
-							p->userid);
+							(p->autostart == 1) ? "auto" : "manual",
+							(p->userid == -1) ? getuid() : p->userid);
 		vct_addstr(msg, tmp);
 		in = in->next;
 	}

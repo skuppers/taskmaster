@@ -106,7 +106,6 @@ static void		terminate_instance(t_program *prog, t_instance *instance,
 			else if (instance->state == E_STARTING)
 				tlog(E_LOGLVL_INFO, "instance %s starting...\n",
 					instance->name, get_instance_state(instance));
-			//// else 	ERROR ? 
 		}
 	}
 }

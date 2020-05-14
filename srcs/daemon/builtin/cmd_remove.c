@@ -26,10 +26,16 @@ static void	del_prog(void *d)
 
 t_vector	*action_remove(t_instance *instance, t_program *program)
 {
+	char		*tmp;
+	t_vector	*msg;
+
 	(void)instance;
+	tmp = ft_asprintf("%s", program->name);
 	stop_prog(program);
 	ft_lstdelnode(&g_denv->prgm_list, program, del_prog);
-	return (get_msg("program", "disappeared", INFO_MSG));
+	msg = get_msg(tmp, "disappeared", INFO_MSG);
+	ft_strdel(&tmp);
+	return (msg);
 }
 
 t_vector	*cmd_remove(t_cmd *cmd)
