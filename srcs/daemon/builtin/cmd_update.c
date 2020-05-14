@@ -112,7 +112,7 @@ t_vector		*action_update(char **av, int ac)
 	(void)ac;
 	prg = NULL;
 	vct = vct_newstr("");
-	dprintf(2, "Prog is :%s\n", av[0]);
+//	dprintf(2, "Prog is :%s\n", av[0]);
 	prg = find_program(av[0], g_denv);
 	if (prg == NULL)
 		prg = find_program(av[0], g_tmpenv);

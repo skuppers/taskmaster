@@ -23,9 +23,12 @@ t_vector	*action_start(t_instance *instance, t_program *program)
 	old_state = instance->state;
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
-		while (instance->state == old_state
-				|| instance->state == E_STARTING)
+		
+		while ((instance->state == old_state
+				|| instance->state == E_STARTING) && instance->state != E_FATAL)
+		{
 			waiter();
+		}
 		return (get_msg(instance->name, "started", INFO_MSG));
 	}
 	return (get_msg(instance->name, "start-up error", ERR_MSG));

@@ -84,6 +84,7 @@ void			check_instance(t_program *prog, t_instance *instance)
 static void		terminate_instance(t_program *prog, t_instance *instance,
 					int status)
 {
+	
 	if (WIFSTOPPED(status))
 		reinit(instance, E_STOPPED, NO_RESET, 0); // Ecriture sur terminal ? tcsetpgrp()
 	else if (WIFCONTINUED(status))
@@ -107,6 +108,11 @@ static void		terminate_instance(t_program *prog, t_instance *instance,
 				tlog(E_LOGLVL_INFO, "instance %s starting...\n",
 					instance->name, get_instance_state(instance));
 			//// else 	ERROR ? 
+			else
+			{
+				dprintf(2, "Condition: %s %s\n", prog->name, get_instance_state(instance));
+			}
+			
 		}
 	}
 }
@@ -138,4 +144,5 @@ void			waiter(void)
 		}
 		list_ptr = list_ptr->next;
 	}
+//	dprintf(2, "End of Waiter\n");
 }
