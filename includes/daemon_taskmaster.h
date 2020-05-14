@@ -87,25 +87,25 @@ typedef struct			s_program
 {
 	mode_t					umask;
 	uint16_t				priority;
-	uint8_t					startsecs;			// Done
-	uint8_t					stopwaitsecs;		// TODO: SIGCHLD
+	uint8_t					startsecs;			
+	uint8_t					stopwaitsecs;	
 
-	char					*name;					// [program.name]
-	char					*command;				// command=/usr/bin/cat syslog
-	char					*bin;					// /usr/bin/cat
-	char					**avs;					// [1] syslog
+	char					*name;		
+	char					*command;			
+	char					*bin;			
+	char					**avs;		
 	
 	int16_t					userid;	
 	uint8_t					availmode;
 	char	padd[5];			
 	char					*directory;
-	char					*stdout_logfile;		// should be done
-	char					*stderr_logfile;		// should be done
+	char					*stdout_logfile;
+	char					*stderr_logfile;
 
-	uint8_t					numprocs;			// Done
-	uint8_t					stopsignal;			// Done
-	uint8_t					autostart;			// Done
-	uint8_t					startretries; // START-retries (not reached running state)
+	uint8_t					numprocs;	
+	uint8_t					stopsignal;	
+	uint8_t					autostart;	
+	uint8_t					startretries;
 	
 	uint16_t				pgid;
 	uint8_t					autorestart;
@@ -114,7 +114,7 @@ typedef struct			s_program
 
 	char					*environ;	
 	t_list					*env;
-	t_instance				*instance;				// Simple list
+	t_instance				*instance;
 	char					**exitcodes;
 }							t_program;
 
@@ -256,7 +256,7 @@ void 				listen_for_data(void);
 # define OPT_NODAEMON			0x002
 # define OPT_VERSION			0x004
 
-# define OPT_CONFIG				0x008 // Omit
+# define OPT_CONFIG				0x008
 # define OPT_USER				0x010
 # define OPT_DIRECTORY			0x020
 # define OPT_LOGFILE			0x040

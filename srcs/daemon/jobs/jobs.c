@@ -44,12 +44,12 @@ static void	launch_instance(t_program *prog, uint16_t inst_nb)
 	t_instance	*inst;
 	int			launch_success;
 
-	inst = new_instance(inst_nb, prog->name); // create instance meta
-	if (inst == NULL) // create instance meta
+	inst = new_instance(inst_nb, prog->name);
+	if (inst == NULL)
 		tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
 	else
 	{
-		add_instance(prog, inst);		//add instance to program_list
+		add_instance(prog, inst);
 		if (prog->autostart == TRUE)
 		{
 			launch_success = start_instance(prog, inst_nb, g_denv->environ);

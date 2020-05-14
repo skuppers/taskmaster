@@ -25,7 +25,6 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 	if (id == 0)
 	{
 		prg->instance = after;
-//		prg->instance->id--;
 		if (to_del != NULL)
 			free(to_del->name);
 		free(to_del);
@@ -38,7 +37,7 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 			free(to_del->name);
 		free(to_del);
 	}
-	return (SUCCESS); //TODO: Recalc ID
+	return (SUCCESS);
 }
 
 char		*get_instance_state(t_instance *instance)

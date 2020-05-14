@@ -30,7 +30,6 @@ static void	aggregate_std(t_program *pg, t_instance *in, const int fd)
 		asp = ft_asprintf("%s%d", logfile, in->id);
 	if (asp != NULL)
 	{
-		// tlog(E_LOGLVL_INFO, "Creating %s\n", asp);
 		stdfile = fopen(asp, "a+");
 		ft_strdel(&asp);
 		if (stdfile == NULL)

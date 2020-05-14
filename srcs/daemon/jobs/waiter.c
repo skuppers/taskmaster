@@ -85,23 +85,23 @@ static void		terminate_instance(t_program *prog, t_instance *instance,
 					int status)
 {
 	if (WIFSTOPPED(status))
-		reinit(instance, E_STOPPED, NO_RESET, 0); // Ecriture sur terminal ? tcsetpgrp()
+		reinit(instance, E_STOPPED, NO_RESET, 0);
 	else if (WIFCONTINUED(status))
 		reinit(instance, E_RUNNING, NO_RESET, 0);
 	else
 	{
-		if (instance->uptime < prog->startsecs) // Crash avant running state
+		if (instance->uptime < prog->startsecs)
 		{
 			if (instance->backoff >= prog->startretries)
 				reinit(instance, E_FATAL, FULL_RESET, 0);
 			else
 				reinit(instance, E_BACKOFF, INC_BACKOFF, 0);
 		}
-		else // was in RUNNING state
+		else
 		{
-			if (instance->state == E_STOPPING) // stopped by user dont restart
-				reinit(instance, E_STOPPED, FULL_RESET, 0); // SIGCHLD proper way
-			else if (instance->state == E_RUNNING) // Exited self
+			if (instance->state == E_STOPPING)
+				reinit(instance, E_STOPPED, FULL_RESET, 0);
+			else if (instance->state == E_RUNNING)
 				reinit(instance, E_EXITED, FULL_RESET, WEXITSTATUS(status));
 			else if (instance->state == E_STARTING)
 				tlog(E_LOGLVL_INFO, "instance %s starting...\n",
@@ -118,7 +118,7 @@ void			waiter(void)
 	int			status;
 
 	list_ptr = g_denv->prgm_list;
-	while (list_ptr != NULL) // Check all programs
+	while (list_ptr != NULL)
 	{
 		prog = list_ptr->content;
 		instance = prog->instance;
@@ -129,7 +129,7 @@ void			waiter(void)
 			if (instance->state != E_STOPPED && instance->state != E_FATAL
 					&& instance->state != E_EXITED
 					&& instance->state != E_BACKOFF)
-				if (waitpid(instance->pid, &status,    // if imbriqué ???
+				if (waitpid(instance->pid, &status,
 						WNOHANG | WUNTRACED | WCONTINUED))
 					terminate_instance(prog, instance, status);
 			check_instance(prog, instance);
