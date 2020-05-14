@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 11:18:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:32:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@
 # include <sys/socket.h>
 
 /*
-**
-**					---	---	TRAME SEQUENCE --- ---
+** 					---	---	TRAME SEQUENCE --- ---
 ** SOH size (cmd + 128) [(ocp + 128)] [STX arg [US] [...]] ETX] ENQ (+ EOT)
 ** ``` ```` ```````````                                         ``` ```````
 **
@@ -36,9 +35,7 @@
 ** ENQ  -> End of Line
 ** US   -> Unit Separator
 ** size -> size of trame without EOT
-**
 */
-
 
 /*
 *** exit_routine define
@@ -114,25 +111,26 @@ typedef struct		s_cmd
 	char			pad[4];
 }					t_cmd;
 
-void		debug_print_bytecode(t_vector *bytecode);
-const char *get_keyword(const uint8_t i);
-void		debug_cmd(t_cmd *cmd);
-t_cmd		*decode_cmd(t_vector *trame);
-t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
-t_vector	*generate_bytecode(t_cmd *cmd, int ocp);
-t_vector	*generate_feedback(t_vector *input);
-t_vector	*decode_feedback(t_vector *trame);
+void				debug_print_bytecode(t_vector *bytecode);
+const char			*get_keyword(const uint8_t i);
+void				debug_cmd(t_cmd *cmd);
+t_cmd				*decode_cmd(t_vector *trame);
+t_cmd				*get_cmd_struct(enum e_cmd_type type, t_vector *arg);
+t_vector			*generate_bytecode(t_cmd *cmd, int ocp);
+t_vector			*generate_feedback(t_vector *input);
+t_vector			*decode_feedback(t_vector *trame);
 
-
-/********************** LOGGER ********************/
+/*
+********************* LOGGER *****************
+*/
 
 # define TO_LOG						0
 # define TO_PRINT					1
 
-typedef	int	(*t_print)(int, const char *, ...);
+typedef	int			(*t_print)(int, const char *, ...);
 
-int8_t		try_to_send_trame(const int fd, t_vector *trame, const uint8_t flag,
-				t_print f);
+int8_t				try_to_send_trame(const int fd, t_vector *trame,
+						const uint8_t flag, t_print f);
 
 enum	e_loglvl
 {
@@ -143,8 +141,8 @@ enum	e_loglvl
 	E_LOGLVL_CRIT
 };
 
-void		init_log(void);
-int			tlog(int loglvl, const char *message, ...);
+void				init_log(void);
+int					tlog(int loglvl, const char *message, ...);
 
 # define TIMEBUFFERSZ			64
 
@@ -161,11 +159,9 @@ int			tlog(int loglvl, const char *message, ...);
 # define LOGLVL_CRIT		"critical"
 
 /*
-**
 *********** PATH TOOLS
-**
 */
 
-int8_t			get_new_bin_path(char **bin, t_vector *path);
+int8_t				get_new_bin_path(char **bin, t_vector *path);
 
 #endif

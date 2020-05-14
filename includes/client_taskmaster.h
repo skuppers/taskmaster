@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 18:27:09 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:28:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,11 @@ struct						s_env
 	t_vector				*cur_line;
 	uint64_t				ak_masks[AK_AMOUNT];
 	t_actionkeys			actionkeys[AK_AMOUNT];
-
 	uint32_t				cursoridx;
 	uint16_t				cursorx;
 	uint16_t				cursory;
-
-	unsigned short int 	winwid;
-	unsigned short int	winhei;
+	unsigned short int		winwid;
+	unsigned short int		winhei;
 
 	volatile sig_atomic_t	sigint;
 	volatile sig_atomic_t	sigpipe;
@@ -195,24 +193,26 @@ enum						e_action_keys
 	AK_TABULATION
 };
 
-int					tsk_readline(t_vector *vct, const int fd, t_env *env);
-void				assign_keycodes(void);
-void				link_keys_functions(t_actionkeys actionkeys[AK_AMOUNT]);
-void				update_winsize(t_env *env);
-void				dec_x(t_env *env, int goup);
-void				inc_x(t_env *env, int godown);
-void				calc_after_totalprint(t_env *env, t_vector *vct);
-void				handle_actionkey(t_env *env, char c[BUFF_SIZE],
-						t_vector *vct);
-uint64_t			compute_mask(char c[BUFF_SIZE]);
-int					print_prompt(t_env *env);
-int					tsk_readline(t_vector *vct,
-							const int fd, t_env *env);
-void				pinc_x(t_env *env);
-int8_t				handle_signal(t_env *env, t_vector *vct);
-int8_t				signal_catched(t_env *env);
-int8_t  			putchar_in_vct(t_env *env, t_vector *dest, char *src,
-						size_t size);
+int							tsk_readline(t_vector *vct, const int fd,
+								t_env *env);
+void						assign_keycodes(void);
+void						link_keys_functions(
+								t_actionkeys actionkeys[AK_AMOUNT]);
+void						update_winsize(t_env *env);
+void						dec_x(t_env *env, int goup);
+void						inc_x(t_env *env, int godown);
+void						calc_after_totalprint(t_env *env, t_vector *vct);
+void						handle_actionkey(t_env *env, char c[BUFF_SIZE],
+								t_vector *vct);
+uint64_t					compute_mask(char c[BUFF_SIZE]);
+int							print_prompt(t_env *env);
+int							tsk_readline(t_vector *vct,
+								const int fd, t_env *env);
+void						pinc_x(t_env *env);
+int8_t						handle_signal(t_env *env, t_vector *vct);
+int8_t						signal_catched(t_env *env);
+int8_t						putchar_in_vct(t_env *env, t_vector *dest,
+								char *src, size_t size);
 
 /*
 *** Action Key
@@ -308,7 +308,7 @@ enum	e_comp_type
 	NO_COMP,
 	CMD_COMP,
 	INSTANCE_COMP,
-	PROG_COMP	
+	PROG_COMP
 };
 
 int8_t						completion(t_vector *vct);

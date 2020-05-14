@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:16:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:32:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # include "iniparser.h"
 # include "common.h"
 # include <assert.h>
+
 # ifndef _GNU_SOURCE
 #	define _GNU_SOURCE 1
 # endif
@@ -71,15 +72,13 @@ typedef struct			s_instance
 	time_t				start_time;
 	time_t				stop_time;
 	time_t				uptime;
-
 	int32_t				exitcode;
 	pid_t				pid;
 	uint16_t			id;
 	uint8_t				state;
 	uint8_t				backoff;
-	char pad[4];
+	char				pad[4];
 	char				*name;
-	
 	struct s_instance	*next;
 }						t_instance;
 
