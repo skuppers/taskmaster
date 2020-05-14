@@ -145,6 +145,7 @@ PATH_DAEMON_SRCS += srcs/daemon/env_var/
 PATH_DAEMON_SRCS += srcs/daemon/exit/
 PATH_DAEMON_SRCS += srcs/daemon/init/
 PATH_DAEMON_SRCS += srcs/daemon/init/iniparser/
+PATH_DAEMON_SRCS += srcs/daemon/init/iniparser/getter/
 PATH_DAEMON_SRCS += srcs/daemon/jobs/
 PATH_DAEMON_SRCS += srcs/daemon/log/
 PATH_DAEMON_SRCS += srcs/daemon/transfert/
@@ -267,6 +268,9 @@ DAEMON_SRCS += daemon_signals.c
 DAEMON_SRCS += defaults.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += iniparser_tools.c
+DAEMON_SRCS += get1.c
+DAEMON_SRCS += get2.c
+DAEMON_SRCS += get3.c
 #Jobs
 DAEMON_SRCS += jobs.c
 DAEMON_SRCS += child.c
