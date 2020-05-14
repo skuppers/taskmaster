@@ -20,8 +20,8 @@ t_vector	*action_start(t_instance *instance, t_program *program)
 		return (get_msg(instance->name, "already started", ERR_MSG));
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
-		while (instance->state == E_STARTING)
-			waiter();
+		if (instance->state == E_STARTING)
+			instance_waiter(program, instance);
 		if (instance->state == E_FATAL || instance->state == E_BACKOFF)
 			return (get_msg(instance->name, "spawn error", ERR_MSG));
 		return (get_msg(instance->name, "started", INFO_MSG));

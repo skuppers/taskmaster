@@ -14,17 +14,14 @@
 
 t_vector	*action_stop(t_instance *instance, t_program *program)
 {
-	enum e_prg_state	old_state;
-
 	if (instance == NULL || program == NULL)
 		return (NULL);
 	if (instance->state != E_RUNNING && instance->state != E_STARTING)
 		return (get_msg(instance->name, "already stopped", ERR_MSG));
-	old_state = instance->state;
 	if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
 	{
-		while (instance->state == old_state || instance->state == E_STOPPING)
-			waiter();
+		while (instance->state == E_STOPPING)
+			instance_waiter(program, instance);
 		return (get_msg(instance->name, "stopped", INFO_MSG));
 	}
 	return (get_msg(instance->name, "unknown error", ERR_MSG));

@@ -14,24 +14,18 @@
 
 t_vector	*action_restart(t_instance *instance, t_program *program)
 {
-	enum e_prg_state	old_state;
-
 	if (instance == NULL || program == NULL)
 		return (NULL);
-	old_state = instance->state;
 	if (instance->state == E_RUNNING || instance->state == E_STARTING)
 	{
 		if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
-		{
-			while (instance->state == old_state
-					|| instance->state == E_STOPPING)
-				waiter();
-		}
+			while (instance->state == E_STOPPING)
+				instance_waiter(program, instance);
 	}
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
-		while (instance->state == E_STARTING)
-			waiter();
+		if (instance->state == E_STARTING)
+			instance_waiter(program, instance);
 		if (instance->state == E_FATAL || instance->state == E_BACKOFF)
 			return (get_msg(instance->name, "spawn error", ERR_MSG));
 	}

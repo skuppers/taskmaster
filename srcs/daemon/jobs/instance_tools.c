@@ -96,18 +96,14 @@ void		stop_prog(t_program *program)
 {
 	t_instance			*ptr;
 	t_instance			*next;
-	enum e_prg_state	old_state;
 
 	ptr = program->instance;
 	while (ptr != NULL)
 	{
 		next = ptr->next;
-		old_state = ptr->state;
 		if (stop_instance(program, ptr, program->stopsignal) == SUCCESS)
-		{
-			while (ptr->state == old_state || ptr->state == E_STOPPING)
+			while (ptr->state == E_STOPPING)
 				waiter();
-		}
 		del_instance(program, 0);
 		ptr = next;
 	}

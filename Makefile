@@ -281,6 +281,7 @@ DAEMON_SRCS += child.c
 DAEMON_SRCS += waiter.c
 DAEMON_SRCS += instance_utils.c
 DAEMON_SRCS += instance_tools.c
+DAEMON_SRCS += log_instance.c
 #Log
 DAEMON_SRCS += print_starting_debug.c
 DAEMON_SRCS += log.c

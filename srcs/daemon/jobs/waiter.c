@@ -12,26 +12,6 @@
 
 #include "daemon_taskmaster.h"
 
-static void		log_state_information(t_instance *instance)
-{
-	if (instance->state == E_EXITED)
-		tlog(E_LOGLVL_INFO, "==> Instance %s exited with code %d\n",
-			instance->name, instance->exitcode);
-	else if (instance->state == E_BACKOFF || instance->state == E_STARTING)
-		tlog(E_LOGLVL_INFO, "Instance %s with pid %d entered %s state.\n",
-				instance->name, instance->pid, get_instance_state(instance));
-	else if (instance->state == E_STOPPED)
-		tlog(E_LOGLVL_INFO, "Instance %s %s by forced exit\n",
-				instance->name, get_instance_state(instance));
-	else if (instance->state == E_RUNNING)
-		tlog(E_LOGLVL_INFO,
-				"Instance %s entered %s state after %d secs\n",
-				instance->name, STATE_RUNNING, instance->uptime);
-	else if (instance->state == E_FATAL)
-		tlog(E_LOGLVL_INFO,
-				"=====> Instance %s entered FATAL state.\n", instance->name);
-}
-
 static void		reinit(t_instance *instance, enum e_prg_state new_state,
 					uint8_t flag, int exit_code)
 {
@@ -112,12 +92,26 @@ static void		terminate_instance(t_program *prog, t_instance *instance,
 	}
 }
 
+void 			instance_waiter(t_program *prog, t_instance *instance)
+{
+	int 		status;
+
+	status = 0;
+	update_instance_uptime(instance);
+	check_instance(prog, instance);
+	if (instance->state == E_STARTING || instance->state == E_RUNNING
+			|| instance->state == E_STOPPING)
+		if (waitpid(instance->pid, &status,
+				WNOHANG | WUNTRACED | WCONTINUED))
+			terminate_instance(prog, instance, status);
+	
+}
+
 void			waiter(void)
 {
 	t_list		*list_ptr;
 	t_program	*prog;
 	t_instance	*instance;
-	int			status;
 
 	list_ptr = g_denv->prgm_list;
 	while (list_ptr != NULL)
@@ -126,14 +120,7 @@ void			waiter(void)
 		instance = prog->instance;
 		while (instance != NULL)
 		{
-			status = 0;
-			update_instance_uptime(instance);
-			if (instance->state == E_STARTING || instance->state == E_RUNNING
-					|| instance->state == E_STOPPING)
-				if (waitpid(instance->pid, &status,
-						WNOHANG | WUNTRACED | WCONTINUED))
-					terminate_instance(prog, instance, status);
-			check_instance(prog, instance);
+			instance_waiter(prog, instance);
 			instance = instance->next;
 		}
 		list_ptr = list_ptr->next;

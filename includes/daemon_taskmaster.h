@@ -188,6 +188,8 @@ enum	e_avail_state
 	E_CHANGED
 };
 
+void						log_state_information(t_instance *instance);
+void 						instance_waiter(t_program *prog, t_instance *instance);
 t_instance					*new_instance(uint8_t id, char *prog_name);
 int8_t						del_instance(t_program *prg, uint8_t id);
 int8_t						add_instance(t_program *prg, t_instance *inst);
