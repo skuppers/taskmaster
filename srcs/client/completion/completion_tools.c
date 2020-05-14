@@ -6,11 +6,22 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 19:10:12 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 02:44:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:26:52 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+bool			is_node_uniq(t_list *lst, char *name)
+{
+	while (lst != NULL)
+	{
+		if (ft_strequ((char *)(lst->content), name) == true)
+			return (false);
+		lst = lst->next;
+	}
+	return (true);
+}
 
 void			del_completion_list(void *mem, size_t content_size)
 {

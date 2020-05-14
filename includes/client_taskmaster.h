@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 22:47:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:27:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -312,6 +312,7 @@ enum	e_comp_type
 };
 
 int8_t						completion(t_vector *vct);
+bool						is_node_uniq(t_list *lst, char *name);
 int8_t						print_completion(t_list *list);
 size_t						get_max_len(const size_t len, const uint8_t flag);
 void						del_completion_list(void *mem, size_t content_size);

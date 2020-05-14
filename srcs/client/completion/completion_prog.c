@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/11 19:04:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 02:45:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:27:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ static void		fill_prog_name(t_list **list, char *last_word,
 {
 	if (ft_strlen(last_word) == 0 || ft_strnequ(last_word, vct_getstr(vct),
 						ft_strlen(last_word)) == true)
-		lst_add_node(list, vct_getstr(vct));
+		if (is_node_uniq(*list, vct_getstr(vct)) == true)
+			lst_add_node(list, vct_getstr(vct));
 }
 
 static void		fill_instance_name(t_list **list, char *last_word,
@@ -34,7 +35,8 @@ static void		fill_instance_name(t_list **list, char *last_word,
 		{
 			if (ft_strlen(last_word) == 0 || ft_strnequ(last_word, tab[i],
 							ft_strlen(last_word)) == true)
-				lst_add_node(list, tab[i]);
+				if (is_node_uniq(*list, tab[i]) == true)
+					lst_add_node(list, tab[i]);
 			i++;
 		}
 	}

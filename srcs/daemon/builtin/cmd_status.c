@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:08:53 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:14:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_vector			*action_status(t_instance *instance, t_program *program)
 t_vector			*cmd_status(t_cmd *cmd)
 {
 	t_vector	*vct;
+	t_vector	*tmp;
 
 	vct = NULL;
 	if (cmd->ocp == 0x01)
@@ -78,7 +79,14 @@ t_vector			*cmd_status(t_cmd *cmd)
 	else if (cmd->ocp == 0x02)
 		vct = exec_action_args(cmd->av, cmd->ac, action_status);
 	else if (cmd->ocp == 0x03)
-		vct = progs_info(g_tmpenv == NULL
-				? g_denv->prgm_list : g_tmpenv->prgm_list);
+	{
+		vct = progs_info(g_denv->prgm_list);
+		if (g_tmpenv != NULL)
+		{
+			tmp = progs_info(g_tmpenv->prgm_list);
+			vct_cat(vct, tmp);
+			vct_del(&tmp);
+		}
+	}
 	return (vct);
 }
