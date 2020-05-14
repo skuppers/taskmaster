@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:29:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 13:12:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:49:19 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_vector	*process_clear(t_instance *instance, t_program *program, int fd)
 	return (vct);
 }
 
-
 t_vector	*action_clear(t_instance *instance, t_program *program)
 {
 	t_vector	*vct;
@@ -53,7 +52,7 @@ t_vector	*action_clear(t_instance *instance, t_program *program)
 	return (output);
 }
 
-t_vector			*cmd_clear(t_cmd *cmd)
+t_vector	*cmd_clear(t_cmd *cmd)
 {
 	t_vector	*vct;
 

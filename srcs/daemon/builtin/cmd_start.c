@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:21:02 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:17:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:12:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,24 @@
 
 t_vector	*action_start(t_instance *instance, t_program *program)
 {
-	enum	e_prg_state old_state;
+	enum e_prg_state	old_state;
 
-	if (instance != NULL && program != NULL)
+	if (instance == NULL || program == NULL)
+		return (NULL);
+	if (instance->state == E_RUNNING || instance->state == E_STARTING)
+		return (get_msg(instance->name, "already started", ERR_MSG));
+	old_state = instance->state;
+	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
-		if (instance->state == E_RUNNING || instance->state == E_STARTING)
-			return (get_msg(instance->name, "already started", ERR_MSG));
-		old_state = instance->state;
-		if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
-		{
-			while (instance->state == old_state
-					|| instance->state == E_STARTING)
-				waiter();
-			return (get_msg(instance->name, "started", INFO_MSG));
-		}
+		while (instance->state == old_state
+				|| instance->state == E_STARTING)
+			waiter();
+		return (get_msg(instance->name, "started", INFO_MSG));
 	}
-	return (get_msg(instance == NULL ? "???" : instance->name,
-			"start-up error", ERR_MSG));
+	return (get_msg(instance->name, "start-up error", ERR_MSG));
 }
 
-t_vector			*cmd_start(t_cmd *cmd)
+t_vector	*cmd_start(t_cmd *cmd)
 {
 	t_vector	*vct;
 

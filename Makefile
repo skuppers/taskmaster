@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/14 14:40:38 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/14 16:18:13 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -232,6 +232,7 @@ DAEMON_SRCS += cmd_stop.c
 DAEMON_SRCS += cmd_start.c
 DAEMON_SRCS += cmd_restart.c
 DAEMON_SRCS += cmd_status.c
+DAEMON_SRCS += cmd_status_completion.c
 DAEMON_SRCS += cmd_maintail.c
 DAEMON_SRCS += cmd_tail.c
 DAEMON_SRCS += cmd_add.c
@@ -247,6 +248,7 @@ DAEMON_SRCS += cmd_shutdown.c
 DAEMON_SRCS += cmd_update.c
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += getter.c
+DAEMON_SRCS += getter_tools.c
 #Env_var
 DAEMON_SRCS += env_var_manager.c
 DAEMON_SRCS += env_var_free.c

@@ -6,16 +6,16 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:31:13 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 23:29:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:50:14 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-t_vector	*action_pid(t_instance *instance, t_program *program)
+t_vector		*action_pid(t_instance *instance, t_program *program)
 {
-	t_vector *vct;
-	char	*str;
+	t_vector	*vct;
+	char		*str;
 
 	vct = NULL;
 	if (instance != NULL && program != NULL)
@@ -31,7 +31,7 @@ t_vector	*action_pid(t_instance *instance, t_program *program)
 			"unknow error", ERR_MSG));
 }
 
-t_vector			*cmd_pid(t_cmd *cmd)
+t_vector		*cmd_pid(t_cmd *cmd)
 {
 	t_vector	*vct;
 	char		*str;
@@ -43,7 +43,7 @@ t_vector			*cmd_pid(t_cmd *cmd)
 		vct = vct_newstr(str);
 		ft_strdel(&str);
 	}
-	else if(cmd->ocp == 0x02)
+	else if (cmd->ocp == 0x02)
 		vct = exec_action_all(action_pid);
 	else if (cmd->ocp == 0x03)
 		vct = exec_action_args(cmd->av, cmd->ac, action_pid);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:21:46 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:17:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:52:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,31 @@
 
 t_vector	*action_restart(t_instance *instance, t_program *program)
 {
-	enum	e_prg_state old_state;
+	enum e_prg_state	old_state;
 
-	if (instance != NULL && program != NULL)
+	if (instance == NULL || program == NULL)
+		return (NULL);
+	old_state = instance->state;
+	if (instance->state == E_RUNNING || instance->state == E_STARTING)
 	{
-		old_state = instance->state;
-		if (instance->state == E_RUNNING || instance->state == E_STARTING)
-		{
-			if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
-			{
-				while (instance->state == old_state
-						|| instance->state == E_STOPPING)
-					waiter();
-			}
-		}
-		old_state = instance->state;
-		if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
+		if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
 		{
 			while (instance->state == old_state
-					|| instance->state == E_STARTING)
+					|| instance->state == E_STOPPING)
 				waiter();
 		}
-		return (get_msg(instance->name, "restarted", INFO_MSG));
 	}
-	return (get_msg(instance == NULL ? "???" : instance->name,
-			"start-up error", ERR_MSG));
+	old_state = instance->state;
+	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
+	{
+		while (instance->state == old_state
+				|| instance->state == E_STARTING)
+			waiter();
+	}
+	return (get_msg(instance->name, "restarted", INFO_MSG));
 }
 
-t_vector			*cmd_restart(t_cmd *cmd)
+t_vector	*cmd_restart(t_cmd *cmd)
 {
 	t_vector	*vct;
 

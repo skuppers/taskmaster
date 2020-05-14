@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:26:58 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 12:44:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:13:09 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_vector	*action_tail_out(t_instance *instance, t_program *program)
 	return (get_logfile_name(program, instance, STDOUT_FILENO, ETX));
 }
 
-t_vector			*cmd_tail(t_cmd *cmd)
+t_vector	*cmd_tail(t_cmd *cmd)
 {
 	t_vector	*vct;
 	char		*str;

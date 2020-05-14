@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:14:42 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 19:13:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:53:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-const char		*get_sigstr(int sig)
+const char			*get_sigstr(int sig)
 {
 	static const char	*sigstr[32] = {"", "SIGHUP", "SIGINT", "SIGQUIT",
 							"SIGILL", "SIGTRAP", "SIGABRT", "SIGBUS", "SIGFPE",
@@ -22,11 +22,11 @@ const char		*get_sigstr(int sig)
 							"SIGTTIN", "SIGTTOU", "SIGURG", "SIGXCPU",
 							"SIGXFSZ", "SIGVTALRM", "SIGPROF", "SIGWINCH",
 							"SIGPOLL", "SIGPWR", "SIGSYS"};
-	
+
 	return (sig > 0 && sig < 32 ? sigstr[sig] : NULL);
 }
 
-t_vector	*action_signal(t_instance *instance, t_program *program)
+t_vector			*action_signal(t_instance *instance, t_program *program)
 {
 	t_vector	*vct;
 	char		*str;
@@ -88,6 +88,6 @@ t_vector			*cmd_signal(t_cmd *cmd)
 		vct = exec_action_all(action_signal);
 	else if (cmd->ocp == 0x02)
 		vct = exec_action_args(cmd->av + 1, cmd->ac - 1, action_signal);
-	g_denv->sig_tmp = 0; 
+	g_denv->sig_tmp = 0;
 	return (vct);
 }
