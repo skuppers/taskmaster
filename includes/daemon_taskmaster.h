@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:17:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:53:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,6 +365,13 @@ t_vector			*cmd_update(t_cmd *cmd);
 t_vector			*cmd_version(t_cmd *cmd);
 
 t_vector			*progs_info(t_list *prog_list);
+
+
+
+t_program	*get_modified_prog(t_program *old);
+void		apply_changes(t_vector *msg);
+void		remove_progs(t_denv *env, t_vector *msg);
+void		add_progs(t_denv *env, t_vector	*msg);
 
 typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
 
