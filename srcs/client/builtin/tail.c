@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 11:07:43 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:17:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void		cmd_change(t_cmd *cmd)
 		i++;
 	}
 	if (cmd->ac == 2)
-		cmd->av[1] = ft_strdup("stdout");
+		cmd->av[1] = strdup("stdout");
 	else
 		cmd->ac--;
 }
@@ -32,12 +32,12 @@ static void		cmd_change(t_cmd *cmd)
 static t_vector	*tail_option_f(t_cmd *cmd)
 {
 	if (cmd->ac == 1)
-		ft_dprintf(STDERR_FILENO, "Error: tail requires process name\n");
+		dprintf(STDERR_FILENO, "Error: tail requires process name\n");
 	else if (cmd->ac > 3)
-		ft_dprintf(STDERR_FILENO, "Error: too many arguments\n");
+		dprintf(STDERR_FILENO, "Error: too many arguments\n");
 	else if (cmd->ac == 3 && ft_strequ(cmd->av[2], "stderr") == false
 			&& ft_strequ(cmd->av[2], "stdout") == false)
-		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
+		dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
 		cmd_change(cmd);
@@ -57,28 +57,28 @@ static void		tail_get_dflt_nb(t_cmd *cmd)
 		cmd->av[i + 1] = cmd->av[i];
 		i--;
 	}
-	cmd->av[0] = ft_strdup("-1600");
+	cmd->av[0] = strdup("-1600");
 	cmd->ac++;
 }
 
 static t_vector	*tail_option_number(t_cmd *cmd)
 {
 	if (cmd->ac > 3)
-		ft_dprintf(STDERR_FILENO, "Error: too many arguments\n");
+		dprintf(STDERR_FILENO, "Error: too many arguments\n");
 	else if (cmd->ac == 1)
-		ft_dprintf(STDERR_FILENO, "Error: too few arguments\n");
+		dprintf(STDERR_FILENO, "Error: too few arguments\n");
 	else if (cmd->ac >= 3 && ft_strequ(cmd->av[2], "stderr") == false
 			&& ft_strequ(cmd->av[2], "stdout") == false)
-		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
+		dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
 		if (cmd->ac == 2)
 		{
-			cmd->av[2] = ft_strdup("stdout");
+			cmd->av[2] = strdup("stdout");
 			cmd->ac++;
 		}
 		g_env->flag_exec |= TAIL_NB;
-		g_env->flag_exec |= (ft_atol(cmd->av[0]) << 8);
+		g_env->flag_exec |= (atol(cmd->av[0]) << 8);
 		return (generate_bytecode(cmd, 0x02));
 	}
 	return (NULL);
@@ -93,19 +93,19 @@ t_vector		*blt_tail(t_cmd *cmd)
 {
 	if (cmd->ac == 0)
 	{
-		ft_dprintf(STDERR_FILENO, "Error: too few arguments\n");
+		dprintf(STDERR_FILENO, "Error: too few arguments\n");
 		return (NULL);
 	}
 	if (ft_strequ(cmd->av[0], "-f") == true)
 		return (tail_option_f(cmd));
 	if (cmd->av[0][0] != '-')
 		tail_get_dflt_nb(cmd);
-	else if (ft_strcheck(cmd->av[0] + 1, ft_isdigit) == false
-			|| ft_strlen(cmd->av[0]) > 10 || ft_atol(cmd->av[0] + 1) > INT_MAX)
+	else if (ft_strcheck(cmd->av[0] + 1, isdigit) == false
+			|| strlen(cmd->av[0]) > 10 || atol(cmd->av[0] + 1) > INT_MAX)
 	{
-		ft_dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);
+		dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);
 		return (NULL);
 	}
-	ft_memmove(cmd->av[0], cmd->av[0] + 1, ft_strlen(cmd->av[0]));
+	memmove(cmd->av[0], cmd->av[0] + 1, strlen(cmd->av[0]));
 	return (tail_option_number(cmd));
 }

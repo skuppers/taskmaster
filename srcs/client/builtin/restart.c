@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:01:38 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:09:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:17:14 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_vector	*blt_restart(t_cmd *cmd)
 {
 	if (cmd->ac == 0)
 	{
-		ft_dprintf(STDERR_FILENO, "Error: restart requires a process name\n");
+		dprintf(STDERR_FILENO, "Error: restart requires a process name\n");
 		help_restart();
 		return (NULL);
 	}

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 16:10:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 13:09:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:15:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	ask_help(t_cmd *cmd)
 		i++;
 	}
 	if (i == NB_CMD)
-		ft_dprintf(STDERR_FILENO, "*** No Help on %s\n", cmd->av[0]);
+		dprintf(STDERR_FILENO, "*** No Help on %s\n", cmd->av[0]);
 	ft_strdel(&tmp);
 }
 
@@ -43,13 +43,13 @@ t_vector	*blt_help(t_cmd *cmd)
 {
 	if (cmd->ac == 0)
 	{
-		ft_dprintf(STDERR_FILENO, "\ndefault commands (type help <topic>):\n");
-		ft_dprintf(STDERR_FILENO, "=====================================\n");
-		ft_dprintf(STDERR_FILENO,
+		dprintf(STDERR_FILENO, "\ndefault commands (type help <topic>):\n");
+		dprintf(STDERR_FILENO, "=====================================\n");
+		dprintf(STDERR_FILENO,
 				"add\texit\t  open\treload\trestart\t  start\t  tail\n");
-		ft_dprintf(STDERR_FILENO,
+		dprintf(STDERR_FILENO,
 				"avail\tfg\t  pid\tremove\tshutdown  status  update\n");
-		ft_dprintf(STDERR_FILENO,
+		dprintf(STDERR_FILENO,
 				"clear\tmaintail  quit\treread\tsignal\t  stop\t  version\n\n");
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:32:52 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:33:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:19:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ static int8_t		check_daemon_opts(dictionary *d, int sec)
 			return (FAILURE);
 	}
 	is_nodea = (bool)(g_denv->opt.optmask & OPT_NODAEMON);
-	yn = get_nodaemon(iniparser_getstring(d, "taskmasterd:nodaemon", NULL));
+	yn = get_nodaemon((char *)iniparser_getstring(d,
+							 "taskmasterd:nodaemon", NULL));
 	dprintf(2, "old=%d new=%d\n", is_nodea, yn);
 	if (yn != is_nodea)
 		return (FAILURE);

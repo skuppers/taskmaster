@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:28:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 15:03:19 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:20:22 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,9 @@ void		clean_node(void *d)
 
 t_vector	*action_add(t_instance *instance, t_program *program)
 {
-	(void)instance;
 	uint8_t		inst_nb;
-	t_instance	*inst;
 
+	(void)instance;
 	if (program->availmode != E_ADDED)
 		return (get_msg(program->name, "already active", ERR_MSG));
 	program->availmode = E_LOCKED;

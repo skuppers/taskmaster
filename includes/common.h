@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:34:36 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 21:03:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:18:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define COMMON_H
 
 # include "libft.h"
+# include "ctype.h"
 # include <stdint.h>
 # include <stdbool.h>
 # include <errno.h>
