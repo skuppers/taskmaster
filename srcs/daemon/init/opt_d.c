@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 17:33:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:24:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static void		get_arg_opt(char *arg, const int count, const char *opt_str[],
 	if (count == DIRECTORY || count == LOGFILE || count == CHILDLOGDIR
 				|| count == CONFIGURATION)
 		get_abs_pathname(g_denv->av[index + 1]);
-	
 }
 
 static int		get_one_opt(char **av, int i)
@@ -39,7 +38,7 @@ static int		get_one_opt(char **av, int i)
 							"-u", "--user", "-d", "--directory",
 							"-l", "--logfile", "-e", "--loglevel",
 							"-q", "--childlogdir", "-a", "--minfds",
-							"-p","--minprocs"};
+							"-p", "--minprocs"};
 	int			count;
 
 	count = 0;
