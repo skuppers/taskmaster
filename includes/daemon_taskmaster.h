@@ -128,9 +128,11 @@ typedef struct				s_denv
 	uint8_t					client_connected;
 	int8_t					lock;
 	uint8_t					shutdown;
+	char					pad[7];
 	char					**environ_tab;
 	t_vector				**av;
 	int						ac;
+	char					padd[4];
 }							t_denv;
 
 /*

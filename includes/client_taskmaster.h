@@ -77,8 +77,8 @@ struct						s_env
 	volatile sig_atomic_t	sigwinch;
 	uint8_t					szchanged;
 
+	char					pad[3];
 	int32_t					unix_socket;
-	char					pad[4];
 	uint64_t				flag_exec;
 };
 
