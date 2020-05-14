@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 17:15:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:51:44 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,20 @@ int16_t			get_userid(uint8_t *err, dictionary *d, char *name)
 
 	get = get_secstring(d, name, ":userid");
 	if (get == NULL)
-		return (-1);
+		return (FAILURE);
 	if (ft_strlen(get) == 0)
-	{
-		*err = 1;
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field cannot"
 			" be blank.\n", name);
-		return (-1);
-	}
-	if (ft_strcheck(get, ft_isdigit) != TRUE)
-	{
-		*err = 1;
+	else if (ft_strcheck(get, ft_isdigit) != TRUE)
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - userid field must be"
 			" numeric.\n", name);
-		return (-1);
-	}
-	if (ft_strlen(get) >= 6 || ft_atoi(get) < 0 || ft_atoi(get) > 16535)
-	{
-		*err = 1;
+	else if (ft_strlen(get) >= 6 || ft_atoi(get) < 0 || ft_atoi(get) > 16535)
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] -  userid is not in "
 			"range 0-16535\n", name);
-		return (-1);
-	}
-	return (ft_atoi(get));
+	else
+		return (ft_atoi(get));
+	*err = 1;
+	return (FAILURE);
 }
 
 char			*get_directory(uint8_t *err, dictionary *d, char *name)

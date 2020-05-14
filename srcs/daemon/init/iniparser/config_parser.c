@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 17:15:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:48:03 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,38 +25,45 @@ int8_t			append_to_pgrmlist(t_denv *env, t_program *pgrm)
 	return (0);
 }
 
-int8_t		is_in_range(int32_t i, int32_t min, int32_t max)
+int8_t			is_in_range(int32_t i, int32_t min, int32_t max)
 {
 	if (i < min || i > max)
 		return (FALSE);
 	return (TRUE);
 }
 
-void	get_new_prog(t_denv *env, dictionary *dict, char *secname)
+static uint8_t	get_new_prog_base(t_program *prog,
+						dictionary *dict, char *secname)
 {
-	t_program	prog;
 	uint8_t		error;
 
 	error = 0;
+	prog->name = ft_strsub(secname, 8, ft_strlen(secname) - 8);
+	prog->command = get_command(&error, dict, secname);
+	prog->numprocs = get_numprocs(&error, dict, secname);
+	prog->autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
+	prog->autorestart = get_autorestart(&error, dict, secname);
+	prog->startsecs = get_startsecs(&error, dict, secname);
+	prog->startretries = get_startretries(&error, dict, secname);
+	prog->stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
+	get_exitcodes(&error, prog, dict, secname);
+	prog->stopsignal = get_stopsig(&error, dict, secname);
+	prog->userid = get_userid(&error, dict, secname);
+	prog->directory = get_directory(&error, dict, secname);
+	prog->priority = get_priority(&error, dict, secname);
+	prog->stdout_logfile = get_stdoutlog(&error, dict, secname);
+	prog->stderr_logfile = get_stderrlog(&error, dict, secname);
+	prog->environ = get_environement(&error, dict, secname);
+	prog->umask = get_umask(&error, dict, secname);
+	return (error);
+}
+
+void			get_new_prog(t_denv *env, dictionary *dict, char *secname)
+{
+	t_program	prog;
+
 	ft_memset(&prog, 0, sizeof(t_program));
-	prog.name = ft_strsub(secname, 8, ft_strlen(secname) - 8);
-	prog.command =  get_command(&error, dict, secname);
-	prog.numprocs = get_numprocs(&error, dict, secname);
-	prog.autostart = (uint8_t)get_secbool(dict, secname, ":autostart");
-	prog.autorestart = get_autorestart(&error, dict, secname);
-	prog.startsecs = get_startsecs(&error, dict, secname);
-	prog.startretries = get_startretries(&error, dict, secname);
-	prog.stopwaitsecs = get_stopwaitsecs(&error, dict, secname);
-	get_exitcodes(&error, &prog, dict, secname);
-	prog.stopsignal = get_stopsig(&error, dict, secname);
-	prog.userid = get_userid(&error, dict, secname);
-	prog.directory = get_directory(&error, dict, secname);
-	prog.priority = get_priority(&error, dict, secname);
-	prog.stdout_logfile = get_stdoutlog(&error, dict, secname);
-	prog.stderr_logfile = get_stderrlog(&error, dict, secname);
-	prog.environ = get_environement(&error, dict, secname);
-	prog.umask = get_umask(&error, dict, secname);
-	if (error == 1)
+	if (get_new_prog_base(&prog, dict, secname) == 1)
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: One more more errors happened "
 			"while parsing the configuration file.\n");
@@ -82,10 +89,8 @@ void			parse_ini_file(void)
 		--sections;
 		secname = (char*)iniparser_getsecname(g_denv->dict, sections);
 		tlog(E_LOGLVL_DEBG, "Inifile: found section: %s\n", secname);
-
 		if (ft_strnequ(secname, "program.", 8) == TRUE)
 			get_new_prog(g_denv, g_denv->dict, secname);
-			
 		else if (ft_strequ(secname, "taskmasterd") == FALSE
 					&& ft_strequ(secname, "taskmasterctl") == FALSE)
 			tlog(E_LOGLVL_ERRO,

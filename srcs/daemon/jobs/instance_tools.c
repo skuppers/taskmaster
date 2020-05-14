@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:34:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:24:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,12 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 		return (ERR_EXITED);
 	if (instance->state == E_FATAL)
 		return (ERR_FATAL);
-	kill(instance->pid, signo);
+	if (kill(instance->pid, signo) == FAILURE)
+	{
+		tlog(E_LOGLVL_ERRO, "failed to kill instance %s: %s\n",
+			instance->name, strerror(errno));
+		return (FAILURE);
+	}
 	instance->stop_time = time(NULL);
 	instance->state = E_STOPPING;
 	return (SUCCESS);

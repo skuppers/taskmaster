@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 13:21:56 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:24:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:16:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void			get_opt(int ac, char **av)
 		if (ft_strequ(iniparser_getsecname(g_denv->dict, sections),
 					"taskmasterd") == true)
 		{
-			taskmasterd_override(g_denv, g_denv->dict);
+			taskmasterd_override(g_denv->dict);
 			return ;
 		}
 		--sections;

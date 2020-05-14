@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:32:20 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:26:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,11 @@ void			check_instance(t_program *prog, t_instance *instance)
 	else if (instance->state == E_STOPPING
 		&& instance->uptime >= (instance->stop_time + prog->stopwaitsecs))
 	{
-		kill(instance->pid, SIGKILL); //TODO protect
-		reinit(instance, E_STOPPED, KEEP_BACKOFF, 0);
+		if (kill(instance->pid, SIGKILL) == FAILURE)
+			tlog(E_LOGLVL_ERRO, "failed to kill instance %s: %s\n",
+				instance->name, strerror(errno));
+		else
+			reinit(instance, E_STOPPED, KEEP_BACKOFF, 0);
 	}
 	else if (instance->state == E_BACKOFF)
 	{
@@ -71,9 +74,8 @@ void			check_instance(t_program *prog, t_instance *instance)
 	}
 	else if (instance->state == E_EXITED && prog->autorestart != FALSE)
 	{
-		if (prog->autorestart == TRUE
-				|| (prog->autorestart == UNEXPECTED
-					&& is_expected_exitcode(prog, instance) == 0))
+		if (prog->autorestart == TRUE || (prog->autorestart == UNEXPECTED
+				&& is_expected_exitcode(prog, instance) == 0))
 		{
 			start_instance(prog, instance->id, g_denv->environ);
 			log_state_information(instance);

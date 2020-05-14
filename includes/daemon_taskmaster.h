@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 17:38:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:16:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,14 @@ void					get_opt(int ac, char **av);
 
 bool					get_nodaemon(char *str);
 char					**get_environ(char *str);
-void					taskmasterd_override(t_denv *env, dictionary *dict);
+void					taskmasterd_override(dictionary *dict);
+int						taskmasterd_default_loglvl(dictionary *dict);
+int						taskmasterd_default_childlogdir(dictionary *dict);
+void					taskmasterd_default_nodaemon(dictionary *dict);
+int						taskmasterd_default_umask(dictionary *dict);
+int						taskmasterd_default_env(dictionary *dict);
+
+
 void					parse_ini_file(void);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);

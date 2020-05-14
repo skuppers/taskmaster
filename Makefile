@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/14 17:35:12 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/14 19:15:06 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -269,6 +269,7 @@ DAEMON_SRCS += opt_d.c
 DAEMON_SRCS += daemon_signals.c
 #Init/iniparser
 DAEMON_SRCS += defaults.c
+DAEMON_SRCS += defaults_extend.c
 DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += iniparser_tools.c
 DAEMON_SRCS += get1.c

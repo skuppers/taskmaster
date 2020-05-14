@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:32:14 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 19:19:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 **	void			print_lst(t_list *lst)
 **	{
 **		t_variable	*variable;
-**	
+**
 **		while (lst != NULL)
 **		{
 **			variable = (t_variable *)lst->content;
@@ -30,7 +30,7 @@
 **	}
 */
 
-void		concat_env_to_daemon_env(t_program *prog, t_list *env)
+void			concat_env_to_daemon_env(t_program *prog, t_list *env)
 {
 	t_list	*env_prog;
 

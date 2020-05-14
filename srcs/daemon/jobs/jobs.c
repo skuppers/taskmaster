@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:35:37 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/05/14 19:21:58 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/05/14 19:21:59 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ static void	launch_instance(t_program *prog, uint16_t inst_nb)
 
 void		launch_jobs(void)
 {
-    t_list      *ptr;
-    t_program   *prog;
+	t_list		*ptr;
+	t_program	*prog;
 	uint16_t	inst_nb;
 
-    ptr = g_denv->prgm_list;
-    while (ptr != NULL)
-    {
+	ptr = g_denv->prgm_list;
+	while (ptr != NULL)
+	{
 		inst_nb = 0;
-        prog = ptr->content;
+		prog = ptr->content;
 		prog->pgid = 0;
 		while (inst_nb < prog->numprocs)
 		{

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:34:24 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 17:13:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:49:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int32_t			get_secint(dictionary *dict, char *secname, char *key,
 
 dictionary		*load_ini_file(char *str)
 {
-    dictionary	*ini_dict;
+	dictionary	*ini_dict;
 
 	ini_dict = iniparser_load(str);
 	if (ini_dict == NULL)

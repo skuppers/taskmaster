@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 17:15:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:50:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,19 @@ void			get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict,
 		to_split = "0";
 	prog->exitcodes = ft_strsplit(to_split, ',');
 	i = 0;
-	while (prog->exitcodes[i] != NULL)
+	while (*err != 1 && prog->exitcodes[i] != NULL)
 	{
 		if (ft_strlen(prog->exitcodes[i]) > 3)
 		{
 			*err = 1;
 			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not"
 				" in range 0-255\n", secname);
-			return ;
 		}
 		else if (is_in_range(ft_atoi(prog->exitcodes[i]), 0, 255) == FALSE)
 		{
 			*err = 1;
 			dprintf(STDERR_FILENO, "taskmasterd: [%s] - exitcodes is not"
 				" in range 0-255\n", secname);
-			return ;
 		}
 		++i;
 	}
