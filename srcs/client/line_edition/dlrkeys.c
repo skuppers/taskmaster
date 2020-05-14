@@ -28,15 +28,15 @@ int8_t			ak_ctrl_l(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 
 	(void)c;
 	tmpidx = env->cursoridx;
-	ft_putstr_fd("\33[2J", STDERR_FILENO);
-	ft_putstr_fd("\33[0;0f", STDERR_FILENO);
+	ft_putstr_fd("\33[2J", STDIN_FILENO);
+	ft_putstr_fd("\33[0;0f", STDIN_FILENO);
 	print_prompt(env);
-	vct_print_fd(vct, STDERR_FILENO);
+	vct_print_fd(vct, STDIN_FILENO);
 	calc_after_totalprint(env, vct);
 	ak_home(env, vct, NULL);
 	while (tmpidx--)
 	{
-		ft_putstr_fd("\33[C", STDERR_FILENO);
+		ft_putstr_fd("\33[C", STDIN_FILENO);
 		inc_x(env, 1);
 		env->cursoridx++;
 	}

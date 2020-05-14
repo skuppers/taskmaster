@@ -24,8 +24,8 @@ int8_t		ak_arrow_up(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 		vct_addstr(vct, cmd);
 	}
 	ak_home(env, vct, NULL);
-	ft_putstr_fd("\33[J", STDERR_FILENO);
-	vct_print_fd(vct, STDERR_FILENO);
+	ft_putstr_fd("\33[J", STDIN_FILENO);
+	vct_print_fd(vct, STDIN_FILENO);
 	calc_after_totalprint(env, vct);
 	return (0);
 }
@@ -42,8 +42,8 @@ int8_t		ak_arrow_down(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 		vct_addstr(vct, cmd);
 	}
 	ak_home(env, vct, NULL);
-	ft_putstr_fd("\33[J", STDERR_FILENO);
-	vct_print_fd(vct, STDERR_FILENO);
+	ft_putstr_fd("\33[J", STDIN_FILENO);
+	vct_print_fd(vct, STDIN_FILENO);
 	calc_after_totalprint(env, vct);
 	return (0);
 }
@@ -53,7 +53,7 @@ int8_t		ak_arrow_left(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	(void)vct;
 	if (env->cursoridx > 0)
 	{
-		ft_putstr_fd(c, STDERR_FILENO);
+		ft_putstr_fd(c, STDIN_FILENO);
 		dec_x(env, 1);
 		env->cursoridx--;
 	}
@@ -64,7 +64,7 @@ int8_t		ak_arrow_right(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 {
 	if (env->cursoridx < vct_len(vct))
 	{
-		ft_putstr_fd(c, STDERR_FILENO);
+		ft_putstr_fd(c, STDIN_FILENO);
 		inc_x(env, 1);
 		env->cursoridx++;
 	}
