@@ -24,7 +24,7 @@ static void			print_instance_avail(t_vector *msg, t_program *p,
 		tmp = ft_asprintf("%s:%d\t\t\t%s\t%s\t%d\n",
 							p->name, in->id, state,
 							(p->autostart == 1) ? "auto" : "manual",
-							p->userid);
+							(p->userid == -1) ? getuid() : p->userid);
 		vct_addstr(msg, tmp);
 		in = in->next;
 	}
@@ -39,7 +39,6 @@ t_vector			*action_avail(t_list *lptr, const uint8_t flag)
 	while (lptr != NULL)
 	{
 		pptr = lptr->content;
-		dprintf(2, "==> %s is %d\n", pptr->name, pptr->availmode);
 		if (flag == TMPENV && pptr->availmode == E_ADDED)
 			print_instance_avail(msg, pptr, "avail");
 		else if (flag == DENV &&

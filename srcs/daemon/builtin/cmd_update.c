@@ -49,8 +49,6 @@ t_vector		*action_update(char **av, int ac)
 	t_program	*prg;
 
 	(void)ac;
-	prg = NULL;
-
 	prg = find_program(av[0], g_denv);
 	if (prg == NULL)
 		prg = find_program(av[0], g_tmpenv);
