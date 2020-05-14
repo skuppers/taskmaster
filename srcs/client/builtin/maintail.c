@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:23:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 11:16:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:29:23 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_vector	*maintail_option_number(t_cmd *cmd)
 		cmd->ac = 1;
 	}
 	else if (cmd->av[0][0] != '-'
-			|| ft_strcheck(cmd->av[0] + 1, isdigit) == false
+			|| ft_strcheck(cmd->av[0] + 1, ft_isdigit) == false
 			|| strlen(cmd->av[0]) > 11 || atol(cmd->av[0]) > INT_MAX)
 	{
 		dprintf(STDERR_FILENO, "Error: bad argument %s\n", cmd->av[0]);

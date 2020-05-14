@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:42:22 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 11:30:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:27:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void			debug_print_bytecode(t_vector *bytecode)
 					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
 			i += 3;
 		}
-		else if (isprint(c) == TRUE)
+		else if (ft_isprint(c) == TRUE)
 			ft_putchar_fd(c, STDERR_FILENO);
 		else
 			print_other_char(c);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 18:18:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:23:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,9 +230,11 @@ void						daemonize(void);
 # define SEND_RETRYS			3
 # define SEND_PARTIAL_RETRYS	5
 
-int8_t					make_socket(t_denv *env, char *socketpath);
-int8_t					bind_socket(t_denv *env);
-void 					listen_for_data(t_denv *env);
+void				handle_client_data(t_vector *vct, const int fd);
+void				handle_client_requests(const int fd_nb, fd_set *master_set);
+void				make_socket(void);
+void				bind_socket(void);
+void 				listen_for_data(void);
 
 /**************************************************/
 

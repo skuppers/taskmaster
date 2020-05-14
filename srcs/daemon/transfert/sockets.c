@@ -6,46 +6,48 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 19:25:01 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:57:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "daemon_taskmaster.h"
+#include "daemon_taskmaster.h"
 
-int8_t  make_socket(t_denv *env, char *socketpath)
+void		make_socket(void)
 {
-    int32_t 			fd;
-	
-    if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
+	int	fd;
+
+	if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 		exit_routine(E_LOGLVL_CRIT, strerror(errno));
-	env->unix_socket = fd;
-  	env->addr.sun_family = AF_UNIX;
-	strncpy(env->addr.sun_path, socketpath, sizeof(env->addr.sun_path) - 1);
-	return (SUCCESS);
+	g_denv->unix_socket = fd;
+	g_denv->addr.sun_family = AF_UNIX;
+	strncpy(g_denv->addr.sun_path, g_denv->dfl_socket,
+			sizeof(g_denv->addr.sun_path) - 1);
 }
 
-int8_t		bind_socket(t_denv *env)
+void		bind_socket(void)
 {
-	if (bind(env->unix_socket, (struct sockaddr*)&env->addr, sizeof(env->addr)) == FAILURE)
+	if (bind(g_denv->unix_socket,
+			(struct sockaddr*)&g_denv->addr, sizeof(g_denv->addr)) == FAILURE)
 	{
 		if (errno != EADDRINUSE)
 		{
 			tlog(E_LOGLVL_CRIT, "Bind() failed . Is another daemon running?\n");
-        	exit_routine(E_LOGLVL_CRIT, strerror(errno));
+			exit_routine(E_LOGLVL_CRIT, strerror(errno));
 		}
-		tlog(E_LOGLVL_WARN, "Unlinking existing socket: %s\n", env->addr.sun_path);
+		tlog(E_LOGLVL_WARN, "Unlinking existing socket: %s\n",
+				g_denv->addr.sun_path);
 		unlink(g_denv->dfl_socket);
-		if (bind(env->unix_socket, (struct sockaddr*)&env->addr, sizeof(env->addr)) == FAILURE)
+		if (bind(g_denv->unix_socket, (struct sockaddr*)&g_denv->addr,
+				sizeof(g_denv->addr)) == FAILURE)
 		{
 			tlog(E_LOGLVL_CRIT, "Bind() failed . Is another daemon running?\n");
-        	exit_routine(E_LOGLVL_CRIT, strerror(errno));
+			exit_routine(E_LOGLVL_CRIT, strerror(errno));
 		}
 	}
-  	if (listen(env->unix_socket, MAX_CLIENTS) == -1)
+	if (listen(g_denv->unix_socket, MAX_CLIENTS) == FAILURE)
 	{
 		tlog(E_LOGLVL_CRIT, "Listen() failed\n");
-        exit_routine(E_LOGLVL_CRIT, strerror(errno));
+		exit_routine(E_LOGLVL_CRIT, strerror(errno));
 	}
 	tlog(E_LOGLVL_INFO, "Socket up and running.\n");
-	return (SUCCESS);
 }
