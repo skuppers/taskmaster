@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:29:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:49:19 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 17:39:00 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_vector	*process_clear(t_instance *instance, t_program *program, int fd)
 		if ((file = fopen(vct_getstr(vct), "w")) == NULL)
 		{
 			vct_del(&vct);
-			dprintf(2, "----> %s : %s\n", vct_getstr(vct), strerror(errno));
 			vct = get_msg(instance->name, (fd == STDERR_FILENO) ?
 					"stderr: no log file" : "stdout: no log file", ERR_MSG);
 		}

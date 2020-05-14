@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:53:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 17:38:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
 
+# define LIMIT_INSTANCE	256
 
 # define DENV			1
 # define TMPENV			2
@@ -261,8 +262,6 @@ void 				listen_for_data(void);
 # define OPT_LOGFILE			0x040
 # define OPT_LOGLVL				0x080
 # define OPT_CHLDLOGDIR			0x010
-# define OPT_MINFDS				0x020	//TODO
-# define OPT_MINPROCS			0x040	//TODO
 
 # define NB_OPT					22
 # define OPT_WITHOUT_ARG		6
@@ -273,8 +272,6 @@ void 				listen_for_data(void);
 # define LOGFILE		3
 # define LOGLEVEL		4
 # define CHILDLOGDIR	5
-# define MINFDS			6	// TODO
-# define MINPROCS		7	// TODO
 
 void					print_help(void);
 void					print_version(void);
@@ -366,12 +363,25 @@ t_vector			*cmd_version(t_cmd *cmd);
 
 t_vector			*progs_info(t_list *prog_list);
 
-
-
 t_program	*get_modified_prog(t_program *old);
 void		apply_changes(t_vector *msg);
 void		remove_progs(t_denv *env, t_vector *msg);
 void		add_progs(t_denv *env, t_vector	*msg);
+
+
+void				check_modified(t_denv *nenv);
+void				check_added(t_denv *nenv);
+void				check_removed(t_denv *nenv);
+int8_t				check_daemon_opts(dictionary *d);
+
+dictionary		*load_dict(void);
+uint8_t			exitcode_changed(t_program *op, t_program *np);
+int32_t			compare_prog(t_program *op, t_program *np);
+int				do_strcmp(const char *s1, const char *s2);
+
+t_vector		*register_changes(t_denv *env);
+void			register_modified(t_denv *env, t_vector *v);
+void			register_added(t_denv *env, t_vector *v);
 
 typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
 
