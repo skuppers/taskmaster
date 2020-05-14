@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 23:08:02 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 23:20:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 		else if (flag == DEL_FEEDBACK)
 			vct_print_fd(feedback, STDERR_FILENO);
 	}
+	vct_creadline(NULL, CLEANUP, EOT);
 	return (feedback);
 }
 
