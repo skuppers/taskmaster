@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:28:44 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:48:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 17:46:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static void			print_instance_avail(t_vector *msg, t_program *p,
 	in = p->instance;
 	while (in != NULL)
 	{
-		tmp = ft_asprintf("%s:%d\t\t\t%s\t%s\t%d\n",
-							p->name, in->id, state,
+		tmp = ft_asprintf("%-20s%s\t%s\t%d\n",
+							in->name, state,
 							(p->autostart == 1) ? "auto" : "manual",
-							(p->userid == -1) ? getuid() : p->userid);
+							(p->userid == -1) ? (int16_t)getuid() : p->userid);
 		vct_addstr(msg, tmp);
 		in = in->next;
 	}

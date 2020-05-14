@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 17:28:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 17:29:48 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 18:02:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,18 @@
 
 static int8_t		check_inistring(dictionary *d)
 {
-	static char *inistr[] = {"", "user", "directory", "logfile", "loglevel",
+	static char *inistr[] = {"", "userid", "directory", "logfile", "loglevel",
 							"childlogdir", "environment"};
 	static char	base[30] = "taskmasterd:";
 	char		*cur;
 	int			i;
 
-	i = 0;
-	while (i < 8)
+	i = 1;
+	while (i < 7)
 	{
+		bzero(base + 12, 18);
 		strcpy(base + 12, inistr[i]);
-		cur = (i == 7) ? g_denv->opt.environ : g_denv->opt.str[i];
+		cur = (i == 6) ? g_denv->opt.environ : g_denv->opt.str[i];
 		if (ft_strequ(iniparser_getstring(d, base, NULL), cur) == false)
 			return (FAILURE);
 		i++;
@@ -36,7 +37,7 @@ int8_t				check_daemon_opts(dictionary *d)
 {
 	char	*tmp;
 	bool	yn;
-	bool	is_nodea;
+	bool	is_nodae;
 
 	if (check_inistring(d) == FAILURE)
 		return (FAILURE);
@@ -46,10 +47,10 @@ int8_t				check_daemon_opts(dictionary *d)
 		if (strtol(tmp, NULL, 8) != g_denv->opt.umask)
 			return (FAILURE);
 	}
-	is_nodea = (bool)(g_denv->opt.optmask & OPT_NODAEMON);
+	is_nodae = (bool)(g_denv->opt.optmask & OPT_NODAEMON);
 	yn = get_nodaemon((char *)iniparser_getstring(d,
 				"taskmasterd:nodaemon", NULL));
-	if (yn != is_nodea)
+	if (yn != is_nodae)
 		return (FAILURE);
 	return (SUCCESS);
 }
