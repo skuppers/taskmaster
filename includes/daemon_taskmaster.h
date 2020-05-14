@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:23:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:47:17 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,11 @@
 
 # define S_SHUTDOWN		1
 # define S_RELOAD		2
+
+# define KEEP_BACKOFF	0x01
+# define INC_BACKOFF	0x02
+# define FULL_RESET		0x04
+# define NO_RESET		0x08
 
 /******************* STRUCTURES *****************/
 
@@ -190,9 +195,10 @@ int8_t					stop_instance(t_program *prog, t_instance *instance, int signo);
 int8_t					append_to_pgrmlist(t_denv *env, t_program *pgrm);
 t_instance				*get_instance(t_program *prg, uint8_t id);
 char					*get_instance_state(t_instance *instance);
-void    				launch_jobs(t_denv *env);
-int     				child_process(t_program *prog, t_instance *instance, t_list *env);
-int8_t					waiter(t_denv *env);
+void    				launch_jobs(void);
+void					waiter(void);
+void					child_process(t_program *prog, t_instance *instance,
+							t_list *env);
 void					update_instance_uptime(t_instance *instance);
 void			stop_prog(t_program *program);
 t_vector		*action_add(t_instance *instance, t_program *program);
@@ -296,6 +302,7 @@ void					exit_routine(const int flag, ...);
 
 t_list		*envtolst(char **tab);
 char		**envtotab(t_list *lst);
+void		concat_env_to_daemon_env(t_program *prog, t_list *env);
 void		print_lst(t_list *lst);
 char		*get_var(t_list *intern, char *name);
 int8_t		add_var(t_list **alst, char *name, char *data);

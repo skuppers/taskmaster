@@ -1,35 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   instance_utils.c                                    :+:      :+:    :+:   */
+/*   instance_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:46:18 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/05/14 13:08:43 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/05/14 14:45:26 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-char	*get_instance_state(t_instance *instance)
+int8_t		del_instance(t_program *prg, uint8_t id)
 {
-	if (instance->state == E_STARTING)
-		return (STATE_STARTING);
-	if (instance->state == E_BACKOFF)
-		return (STATE_BACKOFF);
-	if (instance->state == E_RUNNING)
-		return (STATE_RUNNING);
-	if (instance->state == E_STOPPING)
-		return (STATE_STOPPING);
-	if (instance->state == E_STOPPED)
-		return (STATE_STOPPED);
-	if (instance->state == E_EXITED)
-		return (STATE_EXITED);
-	if (instance->state == E_FATAL)
-		return (STATE_FATAL);
-	assert(instance->state != E_UNKNOWN);
-	return (STATE_UNKNOWN);
+	t_instance	*before;
+	t_instance	*to_del;
+	t_instance	*after;
+
+	to_del = get_instance(prg, id);
+	if (to_del == NULL)
+		return (ERR_UNDEF_INST);
+	after = get_instance(prg, id + 1);
+	if (id == 0)
+	{
+		prg->instance = after;
+//		prg->instance->id--;
+		if (to_del != NULL)
+			free(to_del->name);
+		free(to_del);
+	}
+	else
+	{
+		before = get_instance(prg, id - 1);
+		before->next = after;
+		if (to_del != NULL)
+			free(to_del->name);
+		free(to_del);
+	}
+	return (SUCCESS); //TODO: Recalc ID
+}
+
+char		*get_instance_state(t_instance *instance)
+{
+	static char	*str_instance[] = {STATE_STARTING, STATE_BACKOFF, STATE_RUNNING,
+									STATE_STOPPING, STATE_STOPPED, STATE_EXITED,
+									STATE_FATAL, STATE_UNKNOWN};
+
+	return (str_instance[instance->state]);
 }
 
 t_instance	*get_instance(t_program *prg, uint8_t id)
@@ -50,7 +68,7 @@ void		update_instance_uptime(t_instance *instance)
 {
 	time_t	now;
 
-	if (instance->state == E_STARTING || instance->state == E_RUNNING 
+	if (instance->state == E_STARTING || instance->state == E_RUNNING
 		|| instance->state != E_STOPPING)
 	{
 		now = time(NULL);

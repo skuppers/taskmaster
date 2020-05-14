@@ -6,26 +6,43 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:58:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:32:14 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-void			print_lst(t_list *lst)
-{
-	t_variable	*variable;
+/*
+**	void			print_lst(t_list *lst)
+**	{
+**		t_variable	*variable;
+**	
+**		while (lst != NULL)
+**		{
+**			variable = (t_variable *)lst->content;
+**			if (variable->data != NULL)
+**				ft_dprintf(STDERR_FILENO, "%s=%s\n",
+**							variable->name, variable->data);
+**			else
+**				ft_dprintf(STDERR_FILENO, "%s=\n", variable->name);
+**			lst = lst->next;
+**		}
+**	}
+*/
 
-	while (lst != NULL)
+void		concat_env_to_daemon_env(t_program *prog, t_list *env)
+{
+	t_list	*env_prog;
+
+	if (prog->env == NULL)
 	{
-		variable = (t_variable *)lst->content;
-		if (variable->data != NULL)
-			ft_dprintf(STDERR_FILENO, "%s=%s\n",
-						variable->name, variable->data);
-		else
-			ft_dprintf(STDERR_FILENO, "%s=\n", variable->name);
-		lst = lst->next;
+		prog->env = env;
+		return ;
 	}
+	env_prog = prog->env;
+	while (env_prog != NULL && env_prog->next != NULL)
+		env_prog = env_prog->next;
+	env_prog->next = env;
 }
 
 char			**envtotab(t_list *lst)

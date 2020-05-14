@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:42:23 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:18:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,42 +19,12 @@ t_instance	*new_instance(uint8_t id, char *prog_name)
 	new = (t_instance*)malloc(sizeof(t_instance));
 	if (new == NULL)
 		return (NULL);
-    ft_memset(new, 0, sizeof(t_instance));
+	ft_memset(new, 0, sizeof(t_instance));
 	new->id = id;
 	new->name = ft_asprintf("%s:%d", prog_name, id);
 	new->state = E_STOPPED;
 	new->next = NULL;
 	return (new);
-}	
-
-int8_t		del_instance(t_program *prg, uint8_t id)
-{
-	t_instance	*before;
-	t_instance	*to_del;
-	t_instance	*after;
-
-	to_del = get_instance(prg, id);
-	if (to_del == NULL)
-		return (ERR_UNDEF_INST);
-	after = get_instance(prg, id + 1);
-	if (id == 0)
-	{
-		prg->instance = after;
-//		prg->instance->id--;
-		if (to_del != NULL)
-			free(to_del->name);
-		free(to_del);
-	}
-	else
-	{
-		before = get_instance(prg, id - 1);
-		before->next = after;
-		if (to_del != NULL)
-			free(to_del->name);
-		free(to_del);
-	}
-	//TODO: Recalc ID
-	return (SUCCESS);
 }
 
 int8_t		add_instance(t_program *prg, t_instance *inst)
@@ -86,10 +56,9 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 		return (ERR_STARTING);
 	if (inst->state == E_RUNNING)
 		return (ERR_RUNNING);
-
 	if ((inst->pid = fork()) < 0)
 		return (ERR_FORK);
-	else if (inst->pid == 0)	// child 
+	else if (inst->pid == 0)
 		child_process(prog, inst, environ);
 	else
 	{
@@ -97,9 +66,8 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 			prog->pgid = inst->pid;
 		inst->state = E_STARTING;
 		inst->start_time = time(NULL);
-		return (SUCCESS);
 	}
-	return (SUCCESS); // ?
+	return (SUCCESS);
 }
 
 int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
@@ -121,11 +89,10 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 
 void	stop_prog(t_program *program)
 {
-	t_instance	*ptr;
-	t_instance	*next;
-	enum	e_prg_state old_state;
+	t_instance			*ptr;
+	t_instance			*next;
+	enum e_prg_state	old_state;
 
-	
 	ptr = program->instance;
 	while (ptr != NULL)
 	{
@@ -133,9 +100,8 @@ void	stop_prog(t_program *program)
 		old_state = ptr->state;
 		if (stop_instance(program, ptr, program->stopsignal) == SUCCESS)
 		{
-			while (ptr->state == old_state
-					|| ptr->state == E_STOPPING)
-				waiter(g_denv);
+			while (ptr->state == old_state || ptr->state == E_STOPPING)
+				waiter();
 		}
 		del_instance(program, 0);
 		ptr = next;

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:22:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:47:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void		daemonize(void)
 		daemon(1, 0);
 	make_socket();
 	bind_socket();
-	launch_jobs(g_denv);
+	launch_jobs();
 	listen_for_data();
 }

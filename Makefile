@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/14 12:22:21 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/14 14:40:38 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -266,6 +266,7 @@ DAEMON_SRCS += config_parser.c
 DAEMON_SRCS += iniparser_tools.c
 #Jobs
 DAEMON_SRCS += jobs.c
+DAEMON_SRCS += child.c
 DAEMON_SRCS += waiter.c
 DAEMON_SRCS += instance_utils.c
 DAEMON_SRCS += instance_tools.c

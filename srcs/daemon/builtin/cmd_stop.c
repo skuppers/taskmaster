@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:22:53 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 16:40:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:17:30 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_vector	*action_stop(t_instance *instance, t_program *program)
 		{
 			while (instance->state == old_state
 					|| instance->state == E_STOPPING)
-				waiter(g_denv);
+				waiter();
 			return (get_msg(instance->name, "stopped", INFO_MSG));
 		}
 	}

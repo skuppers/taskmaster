@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 12:18:52 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:31:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 14:18:18 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void		listen_for_data(void)
 		recv_set = master_set;
 		my_select(&recv_set);
 		fd_loop(&master_set, &recv_set);
-		waiter(g_denv);
+		waiter();
 	}
 }
