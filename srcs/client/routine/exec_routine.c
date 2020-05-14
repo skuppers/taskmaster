@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 22:47:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:11:00 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static t_vector	*get_trame(t_cmd *cmd)
+static t_vector		*get_trame(t_cmd *cmd)
 {
 	static	t_builtin	builtin[] = {blt_add, blt_avail, blt_clear, blt_exit,
 									blt_fg, blt_help, blt_maintail, blt_open,
@@ -43,15 +43,14 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 			return (NULL);
 		}
 		if (g_env->flag_exec != 0 && vct_getlastchar(feedback) == ETX)
-			exec_tail(g_env->flag_exec, feedback);	
+			exec_tail(g_env->flag_exec, feedback);
 		else if (flag == DEL_FEEDBACK)
 			vct_print_fd(feedback, STDERR_FILENO);
 	}
-//	else error ? 
 	return (feedback);
 }
 
-void		restart_connection()
+static void			restart_connection(void)
 {
 	int		i;
 
@@ -69,7 +68,7 @@ void		restart_connection()
 	canonic_mode(false);
 }
 
-t_vector	*routine(t_vector *line, const uint8_t flag)
+t_vector			*routine(t_vector *line, const uint8_t flag)
 {
 	t_vector		*trame;
 	t_vector		*feedback;
@@ -93,7 +92,7 @@ t_vector	*routine(t_vector *line, const uint8_t flag)
 	return (feedback);
 }
 
-void			read_cmd(void)
+void				read_cmd(void)
 {
 	t_vector	*line;
 	t_vector	*split;

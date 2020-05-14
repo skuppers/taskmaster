@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 14:36:47 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:12:07 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-void	create_termmode(void)
+void		create_termmode(void)
 {
 	struct termios	term;
 
@@ -33,7 +33,7 @@ void	create_termmode(void)
 		exit_routine(ERR, "Failed to set termmode");
 }
 
-void	apply_termmode(const uint8_t flag)
+void		apply_termmode(const uint8_t flag)
 {
 	if (g_env->orig != NULL && g_env->taskmst != NULL)
 	{

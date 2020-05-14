@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/12 22:45:25 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 10:53:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:08:20 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	**get_argtab(uint64_t flag, t_vector *feedback)
 	return (arg);
 }
 
-void	exec_tail(uint64_t flag, t_vector *feedback)
+void		exec_tail(uint64_t flag, t_vector *feedback)
 {
 	char		**arg;
 	int			status;

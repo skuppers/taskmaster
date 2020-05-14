@@ -6,16 +6,31 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/30 13:07:39 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 22:52:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:07:43 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static t_vector	*tail_option_f(t_cmd *cmd)
+static void		cmd_change(t_cmd *cmd)
 {
 	int			i;
 
+	i = 0;
+	free(cmd->av[i]);
+	while (i < cmd->ac)
+	{
+		cmd->av[i] = cmd->av[i + 1];
+		i++;
+	}
+	if (cmd->ac == 2)
+		cmd->av[1] = ft_strdup("stdout");
+	else
+		cmd->ac--;
+}
+
+static t_vector	*tail_option_f(t_cmd *cmd)
+{
 	if (cmd->ac == 1)
 		ft_dprintf(STDERR_FILENO, "Error: tail requires process name\n");
 	else if (cmd->ac > 3)
@@ -25,17 +40,7 @@ static t_vector	*tail_option_f(t_cmd *cmd)
 		ft_dprintf(STDERR_FILENO, "Error: bad channel '%s'\n", cmd->av[2]);
 	else
 	{
-		i = 0;
-		free(cmd->av[i]);
-		while (i < cmd->ac)
-		{
-			cmd->av[i] = cmd->av[i + 1];
-			i++;
-		}
-		if (cmd->ac == 2)
-			cmd->av[1] = ft_strdup("stdout");
-		else
-			cmd->ac--;
+		cmd_change(cmd);
 		g_env->flag_exec |= TAIL_FIFO;
 		return (generate_bytecode(cmd, 0x01));
 	}
