@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/14 16:18:13 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/14 16:54:13 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -246,6 +246,7 @@ DAEMON_SRCS += cmd_remove.c
 DAEMON_SRCS += cmd_reread.c
 DAEMON_SRCS += cmd_shutdown.c
 DAEMON_SRCS += cmd_update.c
+DAEMON_SRCS += cmd_update_tools.c
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += getter.c
 DAEMON_SRCS += getter_tools.c
