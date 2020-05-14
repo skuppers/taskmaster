@@ -28,7 +28,6 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 				waiter();
 		}
 	}
-	old_state = instance->state;
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
 		while (instance->state == E_STARTING)
