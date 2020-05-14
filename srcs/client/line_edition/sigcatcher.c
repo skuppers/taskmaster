@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 23:04:27 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 23:06:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int8_t		handle_signal(t_env *env, t_vector *vct)
 		env->sigint = 0;
 		ak_end(env, vct, NULL);
 		history(NULL, RESET);
-		ft_dprintf(STDERR_FILENO, "\n");
+		dprintf(STDERR_FILENO, "\n");
 		return (0);
 	}
 	else if (env->sigwinch == 1)
