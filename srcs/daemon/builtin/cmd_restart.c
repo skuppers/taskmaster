@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:21:46 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 23:00:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 23:39:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 				waiter();
 		}
 	}
-	old_state = instance->state;
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
 		while (instance->state == E_STARTING)
 			waiter();
+		if (instance->state == E_FATAL || instance->state == E_BACKOFF)
+			return (get_msg(instance->name, "spawn error", ERR_MSG));
 	}
 	return (get_msg(instance->name, "restarted", INFO_MSG));
 }
