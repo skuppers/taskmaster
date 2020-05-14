@@ -51,7 +51,7 @@ int8_t			put_newline(t_vector *dest, char *src, size_t size)
 {
 	if (ft_strequ(src, "\n") == 1)
 	{
-		ft_putchar_fd('\n', STDERR_FILENO);
+		ft_putchar_fd('\n', STDIN_FILENO);
 		if (vct_addnstr(dest, src, size) == FAILURE)
 			return (FAILURE);
 	}

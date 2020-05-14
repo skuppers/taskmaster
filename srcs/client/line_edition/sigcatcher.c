@@ -28,7 +28,7 @@ int8_t		handle_signal(t_env *env, t_vector *vct)
 		env->sigint = 0;
 		ak_end(env, vct, NULL);
 		history(NULL, RESET);
-		dprintf(STDERR_FILENO, "\n");
+		ft_dprintf(STDIN_FILENO, "\n");
 		return (0);
 	}
 	else if (env->sigwinch == 1)

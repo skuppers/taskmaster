@@ -47,8 +47,8 @@ int8_t			ak_delete(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 		vct_delchar(vct, env->cursoridx);
 		tmpidx = env->cursoridx;
 		ak_home(env, vct, NULL);
-		ft_putstr_fd("\33[J", STDERR_FILENO);
-		vct_print_fd(vct, STDERR_FILENO);
+		ft_putstr_fd("\33[J", STDIN_FILENO);
+		vct_print_fd(vct, STDIN_FILENO);
 		calc_after_totalprint(env, vct);
 		ak_home(env, vct, NULL);
 		while (tmpidx-- > 0)
@@ -66,15 +66,15 @@ int8_t			ak_backspace(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	{
 		vct_cut(vct);
 		ak_arrow_left(env, vct, "\33[D");
-		ft_putstr_fd("\33[K", STDERR_FILENO);
+		ft_putstr_fd("\33[K", STDIN_FILENO);
 	}
 	else if (env->cursoridx > 0)
 	{
 		vct_delchar(vct, env->cursoridx - 1);
 		tmpidx = env->cursoridx;
 		ak_home(env, vct, NULL);
-		ft_putstr_fd("\33[J", STDERR_FILENO);
-		vct_print_fd(vct, STDERR_FILENO);
+		ft_putstr_fd("\33[J", STDIN_FILENO);
+		vct_print_fd(vct, STDIN_FILENO);
 		calc_after_totalprint(env, vct);
 		ak_home(env, vct, NULL);
 		while (tmpidx-- > 1)
@@ -90,14 +90,14 @@ int8_t			ak_hightab(t_env *env, t_vector *vct, char c[BUFF_SIZE])
 	if (completion(vct) == 0)
 	{
 		ak_home(env, vct, NULL);
-		ft_putstr_fd("\33[J", STDERR_FILENO);
-		vct_print_fd(vct, STDERR_FILENO);
+		ft_putstr_fd("\33[J", STDIN_FILENO);
+		vct_print_fd(vct, STDIN_FILENO);
 		calc_after_totalprint(env, vct);
 	}
 	else
 	{
 		print_prompt(env);
-		vct_print_fd(vct, STDERR_FILENO);
+		vct_print_fd(vct, STDIN_FILENO);
 		calc_after_totalprint(env, vct);
 	}
 	return (0);

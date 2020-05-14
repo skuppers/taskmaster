@@ -23,9 +23,9 @@ void		dec_x(t_env *env, int goup)
 		env->cursory -= 1;
 		if (goup == 1)
 		{
-			ft_putstr_fd("\33[A", STDERR_FILENO);
+			ft_putstr_fd("\33[A", STDIN_FILENO);
 			while (i-- > 0)
-				ft_putstr_fd("\33[C", STDERR_FILENO);
+				ft_putstr_fd("\33[C", STDIN_FILENO);
 		}
 	}
 	else
@@ -45,9 +45,9 @@ void		inc_x(t_env *env, int godown)
 		env->cursory += 1;
 		if (godown == 1)
 		{
-			ft_putstr_fd("\33[B", STDERR_FILENO);
+			ft_putstr_fd("\33[B", STDIN_FILENO);
 			while (i-- > 0)
-				ft_putstr_fd("\33[D", STDERR_FILENO);
+				ft_putstr_fd("\33[D", STDIN_FILENO);
 		}
 	}
 	else
@@ -65,9 +65,9 @@ void		pinc_x(t_env *env)
 	{
 		env->cursorx = 0;
 		env->cursory += 1;
-		ft_putstr_fd("\33[B", STDERR_FILENO);
+		ft_putstr_fd("\33[B", STDIN_FILENO);
 		while (i-- > 0)
-			ft_putstr_fd("\33[D", STDERR_FILENO);
+			ft_putstr_fd("\33[D", STDIN_FILENO);
 	}
 	else
 	{
@@ -93,9 +93,9 @@ void		calc_after_totalprint(t_env *env, t_vector *vct)
 		if (env->cursorx == 0)
 		{
 			i = env->winwid - 1;
-			ft_putstr_fd("\33[B", STDERR_FILENO);
+			ft_putstr_fd("\33[B", STDIN_FILENO);
 			while (i-- > 0)
-				ft_putstr_fd("\33[D", STDERR_FILENO);
+				ft_putstr_fd("\33[D", STDIN_FILENO);
 		}
 	}
 	env->cursoridx = vct_len(vct);
