@@ -290,6 +290,7 @@ void					parse_ini_file(void);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
 
+int8_t		is_in_range(int32_t i, int32_t min, int32_t max);
 uint16_t		get_priority(uint8_t *err, dictionary *d, char *name);
 char			*get_stdoutlog(uint8_t *err, dictionary *d, char *name);
 char			*get_stderrlog(uint8_t *err, dictionary *d, char *name);
