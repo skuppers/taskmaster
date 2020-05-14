@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:47:17 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 16:17:52 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 # define DELIMITER_STR	","
 # define DELIMITER_CHAR	','
 
+
+# define DENV			1
+# define TMPENV			2
 
 # define S_SHUTDOWN		1
 # define S_RELOAD		2
@@ -361,7 +364,16 @@ t_vector			*cmd_tail(t_cmd *cmd);
 t_vector			*cmd_update(t_cmd *cmd);
 t_vector			*cmd_version(t_cmd *cmd);
 
+t_vector			*progs_info(t_list *prog_list);
+
 typedef	t_vector	*(*t_action)(t_instance *, t_program *program);
+
+
+t_vector	*process_instance(t_program *program, uint8_t nb_instance,
+							char *arg, t_action to_do);
+t_vector	*get_msg(char *name, char *msg, uint8_t flag);
+t_program	*find_program(const char *name, t_denv *e);
+t_vector	*exec_wildcard(t_program *prog, char *arg, t_action to_do);
 
 t_vector	*exec_action_args(char **arg, int ac, t_action to_do);
 t_vector	*exec_action_all(t_action to_do);
