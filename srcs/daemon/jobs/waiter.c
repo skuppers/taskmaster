@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:09:33 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:32:20 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void			check_instance(t_program *prog, t_instance *instance)
 	else if (instance->state == E_BACKOFF)
 	{
 		start_instance(prog, instance->id, g_denv->environ);
-		reinit(instance, E_BACKOFF, NO_RESET, 0);
+		log_state_information(instance);
 	}
 	else if (instance->state == E_EXITED && prog->autorestart != FALSE)
 	{
@@ -76,12 +76,12 @@ void			check_instance(t_program *prog, t_instance *instance)
 					&& is_expected_exitcode(prog, instance) == 0))
 		{
 			start_instance(prog, instance->id, g_denv->environ);
-			reinit(instance, E_STARTING, NO_RESET, 0); // E_STARTING ? change state ? 
+			log_state_information(instance);
 		}
 	}
 }
 
-void			terminate_instance(t_program *prog, t_instance *instance,
+static void		terminate_instance(t_program *prog, t_instance *instance,
 					int status)
 {
 	if (WIFSTOPPED(status))
@@ -103,14 +103,15 @@ void			terminate_instance(t_program *prog, t_instance *instance,
 				reinit(instance, E_STOPPED, FULL_RESET, 0); // SIGCHLD proper way
 			else if (instance->state == E_RUNNING) // Exited self
 				reinit(instance, E_EXITED, FULL_RESET, WEXITSTATUS(status));
-			else
-				tlog(E_LOGLVL_ERRO, "ERROR: instance %s in state %s...\n",
+			else if (instance->state == E_STARTING)
+				tlog(E_LOGLVL_INFO, "instance %s starting...\n",
 					instance->name, get_instance_state(instance));
+			//// else 	ERROR ? 
 		}
 	}
 }
 
-void		waiter(void)
+void			waiter(void)
 {
 	t_list		*list_ptr;
 	t_program	*prog;

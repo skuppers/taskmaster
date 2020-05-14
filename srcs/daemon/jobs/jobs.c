@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:46:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:35:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-void		print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb)
+void		print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t nb)
 {
 	if (ls != 0)
 		tlog(E_LOGLVL_ERRO, "Failed to %s instance %d of %s: ", cmd, nb,
@@ -33,7 +33,7 @@ void		print_cmd_success(char *cmd, int ls, t_program *pg, uint8_t	nb)
 		tlog(E_LOGLVL_ERRO, "undefined instance\n");
 	else if (ls == 0)
 	{
-		tlog(E_LOGLVL_ERRO, "Instance %d of %s with pid %d entered %s state.\n",
+		tlog(E_LOGLVL_INFO, "Instance %d of %s with pid %d entered %s state.\n",
 							nb, pg->name, get_instance(pg, nb)->pid,
 							get_instance_state(get_instance(pg, nb)));
 	}
@@ -44,8 +44,8 @@ static void	launch_instance(t_program *prog, uint16_t inst_nb)
 	t_instance	*inst;
 	int			launch_success;
 
-	inst = new_instance(inst_nb, prog->name);	// create instance meta
-	if (inst == NULL)	// create instance meta
+	inst = new_instance(inst_nb, prog->name); // create instance meta
+	if (inst == NULL) // create instance meta
 		tlog(E_LOGLVL_ERRO, "Failed to allocate instance\n");
 	else
 	{
@@ -58,7 +58,7 @@ static void	launch_instance(t_program *prog, uint16_t inst_nb)
 	}
 }
 
-void    	launch_jobs(void)
+void		launch_jobs(void)
 {
     t_list      *ptr;
     t_program   *prog;

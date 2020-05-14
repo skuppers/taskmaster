@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:18:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 15:34:21 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 	return (SUCCESS);
 }
 
-void	stop_prog(t_program *program)
+void		stop_prog(t_program *program)
 {
 	t_instance			*ptr;
 	t_instance			*next;
