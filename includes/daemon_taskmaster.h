@@ -290,6 +290,23 @@ void					parse_ini_file(void);
 dictionary 				*load_ini_file(char *str);
 void 					free_inifile(dictionary *dict);
 
+uint16_t		get_priority(uint8_t *err, dictionary *d, char *name);
+char			*get_stdoutlog(uint8_t *err, dictionary *d, char *name);
+char			*get_stderrlog(uint8_t *err, dictionary *d, char *name);
+char			*get_environement(uint8_t *err, dictionary *d, char *name);
+mode_t			get_umask(uint8_t *err, dictionary *d, char *name);
+uint8_t			get_startretries(uint8_t *err, dictionary *d, char *name);
+uint8_t			get_stopwaitsecs(uint8_t *err, dictionary *d, char *name);
+uint8_t			get_stopsig(uint8_t *err, dictionary *d, char *name);
+int16_t			get_userid(uint8_t *err, dictionary *d, char *name);
+char			*get_directory(uint8_t *err, dictionary *d, char *name);
+uint8_t			get_startsecs(uint8_t *error, dictionary *d, char *name);
+char			*get_command(uint8_t *error, dictionary *d, char *name);
+uint8_t			get_numprocs(uint8_t *error, dictionary *d, char *name);
+uint8_t			get_autorestart(uint8_t *error, dictionary *dict, char *secname);
+void			get_exitcodes(uint8_t *err, t_program *prog, dictionary *dict,
+					char *secname);
+
 /*****************************************************/
 
 void					init_signals(void);
