@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/04 21:19:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:16:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 17:38:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static t_vector	*exec_one_arg(char *arg, t_action to_do)
 			if (ft_strequ(nb, "*") == true)
 				vct = exec_wildcard(prog, arg, to_do);
 			else if (nb[0] != '\0' && ft_strcheck(nb, ft_isdigit) == true
-					&& ft_strlen(nb) < 4 && ft_atoi(nb) < 256) // LIMIT INSTANCE ?
+					&& ft_strlen(nb) < 4 && ft_atoi(nb) < LIMIT_INSTANCE)
 				vct = process_instance(prog, ft_atoi(nb), arg, to_do);
 		}
 	}
