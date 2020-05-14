@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:26:16 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 23:01:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,9 +128,8 @@ void			waiter(void)
 		{
 			status = 0;
 			update_instance_uptime(instance);
-			if (instance->state != E_STOPPED && instance->state != E_FATAL
-					&& instance->state != E_EXITED
-					&& instance->state != E_BACKOFF)
+			if (instance->state == E_STARTING || instance->state == E_RUNNING
+					|| instance->state == E_STOPPING)
 				if (waitpid(instance->pid, &status,
 						WNOHANG | WUNTRACED | WCONTINUED))
 					terminate_instance(prog, instance, status);

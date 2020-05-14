@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 13:02:15 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 23:08:02 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 		if (feedback == NULL && flag == DEL_FEEDBACK)
 		{
 			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
+			g_env->sigint = 0;
 			return (NULL);
 		}
 		if (g_env->flag_exec != 0 && vct_getlastchar(feedback) == ETX)
