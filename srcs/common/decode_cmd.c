@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/01 14:51:50 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/04 17:39:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:26:54 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static int			pre_trame(t_vector *trame)
 	size = (*((uint64_t *)vct_getstr(trame)) & 0xffffffff);
 	if (size - 1 != vct_len(trame))
 	{
-		ft_dprintf(STDERR_FILENO, "Error: Trame has bad size\n");
+		dprintf(STDERR_FILENO, "Error: Trame has bad size\n");
 		return (FAILURE);
 	}
 	vct_popfrom(trame, 4);
@@ -58,7 +58,7 @@ t_cmd				*decode_cmd(t_vector *trame)
 {
 	static t_cmd	cmd;
 
-	ft_bzero(&cmd, sizeof(t_cmd));
+	bzero(&cmd, sizeof(t_cmd));
 	if (pre_trame(trame) == FAILURE)
 		return (NULL);
 	if ((cmd.type = ((uint8_t)(vct_getfirstchar(trame))) - 128) > NB_CMD

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:47:07 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/05 02:05:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:30:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ static void	fill_cmd(t_vector *arg, t_cmd *cmd)
 		cmd->av = ft_strsplit_whitespaces(vct_getstr(arg));
 		cmd->ac = ft_tabsize(cmd->av);
 	}
-	tab = ft_memalloc(sizeof(char **) * (cmd->ac + 3));
-	i = 0;
-	while (i < cmd->ac)
+	tab = (char **)ft_memalloc(sizeof(char **) * (cmd->ac + 3));
+	if (tab != NULL)
 	{
-		tab[i] = cmd->av[i];
-		i++;
+		i = 0;
+		while (i < cmd->ac)
+		{
+			tab[i] = cmd->av[i];
+			i++;
+		}
 	}
 	free(cmd->av);
 	cmd->av = tab;
@@ -43,15 +46,18 @@ t_cmd		*get_cmd_struct(enum e_cmd_type type, t_vector *arg)
 										NO_ARG, NO_ARG, NO_ARG};
 	static t_cmd			cmd;
 
-	ft_bzero(&cmd, sizeof(t_cmd));
+	bzero(&cmd, sizeof(t_cmd));
 	cmd.type = type;
 	if (flag[type] == ONE_ARG)
 	{
 		if (vct_apply(arg, IS_SPACE) == FALSE && vct_len(arg) != 0)
 		{
-			cmd.av = ft_memalloc(sizeof(char **) * 2);
-			cmd.av[0] = vct_dupstr(arg);
-			cmd.ac = 1;
+			cmd.av = (char **)ft_memalloc(sizeof(char **) * 2);
+			if (cmd.av != NULL)
+			{
+				cmd.av[0] = vct_dupstr(arg);
+				cmd.ac = 1;
+			}
 		}
 	}
 	else if (flag[type] == TAB_ARG)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 11:42:22 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 16:46:40 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:30:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void		print_other_char(const char c)
 	else if (c == EOT)
 		ft_putstr_fd("\033[36m[EOT]\033[32m", STDERR_FILENO);
 	else
-		ft_dprintf(STDERR_FILENO, "\033[30m[0x%.2hhx]\033[32m", c);
+		dprintf(STDERR_FILENO, "\033[30m[0x%.2hhx]\033[32m", c);
 }
 
 void			debug_print_bytecode(t_vector *bytecode)
@@ -44,17 +44,17 @@ void			debug_print_bytecode(t_vector *bytecode)
 		c = vct_getcharat(bytecode, i);
 		if (i == 1)
 		{
-			ft_dprintf(STDERR_FILENO, "\033[33m[size = %u]\033[32m",
+			dprintf(STDERR_FILENO, "\033[33m[size = %lu]\033[32m",
 					(*((uint64_t *)(vct_getstr(bytecode))) >> 8) & 0xffffffff);
 			i += 3;
 		}
-		else if (ft_isprint(c) == TRUE)
+		else if (isprint(c) == TRUE)
 			ft_putchar_fd(c, STDERR_FILENO);
 		else
 			print_other_char(c);
 		i++;
 	}
-	ft_dprintf(STDERR_FILENO, "\033[0;0m\n");
+	dprintf(STDERR_FILENO, "\033[0;0m\n");
 }
 
 const char		*get_keyword(const uint8_t i)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/06 15:02:12 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 21:07:47 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 11:27:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int8_t	bin_validation(char *bin)
 static void		rename_prog(char **bin, char *new_name)
 {
 	ft_strdel(bin);
-	*bin = ft_strdup(new_name);
+	*bin = strdup(new_name);
 }
 
 int8_t			get_new_bin_path(char **bin, t_vector *path)
