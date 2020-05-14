@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/12 22:48:21 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/14 12:22:21 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -130,20 +130,24 @@ HEADER += daemon_taskmaster.h
 ################################################################################
 
 PATH_CLIENT_SRCS += srcs/client/
-PATH_CLIENT_SRCS += srcs/client/routine/
-PATH_CLIENT_SRCS += srcs/client/transfert/
-PATH_CLIENT_SRCS += srcs/client/init/
 PATH_CLIENT_SRCS += srcs/client/builtin/
 PATH_CLIENT_SRCS += srcs/client/builtin/help_function/
 PATH_CLIENT_SRCS += srcs/client/completion/
 PATH_CLIENT_SRCS += srcs/client/history/
+PATH_CLIENT_SRCS += srcs/client/init/
 PATH_CLIENT_SRCS += srcs/client/line_edition/
+PATH_CLIENT_SRCS += srcs/client/routine/
+PATH_CLIENT_SRCS += srcs/client/transfert/
 
 PATH_DAEMON_SRCS += srcs/daemon/
 PATH_DAEMON_SRCS += srcs/daemon/builtin/
 PATH_DAEMON_SRCS += srcs/daemon/env_var/
+PATH_DAEMON_SRCS += srcs/daemon/exit/
 PATH_DAEMON_SRCS += srcs/daemon/init/
 PATH_DAEMON_SRCS += srcs/daemon/init/iniparser/
+PATH_DAEMON_SRCS += srcs/daemon/jobs/
+PATH_DAEMON_SRCS += srcs/daemon/log/
+PATH_DAEMON_SRCS += srcs/daemon/transfert/
 
 PATH_COMMON_SRCS += srcs/common/
 
@@ -190,7 +194,6 @@ CLIENT_SRCS += exit_routine.c
 #Transfert
 CLIENT_SRCS += ctransfert.c
 #Builtin
-
 CLIENT_SRCS += add.c
 CLIENT_SRCS += avail.c
 CLIENT_SRCS += clear.c
@@ -223,16 +226,7 @@ CLIENT_SRCS += help_function_t_v.c
 ### DAEMON
 
 DAEMON_SRCS += daemon_taskmaster.c
-DAEMON_SRCS += print_starting_debug.c
-DAEMON_SRCS += init_daemon.c
-DAEMON_SRCS += sockets.c
-DAEMON_SRCS += jobs.c
-DAEMON_SRCS += waiter.c
-DAEMON_SRCS += instance_utils.c
-DAEMON_SRCS += instance_tools.c
-DAEMON_SRCS += daemonize.c
-
-#builtin
+#Builtin
 DAEMON_SRCS += cmd_signal.c
 DAEMON_SRCS += cmd_stop.c
 DAEMON_SRCS += cmd_start.c
@@ -251,29 +245,40 @@ DAEMON_SRCS += cmd_remove.c
 DAEMON_SRCS += cmd_reread.c
 DAEMON_SRCS += cmd_shutdown.c
 DAEMON_SRCS += cmd_update.c
-
 DAEMON_SRCS += execute_cmd.c
 DAEMON_SRCS += getter.c
-
-#iniparser
-DAEMON_SRCS += defaults.c
-DAEMON_SRCS += config_parser.c
-DAEMON_SRCS += iniparser_tools.c
-
-DAEMON_SRCS += log.c
-DAEMON_SRCS += dtransfert.c
-DAEMON_SRCS += exit_routine_d.c
-DAEMON_SRCS += help_d.c
-DAEMON_SRCS += opt_d.c
-DAEMON_SRCS += free.c
-DAEMON_SRCS += daemon_signals.c
-
-#env_var
+#Env_var
 DAEMON_SRCS += env_var_manager.c
 DAEMON_SRCS += env_var_free.c
 DAEMON_SRCS += env_var_tools.c
+#Exit
+DAEMON_SRCS += exit_routine_d.c
+DAEMON_SRCS += free.c
+#Init
+DAEMON_SRCS += help_d.c
+DAEMON_SRCS += init_daemon.c
+DAEMON_SRCS += daemonize.c
+DAEMON_SRCS += opt_d.c
+DAEMON_SRCS += daemon_signals.c
+#Init/iniparser
+DAEMON_SRCS += defaults.c
+DAEMON_SRCS += config_parser.c
+DAEMON_SRCS += iniparser_tools.c
+#Jobs
+DAEMON_SRCS += jobs.c
+DAEMON_SRCS += waiter.c
+DAEMON_SRCS += instance_utils.c
+DAEMON_SRCS += instance_tools.c
+#Log
+DAEMON_SRCS += print_starting_debug.c
+DAEMON_SRCS += log.c
+#Transfert
+DAEMON_SRCS += sockets.c
+DAEMON_SRCS += dtransfert.c
+DAEMON_SRCS += listen_for_data.c
 
 ### COMMON
+
 COMMON_SRCS += decode_cmd.c
 COMMON_SRCS += generate_bytecode.c
 COMMON_SRCS += cmd.c

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 17:53:40 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 17:55:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:46:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ static void	print_prog_debug(t_program *prog)
 	dprintf(STDERR_FILENO, " - environment:\t%s\n\n", prog->environ);
 }
 
-void	print_starting_debug(t_denv *env)
+void		print_starting_debug(t_denv *env)
 {
 	t_list *ptr;
-	
+
 	dprintf(STDERR_FILENO, "Taskmasterd:\n");
 	dprintf(STDERR_FILENO, "- logfile: %s\n", env->opt.str[LOGFILE]);
 	dprintf(STDERR_FILENO, "- loglevel: %s\n", env->opt.str[LOGLEVEL]);

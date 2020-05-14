@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 11:11:00 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 13:02:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-static t_vector		*get_trame(t_cmd *cmd)
+static t_vector		*get_trame(t_cmd *cmd, const uint8_t flag)
 {
 	static	t_builtin	builtin[] = {blt_add, blt_avail, blt_clear, blt_exit,
 									blt_fg, blt_help, blt_maintail, blt_open,
@@ -23,7 +23,7 @@ static t_vector		*get_trame(t_cmd *cmd)
 	t_vector			*trame;
 
 	trame = builtin[cmd->type](cmd);
-	if (g_env->opt.mask & OPT_DEBUG && trame != NULL)
+	if (g_env->opt.mask & OPT_DEBUG && trame != NULL && flag != KEEP_FEEDBACK)
 		debug_print_bytecode(trame);
 	return (trame);
 }
@@ -79,7 +79,7 @@ t_vector			*routine(t_vector *line, const uint8_t flag)
 	feedback = NULL;
 	if (g_env->cmd != NULL)
 	{
-		trame = get_trame(g_env->cmd);
+		trame = get_trame(g_env->cmd, flag);
 		if (trame != NULL)
 			feedback = send_and_receive(trame, flag);
 		if (feedback != NULL && g_env->cmd->type == RELOAD)

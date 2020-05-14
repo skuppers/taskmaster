@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 16:14:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:49:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,18 @@ static void		getstr_time(char *buffer)
 {
 	struct timeval	tv;
 	time_t			nowtime;
-	struct tm 		*nowtm;
-	char 			tmbuf[64];
+	struct tm		*nowtm;
+	char			tmbuf[64];
 
 	gettimeofday(&tv, NULL);
 	nowtime = tv.tv_sec;
 	nowtm = localtime(&nowtime);
-	strftime(tmbuf, sizeof tmbuf, "%Y-%m-%d %H:%M:%S", nowtm);
+	strftime(tmbuf, sizeof(tmbuf), "%Y-%m-%d %H:%M:%S", nowtm);
 	snprintf(buffer, TIMEBUFFERSZ, "%s.%06ld", tmbuf, tv.tv_usec);
 }
 
 int				tlog(int loglvl, const char *message, ...)
 {
-	
 	va_list			args;
 	char			time_buffer[TIMEBUFFERSZ];
 
@@ -67,11 +66,11 @@ int				tlog(int loglvl, const char *message, ...)
 	return (SUCCESS);
 }
 
-void 		     init_log()
+void			init_log(void)
 {
 	g_denv->log_fd = STDERR_FILENO;
 	if ((g_denv->opt.optmask & OPT_NODAEMON) == false)
-    	g_denv->log_fd = open(g_denv->opt.str[LOGFILE],
+		g_denv->log_fd = open(g_denv->opt.str[LOGFILE],
 						O_RDWR | O_APPEND | O_CREAT, 0644);
 	if (g_denv->log_fd == FAILURE)
 	{

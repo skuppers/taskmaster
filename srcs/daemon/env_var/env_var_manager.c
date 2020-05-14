@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:34 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 17:42:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:56:55 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-int			find_var(void *data, void *to_find)
+static int		find_var(void *data, void *to_find)
 {
 	t_variable	*variable;
 	char		*name;
@@ -22,14 +22,15 @@ int			find_var(void *data, void *to_find)
 	return (ft_strequ(variable->name, name));
 }
 
-t_list	*ft_lstfind(t_list *lst, void *to_find, int (*f)(void *, void *))
+static t_list	*ft_lstfind(t_list *lst, void *to_find,
+					int (*f)(void *, void *))
 {
 	if (lst == NULL)
 		return (NULL);
 	return (f(lst->content, to_find) ? lst : ft_lstfind(lst->next, to_find, f));
 }
 
-char		*get_var(t_list *env, char *name)
+char			*get_var(t_list *env, char *name)
 {
 	t_list		*node;
 
@@ -38,7 +39,7 @@ char		*get_var(t_list *env, char *name)
 	return (NULL);
 }
 
-static int8_t			create_node(t_list **alst, char *name, char *data)
+static int8_t	create_node(t_list **alst, char *name, char *data)
 {
 	t_variable	variable;
 	t_list		*newdir;

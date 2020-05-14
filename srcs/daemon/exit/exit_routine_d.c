@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/13 17:29:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:59:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	reload_daemon(void)
 	av = (char **)malloc(sizeof(char *) * (g_denv->ac + 1));
 	if (av != NULL)
 	{
-		av[g_denv->ac] = NULL; // PROTECT MALLOC
+		av[g_denv->ac] = NULL;
 		i = 0;
 		while (i < g_denv->ac)
 		{
@@ -61,8 +61,7 @@ void		general_stuff_exit(void)
 	if (g_tmpenv != NULL)
 	{
 		ft_lstdel(&g_tmpenv->prgm_list, del_prgm);
-		if (g_tmpenv->dict != NULL)
-		    free_inifile(g_tmpenv->dict);
+		free_inifile(g_tmpenv->dict);
 		free(g_tmpenv);
 	}
 	flock(g_denv->lock, LOCK_UN);

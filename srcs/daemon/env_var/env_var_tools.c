@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/03 18:45:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/14 12:58:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void			print_lst(t_list *lst)
 	}
 }
 
-char	**envtotab(t_list *lst)
+char			**envtotab(t_list *lst)
 {
 	char		**result;
 	t_variable	*variable;
@@ -50,7 +50,7 @@ char	**envtotab(t_list *lst)
 	return (result);
 }
 
-t_list	*envtolst(char **tab)
+t_list			*envtolst(char **tab)
 {
 	t_list		*lst;
 	t_variable	variable;
@@ -80,7 +80,7 @@ int8_t			add_var_vct(t_list **alst, t_vector *val)
 {
 	t_vector	*name;
 
-	if (val == NULL) 
+	if (val == NULL)
 		return (FAILURE);
 	vct_trimfront(val, " \t");
 	if (vct_apply(val, IS_PRINTABLE) == FALSE || vct_getfirstchar(val) == '='
@@ -99,7 +99,7 @@ int8_t			add_var_vct(t_list **alst, t_vector *val)
 	return (SUCCESS);
 }
 
-void	strvalue_to_lst(t_list **lst, char *str)
+void			strvalue_to_lst(t_list **lst, char *str)
 {
 	t_vector	*vct;
 	t_vector	*split;
@@ -112,4 +112,3 @@ void	strvalue_to_lst(t_list **lst, char *str)
 	}
 	vct_del(&vct);
 }
-
