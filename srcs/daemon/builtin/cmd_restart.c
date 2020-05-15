@@ -25,7 +25,7 @@ t_vector	*action_restart(t_instance *instance, t_program *program)
 	if (start_instance(program, instance->id, g_denv->environ) == SUCCESS)
 	{
 		log_state_information(instance);
-		if (instance->state == E_STARTING)
+		while (instance->state == E_STARTING)
 			instance_waiter(program, instance);
 		if (instance->state == E_FATAL || instance->state == E_BACKOFF)
 			return (get_msg(instance->name, "spawn error", ERR_MSG));
