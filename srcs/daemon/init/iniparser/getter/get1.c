@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 18:50:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 22:04:14 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ uint8_t			get_startsecs(uint8_t *error, dictionary *d, char *name)
 	int32_t		get;
 
 	get = get_secint(d, name, ":startsecs", 0);
-	if (get == 0)
+	if (get == 0 && get == 1)
 		get = 2;
 	if (!is_in_range(get, 1, 255))
 	{
