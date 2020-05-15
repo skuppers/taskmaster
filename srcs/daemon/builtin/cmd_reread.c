@@ -45,8 +45,8 @@ t_vector		*check_taskmasterd_section(dictionary *dict)
 		{
 			if (check_daemon_opts(dict) == FAILURE)
 			{
-				return (vct_newstr("reread: changes in the [taskmasterd]"
-					" section won't be updated until a reload.\n"));
+				return (vct_newstr("reread: changes in the [taskmasterd] "
+				"section won't be updated until a reload.\n"));
 			}
 			return (NULL);
 		}
