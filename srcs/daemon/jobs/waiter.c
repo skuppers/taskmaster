@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:00:35 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:09:22 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,9 @@ static void		terminate_instance(t_program *prog, t_instance *instance,
 	}
 }
 
-void 			instance_waiter(t_program *prog, t_instance *instance)
+void			instance_waiter(t_program *prog, t_instance *instance)
 {
-	int 		status;
+	int			status;
 
 	status = 0;
 	update_instance_uptime(instance);
@@ -106,7 +106,6 @@ void 			instance_waiter(t_program *prog, t_instance *instance)
 		if (waitpid(instance->pid, &status,
 				WNOHANG | WUNTRACED | WCONTINUED))
 			terminate_instance(prog, instance, status);
-	
 }
 
 void			waiter(void)

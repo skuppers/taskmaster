@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/15 16:58:25 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/15 17:11:25 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -286,6 +286,7 @@ DAEMON_SRCS += log_instance.c
 #Log
 DAEMON_SRCS += print_starting_debug.c
 DAEMON_SRCS += log.c
+DAEMON_SRCS += log_tools.c
 #Transfert
 DAEMON_SRCS += sockets.c
 DAEMON_SRCS += dtransfert.c

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:07:45 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:13:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,8 @@ enum	e_avail_state
 };
 
 void						log_state_information(t_instance *instance);
-void 						instance_waiter(t_program *prog, t_instance *instance);
+void						instance_waiter(t_program *prog,
+								t_instance *instance);
 t_instance					*new_instance(uint8_t id, char *prog_name);
 int8_t						del_instance(t_program *prg, uint8_t id);
 int8_t						add_instance(t_program *prg, t_instance *inst);

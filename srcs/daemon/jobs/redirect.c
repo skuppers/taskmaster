@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/15 16:37:08 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 16:58:41 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:09:48 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	get_pipes(t_instance *instance)
 		instance->fd[i + (i != 0)] = fd[0];
 		instance->fd[i + (i == 0)] = fd[1];
 		flag = fcntl(instance->fd[i + (i == 0)], F_GETFL) | O_NONBLOCK;
-		fcntl(instance->fd[i + (i == 0)] , F_SETFL, flag);
+		fcntl(instance->fd[i + (i == 0)], F_SETFL, flag);
 		i += 2;
 	}
 }
