@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 19:23:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 22:21:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,11 @@ int		main(int ac, char **av)
 	g_env = &environment;
 	init(ac, av);
 	if (environment.opt.mask & OPT_BATCHCMD)
+	{
+		if (vct_apply(environment.opt.batch_cmd, IS_PRINTABLE) == false)
+			exit_routine(ERR, "Unvalid char in batch command");
 		routine(environment.opt.batch_cmd, DEL_FEEDBACK);
+	}
 	if (isatty(STDERR_FILENO) == false)
 		canonic_mode(true);
 	if (environment.opt.mask & OPT_INTERACTIVE)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 16:00:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 18:10:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 22:12:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_vector			*progs_info(t_list *prog_list)
 		program = (t_program *)prog_list->content;
 		if (program != NULL)
 		{
-			dprintf(2, "prog name = [%s]\n", program->name);
 			insert_prog_name(output, prog_list, program);
 			instance = program->instance;
 			while (instance != NULL)
