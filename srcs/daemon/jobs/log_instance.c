@@ -26,6 +26,9 @@ void		log_state_information(t_instance *instance)
 	else if (instance->state == E_STOPPED)
 		tlog(E_LOGLVL_INFO, "Instance %s %s by forced exit\n",
 				instance->name, get_instance_state(instance));
+	else if (instance->state == E_STOPPING)
+		tlog(E_LOGLVL_INFO, "Instance %s entered %s state.\n",
+				instance->name, get_instance_state(instance));
 	else if (instance->state == E_RUNNING)
 		tlog(E_LOGLVL_INFO,
 				"Instance %s entered %s state after %d secs\n",

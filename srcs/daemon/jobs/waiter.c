@@ -41,8 +41,9 @@ void			check_instance(t_program *prog, t_instance *instance)
 	if (instance->state == E_STARTING && instance->uptime >= prog->startsecs)
 		reinit(instance, E_RUNNING, NO_RESET, 0);
 	else if (instance->state == E_STOPPING
-		&& instance->uptime >= (instance->stop_time + prog->stopwaitsecs))
+		&& instance->uptime >= ((instance->stop_time - instance->start_time) + prog->stopwaitsecs))
 	{
+		tlog(E_LOGLVL_WARN, "killing %s after %d seconds\n", instance->name, prog->stopwaitsecs);
 		if (kill(instance->pid, SIGKILL) == FAILURE)
 			tlog(E_LOGLVL_ERRO, "failed to kill instance %s: %s\n",
 				instance->name, strerror(errno));

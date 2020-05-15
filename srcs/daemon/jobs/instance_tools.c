@@ -87,7 +87,7 @@ int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)
 		return (ERR_FATAL);
 	if (kill(instance->pid, signo) == FAILURE)
 	{
-		tlog(E_LOGLVL_ERRO, "failed to kill instance %s: %s\n",
+		tlog(E_LOGLVL_ERRO, "failed to terminate instance %s: %s\n",
 			instance->name, strerror(errno));
 		return (FAILURE);
 	}
