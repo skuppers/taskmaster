@@ -49,5 +49,5 @@ void		bind_socket(void)
 		tlog(E_LOGLVL_CRIT, "Listen() failed\n");
 		exit_routine(E_LOGLVL_CRIT, strerror(errno));
 	}
-	tlog(E_LOGLVL_INFO, "Socket up and running.\n");
+	tlog(E_LOGLVL_INFO, "Socket '%s' up and running.\n", g_denv->addr.sun_path);
 }
