@@ -23,8 +23,8 @@ static t_vector		*get_trame(t_cmd *cmd, const uint8_t flag)
 	t_vector			*trame;
 
 	trame = builtin[cmd->type](cmd);
-	if (g_env->opt.mask & OPT_DEBUG && trame != NULL && flag != KEEP_FEEDBACK)
-		debug_print_bytecode(trame);
+//	if (g_env->opt.mask & OPT_DEBUG && trame != NULL && flag != KEEP_FEEDBACK)
+//		debug_print_bytecode(trame);
 	return (trame);
 }
 

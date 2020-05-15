@@ -31,12 +31,12 @@ int				tlog(int loglvl, const char *message, ...)
 	va_list			args;
 	char			time_buffer[TIMEBUFFERSZ];
 
-	if (loglvl >= get_loglevel(g_denv->opt.str[LOGLEVEL]))
+	if (loglvl <= get_loglevel(g_denv->opt.str[LOGLEVEL]))
 	{
 		bzero(&time_buffer, TIMEBUFFERSZ);
 		getstr_time(time_buffer);
 		dprintf(g_denv->log_fd, "[%s] %s- ", time_buffer,
-							loglvl_tostr(loglvl));
+							loglvl_todefine(loglvl));
 		va_start(args, message);
 		vdprintf(g_denv->log_fd, message, args);
 		va_end(args);
@@ -55,7 +55,7 @@ static int		unlink_rec(const char *fpath, const struct stat *sb,
 
 void			init_log(void)
 {
-	nftw(g_denv->opt.str[CHILDLOGDIR], unlink_rec, 64, FTW_DEPTH | FTW_PHYS);
+	nftw(g_denv->opt.str[CHILDLOGDIR], unlink_rec, 32, FTW_DEPTH | FTW_PHYS);
 	g_denv->log_fd = STDERR_FILENO;
 	if ((g_denv->opt.optmask & OPT_NODAEMON) == false)
 		g_denv->log_fd = open(g_denv->opt.str[LOGFILE],

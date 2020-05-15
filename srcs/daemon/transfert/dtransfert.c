@@ -17,9 +17,9 @@ void	handle_client_data(t_vector *vct, const int fd)
 	t_cmd			*cmd;
 	t_vector		*resp;
 
-	if (ft_strequ(g_denv->opt.str[LOGLEVEL], LOGLVL_DEBG) == true
-			&& (g_denv->opt.optmask & OPT_NODAEMON))
-		debug_print_bytecode(vct);
+//	if (ft_strequ(g_denv->opt.str[LOGLEVEL], LOGLVL_DEBG) == true
+//			&& (g_denv->opt.optmask & OPT_NODAEMON))
+//		debug_print_bytecode(vct);
 	cmd = decode_cmd(vct);
 	if (cmd == NULL)
 		tlog(E_LOGLVL_ERRO, "Error: Bad trame\n");
@@ -29,9 +29,9 @@ void	handle_client_data(t_vector *vct, const int fd)
 		if (resp != NULL)
 		{
 			tlog(E_LOGLVL_DEBG, "Responding.\n");
-			if (ft_strequ(g_denv->opt.str[LOGLEVEL], LOGLVL_DEBG) == true
-					&& (g_denv->opt.optmask & OPT_NODAEMON))
-				debug_print_bytecode(resp);
+//			if (ft_strequ(g_denv->opt.str[LOGLEVEL], LOGLVL_DEBG) == true
+//					&& (g_denv->opt.optmask & OPT_NODAEMON))
+//				debug_print_bytecode(resp);
 			try_to_send_trame(fd, resp, TO_LOG, tlog);
 		}
 		vct_del(&resp);

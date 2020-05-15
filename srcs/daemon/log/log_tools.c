@@ -12,12 +12,20 @@
 
 #include "daemon_taskmaster.h"
 
-char			*loglvl_tostr(uint8_t loglvl)
+char			*loglvl_todefine(uint8_t loglvl)
 {
-	static char	*str_log[] = {LOG_DEBG_STR, LOG_INFO_STR, LOG_WARN_STR,
-									LOG_ERRO_STR, LOG_CRIT_STR};
+	static char	*str_log[] = {LOG_CRIT_STR, LOG_ERRO_STR, LOG_WARN_STR,
+								LOG_INFO_STR, LOG_DEBG_STR};
 
 	return ((loglvl < 5) ? str_log[loglvl] : LOG_DEBG_STR);
+}
+
+char			*loglvl_tostr(uint8_t loglvl)
+{
+	static char	*str_log[] = {LOGLVL_CRIT, LOGLVL_ERRO, LOGLVL_WARN,
+								LOGLVL_INFO, LOGLVL_DEBG};
+
+	return ((loglvl < 5) ? str_log[loglvl] : LOGLVL_DEBG);
 }
 
 uint8_t			get_loglevel(char *str)

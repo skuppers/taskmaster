@@ -20,6 +20,7 @@ t_vector	*action_stop(t_instance *instance, t_program *program)
 		return (get_msg(instance->name, "already stopped", ERR_MSG));
 	if (stop_instance(program, instance, program->stopsignal) == SUCCESS)
 	{
+		log_state_information(instance);
 		while (instance->state == E_STOPPING)
 			instance_waiter(program, instance);
 		return (get_msg(instance->name, "stopped", INFO_MSG));

@@ -134,11 +134,11 @@ int8_t				try_to_send_trame(const int fd, t_vector *trame,
 
 enum	e_loglvl
 {
-	E_LOGLVL_DEBG,
-	E_LOGLVL_INFO,
-	E_LOGLVL_WARN,
+	E_LOGLVL_CRIT,
 	E_LOGLVL_ERRO,
-	E_LOGLVL_CRIT
+	E_LOGLVL_WARN,
+	E_LOGLVL_INFO,
+	E_LOGLVL_DEBG
 };
 
 void				init_log(void);

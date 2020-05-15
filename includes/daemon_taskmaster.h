@@ -379,7 +379,7 @@ typedef	t_vector			*(*t_process_cmd)(t_cmd *);
 
 uint8_t						get_loglevel(char *str);
 char						*loglvl_tostr(uint8_t loglvl);
-
+char						*loglvl_todefine(uint8_t loglvl);
 t_vector					*execute_cmd(t_cmd *cmd);
 t_vector					*get_logfile_name(t_program *program,
 								t_instance *instance, const int fd,
