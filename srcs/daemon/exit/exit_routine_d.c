@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:59:06 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:55:47 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,23 @@ static void	free_arg_vct(void)
 	free(g_denv->av);
 }
 
-static int	reload_daemon(void)
+static void	fail_execve(char **av, char **env)
 {
-	int		fd_log;
+	ft_free_tab_str(av);
+	ft_free_tab_str(env);
+	tlog(E_LOGLVL_CRIT, "Failed to reload: %s: %s\n", av[0], strerror(errno));
+	ft_lstdel(&g_denv->environ, free_env);
+	close(g_denv->log_fd);
+	exit(EXIT_FAILURE);
+}
+
+static void	reload_daemon(void)
+{
 	int		i;
 	char	**av;
+	char	**env;
 
 	free_inifile(g_denv->dict);
-	fd_log = g_denv->log_fd;
 	av = (char **)malloc(sizeof(char *) * (g_denv->ac + 1));
 	if (av != NULL)
 	{
@@ -40,21 +49,17 @@ static int	reload_daemon(void)
 			av[i] = vct_dupstr(g_denv->av[i]);
 			i++;
 		}
-		bzero(g_denv, sizeof(t_denv));
 	}
+	env = envtotab(g_denv->environ);
 	free_arg_vct();
-	if (av != NULL)
-		execve(av[0], av, g_denv->environ_tab);
-	ft_free_tab_str(av);
-	tlog(E_LOGLVL_CRIT, "Failed to reload: %s: %s\n", av[0], strerror(errno));
-	close(fd_log);
-	exit(EXIT_FAILURE);
+	if (av != NULL && env != NULL)
+		execve(av[0], av, env);
+	fail_execve(av, env);
 }
 
 void		general_stuff_exit(void)
 {
 	close(g_denv->unix_socket);
-	ft_lstdel(&g_denv->environ, free_env);
 	ft_lstdel(&g_denv->prgm_list, del_prgm);
 	if (g_denv->dfl_socket != NULL)
 		unlink(g_denv->dfl_socket);
@@ -89,6 +94,7 @@ void		exit_routine(const int flag, ...)
 		if (g_denv->shutdown == S_RELOAD)
 			reload_daemon();
 	}
+	ft_lstdel(&g_denv->environ, free_env);
 	free_inifile(g_denv->dict);
 	free_arg_vct();
 	close(g_denv->log_fd);

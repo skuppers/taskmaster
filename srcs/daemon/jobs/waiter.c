@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:28:36 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:34:04 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
 
-static void		reinit(t_instance *instance, enum e_prg_state new_state,
+void		reinit(t_instance *instance, enum e_prg_state new_state,
 					uint8_t flag, int exit_code)
 {
 	instance->state = new_state;
