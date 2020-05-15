@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:50:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:07:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 # define DAEMON_TASKMASTER_H
 
 # include "libft.h"
-# include <unistd.h>
-# include <stdint.h>
-# include <sys/socket.h>
 # include <sys/un.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -56,6 +53,13 @@
 # define FULL_RESET		0x04
 # define NO_RESET		0x08
 
+# define CHILD_STDIN	0
+# define TRUE_STDIN 	1
+# define TRUE_STDOUT	2
+# define CHILD_STDOUT	3
+# define TRUE_STDERR 	4
+# define CHILD_STDERR 	5
+
 /*
 ****************** STRUCTURES ****************
 */
@@ -79,7 +83,7 @@ typedef struct				s_instance
 	uint16_t				id;
 	uint8_t					state;
 	uint8_t					backoff;
-	char					pad[4];
+	int						fd[6];
 	char					*name;
 	struct s_instance		*next;
 }							t_instance;
@@ -433,5 +437,9 @@ t_vector					*exec_action_all_group(t_action to_do);
 t_vector					*get_msg(char *name, char *msg, uint8_t flag);
 
 t_vector					*reread_file(t_instance *in, t_program *prg);
+
+void						get_pipes(t_instance *instance);
+void						close_child_fd(t_instance *instance);
+void						close_parrent_fd(t_instance *instance);
 
 #endif

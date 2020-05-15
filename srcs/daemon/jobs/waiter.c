@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:17:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 23:01:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:00:35 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void		reinit(t_instance *instance, enum e_prg_state new_state,
 	instance->state = new_state;
 	if ((flag & NO_RESET) == FALSE)
 	{
+		close_parrent_fd(instance);
+		close_child_fd(instance);
 		instance->pid = 0;
 		instance->start_time = 0;
 		instance->stop_time = time(NULL);

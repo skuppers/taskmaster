@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:24:50 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 16:59:38 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ t_instance	*new_instance(uint8_t id, char *prog_name)
 	new->id = id;
 	new->name = ft_asprintf("%s:%d", prog_name, id);
 	new->state = E_STOPPED;
+	new->fd[0] = -1;
+	new->fd[1] = -1;
+	new->fd[2] = -1;
 	new->next = NULL;
 	return (new);
 }
@@ -49,15 +52,15 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 {
 	t_instance	*inst;
 
-	inst = get_instance(prog, id);
-	if (inst == NULL)
+	if ((inst = get_instance(prog, id)) == NULL)
 		return (ERR_UNDEF_INST);
 	if (inst->state == E_STARTING)
 		return (ERR_STARTING);
 	if (inst->state == E_RUNNING)
 		return (ERR_RUNNING);
+	get_pipes(inst);
 	if ((inst->pid = fork()) < 0)
-		return (ERR_FORK);
+		close_parrent_fd(inst);
 	else if (inst->pid == 0)
 		child_process(prog, inst, environ);
 	else
@@ -67,7 +70,8 @@ int8_t		start_instance(t_program *prog, uint8_t id, t_list *environ)
 		inst->state = E_STARTING;
 		inst->start_time = time(NULL);
 	}
-	return (SUCCESS);
+	close_child_fd(inst);
+	return (inst->pid < 0 ? ERR_FORK : SUCCESS);
 }
 
 int8_t		stop_instance(t_program *prog, t_instance *instance, int signo)

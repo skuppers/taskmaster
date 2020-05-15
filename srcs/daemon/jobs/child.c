@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 15:33:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:06:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,23 @@ static void	change_uid_dir(t_program *prog, t_instance *instance)
 	}
 }
 
+static void	redirect_process(t_program *prog, t_instance *instance)
+{
+	dup2(instance->fd[CHILD_STDIN], STDIN_FILENO);
+	dup2(instance->fd[CHILD_STDOUT], STDOUT_FILENO);
+	dup2(instance->fd[CHILD_STDERR], STDERR_FILENO);
+	aggregate_std(prog, instance, STDOUT_FILENO);
+	aggregate_std(prog, instance, STDERR_FILENO);
+}
+
 void		child_process(t_program *prog, t_instance *instance, t_list *env)
 {
 	char	**environ;
 
 	if (prog->pgid == 0)
 		prog->pgid = getpid();
+	tcsetpgrp(STDIN_FILENO, prog->pgid);
+	redirect_process(prog, instance);
 	setpgid(getpid(), prog->pgid);
 	if (get_new_bin_path(&prog->bin,
 				vct_newstr(get_var(env, "PATH"))) == FAILURE)
@@ -70,14 +81,13 @@ void		child_process(t_program *prog, t_instance *instance, t_list *env)
 	prog->avs[0] = prog->bin;
 	concat_env_to_daemon_env(prog, env);
 	environ = envtotab(prog->env);
-	close(STDIN_FILENO);
-	aggregate_std(prog, instance, STDOUT_FILENO);
-	aggregate_std(prog, instance, STDERR_FILENO);
 	change_uid_dir(prog, instance);
 	if (execve(prog->bin, prog->avs, environ) == FAILURE)
 		tlog(E_LOGLVL_ERRO,
 			"taskmasterd: Program %s instance %d execution error: %s\n",
 				prog->name, instance->id, strerror(errno));
 	ft_free_tab_str(environ);
+	close_parrent_fd(instance);
+	close_child_fd(instance);
 	exit(EXIT_FAILURE);
 }

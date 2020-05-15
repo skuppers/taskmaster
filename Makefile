@@ -6,7 +6,7 @@
 #    By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/11 17:23:00 by ffoissey          #+#    #+#              #
-#    Updated: 2020/05/14 19:15:06 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/15 16:58:25 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -277,6 +277,7 @@ DAEMON_SRCS += get2.c
 DAEMON_SRCS += get3.c
 #Jobs
 DAEMON_SRCS += jobs.c
+DAEMON_SRCS += redirect.c
 DAEMON_SRCS += child.c
 DAEMON_SRCS += waiter.c
 DAEMON_SRCS += instance_utils.c
