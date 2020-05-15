@@ -24,8 +24,11 @@ static void	aggregate_std(t_program *pg, t_instance *in, const int fd)
 		asp = ft_asprintf("%s/%s_%d_%s.log", g_denv->opt.str[CHILDLOGDIR],
 							pg->name, in->id,
 							(fd == STDOUT_FILENO) ? "out" : "err");
-	else if (ft_strequ(logfile, "NONE") == false)
+	else if (ft_strequ(logfile, "NONE") == true)
+	{
 		close(fd);
+		
+	}
 	else
 		asp = ft_asprintf("%s%d", logfile, in->id);
 	if (asp != NULL)
