@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 18:14:32 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 21:42:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static char			*status_stopped_exited(t_instance *instance, char *state)
 	char		*tmp;
 	char		*str;
 
-	tmp = ft_asprintf("%-20s%-18s |", instance->name, state);
+	tmp = ft_asprintf("%-20s%-8scode: %4d |", instance->name, state,
+								instance->exitcode);
 	if (instance->stop_time == 0)
 		str = ft_asprintf("%s not started.\n", tmp,
 					ctime(&instance->stop_time));
