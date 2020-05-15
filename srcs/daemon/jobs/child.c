@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:26:28 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 20:04:46 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	aggregate_std(t_program *pg, t_instance *in, const int fd)
 		stdfile = fopen(asp, "a+");
 		ft_strdel(&asp);
 		if (stdfile == NULL)
-			exit_routine(E_LOGLVL_ERRO, strerror(errno));
+			exit(EXIT_FAILURE);
 		dup2(fileno(stdfile), fd);
 		fclose(stdfile);
 	}
