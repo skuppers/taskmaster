@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:06:49 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:18:08 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static void	redirect_process(t_program *prog, t_instance *instance)
 	dup2(instance->fd[CHILD_STDIN], STDIN_FILENO);
 	dup2(instance->fd[CHILD_STDOUT], STDOUT_FILENO);
 	dup2(instance->fd[CHILD_STDERR], STDERR_FILENO);
+	close_child_fd(instance);
 	aggregate_std(prog, instance, STDOUT_FILENO);
 	aggregate_std(prog, instance, STDERR_FILENO);
 }
