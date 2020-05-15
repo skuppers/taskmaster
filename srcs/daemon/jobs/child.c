@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:18:08 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:26:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void		child_process(t_program *prog, t_instance *instance, t_list *env)
 
 	if (prog->pgid == 0)
 		prog->pgid = getpid();
-	tcsetpgrp(STDIN_FILENO, prog->pgid);
+	tcsetpgrp(STDIN_FILENO, 0);
 	redirect_process(prog, instance);
 	setpgid(getpid(), prog->pgid);
 	if (get_new_bin_path(&prog->bin,
