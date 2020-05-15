@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 23:04:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 19:12:45 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void					init_signals(void)
 	struct sigaction	sig_pipe;
 	struct sigaction	sig_cont;
 
+	if (isatty(STDERR_FILENO) == false)
+		return ;
 	sig_int.sa_handler = sigint_handle;
 	sig_int.sa_flags = 0;
 	sigemptyset(&sig_int.sa_mask);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/12 16:42:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 19:21:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	reset_cmd(void)
 {
-	if (g_env->cmd != NULL)
+	if (g_env->cmd != NULL && g_env->cmd->av != NULL)
 	{
 		ft_free_tab_str(g_env->cmd->av);
 		g_env->cmd->av = NULL;

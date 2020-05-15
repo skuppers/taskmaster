@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 11:41:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 23:20:13 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 19:15:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static t_vector		*get_trame(t_cmd *cmd, const uint8_t flag)
 	t_vector			*trame;
 
 	trame = builtin[cmd->type](cmd);
-//	if (g_env->opt.mask & OPT_DEBUG && trame != NULL && flag != KEEP_FEEDBACK)
-//		debug_print_bytecode(trame);
+	if (g_env->opt.mask & OPT_DEBUG && trame != NULL && flag != KEEP_FEEDBACK)
+		debug_print_bytecode(trame);
 	return (trame);
 }
 
@@ -46,7 +46,7 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 		if (g_env->flag_exec != 0 && vct_getlastchar(feedback) == ETX)
 			exec_tail(g_env->flag_exec, feedback);
 		else if (flag == DEL_FEEDBACK)
-			vct_print_fd(feedback, STDERR_FILENO);
+			vct_print_fd(feedback, STDOUT_FILENO);
 	}
 	vct_creadline(NULL, CLEANUP, EOT);
 	return (feedback);

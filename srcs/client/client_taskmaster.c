@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/11 17:00:54 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 19:23:28 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ int		main(int ac, char **av)
 	init(ac, av);
 	if (environment.opt.mask & OPT_BATCHCMD)
 		routine(environment.opt.batch_cmd, DEL_FEEDBACK);
-	if ((g_env->opt.mask & OPT_INTERACTIVE) && isatty(STDIN_FILENO) == false)
-		exit_routine(ERR, "Not a tty");
+	if (isatty(STDERR_FILENO) == false)
+		canonic_mode(true);
 	if (environment.opt.mask & OPT_INTERACTIVE)
 		read_cmd();
 	exit_routine(NO_MSG);
