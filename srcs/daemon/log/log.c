@@ -44,18 +44,8 @@ int				tlog(int loglvl, const char *message, ...)
 	return (SUCCESS);
 }
 
-static int		unlink_rec(const char *fpath, const struct stat *sb,
-						int typeflag, struct FTW *ftwbuf)
-{
-	(void)sb;
-	(void)typeflag;
-	(void)ftwbuf;
-	return (remove(fpath));
-}
-
 void			init_log(void)
 {
-	nftw(g_denv->opt.str[CHILDLOGDIR], unlink_rec, 32, FTW_DEPTH | FTW_PHYS);
 	g_denv->log_fd = STDERR_FILENO;
 	if ((g_denv->opt.optmask & OPT_NODAEMON) == false)
 		g_denv->log_fd = open(g_denv->opt.str[LOGFILE],
