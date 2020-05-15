@@ -35,6 +35,7 @@
 # include "iniparser.h"
 # include "common.h"
 # include <assert.h>
+# include <ftw.h>
 
 # ifndef _GNU_SOURCE
 #  define _GNU_SOURCE 1
