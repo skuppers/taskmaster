@@ -128,8 +128,8 @@ void						canonic_mode(const bool flag);
 # define UNIX_URI			"unix://"
 # define UNIX_URI_SIZE		7
 
-# define DFL_PROMPT			"taskmaster> "
-# define DFL_URL			"/tmp/taskmaster.d/taskmaster.sock"
+# define DFL_PROMPT			"taskmaster"
+# define DFL_URL			"/tmp/taskmaster.d/taskmasterd.sock"
 # define DFL_CONFIGURATION	"/tmp/taskmaster.d/taskmasterd.conf"
 
 # define SERVERURL_SEC		"taskmasterctl:serverurl"

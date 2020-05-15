@@ -45,8 +45,8 @@ t_vector		*check_taskmasterd_section(dictionary *dict)
 		{
 			if (check_daemon_opts(dict) == FAILURE)
 			{
-				return (vct_newstr("reread: You cannot change the"
-				" taskmasterd section at runtime.\n"));
+				return (vct_newstr("reread: changes in the [taskmasterd]"
+					" section won't be updated until a reload.\n"));
 			}
 			return (NULL);
 		}
@@ -60,6 +60,7 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	dictionary	*dict;
 	t_denv		*tmpenv;
 	t_vector	*vct;
+	t_vector	*tmp;
 
 	(void)in;
 	(void)prg;
@@ -74,10 +75,12 @@ t_vector		*reread_file(t_instance *in, t_program *prg)
 	if ((dict = load_dict()) == NULL)
 		return (vct_newstr("reread: could not open file to read.\n"));
 	vct = check_taskmasterd_section(dict);
-	if (vct != NULL)
-		return (vct);
 	reparse_ini_file(dict, tmpenv);
-	return (register_changes(tmpenv));
+	tmp = register_changes(tmpenv);
+	if (vct == NULL)
+		return (tmp);
+	vct_cat(vct, tmp);
+	return (vct);
 }
 
 t_vector		*cmd_reread(t_cmd *cmd)
