@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:19:53 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:34:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -447,4 +447,6 @@ void						get_pipes(t_instance *instance);
 void						close_child_fd(t_instance *instance);
 void						close_parrent_fd(t_instance *instance);
 
+void		reinit(t_instance *instance, enum e_prg_state new_state,
+					uint8_t flag, int exit_code);
 #endif
