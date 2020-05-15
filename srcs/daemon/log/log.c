@@ -73,7 +73,7 @@ void			init_log(void)
 		if (errno != EEXIST)
 		{
 			tlog(E_LOGLVL_CRIT, "Fatal error in: init_log():"
-					" Could create childlog directory\n");
+					" Could not create childlog directory\n");
 			exit_routine(ERR, strerror(errno));
 		}
 	}

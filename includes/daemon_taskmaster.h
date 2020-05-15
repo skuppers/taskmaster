@@ -85,6 +85,7 @@ typedef struct				s_instance
 	uint8_t					state;
 	uint8_t					backoff;
 	int						fd[6];
+	char					pad[4];
 	char					*name;
 	struct s_instance		*next;
 }							t_instance;
