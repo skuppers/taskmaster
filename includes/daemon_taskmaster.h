@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:13:57 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/15 17:19:53 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -376,6 +376,9 @@ char						*get_secstring(dictionary *dict, char *secname,
 # define INFO_MSG	1
 
 typedef	t_vector			*(*t_process_cmd)(t_cmd *);
+
+uint8_t						get_loglevel(char *str);
+char						*loglvl_tostr(uint8_t loglvl);
 
 t_vector					*execute_cmd(t_cmd *cmd);
 t_vector					*get_logfile_name(t_program *program,
