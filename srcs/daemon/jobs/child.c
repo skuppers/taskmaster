@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 20:04:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:12:11 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ static void	aggregate_std(t_program *pg, t_instance *in, const int fd)
 							pg->name, in->id,
 							(fd == STDOUT_FILENO) ? "out" : "err");
 	else if (ft_strequ(logfile, "NONE") == true)
-	{
 		close(fd);
-		
-	}
 	else
 		asp = ft_asprintf("%s%d", logfile, in->id);
 	if (asp != NULL)

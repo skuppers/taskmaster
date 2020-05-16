@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 18:44:18 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:14:39 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:26:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ t_vector			*get_logfile_name(t_program *program, t_instance *instance,
 	t_vector	*log;
 	char		*id_str;
 
+	if (instance == NULL)
+		return (NULL);
 	if (g_denv->opt.str[CHILDLOGDIR] == NULL || fd <= 0 || fd > STDERR_FILENO
-			|| program == NULL || instance == NULL || program->name == NULL)
+			|| program == NULL || program->name == NULL)
 		return (get_msg(instance->name, "no log file", ERR_MSG));
 	log = vct_newstr(g_denv->opt.str[CHILDLOGDIR]);
 	if (vct_getlastchar(log) != '/')

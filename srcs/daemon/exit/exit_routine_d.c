@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:55:47 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:28:43 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ static void	free_arg_vct(void)
 
 static void	fail_execve(char **av, char **env)
 {
-	ft_free_tab_str(av);
+	if (av == NULL || av[0] == NULL)
+		tlog(E_LOGLVL_CRIT, "Failed to reload taskmasterd\n");
+	else
+		tlog(E_LOGLVL_CRIT, "Failed to reload `%s': %s\n", av[0],
+							strerror(errno));
 	ft_free_tab_str(env);
-	tlog(E_LOGLVL_CRIT, "Failed to reload: %s: %s\n", av[0], strerror(errno));
+	ft_free_tab_str(av);
 	ft_lstdel(&g_denv->environ, free_env);
 	close(g_denv->log_fd);
 	exit(EXIT_FAILURE);

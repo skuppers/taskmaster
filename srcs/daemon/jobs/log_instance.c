@@ -6,11 +6,20 @@
 /*   By: skuppers <skuppers@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 12:49:38 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:14:01 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "daemon_taskmaster.h"
+
+char		*get_instance_state(t_instance *instance)
+{
+	static char	*str_instance[] = {STATE_STARTING, STATE_BACKOFF, STATE_RUNNING,
+									STATE_STOPPING, STATE_STOPPED, STATE_EXITED,
+									STATE_FATAL, STATE_UNKNOWN};
+
+	return (str_instance[instance->state]);
+}
 
 void		log_state_information(t_instance *instance)
 {
