@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:47:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 14:02:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@ static void	do_chdir(const char *directory)
 		tlog(E_LOGLVL_ERRO, "taskmasterd: cannot chdir to %s\n", directory);
 		exit_routine(E_LOGLVL_ERRO, strerror(errno));
 	}
-	else
+	else if (directory != NULL)
 		tlog(E_LOGLVL_INFO, "changed working directory to %s\n", directory);
-	
 }
 
 void		daemonize(void)
