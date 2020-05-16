@@ -1,6 +1,6 @@
 # Taskmaster
 
-Taskmaster is a client/server project for 42 school.
+Taskmaster is a job control manager project for 42 school.
 
 It allows its users to control a number of processes on UNIX-like operating systems.
 
