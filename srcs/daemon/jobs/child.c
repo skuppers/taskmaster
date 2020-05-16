@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 10:12:11 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:30:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static void	aggregate_std(t_program *pg, t_instance *in, const int fd)
 			exit(EXIT_FAILURE);
 		dup2(fileno(stdfile), fd);
 		fclose(stdfile);
+		ft_putendl_fd("- - - - - - - - - - - - - - - - - - - - - - - - -", fd);
 	}
 }
 

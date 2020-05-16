@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/03 17:42:27 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:19:25 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:42:56 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 **		{
 **			variable = (t_variable *)lst->content;
 **			if (variable->data != NULL)
-**				ft_dprintf(STDERR_FILENO, "%s=%s\n",
+**				dprintf(STDERR_FILENO, "%s=%s\n",
 **							variable->name, variable->data);
 **			else
-**				ft_dprintf(STDERR_FILENO, "%s=\n", variable->name);
+**				dprintf(STDERR_FILENO, "%s=\n", variable->name);
 **			lst = lst->next;
 **		}
 **	}
@@ -32,17 +32,15 @@
 
 void			concat_env_to_daemon_env(t_program *prog, t_list *env)
 {
-	t_list	*env_prog;
+	t_variable	*var;
 
-	if (prog->env == NULL)
+	while (env != NULL)
 	{
-		prog->env = env;
-		return ;
+		var = (t_variable *)(env->content);
+		if (var != NULL && get_var(prog->env, var->name) == NULL)
+			add_var(&prog->env, var->name, var->data);
+		env = env->next;
 	}
-	env_prog = prog->env;
-	while (env_prog != NULL && env_prog->next != NULL)
-		env_prog = env_prog->next;
-	env_prog->next = env;
 }
 
 char			**envtotab(t_list *lst)
