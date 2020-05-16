@@ -97,8 +97,6 @@ uint8_t			get_startsecs(uint8_t *error, dictionary *d, char *name)
 	int32_t		get;
 
 	get = get_secint(d, name, ":startsecs", 0);
-	if (get == 0)
-		get = 0;
 	if (!is_in_range(get, 0, 255))
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - startsecs is not in range:"

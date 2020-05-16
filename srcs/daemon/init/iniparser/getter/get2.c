@@ -35,7 +35,7 @@ uint8_t			get_stopwaitsecs(uint8_t *err, dictionary *d, char *name)
 
 	get = get_secint(d, name, ":stopwaitsecs", 0);
 	if (get == 0)
-		get = 1;
+		get = 3;
 	if (!is_in_range(get, 1, 255))
 	{
 		dprintf(STDERR_FILENO, "taskmasterd: [%s] - stopwaitsecs is not in "
