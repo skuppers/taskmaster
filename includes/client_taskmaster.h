@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 19:28:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 12:55:40 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@
 
 # define TAIL_FIFO			0x01
 # define TAIL_NB			0x02
+
+# define BEFORE				0
+# define AFTER				1
 
 typedef struct s_env		t_env;
 
@@ -248,6 +251,7 @@ int8_t						ak_hightab(t_env *env,
 */
 
 void						connect_to_daemon(const char *socketpath);
+void						restart_connection(void);
 t_vector					*get_feedback(void);
 
 /*

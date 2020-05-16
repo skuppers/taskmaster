@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/10 23:04:27 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 11:59:34 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,11 @@ void		calc_after_totalprint(t_env *env, t_vector *vct)
 	len = vct_len(vct);
 	len += ft_strlen(env->opt.str[PROMPT]);
 	if (len < env->winwid)
-	{
 		env->cursorx = len;
-	}
 	else
 	{
-		env->cursory = (len / env->winwid);
-		env->cursorx = (len % env->winwid);
+		env->cursory = env->winwid == 0 ? 0 : (len / env->winwid);
+		env->cursorx = env->winwid == 0 ? 0 : (len % env->winwid);
 		if (env->cursorx == 0)
 		{
 			i = env->winwid - 1;

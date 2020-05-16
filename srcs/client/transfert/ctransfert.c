@@ -6,11 +6,29 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 19:32:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 12:55:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
+
+void			restart_connection(void)
+{
+	int		i;
+
+	i = RESTART_TIME;
+	close(g_env->unix_socket);
+	canonic_mode(true);
+	dprintf(2, "Reconnection in %d ", RESTART_TIME);
+	while (i > 0)
+	{
+		sleep(1);
+		i--;
+		dprintf(2, "%d%c", i, (i == 0) ? '\n' : ' ');
+	}
+	connect_to_daemon(g_env->opt.str[SERVERURL]);
+	canonic_mode(false);
+}
 
 void			connect_to_daemon(const char *socketpath)
 {
@@ -54,14 +72,24 @@ static t_vector	*read_feedback(const int fd)
 	return (NULL);
 }
 
-static int		get_waittime(void)
+static struct timeval	get_waittime(void)
 {
+	struct timeval	tv;
+
 	if (g_env->cmd != NULL
 			&& (g_env->cmd->type == START || g_env->cmd->type == STOP
 				|| g_env->cmd->type == RESTART || g_env->cmd->type == UPDATE
 				|| g_env->cmd->type == REMOVE))
-		return (60);
-	return (2);
+	{
+		tv.tv_sec = 60;
+		tv.tv_usec = 0;
+	}
+	else
+	{
+		tv.tv_sec = 0;
+		tv.tv_usec = 250000;
+	}
+	return (tv);
 }
 
 t_vector		*get_feedback(void)
@@ -71,8 +99,7 @@ t_vector		*get_feedback(void)
 	int				fd;
 
 	fd = -1;
-	tv.tv_sec = get_waittime();
-	tv.tv_usec = 0;
+	tv = get_waittime();
 	FD_ZERO(&recv_set);
 	FD_SET(g_env->unix_socket, &recv_set);
 	while (select(DFL_FD_SETSIZE, &recv_set, NULL, NULL, &tv) < 0)
@@ -80,8 +107,8 @@ t_vector		*get_feedback(void)
 		dprintf(STDERR_FILENO, "select failed.\n");
 		if (g_env->sigint == 0)
 			return (NULL);
-		else
-			dprintf(STDERR_FILENO, "retry select...\n");
+		dprintf(STDERR_FILENO, "retry select...\n");
+		g_env->sigint = false;
 	}
 	while (++fd < DFL_FD_SETSIZE)
 	{

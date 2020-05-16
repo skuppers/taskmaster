@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 10:11:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 12:11:37 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	handle_client_data(t_vector *vct, const int fd)
 		if (g_denv->shutdown != FALSE)
 			exit_routine(NO_MSG);
 	}
+	vct_creadline(NULL, CLEANUP, 0);
+	fdatasync(fd);
 }
 
 void	handle_client_requests(const int fd_nb, fd_set *master_set)
