@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:32:52 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 17:36:46 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:09:33 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_vector		*check_taskmasterd_section(dictionary *dict)
 			if (check_daemon_opts(dict) == FAILURE)
 			{
 				return (vct_newstr("reread: changes in the [taskmasterd]"
-					" section won't be updated until a reload.\n"));
+				" section won't be updated until a reload.\n"));
 			}
 			return (NULL);
 		}

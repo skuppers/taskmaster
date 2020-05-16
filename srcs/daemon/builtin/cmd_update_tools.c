@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 16:45:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:55:30 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:24:48 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,12 @@ void		apply_changes(t_vector *msg)
 			new = get_modified_prog(old);
 			if (new == NULL)
 				vct_addstr(msg, "Could not update prog.\n");
-			new->availmode = E_ADDED;
-			vct_cat(msg, action_remove(NULL, old));
-			vct_cat(msg, action_add(NULL, new));
+			else
+			{
+				new->availmode = E_ADDED;
+				vct_cat(msg, action_remove(NULL, old));
+				vct_cat(msg, action_add(NULL, new));
+			}
 		}
 		ptr = next;
 	}

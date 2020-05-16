@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/05 02:23:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 21:42:56 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:18:32 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ t_vector			*action_status(t_instance *instance, t_program *program)
 	else if (instance->state == E_STOPPED || instance->state == E_EXITED)
 		str = status_stopped_exited(instance, state);
 	else if (instance->state == E_FATAL)
-		str = ft_asprintf("%-20s%s (logs may have details)\n", instance->name, state);
+		str = ft_asprintf("%-20s%s (logs may have details)\n",
+							instance->name, state);
 	else
 		str = ft_asprintf("%-20s%s\n", instance->name, state);
 	vct = vct_newstr(str);

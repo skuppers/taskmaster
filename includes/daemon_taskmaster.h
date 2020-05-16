@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/04/29 11:36:21 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 17:34:12 by ffoissey         ###   ########.fr       */
+/*   Created: 2020/05/16 10:20:47 by ffoissey          #+#    #+#             */
+/*   Updated: 2020/05/16 10:20:50 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,11 +207,16 @@ int8_t						stop_instance(t_program *prog,
 int8_t						append_to_pgrmlist(t_denv *env, t_program *pgrm);
 t_instance					*get_instance(t_program *prg, uint8_t id);
 char						*get_instance_state(t_instance *instance);
+void						try_to_kill_instance(t_program *prog,
+									t_instance *instance);
 void						launch_jobs(void);
 void						waiter(void);
 void						child_process(t_program *prog, t_instance *instance,
 								t_list *env);
 void						update_instance_uptime(t_instance *instance);
+void						reinit(t_instance *instance,
+								enum e_prg_state new_state, uint8_t flag,
+								int exit_code);
 void						stop_prog(t_program *program);
 t_vector					*action_add(t_instance *instance,
 								t_program *program);
@@ -447,7 +452,4 @@ t_vector					*reread_file(t_instance *in, t_program *prg);
 void						get_pipes(t_instance *instance);
 void						close_child_fd(t_instance *instance);
 void						close_parrent_fd(t_instance *instance);
-
-void		reinit(t_instance *instance, enum e_prg_state new_state,
-					uint8_t flag, int exit_code);
 #endif

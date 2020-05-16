@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 13:08:43 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 14:45:26 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 10:14:53 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,6 @@ int8_t		del_instance(t_program *prg, uint8_t id)
 		free(to_del);
 	}
 	return (SUCCESS);
-}
-
-char		*get_instance_state(t_instance *instance)
-{
-	static char	*str_instance[] = {STATE_STARTING, STATE_BACKOFF, STATE_RUNNING,
-									STATE_STOPPING, STATE_STOPPED, STATE_EXITED,
-									STATE_FATAL, STATE_UNKNOWN};
-
-	return (str_instance[instance->state]);
 }
 
 t_instance	*get_instance(t_program *prg, uint8_t id)
@@ -87,4 +78,17 @@ int8_t		is_expected_exitcode(t_program *prg, t_instance *inst)
 		++i;
 	}
 	return (FALSE);
+}
+
+void		try_to_kill_instance(t_program *prog, t_instance *instance)
+{
+	if (kill(instance->pid, SIGKILL) == FAILURE)
+		tlog(E_LOGLVL_ERRO, "failed to kill instance %s: %s\n",
+			instance->name, strerror(errno));
+	else
+	{
+		tlog(E_LOGLVL_WARN, "killing %s after %d seconds\n",
+					instance->name, prog->stopwaitsecs);
+		reinit(instance, E_STOPPED, KEEP_BACKOFF, 0);
+	}
 }
