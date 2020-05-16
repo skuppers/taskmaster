@@ -112,3 +112,5 @@ List of supported keywords in configuration file:
 |stdout_logfile          |`Explicit instance stdout logfile`	| `AUTO` |
 |environment          |`Additional environment`	| `empty` |
 
+### Diagram
+![image](https://user-images.githubusercontent.com/29956389/82123059-8bd3f080-9797-11ea-8a20-ad15b1051390.png)
