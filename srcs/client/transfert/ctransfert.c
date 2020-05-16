@@ -6,13 +6,13 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 12:55:24 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 12:59:44 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client_taskmaster.h"
 
-void			restart_connection(void)
+void					restart_connection(void)
 {
 	int		i;
 
@@ -30,7 +30,7 @@ void			restart_connection(void)
 	canonic_mode(false);
 }
 
-void			connect_to_daemon(const char *socketpath)
+void					connect_to_daemon(const char *socketpath)
 {
 	struct sockaddr_un	addr;
 
@@ -55,7 +55,7 @@ void			connect_to_daemon(const char *socketpath)
 		dprintf(STDERR_FILENO, "Connected to %s\n", socketpath);
 }
 
-static t_vector	*read_feedback(const int fd)
+static t_vector			*read_feedback(const int fd)
 {
 	t_vector		*trame;
 	int				ret;
@@ -92,7 +92,7 @@ static struct timeval	get_waittime(void)
 	return (tv);
 }
 
-t_vector		*get_feedback(void)
+t_vector				*get_feedback(void)
 {
 	fd_set			recv_set;
 	struct timeval	tv;
