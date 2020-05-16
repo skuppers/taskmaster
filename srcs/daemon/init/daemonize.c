@@ -28,6 +28,7 @@ static void	do_chdir(const char *directory)
 		tlog(E_LOGLVL_ERRO, "taskmasterd: cannot chdir to %s\n", directory);
 		exit_routine(E_LOGLVL_ERRO, strerror(errno));
 	}
+	tlog(E_LOGLVL_INFO, "changed working directory to %s\n", directory);
 }
 
 void		daemonize(void)
