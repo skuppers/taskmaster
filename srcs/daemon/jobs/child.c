@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 13:58:20 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 15:16:57 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ static void	change_uid_dir(t_program *prog, t_instance *instance)
 	{
 		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid\n",
 				instance->id, prog->name);
-		exit_routine(E_LOGLVL_ERRO, strerror(errno));
+		exit(EXIT_FAILURE);
 	}
 	if (prog->directory != NULL && chdir(prog->directory) != 0)
 	{
 		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory\n",
 				instance->id, prog->name);
-		exit_routine(E_LOGLVL_ERRO, strerror(errno));
+		exit(EXIT_FAILURE);
 	}
 }
 
