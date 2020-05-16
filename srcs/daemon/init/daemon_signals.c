@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/14 16:21:55 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 13:04:06 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	sighup_handle(int signo)
 {
 	tlog(E_LOGLVL_INFO, "%s\n", strsignal(signo));
 	reread_file(NULL, NULL);
+	action_update_all(NULL, NULL);
 }
 
 void	sigpipe_handle(int signo)

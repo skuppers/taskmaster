@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/16 10:20:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 11:30:27 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 13:06:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,6 +222,7 @@ t_vector					*action_add(t_instance *instance,
 								t_program *program);
 t_vector					*action_remove(t_instance *instance,
 								t_program *program);
+t_vector					*action_update_all(t_instance *i, t_program *p);
 t_program					*find_program(const char *name, t_denv *e);
 int8_t						is_expected_exitcode(t_program *prg,
 								t_instance *inst);
