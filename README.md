@@ -61,6 +61,7 @@ autostart=true
 autorestart=false
 ```
 You can enumerate all commands in the taskmasterctl program:
+
 ![image](https://user-images.githubusercontent.com/29956389/82123222-78755500-9798-11ea-992e-509a72d1d8a9.png)
 
 
