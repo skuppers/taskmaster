@@ -1,9 +1,13 @@
 # Taskmaster
 
 Taskmaster is a client/server project for 42 school.
+
 It allows its users to control a number of processes on UNIX-like operating systems.
+
 Heavily inspired by : [Supervisor](https://github.com/Supervisor/supervisor)
+
 Parsing of configuration files is done with: [Iniparser](https://github.com/ndevilla/iniparser)
+
 
 ## Supported Platforms
 
@@ -26,7 +30,9 @@ Taskmaster has been tested on ubuntu 16.04, ubuntu 18.04 and ubuntu 19.10
 
 ## Running Taskmasterd and Taskmasterctl
 The taskmaster project contains two binaries: `taskmasterd` and `taskmasterctl`
+
 `taskmasterd` is the daemon which runs in background as default, and handles all the job control specified in the configuration file.
+
 `taskmasterctl` is the console ( or client ) which permits you to communicate with the daemon.
 
 A minimalist configuration file which works:
@@ -59,6 +65,7 @@ autorestart=false
 ## Documentation
 
 You can view the current Supervisor documentation online [in HTML format](http://supervisord.org/) .
+
 This is where you should go for detailed installation and configuration documentation.
 
 
