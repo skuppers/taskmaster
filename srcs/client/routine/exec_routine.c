@@ -56,7 +56,7 @@ static t_vector		*send_and_receive(t_vector *trame, const uint8_t flag)
 		feedback = get_feedback();
 		if (feedback == NULL && flag == DEL_FEEDBACK)
 		{
-			dprintf(STDERR_FILENO, "Got no feedback from daemon!\n");
+			dprintf(STDERR_FILENO, "ERROR: no response from daemon.\n");
 			g_env->sigint = 0;
 			is_socket_cleared(g_env->unix_socket, AFTER);
 			return (NULL);

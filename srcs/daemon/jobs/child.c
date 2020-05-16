@@ -44,15 +44,15 @@ static void	change_uid_dir(t_program *prog, t_instance *instance)
 {
 	if (prog->userid != -1 && setuid(prog->userid) != 0)
 	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change uid\n",
+		tlog(E_LOGLVL_ERRO, "taskmasterd: instance %d of %s cant change uid\n",
 				instance->id, prog->name);
-		exit_routine(E_LOGLVL_ERRO, strerror(errno));
+		exit(FAILURE);
 	}
 	if (prog->directory != NULL && chdir(prog->directory) != 0)
 	{
-		tlog(E_LOGLVL_ERRO, "instance %d of %s cant change directory\n",
+		tlog(E_LOGLVL_ERRO, "taskmasterd: instance %d of %s cant change directory\n",
 				instance->id, prog->name);
-		exit_routine(E_LOGLVL_ERRO, strerror(errno));
+		exit(FAILURE);
 	}
 }
 
