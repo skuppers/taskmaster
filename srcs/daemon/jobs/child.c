@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/14 14:37:33 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 11:30:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 13:58:20 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,17 @@ static void	change_uid_dir(t_program *prog, t_instance *instance)
 	}
 }
 
+static void	reset_signal(void)
+{
+	signal(SIGTERM, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGUSR1, SIG_DFL);
+	signal(SIGUSR2, SIG_DFL);
+	signal(SIGPIPE, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGHUP, SIG_DFL);
+}
+
 static void	redirect_process(t_program *prog, t_instance *instance)
 {
 	dup2(instance->fd[CHILD_STDIN], STDIN_FILENO);
@@ -74,6 +85,7 @@ void		child_process(t_program *prog, t_instance *instance, t_list *env)
 		prog->pgid = getpid();
 	tcsetpgrp(STDIN_FILENO, 0);
 	redirect_process(prog, instance);
+	reset_signal();
 	setpgid(getpid(), prog->pgid);
 	if (get_new_bin_path(&prog->bin,
 				vct_newstr(get_var(env, "PATH"))) == FAILURE)

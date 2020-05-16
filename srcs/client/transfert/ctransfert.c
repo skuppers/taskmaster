@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoisssey@student.42.fr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:13:28 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/16 12:59:44 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 14:01:24 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void					connect_to_daemon(const char *socketpath)
 	struct sockaddr_un	addr;
 
 	if ((g_env->unix_socket = socket(PF_UNIX,
-				SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0)) == FAILURE)
+			SOCK_STREAM | SOCK_CLOEXEC | SOCK_NONBLOCK, 0)) == FAILURE)
 	{
 		dprintf(STDERR_FILENO, "Error: %s\n", strerror(errno));
 		return ;

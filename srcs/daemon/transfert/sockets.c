@@ -6,7 +6,7 @@
 /*   By: ffoissey <ffoissey@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/29 11:14:48 by ffoissey          #+#    #+#             */
-/*   Updated: 2020/05/15 19:32:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/16 13:51:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ void		make_socket(void)
 {
 	int	fd;
 
-	if ((fd = socket(PF_UNIX,
-			SOCK_STREAM | SOCK_NONBLOCK | SOCK_CLOEXEC, 0)) == FAILURE)
+	if ((fd = socket(PF_UNIX, SOCK_STREAM, 0)) == FAILURE)
 		exit_routine(E_LOGLVL_CRIT, strerror(errno));
 	g_denv->unix_socket = fd;
 	g_denv->addr.sun_family = AF_UNIX;
