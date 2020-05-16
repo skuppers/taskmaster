@@ -23,10 +23,16 @@ void	sighup_handle(int signo)
 	reread_file(NULL, NULL);
 }
 
+void	sigpipe_handle(int signo)
+{
+	tlog(E_LOGLVL_WARN, "Received %s\n", strsignal(signo));
+}
+
 void	init_signals(void)
 {
 	struct sigaction	sig_all;
 	struct sigaction	sig_hup;
+	struct sigaction	sig_pipe;
 
 	sigemptyset(&sig_all.sa_mask);
 	sig_all.sa_handler = sigall_handle;
@@ -35,7 +41,10 @@ void	init_signals(void)
 	sigaction(SIGQUIT, &sig_all, NULL);
 	sigaction(SIGUSR1, &sig_all, NULL);
 	sigaction(SIGUSR2, &sig_all, NULL);
-	sigaction(SIGPIPE, &sig_all, NULL);
+	sigemptyset(&sig_pipe.sa_mask);
+	sig_pipe.sa_handler = sigpipe_handle;
+	sig_pipe.sa_flags = 0;
+	sigaction(SIGPIPE, &sig_pipe, NULL);
 	sigaction(SIGINT, &sig_all, NULL);
 	sigemptyset(&sig_hup.sa_mask);
 	sig_hup.sa_handler = sighup_handle;
