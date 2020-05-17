@@ -116,4 +116,8 @@ List of supported keywords in configuration file:
 |environment          |`Additional environment`	| `empty` |
 
 ### Diagram
+#### Job control State machine
+![image](https://user-images.githubusercontent.com/29956389/82141186-719c2000-9834-11ea-95fb-4c17e7c9036b.png)
+
+
 ![image](https://user-images.githubusercontent.com/29956389/82123059-8bd3f080-9797-11ea-8a20-ad15b1051390.png)
