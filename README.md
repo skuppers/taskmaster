@@ -1,3 +1,6 @@
+## Team
+https://github.com/ffoissey
+
 # Taskmaster
 
 Taskmaster is a job control manager project for 42 school.
