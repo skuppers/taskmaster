@@ -27,7 +27,7 @@ Taskmaster has been tested on ubuntu 16.04, ubuntu 18.04 and ubuntu 19.10
    
    or
    
-   ``$> make d=3 -j4``
+   ``$> make -j4``
    
    
 
