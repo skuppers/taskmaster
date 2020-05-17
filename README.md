@@ -130,4 +130,14 @@ A process transitions into the STOPPING state via an administrative stop request
 
 A process that cannot be stopped successfully will stay in the STOPPING state forever. This situation should never be reached during normal operations as it implies that the process did not respond to a final SIGKILL signal sent to it by supervisor, which is “impossible” under UNIX.
 
+
+#### Unix socket communication
+
+Communication between the daemon and the controller is done using unix sockets.
+No protocol was used, so an application layer encapsulation was made:
+
+![image](https://user-images.githubusercontent.com/29956389/82141715-fdfc1200-9837-11ea-8200-6bd9b971ae51.png)
+
+![image](https://user-images.githubusercontent.com/29956389/82141789-782c9680-9838-11ea-9dcc-8d5a1d6f8eb1.png)
+
 ![image](https://user-images.githubusercontent.com/29956389/82123059-8bd3f080-9797-11ea-8a20-ad15b1051390.png)
