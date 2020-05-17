@@ -1,6 +1,6 @@
 ## Team
-[ffoissey]https://github.com/ffoissey
-[skuppers]https://github.com/skuppers
+[ffoissey](https://github.com/ffoissey)
+[skuppers](https://github.com/skuppers)
 
 # Taskmaster
 
